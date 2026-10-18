@@ -10,7 +10,10 @@ from pathlib import Path
 
 import numpy as np
 
-_LIB_PATH = Path(__file__).resolve().parent / "rust" / "target" / "release" / "libspritecore.dylib"
+import sys
+
+_LIB_PATH = Path(__file__).resolve().parent / "rust" / "target" / "release" / {
+    "darwin": "libspritecore.dylib", "win32": "spritecore.dll"}.get(sys.platform, "libspritecore.so")
 lib = None
 if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib = ctypes.CDLL(str(_LIB_PATH))
@@ -28,6 +31,14 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_transport.argtypes = [_sz, _sz, _u8p, _u8p, _u8p, _u8p, ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32),
                                  _i64p, _i64p, ctypes.c_int64, ctypes.c_double]
     lib.sc_transport.restype = None
+    lib.sc_clean_parts.argtypes = [_i64p, _sz, _u8p, _sz, _sz, _u8p]
+    lib.sc_clean_parts.restype = ctypes.c_int
+    lib.sc_hires_lines.argtypes = [_u8p, _sz, _sz, ctypes.c_double, ctypes.c_double, _u8p]
+    lib.sc_hires_lines.restype = None
+    lib.sc_seal_parts.argtypes = [_i64p, _sz, _u8p, _sz, _sz, _u8p]
+    lib.sc_seal_parts.restype = ctypes.c_int
+    lib.sc_repair.argtypes = [_i64p, _sz, _i64p, _sz, _u8p, _sz, _sz, _u8p, _u8p, _u8p]
+    lib.sc_repair.restype = None
 
 
 def _hexkey(h):
@@ -129,3 +140,52 @@ def transport_shading_frame(kf, k_rank, f, L, search, tol):
                      _p(krank, ctypes.c_int64), _p(rank, ctypes.c_int64), int(search), float(tol * tol * 3))
     L = dict(L); L["rank"] = rank.astype(np.result_type(L["rank"], k_rank), copy=False)
     return L
+
+
+def pack_parts(cfg):
+    """sprite_style.part_of_colour as bits: [n, (colour, parts)..., outline bit, n, outlined part bits...]"""
+    import sprite_style as ss
+    pc = ss.part_of_colour(cfg)
+    bit = {n: 1 << i for i, n in enumerate(sorted({n for v in pc.values() for n in v}))}
+    out = [len(pc)]
+    for c, names in pc.items():
+        out += [_key(c), sum(bit[n] for n in names)]
+    outlined = [bit[n] for n in cfg["style"].get("part_outline", []) if n in bit]   # unknown part: nothing to do
+    out += [bit.get("O", 0), len(outlined)] + outlined
+    return np.array(out, np.int64)
+
+
+def clean_parts(cfg, s, protect=None):
+    out = np.array(s, np.uint8, order="C")
+    h, w = out.shape[:2]
+    pr = None if protect is None else np.ascontiguousarray(protect, np.uint8)
+    b = pack_parts(cfg)
+    lib.sc_clean_parts(_p(b, ctypes.c_int64), len(b), _p(out), h, w, _p(pr))
+    return out
+
+
+def hires_lines(data, depth_jump, crease_cos):
+    d = np.ascontiguousarray(data, np.uint8)
+    h, w = d.shape[:2]
+    out = np.zeros((h, w), np.uint8)
+    lib.sc_hires_lines(_p(d), h, w, float(depth_jump), float(crease_cos), _p(out))
+    return out.astype(bool)
+
+
+def seal_parts(cfg, s, protect=None):
+    out = np.array(s, np.uint8, order="C")
+    h, w = out.shape[:2]
+    pr = None if protect is None else np.ascontiguousarray(protect, np.uint8)
+    c = pack_cfg(cfg)
+    lib.sc_seal_parts(_p(c, ctypes.c_int64), len(c), _p(out), h, w, _p(pr))
+    return out
+
+
+def repair(cfg, s, prev=None, nxt=None, protect=None):
+    out = np.array(s, np.uint8, order="C")
+    h, w = out.shape[:2]
+    pr = None if protect is None else np.ascontiguousarray(protect, np.uint8)
+    prev, nxt = _rgba(prev), _rgba(nxt)
+    c, b = pack_cfg(cfg), pack_parts(cfg)
+    lib.sc_repair(_p(c, ctypes.c_int64), len(c), _p(b, ctypes.c_int64), len(b), _p(out), h, w, _p(pr), _p(prev), _p(nxt))
+    return out

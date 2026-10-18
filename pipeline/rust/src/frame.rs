@@ -89,10 +89,10 @@ impl<'a> Frame<'a> {
     fn hl_near(&self, p: &PartCfg, y: isize, x: isize, i: usize) -> bool {
         p.hl == Some(self.key(i)) && self.body2(i) && self.any4(y, x, |j| self.own0(p, j))
     }
-    fn own(&self, p: &PartCfg, y: isize, x: isize) -> bool {
+    pub fn own(&self, p: &PartCfg, y: isize, x: isize) -> bool {
         self.at(y, x).map_or(false, |i| self.own0(p, i) || self.hl_near(p, y, x, i))
     }
-    fn other(&self, p: &PartCfg, y: isize, x: isize) -> bool {
+    pub fn other(&self, p: &PartCfg, y: isize, x: isize) -> bool {
         self.at(y, x).map_or(false, |i| self.body2(i) && p.other.contains(&self.key(i)) && !self.hl_near(p, y, x, i))
     }
     /// check_loop.open_outline's part leakage: pixels of an outlined part touching another part

@@ -40,6 +40,8 @@ def wrap(name):
     py_fn, rs_fn = getattr(ss, name), getattr(rustcore, name)
 
     def both(*a, **k):
+        if rustcore.lib is None:                         # inside another kernel's Python run
+            return py_fn(*a, **k)
         lib, rustcore.lib = rustcore.lib, None          # the Python original, all the way down
         t0 = time.perf_counter(); want = py_fn(*a, **k); t1 = time.perf_counter()
         rustcore.lib = lib

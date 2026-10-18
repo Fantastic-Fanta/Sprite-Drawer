@@ -324,7 +324,10 @@ def prepare(cfg, color_im, id_im, data_im, *rest):
     # sub-pixel crop offset: a third of them vanished when the loop's crop box shifted.
     line_cov = None
     hl_cfg = cfg["style"].get("hires_lines")
-    if hl_cfg:
+    if hl_cfg and rustcore.lib is not None:
+        Lh = rustcore.hires_lines(np.array(data_im.crop(box)), hl_cfg.get("depth_jump", 2), hl_cfg.get("crease_cos", 0.3))
+        line_cov = np.array(Image.fromarray(Lh.astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)) / 255
+    elif hl_cfg:
         dh = np.array(data_im.crop(box)).astype(float)
         okh = dh[..., 3] > 0
         nh = dh[..., :3] / 255 * 2 - 1
@@ -916,6 +919,8 @@ def seal_parts(cfg, s, protect=None):
     fewest 2x2 line blocks and 2-px diagonals (same rules as the checks):
       * the part's pixel becomes outline colour,   * the other part's pixel does,
       * a stray 1-px sliver (no 4-neighbour of its own part) takes the other part's colour."""
+    if rustcore.lib is not None:
+        return rustcore.seal_parts(cfg, s, protect)
     import check_loop as cl
     OUT = np.array((*colour(cfg, "outline"), 255), np.uint8)
     s = s.copy()
@@ -970,6 +975,8 @@ def clean_parts(cfg, s, protect=None):
     Same result as visiting every pixel in raster order, but only pixels that can change are
     visited: a pixel with an identical-colour body neighbour can't (they share a part), and when
     a pixel changes, its later neighbours are re-checked (the raster-order visit would see it)."""
+    if rustcore.lib is not None:
+        return rustcore.clean_parts(cfg, s, protect)
     import heapq
     pc = part_of_colour(cfg)
     s = s.copy()
@@ -1972,6 +1979,8 @@ def repair(cfg, s, prev=None, nxt=None, protect=None):
     """After debounce: re-close the outline (no body pixel touching transparency), then the
     same 1-px / pixel-perfect / stray-pixel cleanup as compose, preferring fixes that agree
     with the neighbouring frames so the fix doesn't itself blink."""
+    if rustcore.lib is not None:
+        return rustcore.repair(cfg, s, prev, nxt, protect)
     OUT = colour(cfg, "outline")
     s = s.copy()
     solid = s[..., 3] > 0

@@ -76,6 +76,11 @@ its own folder (e.g. `lapras-model/Lapras/`).
 | `kelp_mat.py` | Blender: gives the faces skinned to chosen bones their own material (Dragalge's horns) |
 | `motion.py` | expression helpers, `motion.functions`, whole-pixel offsets (`style.pixel_bob`), shared by render / style / checks |
 | `make_seams.py` | seam maps: each texture's UV-island borders + normal-map grooves, painted white in texture space (per Pokemon, `render.seams`) |
+| `build_all.py` | many sprites in one go: renders the next sprite while the previous one builds, one Blender pool for the batch, shinies by `palette_swap` |
+| `render_many.py` | Blender worker for `render_parallel.RenderPool`: stays up between sprites, takes render jobs on stdin |
+| `rustcore.py`, `rust/` | Rust versions of the per-pixel rules (line cleanup, debounce, fault count, pupils, shape / shading over time); same pixels as the Python, which runs when the library isn't built |
+| `regress.py` | regression check: builds (and renders) the regression sprites again and compares every frame, eye and QA value with saved goldens (`.regress/`) |
+| `rust/check_kernels.py` | runs a real build with each Rust rule checked against its Python original on every call |
 
 ## 3. Steps
 
@@ -798,3 +803,18 @@ then list the maps under `render.texture_passes`.
 
 Golisopod front 108×98 (front-on), back 83×99; all 12 sprites re-verified (QA, ×4, exact shiny
 recolours).
+
+## 15. Speed (massive builds)
+
+Rule: a speed change may not change a single pixel. `regress.py check` (build) and
+`regress.py render-check` (every render pass) must say IDENTICAL for all four regression sprites
+before it goes in; a Rust rule also passes `rust/check_kernels.py` on every call.
+
+| Where | What | Settings |
+|---|---|---|
+| render | one Blender thread per process (more just contend: ~12% more CPU); shadows only in the shadow pass; Freestyle culling; rest pass written by the data render (AOV); workers kept up between sprites | `SPRITE_RENDER_JOBS` (4 suits 16 GB; more thrash), `SPRITE_RENDER_THREADS` (1), `SPRITE_RENDER_FORMAT=TGA` (raw passes: ~5% faster render, ~2x faster load, ~7x the disk) |
+| build | per-frame steps on all cores; frames loaded and prepared by the workers; the per-pixel rules in Rust | `SPRITE_JOBS` (default: all cores; 1 = one process), `SPRITE_RUST=0` (Python only) |
+| repeatable | a few tie-breaks follow Python's string hash order, random per run: the scripts pin `PYTHONHASHSEED` to 0 (`sprite_style.pin_hash_seed`), so a build is the same every time | |
+
+Tried and dropped (pixels changed): fewer anti-aliasing samples for the lines pass, the shadow pass
+or the lines pass folded into the data render, uncompressed PNG (no faster).

@@ -45,22 +45,43 @@ pub fn pupil_blobs(f: &Frame, l: &[bool]) -> Vec<bool> {
     blob
 }
 
-pub fn hard_faults(f: &Frame) -> i64 {
+/// 2x2 blocks of `l` pixels, `skip` pixels (pupils) excluded
+pub fn blocks(f: &Frame, l: &[bool], skip: Option<&[bool]>) -> i64 {
     let (h, w) = (f.h, f.w);
-    let n = h * w;
-    let l: Vec<bool> = (0..n).map(|i| f.line(i)).collect();
-    let blobs = pupil_blobs(f, &l);
-    let m = |y: isize, x: isize| f.at(y, x).map_or(false, |i| l[i]);
-    let mut count = 0i64;
-    // line_blocks: 2x2 blocks of line pixels (pupils excluded)
+    let mut count = 0;
     for y in 0..h.saturating_sub(1) {
         for x in 0..w.saturating_sub(1) {
-            if [(0, 0), (1, 0), (0, 1), (1, 1)].iter().all(|&(a, b)| { let i = (y + a) * w + x + b; l[i] && !blobs[i] }) {
+            if [(0, 0), (1, 0), (0, 1), (1, 1)].iter().all(|&(a, b)| { let i = (y + a) * w + x + b; l[i] && !skip.map_or(false, |s| s[i]) }) {
                 count += 1;
             }
         }
     }
-    // stairs, with separators kept (a corner there is a T-junction)
+    count
+}
+
+pub fn hard_faults(f: &Frame) -> i64 {
+    let n = f.h * f.w;
+    let l: Vec<bool> = (0..n).map(|i| f.line(i)).collect();
+    let blobs = pupil_blobs(f, &l);
+    // line_blocks: 2x2 blocks of line pixels (pupils excluded)
+    let mut count = blocks(f, &l, Some(&blobs)) + stairs(f, &l, &blobs);
+    // open outline: body touching the outside, outlined part touching another part
+    for i in 0..n {
+        let (y, x) = ((i / f.w) as isize, (i % f.w) as isize);
+        if f.solid(i) && !l[i] && f.protect[i] == 0 && !f.line_all(i) && f.touches_out(y, x) {
+            count += 1;
+        }
+    }
+    count + f.leaks()
+}
+
+/// check_loop.stairs(s, l, separators(cfg, s, l, protect), blobs): staircase corners and inner
+/// lines hugging the outline; separators (T-junctions) and pupils don't count
+pub fn stairs(f: &Frame, l: &[bool], blobs: &[bool]) -> i64 {
+    let (h, w) = (f.h, f.w);
+    let n = h * w;
+    let m = |y: isize, x: isize| f.at(y, x).map_or(false, |i| l[i]);
+    let mut count = 0i64;
     let to = |y: isize, x: isize| f.touches_out(y, x);
     for i in 0..n {
         if !l[i] || blobs[i] {
@@ -82,12 +103,5 @@ pub fn hard_faults(f: &Frame) -> i64 {
             count += 1;
         }
     }
-    // open outline: body touching the outside, outlined part touching another part
-    for i in 0..n {
-        let (y, x) = ((i / w) as isize, (i % w) as isize);
-        if f.solid(i) && !l[i] && f.protect[i] == 0 && !f.line_all(i) && to(y, x) {
-            count += 1;
-        }
-    }
-    count + f.leaks()
+    count
 }
