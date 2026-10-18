@@ -839,16 +839,26 @@ recolours).
 
 Rule: a speed change may not change a single pixel. `regress.py check` (build) and
 `regress.py render-check` (every render pass) must say IDENTICAL for all four regression sprites
-before it goes in; a Rust rule also passes `rust/check_kernels.py` on every call.
+before it goes in; a Rust rule also passes `rust/check_kernels.py` on every call. The regression
+set builds from config snapshots taken with the goldens (`regress.py golden NAME [--rev GIT_REV]`),
+so work on a Pokemon's config doesn't move the target.
+
+**Render cache:** a render is reused when nothing it reads has changed (config render / camera /
+pose / motion / parts materials / fast_frames, the .blend and textures, the render scripts,
+Blender, the format, the frames). Re-running a build after a style or QA change skips Blender
+entirely: the four regression sprites take 70 s cold, 19 s from the cache.
 
 | Where | What | Settings |
 |---|---|---|
-| render | one Blender thread per process (more just contend: ~12% more CPU); shadows only in the shadow pass; Freestyle culling; rest pass written by the data render (AOV); workers kept up between sprites | `SPRITE_RENDER_JOBS` (4 suits 16 GB; more thrash), `SPRITE_RENDER_THREADS` (1), `SPRITE_RENDER_FORMAT=TGA` (raw passes: ~5% faster render, ~2x faster load, ~7x the disk) |
+| render | one Blender thread per process (more just contend: ~12% more CPU); shadows only in the shadow pass; Freestyle culling; the data render also writes the rest pass (AOV), the id pass (face attribute AOV: only Blender's 8-bit dither differs, +-1, which the nearest-id-colour read ignores) and, with a cast shadow, the shadow pass (second view layer); workers kept up between sprites; renders cached | `SPRITE_RENDER_JOBS` (4 suits 16 GB; more thrash), `SPRITE_RENDER_THREADS` (1), `SPRITE_RENDER_FORMAT=TGA` (raw passes: ~5% faster render, ~2x faster load, ~7x the disk), `SPRITE_RENDER_CACHE` (folder, default `.render_cache/`; `0` = off), `SPRITE_RENDER_CACHE_GB` (20) |
 | build | per-frame steps on all cores; frames loaded and prepared by the workers; the per-pixel rules in Rust | `SPRITE_JOBS` (default: all cores; 1 = one process), `SPRITE_RUST=0` (Python only) |
 | repeatable | a few tie-breaks follow Python's string hash order, random per run: the scripts pin `PYTHONHASHSEED` to 0 (`sprite_style.pin_hash_seed`), so a build is the same every time | |
 
 Tried and dropped (pixels changed): fewer anti-aliasing samples for the lines pass, the shadow pass
-or the lines pass folded into the data render, uncompressed PNG (no faster).
+as a Shader-to-RGB AOV, the lines pass folded into the data render, uncompressed PNG (no faster),
+rendering only each frame's model region (EEVEE samples differently in a border region; no faster
+for Workbench either: per-render costs dominate, not pixels), the colour pass in EEVEE (it needs
+Workbench's 8x anti-aliasing, the data render is deliberately single-sample).
 
 **The one deliberate change: traced lines instead of Freestyle** (`render.freestyle.engine`,
 default `"trace"`). Freestyle cost ~280 ms per frame; `linetrace.py` draws the same kinds of edges
