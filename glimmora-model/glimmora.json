@@ -63,12 +63,12 @@
       0
     ],
     "distance": 20,
-    "ortho_scale": 4.6,
+    "ortho_scale": 5.6,
     "perspective_fov": "FOV"
   },
   "render": {
     "width": 460,
-    "height": 460,
+    "height": 560,
     "depth_range": 3,
     "freestyle": {
       "edges": [
@@ -93,7 +93,7 @@
   "pose_params": {
     "AZIMUTH": 39.47,
     "ELEVATION": -29.1,
-    "FOV": 24.09,
+    "FOV": 29.123101,
     "YAW": 15.37,
     "PITCH": 24.3,
     "ROLL": 24.99,
@@ -1150,6 +1150,18 @@
         "shadow_f1": 0.684,
         "blob_shade_err": 0.06,
         "style_score": 81.6
+      }
+    },
+    {
+      "step": "render frame",
+      "note": "round-10 hiss hood reached past the render frame (top petal, frames ~107-133: render_clipped). Frame 100 render px taller (50 each side), ortho_scale and FOV widened together so the camera distance and pixel density are unchanged: frame 0 samples the same pixels",
+      "before": {
+        "render": [
+          460,
+          460
+        ],
+        "ortho_scale": 4.6,
+        "FOV": 24.09
       }
     }
   ],

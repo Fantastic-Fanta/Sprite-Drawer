@@ -2,16 +2,16 @@
   "values": {
     "thick_lines": 0,
     "diag_2px": 0,
-    "dark_flicker": 6,
+    "dark_flicker": 63,
     "open_outline": 0,
-    "silhouette_teeth": 4.13,
-    "any_blinks": 14,
-    "pop_max": 5.36,
-    "big_pops": 65,
-    "blink_rate": 2e-05,
-    "dark_flicker_rate": 2e-05,
-    "pop_max_norm": 2.75,
-    "big_pops_share": 0.363
+    "silhouette_teeth": 4.51,
+    "any_blinks": 96,
+    "pop_max": 7.45,
+    "big_pops": 103,
+    "blink_rate": 0.00015,
+    "dark_flicker_rate": 0.00013,
+    "pop_max_norm": 3.9,
+    "big_pops_share": 0.579
   },
   "pass": true,
   "checks": [
@@ -35,31 +35,31 @@
     },
     {
       "name": "blink_rate",
-      "value": 2e-05,
+      "value": 0.00015,
       "limit": 0.1005,
       "pass": true
     },
     {
       "name": "dark_flicker_rate",
-      "value": 2e-05,
+      "value": 0.00013,
       "limit": 0.00493,
       "pass": true
     },
     {
       "name": "pop_max_norm",
-      "value": 2.75,
+      "value": 3.9,
       "limit": 6.86,
       "pass": true
     },
     {
       "name": "big_pops_share",
-      "value": 0.363,
+      "value": 0.579,
       "limit": 0.759,
       "pass": true
     },
     {
       "name": "silhouette_teeth",
-      "value": 4.13,
+      "value": 4.51,
       "limit": 7.5,
       "pass": true
     }

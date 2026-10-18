@@ -1,28 +1,28 @@
 {
   "values": {
-    "style_score": 80.8,
+    "style_score": 81.1,
     "extra_line_px": 4,
     "missing_line_px": 1,
-    "shadow_f1": 0.687,
-    "dark_rim_excess": -0.04,
+    "shadow_f1": 0.692,
+    "dark_rim_excess": -0.044,
     "blob_shade_err": 0.059,
     "thick_lines": 0,
     "diag_2px": 0,
-    "dark_flicker": 9,
+    "dark_flicker": 6,
     "open_outline": 0,
-    "silhouette_teeth": 2.82,
-    "any_blinks": 15,
-    "pop_max": 5.0,
-    "big_pops": 56,
-    "blink_rate": 3e-05,
+    "silhouette_teeth": 3.2,
+    "any_blinks": 12,
+    "pop_max": 4.16,
+    "big_pops": 61,
+    "blink_rate": 2e-05,
     "dark_flicker_rate": 2e-05,
-    "pop_max_norm": 2.81,
-    "big_pops_share": 0.313,
-    "core_mix_l1": 0.163,
-    "petal_mix_l1": 0.015,
-    "core_edge_ratio": 1.412,
+    "pop_max_norm": 2.32,
+    "big_pops_share": 0.343,
+    "core_mix_l1": 0.154,
+    "petal_mix_l1": 0.031,
+    "core_edge_ratio": 1.371,
     "bulb_edge_ratio": 1.19,
-    "core_shape_f1": 0.984,
+    "core_shape_f1": 0.986,
     "bulb_shape_f1": 0.928,
     "core_tones": 7,
     "bulb_tones": 2
@@ -31,7 +31,7 @@
   "checks": [
     {
       "name": "style_score",
-      "value": 80.8,
+      "value": 81.1,
       "limit": 80,
       "pass": true
     },
@@ -67,7 +67,7 @@
     },
     {
       "name": "blink_rate",
-      "value": 3e-05,
+      "value": 2e-05,
       "limit": 0.1005,
       "pass": true
     },
@@ -79,31 +79,31 @@
     },
     {
       "name": "pop_max_norm",
-      "value": 2.81,
+      "value": 2.32,
       "limit": 6.86,
       "pass": true
     },
     {
       "name": "big_pops_share",
-      "value": 0.313,
+      "value": 0.343,
       "limit": 0.759,
       "pass": true
     },
     {
       "name": "silhouette_teeth",
-      "value": 2.82,
+      "value": 3.2,
       "limit": 7.5,
       "pass": true
     },
     {
       "name": "shadow_f1",
-      "value": 0.687,
+      "value": 0.692,
       "limit": 0.68,
       "pass": true
     },
     {
       "name": "dark_rim_excess",
-      "value": -0.04,
+      "value": -0.044,
       "limit": 0.03,
       "pass": true
     },
@@ -115,25 +115,25 @@
     },
     {
       "name": "core_mix_l1",
-      "value": 0.163,
+      "value": 0.154,
       "limit": 0.17,
       "pass": true
     },
     {
       "name": "petal_mix_l1",
-      "value": 0.015,
+      "value": 0.031,
       "limit": 0.2,
       "pass": true
     },
     {
       "name": "core_edge_ratio",
-      "value": 1.412,
+      "value": 1.371,
       "limit": 1.0,
       "pass": true
     },
     {
       "name": "core_shape_f1",
-      "value": 0.984,
+      "value": 0.986,
       "limit": 0.95,
       "pass": true
     },

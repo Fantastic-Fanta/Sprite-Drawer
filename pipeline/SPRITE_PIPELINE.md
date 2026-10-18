@@ -612,7 +612,17 @@ Checked without rendering (Blender poses each frame, meshes projected to sprite 
 frames' tip reach range 1.1–2.5 → 2.6–4.7 px per petal, max step 0.36 px/frame; hairline-gap
 changes between parts per step about the same as round 9 (mean 45.6 vs 45.0, max 119 vs 104); hood
 (user: "more exaggerated, petals spreading out further") reach +8.5 to +21.9 px per petal (3-D only:
-+3.3 to +13.7), so the canvas grows for the hiss. Not yet rendered / QA'd.
++3.3 to +13.7), so the canvas grows for the hiss.
+
+The hood reached past the render frame (`render_clipped`, frames ~107–133, top petal 3 px front /
+9 px back): the render is now 460×560 (50 px more above and below), `ortho_scale` 4.6 → 5.6 and
+`FOV` 24.09 → 29.12 together, so the camera distance and pixel density are unchanged. Frame 0: same
+silhouette shifted by exactly 50 px; colour / normal / depth within 2/255 (projection rounding), ~80
+shadow-edge pixels differ (EEVEE's sun shadow map follows the view frustum). Render time unchanged.
+
+**QA: all four PASS** — front: style 81.1, pop_max_norm 2.32, big_pops_share 0.34, dark flicker 6,
+blinks 12, teeth 3.2; back: pop_max_norm 3.9, big_pops_share 0.58, dark flicker 63, blinks 96,
+teeth 4.51; shinies (recoloured) 2.97 / 0.43 and 5.83 / 0.65.
 
 ## 7. Back views and shinies (all three Megas)
 
@@ -706,7 +716,7 @@ enlargement, every shiny is an exact one-to-one recolour of its normal, no rende
 
 | Sprite | Size | Frames | Notes |
 |---|---|---|---|
-| Glimmora front / back | 96×119 / 106×121 | 270 | float + drift + rock + crown breathing + shake + charged petal spin |
+| Glimmora front / back | 115×125 / 124×142 | 330 | float + drift + rock + crown breathing + living petals + petal-hood hiss + charged petal spin; back = front flipped 180° |
 | Golisopod front / back | 89×94 / 68×98 | 120 | breathing idle + claw flex |
 | Dragalge front / back | 156×89 / 161×92 | 160 | underwater sway + fin flare |
 
