@@ -11,6 +11,7 @@ mod parts;
 mod prep;
 mod seal;
 mod qa;
+mod trace;
 
 use frame::{Cfg, Frame};
 
@@ -165,4 +166,23 @@ pub unsafe extern "C" fn sc_best_patch(resid: *const f64, h: usize, w: usize, th
     let (best, k) = qa::best_patch(std::slice::from_raw_parts(resid, h * w), h, w, thr, std::slice::from_raw_parts_mut(comp, h * w));
     *ncomp = k;
     best
+}
+
+/// linetrace: the lines pass's alpha (h x w) from the projected meshes
+#[no_mangle]
+pub unsafe extern "C" fn sc_trace_lines(v: *const f64, sx: *const f64, sy: *const f64, z: *const f64, nv: usize, campos: *const f64,
+                                        tris: *const i32, nt: usize, loops: *const i32, nl: usize, poly: *const i32, np: usize,
+                                        edges: *const i32, ne: usize, w: usize, h: usize, cos_lim: f64, thickness: f64, eps: f64,
+                                        kinds: i32, out: *mut u8) {
+    if w == 0 || h == 0 {
+        return;
+    }
+    let c = std::slice::from_raw_parts(campos, 3);
+    let m = trace::Mesh {
+        v: std::slice::from_raw_parts(v, nv * 3), sx: std::slice::from_raw_parts(sx, nv), sy: std::slice::from_raw_parts(sy, nv),
+        z: std::slice::from_raw_parts(z, nv), campos: [c[0], c[1], c[2]], tris: std::slice::from_raw_parts(tris, nt * 3),
+        loops: std::slice::from_raw_parts(loops, nl), poly: std::slice::from_raw_parts(poly, np * 2),
+        edges: std::slice::from_raw_parts(edges, ne * 2),
+    };
+    trace::trace(&m, w, h, cos_lim, thickness, eps, kinds, std::slice::from_raw_parts_mut(out, w * h));
 }

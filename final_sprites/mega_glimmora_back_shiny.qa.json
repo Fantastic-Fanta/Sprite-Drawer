@@ -4,14 +4,14 @@
     "diag_2px": 0,
     "dark_flicker": 6,
     "open_outline": 0,
-    "silhouette_teeth": 4.17,
+    "silhouette_teeth": 4.13,
     "any_blinks": 14,
     "pop_max": 5.41,
-    "big_pops": 79,
+    "big_pops": 80,
     "blink_rate": 2e-05,
     "dark_flicker_rate": 2e-05,
     "pop_max_norm": 2.78,
-    "big_pops_share": 0.441
+    "big_pops_share": 0.447
   },
   "pass": true,
   "checks": [
@@ -53,13 +53,13 @@
     },
     {
       "name": "big_pops_share",
-      "value": 0.441,
+      "value": 0.447,
       "limit": 0.759,
       "pass": true
     },
     {
       "name": "silhouette_teeth",
-      "value": 4.17,
+      "value": 4.13,
       "limit": 7.5,
       "pass": true
     }

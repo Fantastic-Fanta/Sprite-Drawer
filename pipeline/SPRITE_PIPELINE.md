@@ -79,6 +79,8 @@ its own folder (e.g. `lapras-model/Lapras/`).
 | `build_all.py` | many sprites in one go: renders the next sprite while the previous one builds, one Blender pool for the batch, shinies by `palette_swap` |
 | `render_many.py` | Blender worker for `render_parallel.RenderPool`: stays up between sprites, takes render jobs on stdin |
 | `rustcore.py`, `rust/` | Rust versions of the per-pixel rules (line cleanup, debounce, fault count, pupils, shape / shading over time); same pixels as the Python, which runs when the library isn't built |
+| `linetrace.py` | the lines pass without Freestyle: the mesh's own borders, silhouettes and creases, kept where visible, drawn `thickness` px wide (Rust, numpy fallback); `render.freestyle.engine` picks it (`"trace"`, default) or Freestyle (`"freestyle"`) |
+| `res_study.py` | render resolution vs quality: builds at lower render sizes, reports render time, QA, Showdown score, pixels changed |
 | `regress.py` | regression check: builds (and renders) the regression sprites again and compares every frame, eye and QA value with saved goldens (`.regress/`) |
 | `rust/check_kernels.py` | runs a real build with each Rust rule checked against its Python original on every call |
 
@@ -818,3 +820,17 @@ before it goes in; a Rust rule also passes `rust/check_kernels.py` on every call
 
 Tried and dropped (pixels changed): fewer anti-aliasing samples for the lines pass, the shadow pass
 or the lines pass folded into the data render, uncompressed PNG (no faster).
+
+**The one deliberate change: traced lines instead of Freestyle** (`render.freestyle.engine`,
+default `"trace"`). Freestyle cost ~280 ms per frame; `linetrace.py` draws the same kinds of edges
+(border, silhouette / contour, crease past `crease_angle`, visible only, `thickness` px) in ~25 ms.
+Glimmora's render: 54 s / 161 CPU-s -> 33 s / 98 CPU-s. Its sprite moves ~60 px per frame (2%),
+all inner crown lines: QA still passes, style score 81.4 -> 80.8, core_edge_ratio 1.20 -> 1.41
+(a few more crown lines than Freestyle drew). Blender's Line Art was tried first: half the lines
+(IoU 0.5) for a 20% gain. Edge types the tracer doesn't draw (material_boundary, ridge_valley, ...)
+make a config use Freestyle automatically; `"engine": "freestyle"` brings it back for any config.
+
+**Render resolution** (`res_study.py`, not changed): rendering at 75% / 50% of the size saves
+7-48% render time but changes the sprite (size shifts by a few px, 6-8% of pixels) and fails QA
+for Lapras and Glimmora; Golisopod passes at 50% (-21%), Dragalge at 75% (-7%). A per-Pokemon
+choice, made with a re-tune, not a global setting.

@@ -20,6 +20,7 @@ from mathutils import Matrix, Vector
 sys.path.insert(0, str(Path(globals()["__file__"]).parent if "__file__" in globals()
                        else Path(sys.argv[sys.argv.index("--python") + 1]).resolve().parent))
 import motion
+import linetrace
 
 args = sys.argv[sys.argv.index("--") + 1:]
 cfg = json.loads(Path(args[0]).read_text())
@@ -199,6 +200,11 @@ REST_COMP.links.new(_rl.outputs["Image"], _go.inputs[0])
 # so inner lines move with the model instead of being re-detected from pixels every frame.
 # The body renders transparent (holdout); only the strokes are drawn, in white.
 FS = cfg["render"].get("freestyle", {})
+# lines engine: "trace" (default: linetrace.py, the mesh's own edges, ~20x faster than Freestyle)
+# or "freestyle" (the Freestyle render set up below). Edge types the tracer doesn't draw (e.g.
+# material_boundary, ridge_valley) need Freestyle, so such a config uses it either way.
+LINES_KINDS = linetrace.kinds_of(FS.get("edges", ["silhouette", "crease", "border"])) if FS else None
+LINES_TRACE = bool(FS) and LINES_KINDS is not None and FS.get("engine", "trace") == "trace"
 hold_mat = bpy.data.materials.new("SpriteHoldout")
 hold_mat.use_nodes = True
 hn = hold_mat.node_tree
@@ -417,6 +423,10 @@ def render_frame(t, name):
     if SH:
         aim_sun(SH["light_cam"])
     for kind in ("color", "id", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + tuple(TEX_PASSES):
+        if kind == "lines" and LINES_TRACE:
+            alpha = linetrace.trace(scene, meshes, FS.get("crease_angle", 140), FS.get("thickness", 3.0), LINES_KINDS)
+            (linetrace.write_tga if RAW else linetrace.write_png)(f"{out_dir}/lines_{name}{EXT}", alpha)
+            continue
         use_pass(kind)
         if kind in TEX_PASSES:
             swap_texture_pass(kind, True)

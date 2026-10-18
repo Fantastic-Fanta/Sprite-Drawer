@@ -43,6 +43,10 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_short_runs.restype = None
     lib.sc_best_patch.argtypes = [ctypes.POINTER(ctypes.c_double), _sz, _sz, ctypes.c_double, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_size_t)]
     lib.sc_best_patch.restype = ctypes.c_double
+    _f64p, _i32p = ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_int32)
+    lib.sc_trace_lines.argtypes = [_f64p, _f64p, _f64p, _f64p, _sz, _f64p, _i32p, _sz, _i32p, _sz, _i32p, _sz, _i32p, _sz,
+                                   _sz, _sz, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_int32, _u8p]
+    lib.sc_trace_lines.restype = None
 
 
 def _hexkey(h):
@@ -213,3 +217,17 @@ def best_patch(resid, thr):
     k = ctypes.c_size_t(0)
     best = lib.sc_best_patch(_p(r, ctypes.c_double), h, w, float(thr), _p(comp, ctypes.c_uint32), ctypes.byref(k))
     return best, [(int(i) // w, int(i) % w) for i in comp[:k.value]]
+
+
+def trace_lines(m, cos_lim, thickness, eps, kinds=7):
+    """linetrace.trace_numpy in Rust (same pixels)"""
+    f64 = lambda k: np.ascontiguousarray(m[k], np.float64)
+    i32 = lambda k: np.ascontiguousarray(m[k], np.int32)
+    V, sx, sy, z, cp = f64("V"), f64("sx"), f64("sy"), f64("z"), f64("campos")
+    tris, loops, poly, edges = i32("tris"), i32("loops"), i32("poly"), i32("edges")
+    W, H = int(m["W"]), int(m["H"])
+    out = np.zeros((H, W), np.uint8)
+    D, I = ctypes.c_double, ctypes.c_int32
+    lib.sc_trace_lines(_p(V, D), _p(sx, D), _p(sy, D), _p(z, D), len(sx), _p(cp, D), _p(tris, I), len(tris), _p(loops, I), len(loops),
+                       _p(poly, I), len(poly), _p(edges, I), len(edges), W, H, float(cos_lim), float(thickness), float(eps), int(kinds), _p(out))
+    return out
