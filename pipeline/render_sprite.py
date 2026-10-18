@@ -255,6 +255,26 @@ if bg is not None:
     bg.inputs["Strength"].default_value = 0.0         # no ambient light: only sun + shadow
 
 
+# With a cast shadow, the shadow pass comes out of the data render too: a second view layer with
+# the shadow material, saved by the compositor (pixel-identical to its own render, one fewer).
+# The layer is switched on for that render only (Workbench passes would render it as well).
+SHADOW_VL = None
+if SH:
+    SHADOW_VL = scene.view_layers.new("SpriteShadowLayer")
+    SHADOW_VL.material_override = shadow_mat
+    SHADOW_VL.use = False
+    _rls = REST_COMP.nodes.new("CompositorNodeRLayers"); _rls.layer = SHADOW_VL.name
+    _fs = REST_COMP.nodes.new("CompositorNodeOutputFile")
+    _fs.directory, _fs.file_name = REST_TMP + "/", "shadow"
+    _fs.format.media_type = "IMAGE"; _fs.format.file_format = "TARGA_RAW" if RAW else "PNG"
+    _fs.format.color_mode = "RGBA"
+    if not RAW:
+        _fs.format.color_depth = "8"
+    _fs.save_as_render = True
+    _fs.file_output_items.new("RGBA", "img")
+    REST_COMP.links.new(_rls.outputs["Image"], _fs.inputs[0])
+
+
 def aim_sun(light_cam):
     """point the sun so light comes from light_cam (camera space)"""
     v = cam.matrix_world.to_3x3() @ Vector(light_cam)
@@ -427,16 +447,26 @@ def render_frame(t, name):
             alpha = linetrace.trace(scene, meshes, FS.get("crease_angle", 140), FS.get("thickness", 3.0), LINES_KINDS)
             (linetrace.write_tga if RAW else linetrace.write_png)(f"{out_dir}/lines_{name}{EXT}", alpha)
             continue
-        use_pass(kind)
+        if kind == "shadow" and SHADOW_VL is not None:
+            continue                          # came out of the data render
+        if kind == "data" and SHADOW_VL is not None:
+            use_pass("shadow")                # lit: sun and shadows on (data is emission: unaffected)
+            bpy.context.view_layer.material_override = data_mat
+            SHADOW_VL.use = True
+        else:
+            use_pass(kind)
         if kind in TEX_PASSES:
             swap_texture_pass(kind, True)
         scene.render.filepath = f"{out_dir}/{kind}_{name}{EXT}"
         scene.compositing_node_group = REST_COMP if kind == "data" else None
         bpy.ops.render.render(write_still=True)
-        if kind == "data":                    # its rest AOV, saved by the compositor
-            made = [f for f in os.listdir(REST_TMP) if f.endswith(EXT)]
-            assert len(made) == 1, made
-            os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/rest_{name}{EXT}")
+        if kind == "data":                    # its rest AOV (and the shadow layer), saved by the compositor
+            if SHADOW_VL is not None:
+                SHADOW_VL.use = False
+            for pname in ("rest",) + (("shadow",) if SHADOW_VL is not None else ()):
+                made = [f for f in os.listdir(REST_TMP) if f.startswith(pname) and f.endswith(EXT)]
+                assert len(made) == 1, made
+                os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/{pname}_{name}{EXT}")
         if kind in TEX_PASSES:
             swap_texture_pass(kind, False)
     scene.compositing_node_group = None

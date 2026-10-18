@@ -1,11 +1,14 @@
 """Regression check: build sprites with the current code and compare them with saved goldens.
 
 Run (from anywhere):
-  python3 pipeline/regress.py golden [NAME ...]        render (once) + build, save the result as golden
+  python3 pipeline/regress.py golden [NAME ...] [--rev GIT_REV]  snapshot the config, render (once) +
+                                                       build, save the result as golden
   python3 pipeline/regress.py check [NAME ...]         build again, compare with the golden frame by frame
   python3 pipeline/regress.py render-check [NAME ...]  render again, compare every pass with the cached render
 NAME: lapras, glimmora, golisopod, dragalge (default: all). Data lives in .regress/ (gitignored):
-the rendered passes per sprite and the golden GIFs. Builds run with PYTHONHASHSEED fixed, since some
+the config snapshots, the rendered passes per sprite and the golden GIFs. Checks always use the
+snapshot taken with the golden (paths made absolute), so editing a config - or another session
+editing it - doesn't move the target; --rev takes the config as committed at that revision. Builds run with PYTHONHASHSEED fixed, since some
 tie-breaks follow Python's per-process hash order. Exit code 1 if anything differs.
 """
 import json
@@ -34,16 +37,38 @@ def frames_dir(name):
     return DATA / "frames" / name
 
 
+def config(name):
+    p = DATA / "configs" / f"{name}.json"
+    if not p.exists():
+        sys.exit(f"{name}: no config snapshot, run: regress.py golden {name}")
+    return p
+
+
+def snapshot(name, rev=None):
+    """the config as it is (or as committed at rev), paths made absolute, saved for the checks"""
+    live = ROOT / CONFIGS[name]
+    text = subprocess.run(["git", "-C", str(ROOT), "show", f"{rev}:{CONFIGS[name]}"], capture_output=True, text=True,
+                          check=True).stdout if rev else live.read_text()
+    cfg = json.loads(text)
+    for k in ("model", "reference", "fit_reference"):
+        if cfg.get(k):
+            cfg[k] = str((live.parent / cfg[k]).resolve())
+    p = DATA / "configs" / f"{name}.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(cfg, indent=2))
+    return p
+
+
 def render(name, out):
     t0 = time.time()
-    subprocess.run([sys.executable, str(HERE / "render_parallel.py"), str(ROOT / CONFIGS[name]), str(out), "--no-cache"], check=True)
+    subprocess.run([sys.executable, str(HERE / "render_parallel.py"), str(config(name)), str(out), "--no-cache"], check=True)
     return time.time() - t0
 
 
 def build(name, out_gif):
     out_gif.parent.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
-    r = subprocess.run([sys.executable, str(HERE / "make_gif.py"), str(ROOT / CONFIGS[name]), str(frames_dir(name)), str(out_gif)],
+    r = subprocess.run([sys.executable, str(HERE / "make_gif.py"), str(config(name)), str(frames_dir(name)), str(out_gif)],
                        env=dict(os.environ, PYTHONHASHSEED=SEED), capture_output=True, text=True)
     if "Traceback" in r.stderr:
         print(r.stderr[-3000:])
@@ -73,12 +98,16 @@ def compare_build(a, b):
 
 
 def main():
-    mode = sys.argv[1] if len(sys.argv) > 1 else "check"
-    names = sys.argv[2:] or list(CONFIGS)
+    args = sys.argv[1:]
+    rev = args[args.index("--rev") + 1] if "--rev" in args else None
+    args = [a for i, a in enumerate(args) if a != "--rev" and (i == 0 or args[i - 1] != "--rev")]
+    mode = args[0] if args else "check"
+    names = args[1:] or list(CONFIGS)
     failed = False
     for name in names:
         golden = DATA / "golden" / f"{name}.gif"
         if mode == "golden":
+            snapshot(name, rev)
             if not frames_dir(name).exists():
                 print(f"{name}: rendered in {render(name, frames_dir(name)):.1f}s")
             print(f"{name}: golden built in {build(name, golden):.1f}s")
