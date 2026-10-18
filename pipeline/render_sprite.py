@@ -100,7 +100,12 @@ scene.render.film_transparent = True
 scene.render.resolution_x = cfg["render"]["width"]
 scene.render.resolution_y = cfg["render"]["height"]
 scene.render.resolution_percentage = 100
-scene.render.image_settings.file_format = "PNG"
+# pass files: PNG, or SPRITE_RENDER_FORMAT=TGA for uncompressed Targa (same pixels; ~5% faster to
+# render and ~2x faster to load, ~7x the disk space)
+RAW = os.environ.get("SPRITE_RENDER_FORMAT", "PNG").upper() == "TGA"
+EXT = ".tga" if RAW else ".png"
+scene.render.image_settings.file_format = "TARGA_RAW" if RAW else "PNG"
+scene.render.use_file_extension = False
 scene.render.image_settings.color_mode = "RGBA"
 scene.render.image_settings.color_depth = "8"
 
@@ -175,7 +180,10 @@ _rl = REST_COMP.nodes.new("CompositorNodeRLayers")
 _sa = REST_COMP.nodes.new("CompositorNodeSetAlpha")
 _fo = REST_COMP.nodes.new("CompositorNodeOutputFile")
 _fo.directory, _fo.file_name = REST_TMP + "/", "rest"
-_fo.format.media_type = "IMAGE"; _fo.format.file_format = "PNG"; _fo.format.color_mode = "RGBA"; _fo.format.color_depth = "8"
+_fo.format.media_type = "IMAGE"; _fo.format.file_format = "TARGA_RAW" if RAW else "PNG"
+_fo.format.color_mode = "RGBA"
+if not RAW:
+    _fo.format.color_depth = "8"
 _fo.save_as_render = True
 if not len(_fo.file_output_items):
     _fo.file_output_items.new("RGBA", "img")
@@ -412,13 +420,13 @@ def render_frame(t, name):
         use_pass(kind)
         if kind in TEX_PASSES:
             swap_texture_pass(kind, True)
-        scene.render.filepath = f"{out_dir}/{kind}_{name}.png"
+        scene.render.filepath = f"{out_dir}/{kind}_{name}{EXT}"
         scene.compositing_node_group = REST_COMP if kind == "data" else None
         bpy.ops.render.render(write_still=True)
         if kind == "data":                    # its rest AOV, saved by the compositor
-            made = [f for f in os.listdir(REST_TMP) if f.endswith(".png")]
+            made = [f for f in os.listdir(REST_TMP) if f.endswith(EXT)]
             assert len(made) == 1, made
-            os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/rest_{name}.png")
+            os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/rest_{name}{EXT}")
         if kind in TEX_PASSES:
             swap_texture_pass(kind, False)
     scene.compositing_node_group = None
@@ -429,6 +437,7 @@ if setup_only:
 elif "--shadow-dirs" in args:
     # fitting the sun: frame 0's shadow pass for each candidate direction ("x,y,z;x,y,z;...")
     pose_at(0.0)
+    scene.render.image_settings.file_format = "PNG"        # fit_shadow.py reads these as PNG
     for k, d in enumerate(args[args.index("--shadow-dirs") + 1].split(";")):
         aim_sun([float(v) for v in d.split(",")])
         use_pass("shadow")

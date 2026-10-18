@@ -125,7 +125,7 @@ def shift(a, dy, dx, fill):
 
 def frame_paths(frames_dir, only_first=False):
     """one path per frame: its colour pass (the other passes sit next to it)"""
-    paths = sorted(Path(frames_dir).glob("color_*.png"))
+    paths = sorted(p for p in Path(frames_dir).glob("color_*") if p.suffix in (".png", ".tga"))
     return paths[:1] if only_first else paths
 
 

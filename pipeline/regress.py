@@ -92,7 +92,7 @@ def main():
             new = DATA / "render_check" / name
             t = render(name, new)
             diffs = []
-            for p in sorted(frames_dir(name).glob("*.png")):
+            for p in sorted(q for q in frames_dir(name).iterdir() if q.suffix in (".png", ".tga")):
                 q = new / p.name
                 if not q.exists():
                     diffs.append(f"{p.name} missing"); continue
