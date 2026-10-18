@@ -11,7 +11,7 @@ Writes three images per frame (see SPRITE_PIPELINE.md):
 Everything model-specific (bones, camera, materials) comes from CONFIG.json.
 Other scripts (fit_pose.py) exec this file with --setup-only to reuse the scene setup.
 """
-import bpy, sys, math, json
+import bpy, sys, math, json, os, shutil
 from pathlib import Path
 from mathutils import Matrix, Vector
 
@@ -160,6 +160,31 @@ rt.nodes.clear()
 ra, re_, ro = rt.nodes.new("ShaderNodeAttribute"), rt.nodes.new("ShaderNodeEmission"), rt.nodes.new("ShaderNodeOutputMaterial")
 ra.attribute_type, ra.attribute_name = "GEOMETRY", "RestPos"
 rt.links.new(ra.outputs["Color"], re_.inputs["Color"]); rt.links.new(re_.outputs["Emission"], ro.inputs["Surface"])
+
+# The full loop gets the rest pass from the data pass's render: the data material also writes the
+# rest position to an AOV, which the compositor saves next to it (pixel-identical to a separate
+# rest render, one EEVEE render fewer per frame). The compositor is attached for that render only.
+da = nt.nodes.new("ShaderNodeAttribute"); da.attribute_type, da.attribute_name = "GEOMETRY", "RestPos"
+dv = nt.nodes.new("ShaderNodeOutputAOV"); dv.aov_name = "rest"
+nt.links.new(da.outputs["Color"], dv.inputs["Color"])
+if "rest" not in bpy.context.view_layer.aovs:
+    _aov = bpy.context.view_layer.aovs.add(); _aov.name, _aov.type = "rest", "COLOR"
+REST_TMP = os.path.join(os.path.abspath(out_dir), f".rest_{os.getpid()}")    # one per process: fixed file name
+REST_COMP = bpy.data.node_groups.new("SpriteRestOut", "CompositorNodeTree")
+_rl = REST_COMP.nodes.new("CompositorNodeRLayers")
+_sa = REST_COMP.nodes.new("CompositorNodeSetAlpha")
+_fo = REST_COMP.nodes.new("CompositorNodeOutputFile")
+_fo.directory, _fo.file_name = REST_TMP + "/", "rest"
+_fo.format.media_type = "IMAGE"; _fo.format.file_format = "PNG"; _fo.format.color_mode = "RGBA"; _fo.format.color_depth = "8"
+_fo.save_as_render = True
+if not len(_fo.file_output_items):
+    _fo.file_output_items.new("RGBA", "img")
+REST_COMP.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
+_go = REST_COMP.nodes.new("NodeGroupOutput")
+REST_COMP.links.new(_rl.outputs["rest"], _sa.inputs["Image"])
+REST_COMP.links.new(_rl.outputs["Alpha"], _sa.inputs["Alpha"])
+REST_COMP.links.new(_sa.outputs[0], _fo.inputs[0])
+REST_COMP.links.new(_rl.outputs["Image"], _go.inputs[0])
 
 
 # --- Lines pass (Freestyle): creases, inner contours and borders traced from the mesh itself,
@@ -383,14 +408,20 @@ def render_frame(t, name):
     pose_at(t)
     if SH:
         aim_sun(SH["light_cam"])
-    for kind in ("color", "id", "data", "rest") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + tuple(TEX_PASSES):
+    for kind in ("color", "id", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + tuple(TEX_PASSES):
         use_pass(kind)
         if kind in TEX_PASSES:
             swap_texture_pass(kind, True)
         scene.render.filepath = f"{out_dir}/{kind}_{name}.png"
+        scene.compositing_node_group = REST_COMP if kind == "data" else None
         bpy.ops.render.render(write_still=True)
+        if kind == "data":                    # its rest AOV, saved by the compositor
+            made = [f for f in os.listdir(REST_TMP) if f.endswith(".png")]
+            assert len(made) == 1, made
+            os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/rest_{name}.png")
         if kind in TEX_PASSES:
             swap_texture_pass(kind, False)
+    scene.compositing_node_group = None
 
 
 if setup_only:
@@ -416,3 +447,4 @@ elif "--frames" in args:
 else:
     for f in range(FRAMES):
         render_frame(f / FRAMES, f"{f + 1:04d}")
+shutil.rmtree(REST_TMP, ignore_errors=True)
