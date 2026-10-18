@@ -28,8 +28,8 @@ cfg = json.loads(cfg_path.read_text())
 here = Path(__file__).parent if "__file__" in globals() else cfg_path.parent
 
 sys.argv = [sys.argv[0], "--", str(cfg_path), tmp_dir, "--setup-only"]
-g = {"__name__": "render_sprite"}
 src = here / "render_sprite.py" if (here / "render_sprite.py").exists() else cfg_path.parent / "render_sprite.py"
+g = {"__name__": "render_sprite", "__file__": str(src)}       # so it finds motion.py next to it
 exec(compile(src.read_text(), str(src), "exec"), g)
 scene, P = g["scene"], g["P"]
 scene.render.resolution_x = cfg["render"]["width"] // 2

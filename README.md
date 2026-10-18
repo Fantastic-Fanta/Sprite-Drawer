@@ -10,6 +10,7 @@ Finished sprites are in [`final_sprites/`](final_sprites).
 
 - Blender (scripts expect `/Applications/Blender.app`)
 - Python 3 with `numpy` and `Pillow`
+- Rust (`cargo`), optional: the fast core. Without it the same code runs in Python, just slower
 - Your own models and Showdown reference frames: they aren't included in this repo
 
 ## Usage
@@ -17,10 +18,11 @@ Finished sprites are in [`final_sprites/`](final_sprites).
 The scripts are in [`pipeline/`](pipeline). Each Pokémon folder holds its config JSON (palette, pose, camera, style).
 
 ```bash
-python3 pipeline/render_parallel.py golisopod-model/golisopod_front.json frames/
-python3 pipeline/make_gif.py golisopod-model/golisopod_front.json frames/ out.gif --scale 4
+cargo build --release --manifest-path pipeline/rust/Cargo.toml   # once
+python3 pipeline/build_all.py out/ golisopod-model/golisopod_front.json glimmora-model/glimmora_front.json --scale 4
 ```
 
-`make_gif.py` also runs the quality checks. See [`SPRITE_PIPELINE.md`](pipeline/SPRITE_PIPELINE.md) for the full process.
+`build_all.py` renders, builds and quality-checks each sprite, and makes its shiny if a `_shiny.json` sits next to it.
+For one sprite step by step, and the full process, see [`SPRITE_PIPELINE.md`](pipeline/SPRITE_PIPELINE.md).
 
 Fan project, not affiliated with Nintendo, Game Freak or The Pokémon Company.

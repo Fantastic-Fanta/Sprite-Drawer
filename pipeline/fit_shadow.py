@@ -46,7 +46,7 @@ subprocess.run(["/Applications/Blender.app/Contents/MacOS/Blender", "-b", str(cf
                 "--shadow-dirs", ";".join(",".join(str(v) for v in d) for d in dirs)], capture_output=True, check=True)
 
 passes = ss.load_passes(frame_dir, only_first=True)
-color, idp, data, rest, lines, _ = passes[0]
+color, idp, data, rest, lines, _, *later = passes[0]      # later: seams / islands, if rendered
 box, size = ss.framing(passes, cfg["style"]["height"])
 
 
@@ -69,7 +69,7 @@ def run(d, s, shadow_im):
     c["render"]["shadow"] = {"light_cam": list(d)}
     st = dict(c["style"], cast_shadow=dict(c["style"].get("cast_shadow", {}), strength=s, mode=MODE))
     c["style"] = st
-    f = ss.prepare(c, color, idp, data, rest, lines, shadow_im, box, size)
+    f = ss.prepare(c, color, idp, data, rest, lines, shadow_im, *later, box, size)
     st["thresholds"] = matched(st, f)
     c["style"] = st
     r = compare.score(c, ref, compare.crop(ss.stylize(c, f)))
