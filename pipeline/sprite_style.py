@@ -10,6 +10,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+import rustcore
+
 NB4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
 LAST_EYE_MASKS = None          # eye stamp pixels per frame of the last stylize_loop (for the checks)
 NB8 = NB4 + ((1, 1), (1, -1), (-1, 1), (-1, -1))
@@ -786,6 +788,8 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
     A dropped outline pixel becomes transparent; a dropped inner pixel takes the most common
     body colour around it. protect = pixels never touched (the eye stamp). With prev / next
     frames, where there is a choice the replacement agreeing with them is preferred."""
+    if rustcore.lib is not None:
+        return rustcore.clean_lines(cfg, s, protect, prev, nxt, corners)
     OUT = colour(cfg, "outline")
     s = s.copy()
     H, W = s.shape[:2]

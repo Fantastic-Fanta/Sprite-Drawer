@@ -26,3 +26,9 @@ __pycache__/
 # side-by-side comparisons with Showdown's frames
 *compare*.png
 *_before_after.png
+
+# regression data (renders of the models above)
+.regress/
+
+# Rust build output
+pipeline/rust/target/
