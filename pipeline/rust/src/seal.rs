@@ -30,7 +30,7 @@ pub fn seal_parts(cfg: &Cfg, s: &mut [u8], h: usize, w: usize, protect: &[u8]) -
     let mut changed = 0;
     for _ in 0..200 {
         let (contacts, options) = {
-            let f = Frame { h, w, s: &mut *s, protect, cfg };
+            let f = Frame::new(h, w, &mut *s, protect, cfg);
             let contacts = f.leaks();
             if contacts == 0 {
                 break;
@@ -62,7 +62,7 @@ pub fn seal_parts(cfg: &Cfg, s: &mut [u8], h: usize, w: usize, protect: &[u8]) -
         for &(i, v, own_side) in &options {
             t.copy_from_slice(s);
             t[i * 4..i * 4 + 4].copy_from_slice(&v);
-            let f = Frame { h, w, s: &mut t, protect, cfg };
+            let f = Frame::new(h, w, &mut t, protect, cfg);
             let c = f.leaks();
             if c >= contacts {
                 continue;

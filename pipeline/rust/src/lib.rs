@@ -52,7 +52,7 @@ pub unsafe extern "C" fn sc_hard_faults(cfg: *const i64, cfglen: usize, s: *mut 
     let s = std::slice::from_raw_parts_mut(s, h * w * 4);
     let zeros;
     let protect = if protect.is_null() { zeros = vec![0u8; h * w]; &zeros[..] } else { std::slice::from_raw_parts(protect, h * w) };
-    faults::hard_faults(&Frame { h, w, s, protect, cfg: &cfg })
+    faults::hard_faults(&Frame::new(h, w, s, protect, &cfg))
 }
 
 /// check_loop.pupil_blobs(s, l) into out (h x w, 0/1)
@@ -63,7 +63,7 @@ pub unsafe extern "C" fn sc_pupil_blobs(s: *mut u8, h: usize, w: usize, l: *cons
     }
     let cfg = Cfg { out: 0, dark: vec![], parts: vec![] };
     let zeros = vec![0u8; h * w];
-    let f = Frame { h, w, s: std::slice::from_raw_parts_mut(s, h * w * 4), protect: &zeros, cfg: &cfg };
+    let f = Frame::new(h, w, std::slice::from_raw_parts_mut(s, h * w * 4), &zeros, &cfg);
     let l: Vec<bool> = std::slice::from_raw_parts(l, h * w).iter().map(|&v| v != 0).collect();
     let b = faults::pupil_blobs(&f, &l);
     let out = std::slice::from_raw_parts_mut(out, h * w);

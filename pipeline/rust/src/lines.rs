@@ -87,7 +87,7 @@ impl<'a> Ctx<'a> {
 }
 
 pub fn clean_lines(cfg: &Cfg, s: &mut [u8], h: usize, w: usize, protect: &[u8], prev: Option<&[u8]>, nxt: Option<&[u8]>, corners: i32) -> i32 {
-    let c = Ctx { f: Frame { h, w, s, protect, cfg }, prev, nxt, corners };
+    let mut c = Ctx { f: Frame::new(h, w, s, protect, cfg), prev, nxt, corners };
     let mut score = vec![-1i8; h * w];
     let mut value = vec![[0u8; 4]; h * w];
     for y in 0..h {
@@ -110,6 +110,7 @@ pub fn clean_lines(cfg: &Cfg, s: &mut [u8], h: usize, w: usize, protect: &[u8], 
             break;
         }
         c.f.s[best * 4..best * 4 + 4].copy_from_slice(&value[best]);
+        c.f.refresh(best);
         changed += 1;
         let (y, x) = (best / w, best % w);
         for yy in y.saturating_sub(R)..(y + R + 1).min(h) {

@@ -45,9 +45,23 @@ pub struct Frame<'a> {
     pub s: &'a mut [u8],
     pub protect: &'a [u8],
     pub cfg: &'a Cfg,
+    flags: Vec<u8>,          // per pixel: 1 solid, 2 line colour, 4 outline colour (kept up to date by refresh)
 }
 
 impl<'a> Frame<'a> {
+    pub fn new(h: usize, w: usize, s: &'a mut [u8], protect: &'a [u8], cfg: &'a Cfg) -> Frame<'a> {
+        let mut f = Frame { h, w, s, protect, cfg, flags: vec![0; h * w] };
+        for i in 0..h * w {
+            f.refresh(i);
+        }
+        f
+    }
+    /// after s changed at pixel i
+    pub fn refresh(&mut self, i: usize) {
+        let solid = self.s[i * 4 + 3] > 0;
+        let k = self.key(i);
+        self.flags[i] = solid as u8 | ((solid && self.cfg.dark.contains(&k)) as u8) << 1 | ((solid && k == self.cfg.out) as u8) << 2;
+    }
     #[inline]
     pub fn at(&self, y: isize, x: isize) -> Option<usize> {
         if y >= 0 && x >= 0 && (y as usize) < self.h && (x as usize) < self.w { Some(y as usize * self.w + x as usize) } else { None }
@@ -57,11 +71,11 @@ impl<'a> Frame<'a> {
         (self.s[i * 4] as u32) << 16 | (self.s[i * 4 + 1] as u32) << 8 | self.s[i * 4 + 2] as u32
     }
     #[inline]
-    pub fn solid(&self, i: usize) -> bool { self.s[i * 4 + 3] > 0 }
+    pub fn solid(&self, i: usize) -> bool { self.flags[i] & 1 != 0 }
     #[inline]
-    pub fn line_all(&self, i: usize) -> bool { self.solid(i) && self.cfg.dark.contains(&self.key(i)) }
+    pub fn line_all(&self, i: usize) -> bool { self.flags[i] & 2 != 0 }
     #[inline]
-    pub fn is_out(&self, i: usize) -> bool { self.solid(i) && self.key(i) == self.cfg.out }
+    pub fn is_out(&self, i: usize) -> bool { self.flags[i] & 4 != 0 }
     #[inline]
     pub fn line(&self, i: usize) -> bool { self.line_all(i) && self.protect[i] == 0 }
     #[inline]
