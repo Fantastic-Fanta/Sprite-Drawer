@@ -1366,6 +1366,8 @@ def transport_shading(frames, layer_list, key_frame=0, search=4, tol=3):
 
 def transport_shading_frame(kf, k_rank, f, L, search, tol):
     """transport_shading for one frame: the key frame's ranks carried onto it"""
+    if rustcore.lib is not None:
+        return rustcore.transport_shading_frame(kf, k_rank, f, L, search, tol)
     rk = kf["rest"][..., :3].astype(float); okk = (kf["rest"][..., 3] > 0) & kf["solid"]
     h, w = kf["solid"].shape
     r = f["rest"][..., :3].astype(float); okf = (f["rest"][..., 3] > 0) & f["solid"]
@@ -1440,6 +1442,21 @@ def steady_shape(frames, max_run=2):
     keys = ("part", "n", "depth", "has_data", "detail", "fixed", "fixed_rgb", "eye_area")
     keys += tuple(k for k in ("cast", "unlit", "line_cov", "fs_cov") if frames[0].get(k) is not None)
     out = [dict(f, **{k: f[k].copy() for k in keys + ("solid",)}) for f in frames]
+    if rustcore.lib is not None:
+        # the run merging per pixel in Rust; here: what it did last per frame and pixel
+        event, src = rustcore.steady_events(solid, max_run)
+        for i in range(n):
+            ev, sr = event[i], src[i]
+            touched = ev >= 0
+            out[i]["solid"][touched] = ev[touched] == 1
+            for j in np.unique(sr[sr >= 0]).tolist():       # data copied by the last fill
+                m = sr == j
+                for key in keys:
+                    out[i][key][m] = frames[j][key][m]
+            emptied = ev == 0                                # dropped last: no part, no eye
+            out[i]["part"][emptied] = ""
+            out[i]["fixed"][emptied] = False
+        return out
     for y, x in np.argwhere(solid.any(0) & ~solid.all(0)):
         seq = solid[:, y, x].copy()
         for _ in range(n):

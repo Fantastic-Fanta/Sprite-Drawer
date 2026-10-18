@@ -21,6 +21,13 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_debounce.restype = None
     lib.sc_hard_faults.argtypes = [_i64p, _sz, _u8p, _sz, _sz, _u8p]
     lib.sc_hard_faults.restype = ctypes.c_int64
+    lib.sc_pupil_blobs.argtypes = [_u8p, _sz, _sz, _u8p, _u8p]
+    lib.sc_pupil_blobs.restype = None
+    lib.sc_steady_shape.argtypes = [_u8p, _sz, _sz, _sz, ctypes.POINTER(ctypes.c_int8), ctypes.POINTER(ctypes.c_int32)]
+    lib.sc_steady_shape.restype = None
+    lib.sc_transport.argtypes = [_sz, _sz, _u8p, _u8p, _u8p, _u8p, ctypes.POINTER(ctypes.c_int32), ctypes.POINTER(ctypes.c_int32),
+                                 _i64p, _i64p, ctypes.c_int64, ctypes.c_double]
+    lib.sc_transport.restype = None
 
 
 def _hexkey(h):
@@ -86,3 +93,39 @@ def hard_faults(cfg, s, protect):
     pr = None if protect is None else np.ascontiguousarray(protect, np.uint8)
     c = pack_cfg(cfg)
     return int(lib.sc_hard_faults(_p(c, ctypes.c_int64), len(c), _p(a), h, w, _p(pr)))
+
+
+def pupil_blobs(a, l):
+    s = np.ascontiguousarray(a, np.uint8)
+    h, w = s.shape[:2]
+    lm = np.ascontiguousarray(l, np.uint8)
+    out = np.zeros((h, w), np.uint8)
+    lib.sc_pupil_blobs(_p(s), h, w, _p(lm), _p(out))
+    return out.astype(bool)
+
+
+def steady_events(solid, max_run):
+    """steady_shape's run merging per pixel: (event, src), each n x h x w (see timeline.rs)"""
+    S = np.ascontiguousarray(solid, np.uint8)
+    n = S.shape[0]
+    hw = S.shape[1] * S.shape[2]
+    event = np.full(S.shape, -1, np.int8)
+    src = np.full(S.shape, -1, np.int32)
+    lib.sc_steady_shape(_p(S), n, hw, max_run, _p(event, ctypes.c_int8), _p(src, ctypes.c_int32))
+    return event, src
+
+
+def transport_shading_frame(kf, k_rank, f, L, search, tol):
+    names = {n: i for i, n in enumerate(sorted(set(np.unique(f["part"]).tolist()) | set(np.unique(kf["part"]).tolist())))}
+    code = np.vectorize(names.__getitem__, otypes=[np.int32])
+    h, w = kf["solid"].shape
+    r, rk = np.ascontiguousarray(f["rest"], np.uint8), np.ascontiguousarray(kf["rest"], np.uint8)
+    okf = np.ascontiguousarray((f["rest"][..., 3] > 0) & f["solid"], np.uint8)
+    okk = np.ascontiguousarray((kf["rest"][..., 3] > 0) & kf["solid"], np.uint8)
+    part, kpart = np.ascontiguousarray(code(f["part"])), np.ascontiguousarray(code(kf["part"]))
+    krank = np.ascontiguousarray(k_rank, np.int64)
+    rank = np.array(L["rank"], np.int64, order="C")
+    lib.sc_transport(h, w, _p(r), _p(rk), _p(okf), _p(okk), _p(part, ctypes.c_int32), _p(kpart, ctypes.c_int32),
+                     _p(krank, ctypes.c_int64), _p(rank, ctypes.c_int64), int(search), float(tol * tol * 3))
+    L = dict(L); L["rank"] = rank.astype(np.result_type(L["rank"], k_rank), copy=False)
+    return L

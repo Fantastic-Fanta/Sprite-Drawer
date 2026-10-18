@@ -30,6 +30,9 @@ def hexrgb(h):
 
 def pupil_blobs(a, l):
     """compact dark groups inside the body (<= 5x5, not touching the outside): pupils"""
+    import rustcore
+    if rustcore.lib is not None:
+        return rustcore.pupil_blobs(a, l)
     solid = a[..., 3] > 0
     P = np.pad(~solid, 1, constant_values=True)
     touches_out = P[1:-1, :-2] | P[1:-1, 2:] | P[:-2, 1:-1] | P[2:, 1:-1]

@@ -26,15 +26,27 @@ wanted = sys.argv[3:] or ["clean_lines"]
 stats = {}
 
 
+def same(a, b):
+    if isinstance(a, dict):
+        return isinstance(b, dict) and a.keys() == b.keys() and all(same(a[k], b[k]) for k in a)
+    if isinstance(a, (list, tuple)):
+        return len(a) == len(b) and all(same(x, y) for x, y in zip(a, b))
+    if isinstance(a, np.ndarray) or isinstance(b, np.ndarray):
+        return np.asarray(a).dtype == np.asarray(b).dtype and np.array_equal(a, b)
+    return a == b
+
+
 def wrap(name):
     py_fn, rs_fn = getattr(ss, name), getattr(rustcore, name)
 
     def both(*a, **k):
+        lib, rustcore.lib = rustcore.lib, None          # the Python original, all the way down
         t0 = time.perf_counter(); want = py_fn(*a, **k); t1 = time.perf_counter()
+        rustcore.lib = lib
         got = rs_fn(*a, **k); t2 = time.perf_counter()
         st = stats.setdefault(name, {"calls": 0, "bad": 0, "py": 0.0, "rs": 0.0})
         st["calls"] += 1; st["py"] += t1 - t0; st["rs"] += t2 - t1
-        if not np.array_equal(want, got):
+        if not same(want, got):
             if not st["bad"]:
                 arrays = {f"a{i}": v for i, v in enumerate(a) if isinstance(v, np.ndarray)}
                 np.savez(PIPE.parent / ".regress" / f"kernel_fail_{name}.npz", want=want, got=got, **arrays,

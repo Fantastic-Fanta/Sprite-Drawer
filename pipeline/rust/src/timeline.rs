@@ -82,3 +82,82 @@ pub unsafe fn debounce(s: *mut u8, n: usize, h: usize, w: usize, max_run: usize,
         }
     });
 }
+
+/// sprite_style.steady_shape's per-pixel part: being in the shape or not must last more than
+/// max_run frames. Per frame and pixel it returns what the Python does last there:
+/// event -1 = untouched, 0 = dropped from the shape, 1 = filled; src = the frame whose data was
+/// copied by the last fill (-1 = none). solid: n x h x w (0/1).
+pub fn steady_shape(solid: &[u8], n: usize, hw: usize, max_run: usize, event: &mut [i8], src_out: &mut [i32]) {
+    for p in 0..hw {
+        let first = solid[p];
+        if (0..n).all(|f| solid[f * hw + p] == first) {
+            continue;
+        }
+        let mut seq: Vec<i64> = (0..n).map(|f| solid[f * hw + p] as i64).collect();
+        for _ in 0..n {
+            let rs = runs(&seq);
+            let mut k = usize::MAX;
+            for (j, r) in rs.iter().enumerate() {
+                if r.len() <= max_run && (k == usize::MAX || r.len() < rs[k].len()) {
+                    k = j;
+                }
+            }
+            if rs.len() < 2 || k == usize::MAX {
+                break;
+            }
+            let before = &rs[(k + rs.len() - 1) % rs.len()];
+            let after = &rs[(k + 1) % rs.len()];
+            let src_is_before = before.len() >= after.len();
+            let src = if src_is_before { before } else { after };
+            let j = if src_is_before { src[src.len() - 1] } else { src[0] };   // nearest frame in time
+            for &i in &rs[k] {
+                seq[i] = seq[src[0]];
+                event[i * hw + p] = seq[i] as i8;
+                if seq[i] != 0 {
+                    src_out[i * hw + p] = j as i32;
+                }
+            }
+        }
+    }
+}
+
+/// sprite_style.transport_shading_frame: each pixel takes the rank of the key-frame pixel showing
+/// the same surface spot (nearest rest position within +-search px, same part, within tol)
+pub fn transport(h: usize, w: usize, r: &[u8], rk: &[u8], okf: &[u8], okk: &[u8], part: &[i32], kpart: &[i32],
+                 krank: &[i64], rank: &mut [i64], search: isize, lim: f64) {
+    for y in 0..h as isize {
+        for x in 0..w as isize {
+            let i = y as usize * w + x as usize;
+            if okf[i] == 0 {
+                continue;
+            }
+            let mut best = f64::INFINITY;
+            let mut got = rank[i];
+            for dy in -search..=search {
+                for dx in -search..=search {
+                    let (sy, sx) = (y + dy, x + dx);
+                    if sy < 0 || sx < 0 || sy >= h as isize || sx >= w as isize {
+                        continue;
+                    }
+                    let j = sy as usize * w + sx as usize;
+                    if okk[j] == 0 || part[i] != kpart[j] {
+                        continue;
+                    }
+                    let mut d2 = 0i64;
+                    for c in 0..3 {
+                        let e = r[i * 4 + c] as i64 - rk[j * 4 + c] as i64;
+                        d2 += e * e;
+                    }
+                    let d = d2 as f64 + 0.01 * ((dy * dy + dx * dx) as f64);
+                    if d < best {
+                        best = d;
+                        got = krank[j];
+                    }
+                }
+            }
+            if best <= lim {
+                rank[i] = got;
+            }
+        }
+    }
+}
