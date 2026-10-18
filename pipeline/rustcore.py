@@ -52,6 +52,8 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_components.restype = ctypes.c_size_t
     lib.sc_edge_distance.argtypes = [_u8p, _sz, _sz, _i64p]; lib.sc_edge_distance.restype = None
     lib.sc_part_border_distance.argtypes = [_u8p, _u8p, _sz, _sz, _i64p]; lib.sc_part_border_distance.restype = None
+    lib.sc_cast_shadow.argtypes = [_u8p, _u8p, _sz, _f64p, _u8p, _u8p]; lib.sc_cast_shadow.restype = None
+    lib.sc_matcap_light.argtypes = [_f64p, _f64p, _sz, _f64p, _sz, _f64p]; lib.sc_matcap_light.restype = None
 
 
 def _hexkey(h):
@@ -279,4 +281,24 @@ def part_border_distance(solid, part, name, eye_area):
     out = np.zeros((h, w), np.int64)
     if h and w:
         lib.sc_part_border_distance(_p(pm), _p(other), h, w, _p(out, ctypes.c_int64))
+    return out
+
+
+def cast_shadow(data, shadow, Lc):
+    """prepare's (blocked, unlit) full-resolution masks"""
+    d, s = np.ascontiguousarray(data, np.uint8), np.ascontiguousarray(shadow, np.uint8)
+    h, w = d.shape[:2]
+    l = np.ascontiguousarray(Lc, np.float64)
+    blocked, unlit = np.zeros((h, w), np.uint8), np.zeros((h, w), np.uint8)
+    if h and w:
+        lib.sc_cast_shadow(_p(d), _p(s), h * w, _p(l, ctypes.c_double), _p(blocked), _p(unlit))
+    return blocked.astype(bool), unlit.astype(bool)
+
+
+def matcap_light(matcap, n):
+    M = np.ascontiguousarray(np.array(matcap["values"], float))
+    nx, ny = np.ascontiguousarray(n[..., 0], np.float64), np.ascontiguousarray(n[..., 1], np.float64)
+    out = np.empty(nx.shape, np.float64)
+    lib.sc_matcap_light(_p(nx, ctypes.c_double), _p(ny, ctypes.c_double), nx.size, _p(M, ctypes.c_double), int(matcap["size"]),
+                        _p(out, ctypes.c_double))
     return out

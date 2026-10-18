@@ -220,3 +220,21 @@ pub unsafe extern "C" fn sc_edge_distance(solid: *const u8, h: usize, w: usize, 
 pub unsafe extern "C" fn sc_part_border_distance(pm: *const u8, other: *const u8, h: usize, w: usize, out: *mut i64) {
     morph::part_border_distance(&bools(pm, h * w), &bools(other, h * w), h, w, std::slice::from_raw_parts_mut(out, h * w));
 }
+
+/// sprite_style.prepare's cast-shadow masks (h x w each) from the cropped data and shadow passes
+#[no_mangle]
+pub unsafe extern "C" fn sc_cast_shadow(d: *const u8, s: *const u8, n: usize, l: *const f64, blocked: *mut u8, unlit: *mut u8) {
+    let l = std::slice::from_raw_parts(l, 3);
+    prep::cast_shadow(std::slice::from_raw_parts(d, n * 4), std::slice::from_raw_parts(s, n * 4), n, [l[0], l[1], l[2]],
+                      std::slice::from_raw_parts_mut(blocked, n), std::slice::from_raw_parts_mut(unlit, n));
+}
+
+/// sprite_style.matcap_light for n normals
+#[no_mangle]
+pub unsafe extern "C" fn sc_matcap_light(nx: *const f64, ny: *const f64, n: usize, m: *const f64, size: usize, out: *mut f64) {
+    if n == 0 || size == 0 {
+        return;
+    }
+    prep::matcap_light(std::slice::from_raw_parts(nx, n), std::slice::from_raw_parts(ny, n),
+                       std::slice::from_raw_parts(m, size * size), size, std::slice::from_raw_parts_mut(out, n));
+}

@@ -351,6 +351,14 @@ def prepare(cfg, color_im, id_im, data_im, *rest):
     cast = unlit_frac = None
     if shadow_im is not None and cfg["render"].get("shadow"):
         Lc = np.array(cfg["render"]["shadow"]["light_cam"], float); Lc /= np.linalg.norm(Lc)
+    if shadow_im is not None and cfg["render"].get("shadow") and rustcore.lib is not None:
+        blocked, unlit = rustcore.cast_shadow(np.array(data_im.crop(box)), np.array(shadow_im.crop(box)), Lc)
+        if cfg["style"].get("cast_shadow", {}).get("mode") == "unlit":
+            blocked = unlit
+        frac = lambda m: np.array(Image.fromarray(m.astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)) / 255
+        cast = frac(blocked)
+        unlit_frac = frac(unlit)
+    elif shadow_im is not None and cfg["render"].get("shadow"):
         dh = np.array(data_im.crop(box)).astype(float)
         nh = dh[..., :3] / 255 * 2 - 1
         nh[..., 2] = np.sqrt(np.clip(1 - nh[..., 0] ** 2 - nh[..., 1] ** 2, 0, 1))
@@ -419,6 +427,8 @@ def supersampled_outline(f, width, cover, pad):
 
 def matcap_light(matcap, n):
     """bilinear lookup of a learned matcap (learn_matcap.py) by camera-space normal x, y"""
+    if rustcore.lib is not None:
+        return rustcore.matcap_light(matcap, n)
     M = np.array(matcap["values"], float)
     N = matcap["size"]
     fx = np.clip((n[..., 0] + 1) / 2 * N - 0.5, 0, N - 1)

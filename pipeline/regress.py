@@ -5,7 +5,8 @@ Run (from anywhere):
                                                        build, save the result as golden
   python3 pipeline/regress.py check [NAME ...]         build again, compare with the golden frame by frame
   python3 pipeline/regress.py render-check [NAME ...]  render again, compare every pass with the cached render
-NAME: lapras, glimmora, golisopod, dragalge (default: all). Data lives in .regress/ (gitignored):
+NAME: lapras, glimmora, golisopod, dragalge, dragalge_back (default: all); a sprite with a shiny
+(SHINY below) also checks its palette_swap recolour. Data lives in .regress/ (gitignored):
 the config snapshots, the rendered passes per sprite and the golden GIFs. Checks always use the
 snapshot taken with the golden (paths made absolute), so editing a config - or another session
 editing it - doesn't move the target; --rev takes the config as committed at that revision. Builds run with PYTHONHASHSEED fixed, since some
@@ -29,7 +30,9 @@ CONFIGS = {
     "glimmora": "glimmora-model/glimmora_front.json",
     "golisopod": "golisopod-model/golisopod_front.json",
     "dragalge": "dragalge-model/dragalge_front.json",
+    "dragalge_back": "dragalge-model/dragalge_back.json",      # back view + the shiny recolour
 }
+SHINY = {"dragalge_back": "dragalge-model/dragalge_back_shiny.json"}
 SEED = "0"
 
 
@@ -44,19 +47,33 @@ def config(name):
     return p
 
 
-def snapshot(name, rev=None):
+def snapshot(name, rev=None, rel=None, key=None):
     """the config as it is (or as committed at rev), paths made absolute, saved for the checks"""
-    live = ROOT / CONFIGS[name]
-    text = subprocess.run(["git", "-C", str(ROOT), "show", f"{rev}:{CONFIGS[name]}"], capture_output=True, text=True,
+    rel = rel or CONFIGS[name]
+    live = ROOT / rel
+    text = subprocess.run(["git", "-C", str(ROOT), "show", f"{rev}:{rel}"], capture_output=True, text=True,
                           check=True).stdout if rev else live.read_text()
     cfg = json.loads(text)
     for k in ("model", "reference", "fit_reference"):
         if cfg.get(k):
             cfg[k] = str((live.parent / cfg[k]).resolve())
-    p = DATA / "configs" / f"{name}.json"
+    p = DATA / "configs" / f"{key or name}.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(cfg, indent=2))
+    if name in SHINY and key is None:
+        snapshot(name, rev, SHINY[name], f"{name}_shiny")
     return p
+
+
+def shiny(name, normal_gif, out_gif):
+    """the shiny recolour of a built sprite (palette_swap.py), if the sprite has one"""
+    if name not in SHINY:
+        return
+    r = subprocess.run([sys.executable, str(HERE / "palette_swap.py"), str(config(name)), str(DATA / "configs" / f"{name}_shiny.json"),
+                        str(normal_gif), str(out_gif)], env=dict(os.environ, PYTHONHASHSEED=SEED), capture_output=True, text=True)
+    if "Traceback" in r.stderr:
+        print(r.stderr[-3000:])
+        sys.exit(1)
 
 
 def render(name, out):
@@ -111,10 +128,14 @@ def main():
             if not frames_dir(name).exists():
                 print(f"{name}: rendered in {render(name, frames_dir(name)):.1f}s")
             print(f"{name}: golden built in {build(name, golden):.1f}s")
+            shiny(name, golden, golden.with_name(f"{name}_shiny.gif"))
         elif mode == "check":
             new = DATA / "check" / f"{name}.gif"
             t = build(name, new)
             diff = compare_build(golden, new)
+            if name in SHINY:
+                shiny(name, new, new.with_name(f"{name}_shiny.gif"))
+                diff += [f"shiny: {d}" for d in compare_build(golden.with_name(f"{name}_shiny.gif"), new.with_name(f"{name}_shiny.gif"))]
             failed |= bool(diff)
             print(f"{name}: built in {t:.1f}s  {'IDENTICAL' if not diff else 'DIFFERS: ' + '; '.join(diff)}")
         elif mode == "render-check":
