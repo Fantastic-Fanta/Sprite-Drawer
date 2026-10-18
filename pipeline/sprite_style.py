@@ -60,6 +60,8 @@ def box_sum(a, r):
 
 def components(mask):
     """8-connected groups of True pixels, as lists of (y, x)"""
+    if rustcore.lib is not None:
+        return rustcore.components(mask)
     seen = np.zeros_like(mask)
     groups = []
     for y0, x0 in zip(*np.nonzero(mask)):
@@ -593,6 +595,8 @@ def merge_small_regions(rank, part, inner, n, rounds=4):
 
 def edge_distance(solid):
     """pixels from the nearest non-body pixel (1 = on the edge), by repeated erosion"""
+    if rustcore.lib is not None:
+        return rustcore.edge_distance(solid)
     d = np.zeros(solid.shape, int)
     cur = solid.copy()
     k = 0
@@ -609,6 +613,8 @@ def edge_distance(solid):
 def part_border_distance(solid, part, name, eye_area):
     """inside part `name`: 4-step distance from the pixels touching another body part
     (1 = touching); 0 outside the part or where it can't be reached"""
+    if rustcore.lib is not None:
+        return rustcore.part_border_distance(solid, part, name, eye_area)
     pm = solid & (part == name) & ~eye_area
     other = solid & (part != name) & ~eye_area
     d = np.zeros(solid.shape, int)
@@ -626,6 +632,8 @@ def part_border_distance(solid, part, name, eye_area):
 
 def thin(mask):
     """Zhang-Suen thinning: reduce line blobs to 1-pixel-wide, 8-connected skeletons."""
+    if rustcore.lib is not None:
+        return rustcore.thin(mask)
     m = mask.copy()
     while True:
         changed = False

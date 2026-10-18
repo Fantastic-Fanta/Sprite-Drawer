@@ -12,6 +12,7 @@ mod prep;
 mod seal;
 mod qa;
 mod trace;
+mod morph;
 
 use frame::{Cfg, Frame};
 
@@ -185,4 +186,37 @@ pub unsafe extern "C" fn sc_trace_lines(v: *const f64, sx: *const f64, sy: *cons
         edges: std::slice::from_raw_parts(edges, ne * 2),
     };
     trace::trace(&m, w, h, cos_lim, thickness, eps, kinds, std::slice::from_raw_parts_mut(out, w * h));
+}
+
+fn bools(p: *const u8, n: usize) -> Vec<bool> {
+    unsafe { std::slice::from_raw_parts(p, n) }.iter().map(|&v| v != 0).collect()
+}
+
+/// sprite_style.thin: m (h x w, 0/1) thinned in place
+#[no_mangle]
+pub unsafe extern "C" fn sc_thin(m: *mut u8, h: usize, w: usize) {
+    let mut b = bools(m, h * w);
+    morph::thin(&mut b, h, w);
+    let out = std::slice::from_raw_parts_mut(m, h * w);
+    for i in 0..h * w {
+        out[i] = b[i] as u8;
+    }
+}
+
+/// sprite_style.components: returns the number of groups; pix / sizes (h*w each) receive them
+#[no_mangle]
+pub unsafe extern "C" fn sc_components(m: *const u8, h: usize, w: usize, pix: *mut u32, sizes: *mut u32) -> usize {
+    morph::components(&bools(m, h * w), h, w, std::slice::from_raw_parts_mut(pix, h * w), std::slice::from_raw_parts_mut(sizes, h * w))
+}
+
+/// sprite_style.edge_distance into out (h x w, int64, zeroed)
+#[no_mangle]
+pub unsafe extern "C" fn sc_edge_distance(solid: *const u8, h: usize, w: usize, out: *mut i64) {
+    morph::edge_distance(&bools(solid, h * w), h, w, std::slice::from_raw_parts_mut(out, h * w));
+}
+
+/// sprite_style.part_border_distance into out (h x w, int64, zeroed)
+#[no_mangle]
+pub unsafe extern "C" fn sc_part_border_distance(pm: *const u8, other: *const u8, h: usize, w: usize, out: *mut i64) {
+    morph::part_border_distance(&bools(pm, h * w), &bools(other, h * w), h, w, std::slice::from_raw_parts_mut(out, h * w));
 }

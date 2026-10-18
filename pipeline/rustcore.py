@@ -47,6 +47,11 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_trace_lines.argtypes = [_f64p, _f64p, _f64p, _f64p, _sz, _f64p, _i32p, _sz, _i32p, _sz, _i32p, _sz, _i32p, _sz,
                                    _sz, _sz, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_int32, _u8p]
     lib.sc_trace_lines.restype = None
+    lib.sc_thin.argtypes = [_u8p, _sz, _sz]; lib.sc_thin.restype = None
+    lib.sc_components.argtypes = [_u8p, _sz, _sz, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_uint32)]
+    lib.sc_components.restype = ctypes.c_size_t
+    lib.sc_edge_distance.argtypes = [_u8p, _sz, _sz, _i64p]; lib.sc_edge_distance.restype = None
+    lib.sc_part_border_distance.argtypes = [_u8p, _u8p, _sz, _sz, _i64p]; lib.sc_part_border_distance.restype = None
 
 
 def _hexkey(h):
@@ -230,4 +235,48 @@ def trace_lines(m, cos_lim, thickness, eps, kinds=7):
     D, I = ctypes.c_double, ctypes.c_int32
     lib.sc_trace_lines(_p(V, D), _p(sx, D), _p(sy, D), _p(z, D), len(sx), _p(cp, D), _p(tris, I), len(tris), _p(loops, I), len(loops),
                        _p(poly, I), len(poly), _p(edges, I), len(edges), W, H, float(cos_lim), float(thickness), float(eps), int(kinds), _p(out))
+    return out
+
+
+def _mask(m):
+    return np.ascontiguousarray(m, np.uint8)
+
+
+def thin(mask):
+    m = _mask(mask).copy()
+    h, w = m.shape
+    if h and w:
+        lib.sc_thin(_p(m), h, w)
+    return m.astype(bool)
+
+
+def components(mask):
+    m = _mask(mask)
+    h, w = m.shape
+    pix = np.zeros(max(h * w, 1), np.uint32); sizes = np.zeros(max(h * w, 1), np.uint32)
+    n = lib.sc_components(_p(m), h, w, _p(pix, ctypes.c_uint32), _p(sizes, ctypes.c_uint32)) if h and w else 0
+    out, k = [], 0
+    for s in sizes[:n].tolist():
+        idx = pix[k:k + s]
+        out.append(list(zip((idx // w).tolist(), (idx % w).tolist())))
+        k += s
+    return out
+
+
+def edge_distance(solid):
+    m = _mask(solid)
+    h, w = m.shape
+    out = np.zeros((h, w), np.int64)
+    if h and w:
+        lib.sc_edge_distance(_p(m), h, w, _p(out, ctypes.c_int64))
+    return out
+
+
+def part_border_distance(solid, part, name, eye_area):
+    pm = _mask(solid & (part == name) & ~eye_area)
+    other = _mask(solid & (part != name) & ~eye_area)
+    h, w = pm.shape
+    out = np.zeros((h, w), np.int64)
+    if h and w:
+        lib.sc_part_border_distance(_p(pm), _p(other), h, w, _p(out, ctypes.c_int64))
     return out

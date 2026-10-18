@@ -195,6 +195,33 @@ REST_COMP.links.new(_rl.outputs["Alpha"], _sa.inputs["Alpha"])
 REST_COMP.links.new(_sa.outputs[0], _fo.inputs[0])
 REST_COMP.links.new(_rl.outputs["Image"], _go.inputs[0])
 
+# The id pass comes out of the data render as well: each face carries its part's id colour (a face
+# attribute), written to an AOV. Only Blender's 8-bit dither (+-1) differs from the Workbench id
+# render, and parts are read as the nearest id colour, so the sprites are the same.
+for o in meshes:
+    _ids = o.data.color_attributes.get("SpriteID") or o.data.color_attributes.new("SpriteID", "FLOAT_COLOR", "FACE")
+    for _poly, _c in zip(o.data.polygons, _ids.data):
+        _slot = o.material_slots[_poly.material_index] if _poly.material_index < len(o.material_slots) else None
+        _col = _slot.material.diffuse_color if _slot and _slot.material else (*ID_RGB[0], 1)
+        _c.color = (_col[0], _col[1], _col[2], 1.0)
+_ia = nt.nodes.new("ShaderNodeAttribute"); _ia.attribute_type, _ia.attribute_name = "GEOMETRY", "SpriteID"
+_iv = nt.nodes.new("ShaderNodeOutputAOV"); _iv.aov_name = "id"
+nt.links.new(_ia.outputs["Color"], _iv.inputs["Color"])
+if "id" not in bpy.context.view_layer.aovs:
+    _aov = bpy.context.view_layer.aovs.add(); _aov.name, _aov.type = "id", "COLOR"
+_isa = REST_COMP.nodes.new("CompositorNodeSetAlpha")
+_ifo = REST_COMP.nodes.new("CompositorNodeOutputFile")
+_ifo.directory, _ifo.file_name = REST_TMP + "/", "id"
+_ifo.format.media_type = "IMAGE"; _ifo.format.file_format = "TARGA_RAW" if RAW else "PNG"
+_ifo.format.color_mode = "RGBA"
+if not RAW:
+    _ifo.format.color_depth = "8"
+_ifo.save_as_render = True
+_ifo.file_output_items.new("RGBA", "img")
+REST_COMP.links.new(_rl.outputs["id"], _isa.inputs["Image"])
+REST_COMP.links.new(_rl.outputs["Alpha"], _isa.inputs["Alpha"])
+REST_COMP.links.new(_isa.outputs[0], _ifo.inputs[0])
+
 
 # --- Lines pass (Freestyle): creases, inner contours and borders traced from the mesh itself,
 # so inner lines move with the model instead of being re-detected from pixels every frame.
@@ -442,7 +469,7 @@ def render_frame(t, name):
     pose_at(t)
     if SH:
         aim_sun(SH["light_cam"])
-    for kind in ("color", "id", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + tuple(TEX_PASSES):
+    for kind in ("color", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + tuple(TEX_PASSES):   # id: from data
         if kind == "lines" and LINES_TRACE:
             alpha = linetrace.trace(scene, meshes, FS.get("crease_angle", 140), FS.get("thickness", 3.0), LINES_KINDS)
             (linetrace.write_tga if RAW else linetrace.write_png)(f"{out_dir}/lines_{name}{EXT}", alpha)
@@ -463,7 +490,7 @@ def render_frame(t, name):
         if kind == "data":                    # its rest AOV (and the shadow layer), saved by the compositor
             if SHADOW_VL is not None:
                 SHADOW_VL.use = False
-            for pname in ("rest",) + (("shadow",) if SHADOW_VL is not None else ()):
+            for pname in ("rest", "id") + (("shadow",) if SHADOW_VL is not None else ()):
                 made = [f for f in os.listdir(REST_TMP) if f.startswith(pname) and f.endswith(EXT)]
                 assert len(made) == 1, made
                 os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/{pname}_{name}{EXT}")
