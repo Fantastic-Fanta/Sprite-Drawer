@@ -96,8 +96,8 @@
     }
   },
   "pose_params": {
-    "AZIMUTH": 179.49,
-    "ELEVATION": 15.0,
+    "AZIMUTH": 219.47,
+    "ELEVATION": 29.1,
     "FOV": 24.09,
     "YAW": 15.37,
     "PITCH": 24.3,
@@ -120,7 +120,7 @@
     "BREATH_OPEN": 15,
     "BREATH_SCALE": 0.08,
     "PX_U": 0.0422,
-    "NF": 270,
+    "NF": 330,
     "CYC": 3,
     "FLOAT_A": 3.5,
     "FLOAT_C": 0.5,
@@ -129,13 +129,7 @@
     "TILT_DEG": 3.0,
     "LAG_F": 2.5,
     "RIP_F": 0.25,
-    "SHAKE_F0": 78,
-    "SHAKE_F": 26,
-    "SHAKE_K": 13,
-    "SHAKE_PX": 2,
-    "BRISTLE_DEG": 6,
-    "BRISTLE_OUT": 0.05,
-    "SPIN_F0": 150,
+    "SPIN_F0": 210,
     "CHARGE_F": 20,
     "RELEASE_F": 6,
     "SPIN_F": 56,
@@ -152,7 +146,45 @@
     "TUCK": 0.08,
     "SPIN_ROLL": 4,
     "TREMBLE_PX": 1,
-    "TREMBLE_K": 9
+    "TREMBLE_K": 9,
+    "HISS_F0": 90,
+    "HISS_F": 60,
+    "SPIN_W": 90,
+    "CURL_A": 2.5,
+    "CURL_A2": 2.0,
+    "CURL_C": 3,
+    "LIVE_LAG": 0.15,
+    "SWAY_A": 1.5,
+    "SWAY_C": 2,
+    "PBOB_A": 0.5,
+    "PBOB_C": 2,
+    "HI_IN": 14,
+    "HI_BURST": 5,
+    "HI_HOLD": 38,
+    "HI_RELAX": 12,
+    "HI_SETTLE": 14,
+    "HI_OVER": 0.3,
+    "HI_REAR_PX": 2,
+    "HI_LUNGE_PX": 1,
+    "HI_LUNGE_F": 8,
+    "HI_LEAN": 3,
+    "HI_STRIKE": 2,
+    "HI_CLENCH": 8,
+    "HI_FLARE": 20,
+    "HI_QUIVER": 2,
+    "HI_TWIST": 6,
+    "HOOD_OUT": 0.14,
+    "COIL_IN": 0.08,
+    "HOOD_FAN": 11,
+    "HOOD_FAN2": 8,
+    "COIL_CURL": 5,
+    "BUZZ_F0": 17,
+    "BUZZ_F": 24,
+    "BUZZ_K": 12,
+    "BUZZ_DEG": 2.5,
+    "HI_SPIKE": 0.25,
+    "HOOD_PX": 5,
+    "COIL_PX": 1.5
   },
   "pose": [
     [
@@ -214,6 +246,36 @@
       "right_skirt_b_01",
       "A:0.45,0,-0.89",
       "CROWN_SWEEP + CS_RB + crown(t)"
+    ],
+    [
+      "upper_hair",
+      "SCALE",
+      "1 + HI_SPIKE*max(0, hood(t))"
+    ],
+    [
+      "left_hair_a",
+      "SCALE",
+      "1 + HI_SPIKE*max(0, hood(t))"
+    ],
+    [
+      "left_hair_b",
+      "SCALE",
+      "1 + HI_SPIKE*max(0, hood(t))"
+    ],
+    [
+      "lower_hair",
+      "SCALE",
+      "1 + HI_SPIKE*max(0, hood(t))"
+    ],
+    [
+      "right_hair_b",
+      "SCALE",
+      "1 + HI_SPIKE*max(0, hood(t))"
+    ],
+    [
+      "right_hair_a",
+      "SCALE",
+      "1 + HI_SPIKE*max(0, hood(t))"
     ],
     [
       "upper_feeler_02",
@@ -296,9 +358,99 @@
       "-0.514*pout(t)"
     ],
     [
+      "upper_feeler_03",
+      "A:1,0,-0.0",
+      "CURL_A*(sin(2*pi*(CURL_C*tq(t) - 0.0000)) + sin(2*pi*0.0000)) + HOOD_FAN*hood(t) - COIL_CURL*coil(t) + 1*BUZZ_DEG*buzz(t)"
+    ],
+    [
+      "upper_feeler_04",
+      "A:1,0,-0.0",
+      "CURL_A2*(sin(2*pi*(CURL_C*tq(t) - 0.1500)) + sin(2*pi*0.1500)) + HOOD_FAN2*hood(t)"
+    ],
+    [
+      "upper_feeler_02",
+      "A:0.0,0,1",
+      "SWAY_A*(sin(2*pi*(SWAY_C*tq(t) - -0.0000)) + sin(2*pi*-0.0000))"
+    ],
+    [
+      "left_feeler_a_03",
+      "A:0.514,0,-0.857",
+      "CURL_A*(sin(2*pi*(CURL_C*tq(t) - 0.1667)) + sin(2*pi*0.1667)) + HOOD_FAN*hood(t) - COIL_CURL*coil(t) + -1*BUZZ_DEG*buzz(t)"
+    ],
+    [
+      "left_feeler_a_04",
+      "A:0.514,0,-0.857",
+      "CURL_A2*(sin(2*pi*(CURL_C*tq(t) - 0.3167)) + sin(2*pi*0.3167)) + HOOD_FAN2*hood(t)"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:0.857,0,0.514",
+      "SWAY_A*(sin(2*pi*(SWAY_C*tq(t) - -0.1667)) + sin(2*pi*-0.1667))"
+    ],
+    [
+      "left_feeler_b_03",
+      "A:-0.514,0,-0.857",
+      "CURL_A*(sin(2*pi*(CURL_C*tq(t) - 0.3333)) + sin(2*pi*0.3333)) + HOOD_FAN*hood(t) - COIL_CURL*coil(t) + 1*BUZZ_DEG*buzz(t)"
+    ],
+    [
+      "left_feeler_b_04",
+      "A:-0.514,0,-0.857",
+      "CURL_A2*(sin(2*pi*(CURL_C*tq(t) - 0.4833)) + sin(2*pi*0.4833)) + HOOD_FAN2*hood(t)"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:0.857,0,-0.514",
+      "SWAY_A*(sin(2*pi*(SWAY_C*tq(t) - -0.3333)) + sin(2*pi*-0.3333))"
+    ],
+    [
+      "lower_feeler_03",
+      "A:-1,0,-0.0",
+      "CURL_A*(sin(2*pi*(CURL_C*tq(t) - 0.5000)) + sin(2*pi*0.5000)) + HOOD_FAN*hood(t) - COIL_CURL*coil(t) + -1*BUZZ_DEG*buzz(t)"
+    ],
+    [
+      "lower_feeler_04",
+      "A:-1,0,-0.0",
+      "CURL_A2*(sin(2*pi*(CURL_C*tq(t) - 0.6500)) + sin(2*pi*0.6500)) + HOOD_FAN2*hood(t)"
+    ],
+    [
+      "lower_feeler_02",
+      "A:0.0,0,-1",
+      "SWAY_A*(sin(2*pi*(SWAY_C*tq(t) - -0.5000)) + sin(2*pi*-0.5000))"
+    ],
+    [
+      "right_feeler_b_03",
+      "A:-0.514,0,0.857",
+      "CURL_A*(sin(2*pi*(CURL_C*tq(t) - 0.6667)) + sin(2*pi*0.6667)) + HOOD_FAN*hood(t) - COIL_CURL*coil(t) + 1*BUZZ_DEG*buzz(t)"
+    ],
+    [
+      "right_feeler_b_04",
+      "A:-0.514,0,0.857",
+      "CURL_A2*(sin(2*pi*(CURL_C*tq(t) - 0.8167)) + sin(2*pi*0.8167)) + HOOD_FAN2*hood(t)"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:-0.857,0,-0.514",
+      "SWAY_A*(sin(2*pi*(SWAY_C*tq(t) - -0.6667)) + sin(2*pi*-0.6667))"
+    ],
+    [
+      "right_feeler_a_03",
+      "A:0.514,0,0.857",
+      "CURL_A*(sin(2*pi*(CURL_C*tq(t) - 0.8333)) + sin(2*pi*0.8333)) + HOOD_FAN*hood(t) - COIL_CURL*coil(t) + -1*BUZZ_DEG*buzz(t)"
+    ],
+    [
+      "right_feeler_a_04",
+      "A:0.514,0,0.857",
+      "CURL_A2*(sin(2*pi*(CURL_C*tq(t) - 0.9833)) + sin(2*pi*0.9833)) + HOOD_FAN2*hood(t)"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:-0.857,0,0.514",
+      "SWAY_A*(sin(2*pi*(SWAY_C*tq(t) - -0.8333)) + sin(2*pi*-0.8333))"
+    ],
+    [
       "root_feeler",
       "Y",
-      "- PETAL_SWAY*(0.5 - 0.5*cos(4*pi*ts)) + spin(t)"
+      "- PETAL_SWAY*(0.5 - 0.5*cos(4*pi*tq(t))) + spin(t) - HI_TWIST*coil(t)"
     ],
     [
       "waist",
@@ -338,53 +490,90 @@
     [
       "upper_feeler_02",
       "LOCCAM",
-      "PX_U*(FY(t - (LAG_F + 0*RIP_F)/NF) - FY(t))"
+      "PX_U*(FY(t - (LAG_F + 0*RIP_F)/NF) - FY(t) + PBOB_A*(sin(2*pi*(PBOB_C*tq(t) - 0.2500)) + sin(2*pi*0.2500)) + 0.999*(HOOD_PX*hood(t) - COIL_PX*coil(t)))"
+    ],
+    [
+      "upper_feeler_02",
+      "LOCCAMX",
+      "PX_U*0.044*(HOOD_PX*hood(t) - COIL_PX*coil(t))"
     ],
     [
       "left_feeler_a_02",
       "LOCCAM",
-      "PX_U*(FY(t - (LAG_F + 1*RIP_F)/NF) - FY(t))"
+      "PX_U*(FY(t - (LAG_F + 1*RIP_F)/NF) - FY(t) + PBOB_A*(sin(2*pi*(PBOB_C*tq(t) - 0.4167)) + sin(2*pi*0.4167)) + 0.606*(HOOD_PX*hood(t) - COIL_PX*coil(t)))"
+    ],
+    [
+      "left_feeler_a_02",
+      "LOCCAMX",
+      "PX_U*-0.795*(HOOD_PX*hood(t) - COIL_PX*coil(t))"
     ],
     [
       "left_feeler_b_02",
       "LOCCAM",
-      "PX_U*(FY(t - (LAG_F + 2*RIP_F)/NF) - FY(t))"
+      "PX_U*(FY(t - (LAG_F + 2*RIP_F)/NF) - FY(t) + PBOB_A*(sin(2*pi*(PBOB_C*tq(t) - 0.5833)) + sin(2*pi*0.5833)) + -0.575*(HOOD_PX*hood(t) - COIL_PX*coil(t)))"
+    ],
+    [
+      "left_feeler_b_02",
+      "LOCCAMX",
+      "PX_U*-0.818*(HOOD_PX*hood(t) - COIL_PX*coil(t))"
     ],
     [
       "lower_feeler_02",
       "LOCCAM",
-      "PX_U*(FY(t - (LAG_F + 3*RIP_F)/NF) - FY(t))"
+      "PX_U*(FY(t - (LAG_F + 3*RIP_F)/NF) - FY(t) + PBOB_A*(sin(2*pi*(PBOB_C*tq(t) - 0.7500)) + sin(2*pi*0.7500)) + -0.994*(HOOD_PX*hood(t) - COIL_PX*coil(t)))"
+    ],
+    [
+      "lower_feeler_02",
+      "LOCCAMX",
+      "PX_U*-0.109*(HOOD_PX*hood(t) - COIL_PX*coil(t))"
     ],
     [
       "right_feeler_b_02",
       "LOCCAM",
-      "PX_U*(FY(t - (LAG_F + 4*RIP_F)/NF) - FY(t))"
+      "PX_U*(FY(t - (LAG_F + 4*RIP_F)/NF) - FY(t) + PBOB_A*(sin(2*pi*(PBOB_C*tq(t) - 0.9167)) + sin(2*pi*0.9167)) + -0.638*(HOOD_PX*hood(t) - COIL_PX*coil(t)))"
+    ],
+    [
+      "right_feeler_b_02",
+      "LOCCAMX",
+      "PX_U*0.77*(HOOD_PX*hood(t) - COIL_PX*coil(t))"
     ],
     [
       "right_feeler_a_02",
       "LOCCAM",
-      "PX_U*(FY(t - (LAG_F + 5*RIP_F)/NF) - FY(t))"
+      "PX_U*(FY(t - (LAG_F + 5*RIP_F)/NF) - FY(t) + PBOB_A*(sin(2*pi*(PBOB_C*tq(t) - 1.0833)) + sin(2*pi*1.0833)) + 0.62*(HOOD_PX*hood(t) - COIL_PX*coil(t)))"
+    ],
+    [
+      "right_feeler_a_02",
+      "LOCCAMX",
+      "PX_U*0.785*(HOOD_PX*hood(t) - COIL_PX*coil(t))"
     ]
   ],
   "motion": {
-    "frames": 270,
+    "frames": 330,
     "functions": {
+      "tf": "(t*NF - min(HISS_F, max(0, t*NF - HISS_F0)))/(NF - HISS_F)",
+      "tq": "(t*NF - min(HISS_F, max(0, t*NF - HISS_F0)) - min(SPIN_W, max(0, t*NF - SPIN_F0)))/(NF - HISS_F - SPIN_W)",
       "rs": "t*NF - SPIN_F0",
-      "hover": "FLOAT_A*wave(CYC*t + 0.25, SKEW) + FLOAT_C",
-      "drift": "DRIFT_A*sin(2*pi*CYC*t)",
-      "breath": "0.5 - 0.5*cos(2*pi*CYC*t)",
+      "hs": "t*NF - HISS_F0",
+      "hover": "FLOAT_A*wave(CYC*tf(t) + 0.25, SKEW) + FLOAT_C",
+      "drift": "DRIFT_A*sin(2*pi*CYC*tf(t))",
+      "breath": "0.5 - 0.5*cos(2*pi*CYC*tf(t))",
+      "rear": "smoother(hs(t)/HI_IN)*(1 - smoother((hs(t) - HI_HOLD)/HI_RELAX))",
+      "coil": "smoother(hs(t)/HI_IN) - smoother((hs(t) - HI_IN)/HI_BURST)",
+      "hood": "smoother((hs(t) - HI_IN)/HI_BURST)*(1 - smoother((hs(t) - HI_HOLD)/HI_RELAX)) - HI_OVER*damp((hs(t) - HI_HOLD - 0.6*HI_RELAX)/HI_SETTLE, 2)",
+      "lunge": "bump((hs(t) - HI_IN + 1)/HI_LUNGE_F)",
+      "buzz": "jitter((hs(t) - BUZZ_F0)/BUZZ_F, BUZZ_K)",
       "tense": "smoother(rs(t)/CHARGE_F) - smoother((rs(t) - CHARGE_F)/RELEASE_F)",
       "flare": "smoother((rs(t) - CHARGE_F + 2)/8)*(1 - smoother((rs(t) - FLARE_HOLD)/FLARE_FALL))",
       "spin": "-WIND_DEG*smoother(rs(t)/CHARGE_F) + (SPIN_DEG + WIND_DEG)*smoother(max(0, (rs(t) - CHARGE_F)/SPIN_F)**SPIN_SNAP) + OVER_DEG*damp((rs(t) - OVER_F0)/OVER_F, 3)",
-      "shake_env": "bump((t*NF - SHAKE_F0)/SHAKE_F)",
-      "jolt": "round(SHAKE_PX*jitter((t*NF - SHAKE_F0)/SHAKE_F, SHAKE_K)) + round(TREMBLE_PX*jitter((rs(t) - 3)/(CHARGE_F - 2), TREMBLE_K))",
-      "FY": "hover(t) + LIFT_PX*flare(t) - DIP_PX*tense(t)",
+      "jolt": "round(TREMBLE_PX*jitter((rs(t) - 3)/(CHARGE_F - 2), TREMBLE_K))",
+      "FY": "hover(t) + LIFT_PX*flare(t) - DIP_PX*tense(t) + HI_REAR_PX*rear(t) - HI_LUNGE_PX*lunge(t)",
       "FX": "drift(t)",
-      "crown": "CLOSE_DEG*tense(t) - FLARE_DEG*flare(t) - BRISTLE_DEG*shake_env(t)",
-      "pout": "PETAL_OUT + FLING*flare(t) - TUCK*tense(t) + BRISTLE_OUT*shake_env(t)",
-      "tilt": "TILT_DEG*sin(2*pi*CYC*t) - SPIN_ROLL*flare(t)"
+      "crown": "CLOSE_DEG*tense(t) - FLARE_DEG*flare(t) + HI_CLENCH*coil(t) - HI_FLARE*hood(t) + HI_QUIVER*buzz(t)",
+      "pout": "PETAL_OUT + FLING*flare(t) - TUCK*tense(t) + HOOD_OUT*hood(t) - COIL_IN*coil(t)",
+      "tilt": "TILT_DEG*sin(2*pi*CYC*tf(t)) - SPIN_ROLL*flare(t) - HI_LEAN*coil(t) + HI_STRIKE*lunge(t)"
     },
-    "note": "round 9 (ours; Showdown has no Mega Glimmora animation). 270 frames = 8.1 s. Float measured on Showdown's floaters (base Glimmora, Bronzong, Claydol, Cosmoem, Nihilego): 3 floats of 90 frames (2.7 s), 7 px travel (~7 % of the height, base Glimmora 6.7 %), crest broad / trough quick (wave skew), a sideways drift a quarter cycle behind (egg-shaped orbit) and a pendulum rock of TILT_DEG; petals trail the body by LAG_F frames. Whole pixels of FY / FX are style.pixel_bob's shift, the fraction is rendered (origin LOCCAM / LOCCAMX). Crown breathes on the float (open at the trough). Shake, frames 78-104 (slow frames, hanging at a crest): a whole-pixel rattle +-2 px held 2 frames per swing, crown and petals bristle. Spin, frames 150-239 (fast frames, one float cycle long): charge 20 frames (crown clenches, petals tuck and wind back 40 deg, body dips 2 px and trembles 1 px), snap release (peak 24.6 deg/frame, under the ~30 at which the ring seems to turn backwards), two turns coasting down, crown flared, petals flung out, body lifted 3 px and counter-rolled 4 deg, then overshoots ~6 deg, recoils ~7 and settles. Frame 0 is the fitted rest pose on a whole pixel."
+    "note": "round 10 (ours; Showdown has no Mega Glimmora animation). 330 frames = 9.9 s. Float measured on Showdown's floaters (base Glimmora, Bronzong, Claydol, Cosmoem, Nihilego): 3 floats of 90 frames (2.7 s), 7 px travel, crest broad / trough quick (wave skew), a sideways drift a quarter cycle behind (egg-shaped orbit) and a pendulum rock of TILT_DEG; petals trail the body by LAG_F frames. Whole pixels of FY / FX are style.pixel_bob's shift, the fraction is rendered (origin LOCCAM / LOCCAMX). Crown breathes on the float. Living petals (slow clock tq, 180 frames): each bends base -> tip (feeler_03 / _04), sways about its radial axis and bobs, phases stepping round the ring. Hiss, frames 90-149 (fast frames; float held at the crest): inhale 14 frames (rears 2 px, leans back 3 deg, crown clenches, petals tuck, curl in, ring winds back 6 deg), burst 5 frames (crown flares 20 deg, petals open into a wide hood: out 0.14, fanned 11 + 8 deg, pushed 5 px out on screen, inner spikes bristle, body strikes down 1 px), hiss held to frame 38 (petals buzz +-2.5 deg in 2-frame swings, neighbours opposite, crown quivers), relax 12 frames with a small overshoot. Spin, frames 210-299 (fast frames, one float cycle long): charge 20 frames, snap release, two turns coasting down, overshoot, settle. Frame 0 is the fitted rest pose on a whole pixel."
   },
   "fit": {
     "AZIMUTH": [
@@ -622,8 +811,12 @@
     },
     "fast_frames": [
       [
-        150,
-        239
+        90,
+        149
+      ],
+      [
+        210,
+        299
       ]
     ],
     "frame_anchor": "first",
@@ -898,6 +1091,14 @@
     {
       "step": "back camera",
       "note": "silhouette fit to the normal form's back sprite gave azimuth 179.5 (behind), elevation -27.7 (from below, shape match 0.55); kept the azimuth, set elevation +15: a back sprite is seen from behind and a little above, and it reads better (crown and bulb visible)"
+    },
+    {
+      "step": "back camera",
+      "note": "user: the back view should face outwards, a 180 flip like a normal Pokemon back sprite. Camera set to the front camera's exact opposite (azimuth 39.47 + 180, elevation -29.1 -> +29.1: behind and above), same body turn; frame 0 silhouette = the front's mirrored (overlap 0.78, perspective). No eye pixels visible. Replaces the silhouette fit to the normal form's back sprite (petals seen edge-on).",
+      "before": {
+        "AZIMUTH": 179.49,
+        "ELEVATION": 15.0
+      }
     }
   ],
   "pose_params_previous": {

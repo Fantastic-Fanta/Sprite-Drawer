@@ -585,6 +585,35 @@ Now (`glimmora-model/set_motion.py` writes it into all five Glimmora configs), 2
 2.86, style 81.4, shadows 0.685 / 0.057, crown edge 1.20, shape 0.984. The 3° rock re-rasterises the
 whole sprite every frame and still stays far under Carbink's limits.
 
+### Glimmora round 10: a hiss instead of the shake, living petals
+
+User: the shake "isn't what I expected"; wanted a **hiss** with the petals' help, and the floating
+petals more alive. The whole-pixel rattle is gone. 330 frames = 9.9 s:
+* **hiss** frames 90–149, a fast-frame event at the second float's crest. The float clock `tf` stops
+  during it (the hiss cut out), so the slow frames either side are the same pose. Inhale 14 frames:
+  rears 2 px, leans back 3°, crown clenches, petals tuck, curl in, ring winds back 6°. Burst 4
+  frames: crown flares 20°, petals open into a wide hood (out 0.14, fanned 11° + 8° along the chain,
+  and pushed 5 px straight out from the ring centre on screen: `SPREAD`, measured per view, because
+  the 3-D spread alone is foreshortened unevenly round the tilted ring), the inner spikes (`*_hair`)
+  bristle, body strikes down 1 px. Hiss held to frame 38: petals buzz ±2.5°
+  in 2-frame swings, neighbours opposite; crown quivers. Relax 12 frames, small overshoot.
+* **living petals**: each petal bends along its own chain (`feeler_03`, then `feeler_04` a little
+  later: base → tip), sways about its radial axis and bobs, with phases stepping round the ring. All
+  on the slow clock `tq` (both events cut out: 180 frames), minus the frame-0 value, so frame 0 is
+  still the fitted rest pose. The round-9 motion only moved `feeler_02`, so the petals were rigid.
+* **spin** unchanged, now frames 210–299 (same float phase).
+* **back view** (user: "outwards facing, like a 180 flip, a normal Pokémon back sprite"): the back
+  camera is now the front camera's exact opposite (azimuth 39.47 + 180 = 219.47, elevation −29.1 →
+  +29.1: behind and above), same body turn, so frame 0 is the front's silhouette mirrored. The
+  silhouette fit to the normal form's back sprite (azimuth 179.5, elevation +15) showed the petal
+  ring edge-on.
+
+Checked without rendering (Blender poses each frame, meshes projected to sprite pixels): calm
+frames' tip reach range 1.1–2.5 → 2.6–4.7 px per petal, max step 0.36 px/frame; hairline-gap
+changes between parts per step about the same as round 9 (mean 45.6 vs 45.0, max 119 vs 104); hood
+(user: "more exaggerated, petals spreading out further") reach +8.5 to +21.9 px per petal (3-D only:
++3.3 to +13.7), so the canvas grows for the hiss. Not yet rendered / QA'd.
+
 ## 7. Back views and shinies (all three Megas)
 
 **Back views, Showdown back style**: seen from behind and above, the front's turn mirrored. Where
