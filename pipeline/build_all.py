@@ -16,6 +16,8 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+from render_parallel import RenderPool      # noqa: E402
 
 
 def main():
@@ -47,10 +49,20 @@ def main():
         return ok or qa_fail
 
     def renderer():
-        for cfg in configs:
-            frames = out / "frames" / cfg.stem
-            ok = run([HERE / "render_parallel.py", cfg, frames], f"render {cfg.stem}")
-            rendered.put((cfg, frames if ok else None))
+        # one pool for the whole batch: each Blender process starts once, not once per sprite
+        with RenderPool() as pool:
+            for cfg in configs:
+                frames = out / "frames" / cfg.stem
+                t = time.time()
+                try:
+                    pool.render(cfg, frames)
+                    log(f"render {cfg.stem}: done in {time.time() - t:.1f}s")
+                    rendered.put((cfg, frames))
+                except RuntimeError as e:
+                    log(f"render {cfg.stem}: FAILED in {time.time() - t:.1f}s")
+                    print(e, flush=True)
+                    failed.append(f"render {cfg.stem}")
+                    rendered.put((cfg, None))
         rendered.put(None)
 
     def builder():
