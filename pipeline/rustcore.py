@@ -19,6 +19,8 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_clean_lines.restype = ctypes.c_int
     lib.sc_debounce.argtypes = [_u8p, _sz, _sz, _sz, _sz, _u8p]
     lib.sc_debounce.restype = None
+    lib.sc_hard_faults.argtypes = [_i64p, _sz, _u8p, _sz, _sz, _u8p]
+    lib.sc_hard_faults.restype = ctypes.c_int64
 
 
 def _hexkey(h):
@@ -76,3 +78,11 @@ def debounce(sprites, max_run=2, skip=None):
     sk = None if skip is None else np.ascontiguousarray(skip, np.uint8)
     lib.sc_debounce(_p(S), n, h, w, max_run, _p(sk))
     return [S[i] for i in range(n)]
+
+
+def hard_faults(cfg, s, protect):
+    a = np.ascontiguousarray(s, np.uint8)
+    h, w = a.shape[:2]
+    pr = None if protect is None else np.ascontiguousarray(protect, np.uint8)
+    c = pack_cfg(cfg)
+    return int(lib.sc_hard_faults(_p(c, ctypes.c_int64), len(c), _p(a), h, w, _p(pr)))

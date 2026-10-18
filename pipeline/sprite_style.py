@@ -1773,6 +1773,8 @@ def last_fix(cfg, sp, pm):
 def hard_faults(cfg, s, protect):
     """the hard rules, counted exactly as the checks count them: 2x2 line blocks, 2-px
     diagonals, open outline / part leakage"""
+    if rustcore.lib is not None:
+        return rustcore.hard_faults(cfg, s, protect)
     import check_loop as cl
     DARK = dark_line_colours(cfg)
     l = (s[..., 3] > 0) & np.any([np.all(s[..., :3] == c, -1) for c in DARK], 0) & ~protect

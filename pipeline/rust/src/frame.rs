@@ -95,6 +95,21 @@ impl<'a> Frame<'a> {
     fn other(&self, p: &PartCfg, y: isize, x: isize) -> bool {
         self.at(y, x).map_or(false, |i| self.body2(i) && p.other.contains(&self.key(i)) && !self.hl_near(p, y, x, i))
     }
+    /// check_loop.open_outline's part leakage: pixels of an outlined part touching another part
+    pub fn leaks(&self) -> i64 {
+        let mut n = 0;
+        for p in &self.cfg.parts {
+            for y in 0..self.h as isize {
+                for x in 0..self.w as isize {
+                    if self.own(p, y, x) && NB4.iter().any(|&(dy, dx)| self.other(p, y + dy, x + dx)) {
+                        n += 1;
+                    }
+                }
+            }
+        }
+        n
+    }
+
     /// check_loop.separators(cfg, s, line_all, protect): a line pixel with an outlined part on
     /// one side and another part on the other
     pub fn separator(&self, y: isize, x: isize, i: usize) -> bool {

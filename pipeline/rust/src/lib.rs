@@ -6,8 +6,9 @@ mod pyset;
 mod frame;
 mod lines;
 mod timeline;
+mod faults;
 
-use frame::Cfg;
+use frame::{Cfg, Frame};
 
 /// sprite_style.clean_lines on one frame, in place. cfg: rustcore.pack_cfg. protect / prev / nxt
 /// may be null. corners: 0 = off, 1 = on, 2 = "inner". Returns the number of pixels changed.
@@ -27,4 +28,14 @@ pub unsafe extern "C" fn sc_clean_lines(cfg: *const i64, cfglen: usize, s: *mut 
 pub unsafe extern "C" fn sc_debounce(s: *mut u8, n: usize, h: usize, w: usize, max_run: usize, skip: *const u8) {
     let skip = if skip.is_null() { None } else { Some(std::slice::from_raw_parts(skip, h * w)) };
     timeline::debounce(s, n, h, w, max_run, skip);
+}
+
+/// sprite_style.hard_faults(cfg, s, protect); protect may be null
+#[no_mangle]
+pub unsafe extern "C" fn sc_hard_faults(cfg: *const i64, cfglen: usize, s: *mut u8, h: usize, w: usize, protect: *const u8) -> i64 {
+    let cfg = Cfg::parse(std::slice::from_raw_parts(cfg, cfglen));
+    let s = std::slice::from_raw_parts_mut(s, h * w * 4);
+    let zeros;
+    let protect = if protect.is_null() { zeros = vec![0u8; h * w]; &zeros[..] } else { std::slice::from_raw_parts(protect, h * w) };
+    faults::hard_faults(&Frame { h, w, s, protect, cfg: &cfg })
 }
