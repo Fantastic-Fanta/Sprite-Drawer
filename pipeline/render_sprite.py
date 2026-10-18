@@ -173,6 +173,7 @@ hn.nodes.clear()
 hn.links.new(hn.nodes.new("ShaderNodeHoldout").outputs[0], hn.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
 fs = bpy.context.view_layer.freestyle_settings
 fs.crease_angle = math.radians(FS.get("crease_angle", 140))
+fs.use_culling = True           # skip edges outside the view: the model is always fully in view (same lines, faster)
 lset = fs.linesets[0] if len(fs.linesets) else fs.linesets.new("SpriteLines")
 lset.select_by_visibility, lset.visibility = True, "VISIBLE"
 lset.select_by_edge_types = True
@@ -223,8 +224,16 @@ def aim_sun(light_cam):
     bpy.context.view_layer.update()
 
 
+# EEVEE settings that only matter for lit passes: only the shadow pass is lit; data / rest are
+# emission and the lines pass a holdout + unlit strokes, so they skip them (same pixels, faster)
+EEVEE_LIT = {a: getattr(scene.eevee, a) for a in ("use_shadows", "use_raytracing", "use_volumetric_shadows", "use_gtao")
+             if hasattr(scene.eevee, a)}
+
+
 def use_pass(kind):
     view_layer = bpy.context.view_layer
+    for a, v in EEVEE_LIT.items():
+        setattr(scene.eevee, a, v if kind == "shadow" else False)
     if kind in ("color", "id") or kind in TEX_PASSES:
         scene.render.engine = "BLENDER_WORKBENCH"
         view_layer.material_override = None

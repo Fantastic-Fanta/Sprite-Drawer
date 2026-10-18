@@ -5,6 +5,7 @@ Same output as render_sprite.py on its own (each frame keeps its loop number), ~
 on a multi-core machine. --frames renders only those frames (a quick preview of the motion).
 """
 import json
+import os
 import subprocess
 import sys
 import time
@@ -14,7 +15,8 @@ BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
 args = sys.argv[1:]
 cfg_path, out = Path(args[0]).resolve(), Path(args[1])
 cfg = json.loads(cfg_path.read_text())
-jobs = int(args[args.index("--jobs") + 1]) if "--jobs" in args else 4
+# 4 suits a 16 GB machine; more processes thrash (shared GPU / memory): SPRITE_RENDER_JOBS on a bigger one
+jobs = int(args[args.index("--jobs") + 1]) if "--jobs" in args else int(os.environ.get("SPRITE_RENDER_JOBS", 4))
 here = Path(__file__).parent
 frames = ([int(v) for v in args[args.index("--frames") + 1].split(",")] if "--frames" in args
           else list(range(cfg["motion"]["frames"])))
