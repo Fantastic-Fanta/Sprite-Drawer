@@ -32,3 +32,6 @@ __pycache__/
 
 # Rust build output
 pipeline/rust/target/
+
+# render cache (render_parallel.py)
+.render_cache/

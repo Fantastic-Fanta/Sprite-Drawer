@@ -55,8 +55,8 @@ def main():
                 frames = out / "frames" / cfg.stem
                 t = time.time()
                 try:
-                    pool.render(cfg, frames)
-                    log(f"render {cfg.stem}: done in {time.time() - t:.1f}s")
+                    n = pool.render(cfg, frames)
+                    log(f"render {cfg.stem}: {'done' if n else 'from the cache'} in {time.time() - t:.1f}s")
                     rendered.put((cfg, frames))
                 except RuntimeError as e:
                     log(f"render {cfg.stem}: FAILED in {time.time() - t:.1f}s")

@@ -36,7 +36,7 @@ def frames_dir(name):
 
 def render(name, out):
     t0 = time.time()
-    subprocess.run([sys.executable, str(HERE / "render_parallel.py"), str(ROOT / CONFIGS[name]), str(out)], check=True)
+    subprocess.run([sys.executable, str(HERE / "render_parallel.py"), str(ROOT / CONFIGS[name]), str(out), "--no-cache"], check=True)
     return time.time() - t0
 
 
