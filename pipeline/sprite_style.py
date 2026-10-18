@@ -123,39 +123,59 @@ def shift(a, dy, dx, fill):
 
 # --- loading ------------------------------------------------------------------
 
-def load_passes(frames_dir, only_first=False):
+def frame_paths(frames_dir, only_first=False):
+    """one path per frame: its colour pass (the other passes sit next to it)"""
     paths = sorted(Path(frames_dir).glob("color_*.png"))
-    if only_first:
-        paths = paths[:1]
-    out = []
-    for p in paths:
-        ims = [Image.open(p.with_name(p.name.replace("color_", k + "_"))).convert("RGBA") for k in ("color", "id", "data")]
-        for extra in ("rest", "lines", "shadow", "seams", "islands"):      # optional passes
-            q = p.with_name(p.name.replace("color_", extra + "_"))
-            ims.append(Image.open(q).convert("RGBA") if q.exists() else None)
-        out.append(tuple(ims))
-    return out
+    return paths[:1] if only_first else paths
 
 
-def framing(passes, height, anchor=None):
+def load_frame(p):
+    """every pass of one frame (colour pass path p)"""
+    ims = [Image.open(p.with_name(p.name.replace("color_", k + "_"))).convert("RGBA") for k in ("color", "id", "data")]
+    for extra in ("rest", "lines", "shadow", "seams", "islands"):      # optional passes
+        q = p.with_name(p.name.replace("color_", extra + "_"))
+        ims.append(Image.open(q).convert("RGBA") if q.exists() else None)
+    return tuple(ims)
+
+
+def load_passes(frames_dir, only_first=False):
+    return [load_frame(p) for p in frame_paths(frames_dir, only_first)]
+
+
+def alpha_bbox(color):
+    return color.getchannel("A").point(lambda a: 255 if a > 8 else 0).getbbox()
+
+
+def color_info(p):
+    """a frame's box for framing(), and whether it touches the render's edge (cut off)"""
+    color = Image.open(p).convert("RGBA")
+    a = np.array(color.getchannel("A")) > 8
+    return alpha_bbox(color), bool(a[0].any() or a[-1].any() or a[:, 0].any() or a[:, -1].any())
+
+
+def load_prepare(cfg, p, box, size):
+    return prepare(cfg, *load_frame(p), box, size)
+
+
+def framing(passes, height, anchor=None, boxes=None):
     """One crop box for the whole loop (no jitter); scale so frame 0 is `height` px tall.
     anchor: indices of the frames that fix the pixel grid (e.g. all but a fast spin, whose
     in-between poses reach a little further); the box is then grown by whole sprite pixels to
-    fit the rest, so the anchor frames sample exactly as they would on their own."""
-    def bbox(color):
-        return color.getchannel("A").point(lambda a: 255 if a > 8 else 0).getbbox()
-    def union(ps):
+    fit the rest, so the anchor frames sample exactly as they would on their own.
+    boxes: each frame's alpha_bbox, if already known (then passes isn't needed)."""
+    if boxes is None:
+        boxes = [alpha_bbox(color) for color, *_ in passes]
+    def union(bs):
         box = None
-        for color, *_ in ps:
-            b = bbox(color)
+        for b in bs:
             box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]), max(box[2], b[2]), max(box[3], b[3]))
         return box
-    b0 = bbox(passes[0][0])
+    b0 = boxes[0]
     scale = height / (b0[3] - b0[1])
     if anchor is None:
-        box = union(passes)
+        box = union(boxes)
         return box, (round((box[2] - box[0]) * scale), round((box[3] - box[1]) * scale))
-    box = list(union([passes[i] for i in anchor])); full = union(passes)
+    box = list(union([boxes[i] for i in anchor])); full = union(boxes)
     size = [round((box[2] - box[0]) * scale), round((box[3] - box[1]) * scale)]
     for side, k, sgn in ((0, 0, -1), (1, 1, -1), (2, 0, 1), (3, 1, 1)):
         need = (box[side] - full[side]) * -sgn            # render px the full loop sticks out
@@ -1335,28 +1355,34 @@ def transport_shading(frames, layer_list, key_frame=0, search=4, tol=3):
     if any(f.get("rest") is None for f in frames):
         return layer_list
     kf, kL = frames[key_frame], layer_list[key_frame]
+    key = {k: kf[k] for k in ("rest", "solid", "part")}           # all a worker needs of the key frame
+    others = [i for i in range(len(frames)) if i != key_frame]
+    done = pmap(transport_shading_frame, [(key, kL["rank"], frames[i], layer_list[i], search, tol) for i in others])
+    out = list(layer_list)
+    for i, L in zip(others, done):
+        out[i] = L
+    return out
+
+
+def transport_shading_frame(kf, k_rank, f, L, search, tol):
+    """transport_shading for one frame: the key frame's ranks carried onto it"""
     rk = kf["rest"][..., :3].astype(float); okk = (kf["rest"][..., 3] > 0) & kf["solid"]
     h, w = kf["solid"].shape
-    out = []
-    for i, (f, L) in enumerate(zip(frames, layer_list)):
-        if i == key_frame:
-            out.append(L); continue
-        r = f["rest"][..., :3].astype(float); okf = (f["rest"][..., 3] > 0) & f["solid"]
-        best = np.full((h, w), np.inf); got = np.array(L["rank"], copy=True)
-        for dy in range(-search, search + 1):
-            for dx in range(-search, search + 1):
-                ys0, ys1 = max(0, -dy), min(h, h - dy); xs0, xs1 = max(0, -dx), min(w, w - dx)
-                tgt = (slice(ys0, ys1), slice(xs0, xs1)); src = (slice(ys0 + dy, ys1 + dy), slice(xs0 + dx, xs1 + dx))
-                d = ((r[tgt] - rk[src]) ** 2).sum(-1) + 0.01 * (dy * dy + dx * dx)
-                valid = okf[tgt] & okk[src] & (f["part"][tgt] == kf["part"][src])
-                d = np.where(valid, d, np.inf)
-                upd = d < best[tgt]
-                best[tgt] = np.where(upd, d, best[tgt])
-                got[tgt] = np.where(upd, kL["rank"][src], got[tgt])
-        use = best <= tol * tol * 3
-        L = dict(L); L["rank"] = np.where(use, got, L["rank"])
-        out.append(L)
-    return out
+    r = f["rest"][..., :3].astype(float); okf = (f["rest"][..., 3] > 0) & f["solid"]
+    best = np.full((h, w), np.inf); got = np.array(L["rank"], copy=True)
+    for dy in range(-search, search + 1):
+        for dx in range(-search, search + 1):
+            ys0, ys1 = max(0, -dy), min(h, h - dy); xs0, xs1 = max(0, -dx), min(w, w - dx)
+            tgt = (slice(ys0, ys1), slice(xs0, xs1)); src = (slice(ys0 + dy, ys1 + dy), slice(xs0 + dx, xs1 + dx))
+            d = ((r[tgt] - rk[src]) ** 2).sum(-1) + 0.01 * (dy * dy + dx * dx)
+            valid = okf[tgt] & okk[src] & (f["part"][tgt] == kf["part"][src])
+            d = np.where(valid, d, np.inf)
+            upd = d < best[tgt]
+            best[tgt] = np.where(upd, d, best[tgt])
+            got[tgt] = np.where(upd, k_rank[src], got[tgt])
+    use = best <= tol * tol * 3
+    L = dict(L); L["rank"] = np.where(use, got, L["rank"])
+    return L
 
 
 def hysteresis_over_time(layer_list, window=4):
@@ -1875,6 +1901,8 @@ def debounce(sprites, max_run=2, skip=None):
     """Per pixel across the (looping) animation: any colour, transparency included, that lasts
     max_run frames or fewer is replaced by the longer of its neighbouring runs in time. After
     this nothing can blink on or off for 1-2 frames."""
+    if rustcore.lib is not None:
+        return rustcore.debounce(sprites, max_run, skip)
     S = np.stack(sprites)                                   # n, H, W, 4
     key = np.where(S[..., 3] > 0, S[..., 0].astype(np.int64) * 65536 + S[..., 1].astype(np.int64) * 256 + S[..., 2], -1)
     n = len(sprites)

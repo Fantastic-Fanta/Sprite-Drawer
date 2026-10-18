@@ -17,6 +17,8 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     _u8p, _i64p, _sz = ctypes.POINTER(ctypes.c_uint8), ctypes.POINTER(ctypes.c_int64), ctypes.c_size_t
     lib.sc_clean_lines.argtypes = [_i64p, _sz, _u8p, _sz, _sz, _u8p, _u8p, _u8p, ctypes.c_int]
     lib.sc_clean_lines.restype = ctypes.c_int
+    lib.sc_debounce.argtypes = [_u8p, _sz, _sz, _sz, _sz, _u8p]
+    lib.sc_debounce.restype = None
 
 
 def _hexkey(h):
@@ -66,3 +68,11 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
     mode = 0 if not corners else (2 if corners == "inner" else 1)
     lib.sc_clean_lines(_p(c, ctypes.c_int64), len(c), _p(out), h, w, _p(pr), _p(prev), _p(nxt), mode)
     return out
+
+
+def debounce(sprites, max_run=2, skip=None):
+    S = np.ascontiguousarray(np.stack(sprites), np.uint8)
+    n, h, w = S.shape[:3]
+    sk = None if skip is None else np.ascontiguousarray(skip, np.uint8)
+    lib.sc_debounce(_p(S), n, h, w, max_run, _p(sk))
+    return [S[i] for i in range(n)]

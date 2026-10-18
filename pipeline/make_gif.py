@@ -27,15 +27,12 @@ cfg = json.loads(cfg_path.read_text())
 frames_dir, out_path = args[1], args[2]
 first_only = args[args.index("--first-only") + 1] if "--first-only" in args else None
 
-passes = ss.load_passes(frames_dir, only_first=bool(first_only))
+paths = ss.frame_paths(frames_dir, only_first=bool(first_only))
+info = ss.pmap(ss.color_info, [(p,) for p in paths])      # each frame's box, and whether it's cut off
 # the model must fit inside the render: a frame touching the render's edge is cut off (a wing
 # ending in a straight edge) - a hard failure, fixed by a wider render (render.width / height
 # with the FOV widened to match), never by the sprite steps
-_clipped = []
-for _k, (_color, *_) in enumerate(passes):
-    _a = np.array(_color.getchannel("A")) > 8
-    if _a[0].any() or _a[-1].any() or _a[:, 0].any() or _a[:, -1].any():
-        _clipped.append(_k)
+_clipped = [k for k, (_, cut) in enumerate(info) if cut]
 if _clipped:
     print(f"  FAIL  render_clipped   {len(_clipped)} frames touch the render edge (first: {_clipped[:5]})")
 # pixel grid: style.frame_anchor "first" = frame 0's own grid (the one tune_style / fit_pose / compare
@@ -46,12 +43,12 @@ _anchor = None
 if not first_only and cfg["style"].get("frame_anchor") == "first":
     _anchor = [0]
 elif not first_only and _fast:
-    _anchor = [i for i in range(len(passes)) if i not in _fast]
-box, size = ss.framing(passes, cfg["style"]["height"], anchor=_anchor)
+    _anchor = [i for i in range(len(paths)) if i not in _fast]
+box, size = ss.framing(None, cfg["style"]["height"], anchor=_anchor, boxes=[b for b, _ in info])
 
 
 def build(style_cfg, path):
-    frames = [ss.prepare(style_cfg, *p, box, size) for p in passes]
+    frames = ss.pmap(ss.load_prepare, [(style_cfg, p, box, size) for p in paths])   # loaded by the workers
     sprites = ss.stylize_loop(style_cfg, frames)   # stabilised over time
     ss.save_gif(style_cfg, sprites, path)
     if ss.LAST_EYE_MASKS is not None:              # where the eye stamp is, so checks can skip it
@@ -61,7 +58,7 @@ def build(style_cfg, path):
 
 
 if first_only:
-    f = ss.prepare(cfg, *passes[0], box, size)
+    f = ss.prepare(cfg, *ss.load_frame(paths[0]), box, size)
     Image.fromarray(ss.stylize(cfg, f)).save(first_only)
     print(f"wrote {first_only}")
     sys.exit(0)
@@ -72,7 +69,7 @@ def fit_region_shades(cfg):
     it's quick. Coordinate descent on the thresholds; returns the updated config."""
     import compare
     ref = compare.load(cfg_path.parent / cfg["reference"])
-    f0 = ss.prepare(cfg, *passes[0], box, size)
+    f0 = ss.prepare(cfg, *ss.load_frame(paths[0]), box, size)
     for part in cfg.get("qa", {}).get("region_parts", []):
         qa_lim = cfg.get("qa", {})
         def err(c):

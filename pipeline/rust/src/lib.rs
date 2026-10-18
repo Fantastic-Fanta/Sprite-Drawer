@@ -5,6 +5,7 @@
 mod pyset;
 mod frame;
 mod lines;
+mod timeline;
 
 use frame::Cfg;
 
@@ -19,4 +20,11 @@ pub unsafe extern "C" fn sc_clean_lines(cfg: *const i64, cfglen: usize, s: *mut 
     let protect = if protect.is_null() { zeros = vec![0u8; h * w]; &zeros[..] } else { std::slice::from_raw_parts(protect, h * w) };
     let opt = |p: *const u8| if p.is_null() { None } else { Some(std::slice::from_raw_parts(p, h * w * 4)) };
     lines::clean_lines(&cfg, s, h, w, protect, opt(prev), opt(nxt), corners)
+}
+
+/// sprite_style.debounce on the stacked loop S (n x h x w x 4), in place; skip (h x w) may be null
+#[no_mangle]
+pub unsafe extern "C" fn sc_debounce(s: *mut u8, n: usize, h: usize, w: usize, max_run: usize, skip: *const u8) {
+    let skip = if skip.is_null() { None } else { Some(std::slice::from_raw_parts(skip, h * w)) };
+    timeline::debounce(s, n, h, w, max_run, skip);
 }
