@@ -1,0 +1,149 @@
+{
+  "values": {
+    "style_score": 81.2,
+    "extra_line_px": 2,
+    "missing_line_px": 0,
+    "shadow_f1": 0.686,
+    "dark_rim_excess": -0.063,
+    "blob_shade_err": 0.056,
+    "thick_lines": 0,
+    "diag_2px": 0,
+    "dark_flicker": 0,
+    "open_outline": 0,
+    "silhouette_teeth": 5.37,
+    "any_blinks": 0,
+    "pop_max": 2.89,
+    "big_pops": 15,
+    "core_mix_l1": 0.158,
+    "petal_mix_l1": 0.022,
+    "core_edge_ratio": 1.254,
+    "bulb_edge_ratio": 1.209,
+    "core_shape_f1": 0.983,
+    "bulb_shape_f1": 0.927,
+    "core_tones": 7,
+    "bulb_tones": 2
+  },
+  "pass": true,
+  "checks": [
+    {
+      "name": "style_score",
+      "value": 81.2,
+      "limit": 80,
+      "pass": true
+    },
+    {
+      "name": "extra_line_px",
+      "value": 2,
+      "limit": 20,
+      "pass": true
+    },
+    {
+      "name": "missing_line_px",
+      "value": 0,
+      "limit": 30,
+      "pass": true
+    },
+    {
+      "name": "thick_lines",
+      "value": 0,
+      "limit": 0,
+      "pass": true
+    },
+    {
+      "name": "diag_2px",
+      "value": 0,
+      "limit": 0,
+      "pass": true
+    },
+    {
+      "name": "dark_flicker",
+      "value": 0,
+      "limit": 4,
+      "pass": true
+    },
+    {
+      "name": "any_blinks",
+      "value": 0,
+      "limit": 10,
+      "pass": true
+    },
+    {
+      "name": "pop_max",
+      "value": 2.89,
+      "limit": 3.8,
+      "pass": true
+    },
+    {
+      "name": "big_pops",
+      "value": 15,
+      "limit": 22,
+      "pass": true
+    },
+    {
+      "name": "open_outline",
+      "value": 0,
+      "limit": 0,
+      "pass": true
+    },
+    {
+      "name": "silhouette_teeth",
+      "value": 5.37,
+      "limit": 7.5,
+      "pass": true
+    },
+    {
+      "name": "shadow_f1",
+      "value": 0.686,
+      "limit": 0.68,
+      "pass": true
+    },
+    {
+      "name": "dark_rim_excess",
+      "value": -0.063,
+      "limit": 0.03,
+      "pass": true
+    },
+    {
+      "name": "blob_shade_err",
+      "value": 0.056,
+      "limit": 0.06,
+      "pass": true
+    },
+    {
+      "name": "core_mix_l1",
+      "value": 0.158,
+      "limit": 0.17,
+      "pass": true
+    },
+    {
+      "name": "petal_mix_l1",
+      "value": 0.022,
+      "limit": 0.2,
+      "pass": true
+    },
+    {
+      "name": "core_edge_ratio",
+      "value": 1.254,
+      "limit": 1.0,
+      "pass": true
+    },
+    {
+      "name": "core_shape_f1",
+      "value": 0.983,
+      "limit": 0.95,
+      "pass": true
+    },
+    {
+      "name": "core_tones",
+      "value": 7,
+      "limit": 7,
+      "pass": true
+    },
+    {
+      "name": "bulb_tones",
+      "value": 2,
+      "limit": 2,
+      "pass": true
+    }
+  ]
+}

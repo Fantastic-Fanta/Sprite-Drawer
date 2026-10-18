@@ -1,0 +1,5 @@
+{"source": "https://play.pokemonshowdown.com/sprites/ani/golisopod.gif (Showdown's normal Golisopod; pixel data read in the browser)",
+ "measured": {"frames": 39, "frame_ms": 30, "size": [83, 80], "solid_px": 3616, "any_blinks": 11364, "dark_flicker_outline": 942, "pop_max": 7.14, "big_pops": 28,
+              "motion": "subtle breathing: parts move < 1.3 px over a 39-frame (1.2 s) cycle"},
+ "limits": {"blink_rate": 0.08058, "dark_flicker_rate": 0.00668, "pop_max_norm": 3.75, "big_pops_share": 0.718},
+ "method": "as floating_carbink.json"}

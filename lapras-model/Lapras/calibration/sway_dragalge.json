@@ -1,0 +1,5 @@
+{"source": "https://play.pokemonshowdown.com/sprites/ani/dragalge.gif (Showdown's normal Dragalge; pixel data read in the browser)",
+ "measured": {"frames": 79, "frame_ms": 30, "size": [139, 137], "solid_px": 2895, "any_blinks": 24139, "dark_flicker_outline": 5190, "pop_max": 5.45, "big_pops": 77,
+              "motion": "underwater sway: body 13 px side to side, lower body 7 px up and down, 79-frame (2.4 s) cycle"},
+ "limits": {"blink_rate": 0.10554, "dark_flicker_rate": 0.02269, "pop_max_norm": 3.2, "big_pops_share": 0.975},
+ "method": "as floating_carbink.json"}

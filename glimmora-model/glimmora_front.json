@@ -1,0 +1,1475 @@
+{
+  "name": "Mega Glimmora",
+  "model": "MegaGlimmora/MegaGlimmora.blend",
+  "reference": "reference/showdown_frame0.png",
+  "reference_source": "https://play.pokemonshowdown.com/sprites/ani/glimmora-mega.gif (a single still render, not an animated sprite) snapped to the palette by make_reference.py; style conventions from sprites/ani/glimmora.gif",
+  "reference_dark_below": 60,
+  "palette": {
+    "outline": "#191b27",
+    "parts": {
+      "petal": [
+        "#1c2964",
+        "#22378d",
+        "#2741af",
+        "#2b4dcd"
+      ],
+      "core": [
+        "#495379",
+        "#575c9f",
+        "#6269b5",
+        "#6b70cf",
+        "#7075d9",
+        "#6f89d5",
+        "#8390df"
+      ],
+      "teal": [
+        "#3e8a8a",
+        "#53b7b2"
+      ],
+      "spike": [
+        "#32434a",
+        "#486674",
+        "#658b9e"
+      ],
+      "bulb": [
+        "#5f5a85",
+        "#756e97",
+        "#8c86b0"
+      ]
+    },
+    "note_core": "crown: #495379 separator (line only) + a 6-tone lilac ramp from the still's crown clusters (#6f89d5 = the bluer light on the ridges); bulb = the muted mauve back bulb, its own part"
+  },
+  "parts": {
+    "materials": {
+      "body_b": "petal|teal",
+      "body_a": "core|teal|spike|bulb"
+    },
+    "default_material": "body",
+    "albedo": {
+      "petal": "#1040c8",
+      "core": "#6070d0",
+      "teal": "#50c0b0",
+      "spike": "#507888",
+      "bulb": "#a0a0d0"
+    },
+    "note": "materials limited to parts: the petal texture (body_b) can only be petal or teal, the body texture (body_a) core, teal or spike; within a group, nearest albedo. (Splitting everything by nearest albedo made the petals' dark bases spike-coloured specks.) Eyes are hidden behind the spike in this view: no eye stamp."
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      0.3,
+      0
+    ],
+    "distance": 20,
+    "ortho_scale": 4.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 460,
+    "height": 460,
+    "depth_range": 3,
+    "freestyle": {
+      "edges": [
+        "silhouette",
+        "crease",
+        "border",
+        "contour"
+      ],
+      "crease_angle": 150,
+      "thickness": 2.0,
+      "note": "lines pass, used for the crown only (style.hires_lines.source = freestyle)"
+    },
+    "shadow": {
+      "light_cam": [
+        0.0,
+        0.985,
+        -0.174
+      ],
+      "note": "sun direction (camera space) for cast shadows; fitted by fit_shadow.py + full-loop QA"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 39.47,
+    "ELEVATION": -29.1,
+    "FOV": 24.09,
+    "YAW": 15.37,
+    "PITCH": 24.3,
+    "ROLL": 24.99,
+    "PETAL_SPREAD": 0,
+    "PETAL_SWAY": 3,
+    "BOB": 0,
+    "PETAL_SCALE": 1.0,
+    "PETAL_OUT": 0.18,
+    "CROWN_SWEEP": 0.0,
+    "CS_U": 0.0,
+    "CS_D": 0.0,
+    "CS_LA": 0.0,
+    "CS_RA": 0.0,
+    "CS_LB": 0.0,
+    "CS_RB": 0.0,
+    "SPIN_DEG": 720,
+    "WIND_DEG": 40,
+    "OVER_DEG": 26,
+    "BREATH_OPEN": 15,
+    "BREATH_SCALE": 0.08,
+    "PX_U": 0.0422,
+    "NF": 270,
+    "CYC": 3,
+    "FLOAT_A": 3.5,
+    "FLOAT_C": 0.5,
+    "SKEW": 0.18,
+    "DRIFT_A": 2.5,
+    "TILT_DEG": 3.0,
+    "LAG_F": 2.5,
+    "RIP_F": 0.25,
+    "SHAKE_F0": 78,
+    "SHAKE_F": 26,
+    "SHAKE_K": 13,
+    "SHAKE_PX": 2,
+    "BRISTLE_DEG": 6,
+    "BRISTLE_OUT": 0.05,
+    "SPIN_F0": 150,
+    "CHARGE_F": 20,
+    "RELEASE_F": 6,
+    "SPIN_F": 56,
+    "SPIN_SNAP": 0.7,
+    "OVER_F0": 64,
+    "OVER_F": 25,
+    "FLARE_HOLD": 46,
+    "FLARE_FALL": 34,
+    "LIFT_PX": 3,
+    "DIP_PX": 2,
+    "CLOSE_DEG": 8,
+    "FLARE_DEG": 14,
+    "FLING": 0.12,
+    "TUCK": 0.08,
+    "SPIN_ROLL": 4,
+    "TREMBLE_PX": 1,
+    "TREMBLE_K": 9
+  },
+  "pose": [
+    [
+      "upper_skirt_01",
+      "SCALE",
+      "1 + BREATH_SCALE*breath(t)"
+    ],
+    [
+      "lower_skirt_01",
+      "SCALE",
+      "1 + BREATH_SCALE*breath(t)"
+    ],
+    [
+      "left_skirt_a_01",
+      "SCALE",
+      "1 + BREATH_SCALE*breath(t)"
+    ],
+    [
+      "right_skirt_a_01",
+      "SCALE",
+      "1 + BREATH_SCALE*breath(t)"
+    ],
+    [
+      "left_skirt_b_01",
+      "SCALE",
+      "1 + BREATH_SCALE*breath(t)"
+    ],
+    [
+      "right_skirt_b_01",
+      "SCALE",
+      "1 + BREATH_SCALE*breath(t)"
+    ],
+    [
+      "upper_skirt_01",
+      "A:-1,0,0",
+      "CROWN_SWEEP + CS_U + crown(t) - BREATH_OPEN*breath(t)"
+    ],
+    [
+      "lower_skirt_01",
+      "A:1,0,0",
+      "CROWN_SWEEP + CS_D + crown(t) - BREATH_OPEN*breath(t)"
+    ],
+    [
+      "left_skirt_a_01",
+      "A:-0.45,0,0.89",
+      "CROWN_SWEEP + CS_LA + crown(t)"
+    ],
+    [
+      "right_skirt_a_01",
+      "A:-0.45,0,-0.89",
+      "CROWN_SWEEP + CS_RA + crown(t)"
+    ],
+    [
+      "left_skirt_b_01",
+      "A:0.45,0,0.89",
+      "CROWN_SWEEP + CS_LB + crown(t)"
+    ],
+    [
+      "right_skirt_b_01",
+      "A:0.45,0,-0.89",
+      "CROWN_SWEEP + CS_RB + crown(t)"
+    ],
+    [
+      "upper_feeler_02",
+      "SCALE",
+      "PETAL_SCALE"
+    ],
+    [
+      "upper_feeler_02",
+      "LOCZ",
+      "1*pout(t)"
+    ],
+    [
+      "lower_feeler_02",
+      "SCALE",
+      "PETAL_SCALE"
+    ],
+    [
+      "lower_feeler_02",
+      "LOCZ",
+      "-1*pout(t)"
+    ],
+    [
+      "left_feeler_a_02",
+      "SCALE",
+      "PETAL_SCALE"
+    ],
+    [
+      "left_feeler_a_02",
+      "LOCX",
+      "0.857*pout(t)"
+    ],
+    [
+      "left_feeler_a_02",
+      "LOCZ",
+      "0.514*pout(t)"
+    ],
+    [
+      "right_feeler_a_02",
+      "SCALE",
+      "PETAL_SCALE"
+    ],
+    [
+      "right_feeler_a_02",
+      "LOCX",
+      "-0.857*pout(t)"
+    ],
+    [
+      "right_feeler_a_02",
+      "LOCZ",
+      "0.514*pout(t)"
+    ],
+    [
+      "left_feeler_b_02",
+      "SCALE",
+      "PETAL_SCALE"
+    ],
+    [
+      "left_feeler_b_02",
+      "LOCX",
+      "0.857*pout(t)"
+    ],
+    [
+      "left_feeler_b_02",
+      "LOCZ",
+      "-0.514*pout(t)"
+    ],
+    [
+      "right_feeler_b_02",
+      "SCALE",
+      "PETAL_SCALE"
+    ],
+    [
+      "right_feeler_b_02",
+      "LOCX",
+      "-0.857*pout(t)"
+    ],
+    [
+      "right_feeler_b_02",
+      "LOCZ",
+      "-0.514*pout(t)"
+    ],
+    [
+      "root_feeler",
+      "Y",
+      "- PETAL_SWAY*(0.5 - 0.5*cos(4*pi*ts)) + spin(t)"
+    ],
+    [
+      "waist",
+      "Z",
+      "YAW"
+    ],
+    [
+      "waist",
+      "X",
+      "PITCH"
+    ],
+    [
+      "waist",
+      "Y",
+      "ROLL"
+    ],
+    [
+      "waist",
+      "ROLLCAM",
+      "tilt(t)"
+    ],
+    [
+      "origin",
+      "LOCZ",
+      "BOB*c"
+    ],
+    [
+      "origin",
+      "LOCCAM",
+      "PX_U*(FY(t) - round(FY(t)))"
+    ],
+    [
+      "origin",
+      "LOCCAMX",
+      "PX_U*(FX(t) - round(FX(t)))"
+    ],
+    [
+      "upper_feeler_02",
+      "LOCCAM",
+      "PX_U*(FY(t - (LAG_F + 0*RIP_F)/NF) - FY(t))"
+    ],
+    [
+      "left_feeler_a_02",
+      "LOCCAM",
+      "PX_U*(FY(t - (LAG_F + 1*RIP_F)/NF) - FY(t))"
+    ],
+    [
+      "left_feeler_b_02",
+      "LOCCAM",
+      "PX_U*(FY(t - (LAG_F + 2*RIP_F)/NF) - FY(t))"
+    ],
+    [
+      "lower_feeler_02",
+      "LOCCAM",
+      "PX_U*(FY(t - (LAG_F + 3*RIP_F)/NF) - FY(t))"
+    ],
+    [
+      "right_feeler_b_02",
+      "LOCCAM",
+      "PX_U*(FY(t - (LAG_F + 4*RIP_F)/NF) - FY(t))"
+    ],
+    [
+      "right_feeler_a_02",
+      "LOCCAM",
+      "PX_U*(FY(t - (LAG_F + 5*RIP_F)/NF) - FY(t))"
+    ]
+  ],
+  "motion": {
+    "frames": 270,
+    "functions": {
+      "rs": "t*NF - SPIN_F0",
+      "hover": "FLOAT_A*wave(CYC*t + 0.25, SKEW) + FLOAT_C",
+      "drift": "DRIFT_A*sin(2*pi*CYC*t)",
+      "breath": "0.5 - 0.5*cos(2*pi*CYC*t)",
+      "tense": "smoother(rs(t)/CHARGE_F) - smoother((rs(t) - CHARGE_F)/RELEASE_F)",
+      "flare": "smoother((rs(t) - CHARGE_F + 2)/8)*(1 - smoother((rs(t) - FLARE_HOLD)/FLARE_FALL))",
+      "spin": "-WIND_DEG*smoother(rs(t)/CHARGE_F) + (SPIN_DEG + WIND_DEG)*smoother(max(0, (rs(t) - CHARGE_F)/SPIN_F)**SPIN_SNAP) + OVER_DEG*damp((rs(t) - OVER_F0)/OVER_F, 3)",
+      "shake_env": "bump((t*NF - SHAKE_F0)/SHAKE_F)",
+      "jolt": "round(SHAKE_PX*jitter((t*NF - SHAKE_F0)/SHAKE_F, SHAKE_K)) + round(TREMBLE_PX*jitter((rs(t) - 3)/(CHARGE_F - 2), TREMBLE_K))",
+      "FY": "hover(t) + LIFT_PX*flare(t) - DIP_PX*tense(t)",
+      "FX": "drift(t)",
+      "crown": "CLOSE_DEG*tense(t) - FLARE_DEG*flare(t) - BRISTLE_DEG*shake_env(t)",
+      "pout": "PETAL_OUT + FLING*flare(t) - TUCK*tense(t) + BRISTLE_OUT*shake_env(t)",
+      "tilt": "TILT_DEG*sin(2*pi*CYC*t) - SPIN_ROLL*flare(t)"
+    },
+    "note": "round 9 (ours; Showdown has no Mega Glimmora animation). 270 frames = 8.1 s. Float measured on Showdown's floaters (base Glimmora, Bronzong, Claydol, Cosmoem, Nihilego): 3 floats of 90 frames (2.7 s), 7 px travel (~7 % of the height, base Glimmora 6.7 %), crest broad / trough quick (wave skew), a sideways drift a quarter cycle behind (egg-shaped orbit) and a pendulum rock of TILT_DEG; petals trail the body by LAG_F frames. Whole pixels of FY / FX are style.pixel_bob's shift, the fraction is rendered (origin LOCCAM / LOCCAMX). Crown breathes on the float (open at the trough). Shake, frames 78-104 (slow frames, hanging at a crest): a whole-pixel rattle +-2 px held 2 frames per swing, crown and petals bristle. Spin, frames 150-239 (fast frames, one float cycle long): charge 20 frames (crown clenches, petals tuck and wind back 40 deg, body dips 2 px and trembles 1 px), snap release (peak 24.6 deg/frame, under the ~30 at which the ring seems to turn backwards), two turns coasting down, crown flared, petals flung out, body lifted 3 px and counter-rolled 4 deg, then overshoots ~6 deg, recoils ~7 and settles. Frame 0 is the fitted rest pose on a whole pixel."
+  },
+  "fit": {
+    "AZIMUTH": [
+      4,
+      29.78,
+      59.78
+    ],
+    "ELEVATION": [
+      4,
+      -45,
+      -21.490000000000002
+    ],
+    "FOV": [
+      4,
+      7.5,
+      37.5
+    ],
+    "YAW": [
+      4,
+      -2.3599999999999994,
+      27.64
+    ],
+    "PITCH": [
+      4,
+      14.89,
+      40
+    ],
+    "ROLL": [
+      4,
+      13.239999999999998,
+      40
+    ],
+    "CROWN_SWEEP": [
+      10,
+      -50,
+      40
+    ],
+    "CS_U": [
+      10,
+      -40,
+      40
+    ],
+    "CS_D": [
+      10,
+      -40,
+      40
+    ],
+    "CS_LA": [
+      10,
+      -40,
+      40
+    ],
+    "CS_RA": [
+      10,
+      -40,
+      40
+    ],
+    "CS_LB": [
+      10,
+      -40,
+      40
+    ],
+    "CS_RB": [
+      10,
+      -40,
+      40
+    ]
+  },
+  "style": {
+    "light": [
+      -0.3546,
+      -0.2689,
+      0.8955
+    ],
+    "thresholds": {
+      "petal": [
+        -0.941,
+        -0.1501,
+        -0.0457
+      ],
+      "core": [
+        -1.1504,
+        -1.069,
+        -1.0267,
+        -0.7696,
+        -0.4365
+      ],
+      "teal": [
+        -0.9297
+      ],
+      "spike": [
+        -1.0365,
+        -0.3477
+      ],
+      "bulb": [
+        -0.8438,
+        0.7984
+      ]
+    },
+    "first_shade": {
+      "petal": 0,
+      "core": 1,
+      "teal": 0,
+      "spike": 0,
+      "bulb": 0
+    },
+    "rim_light": -9,
+    "rim_shade": {
+      "petal": 0,
+      "core": 0,
+      "teal": 0,
+      "spike": 0,
+      "bulb": 0
+    },
+    "inner_line": {
+      "core": "core:0",
+      "bulb": "core:0"
+    },
+    "part_outline": [],
+    "depth_jump": 8,
+    "crease_cos": 0.05,
+    "grain": {
+      "petal": 0,
+      "core": 0,
+      "teal": 0,
+      "spike": 0,
+      "bulb": 0
+    },
+    "outline_outside": true,
+    "outline_diagonals": false,
+    "height": 86,
+    "frame_ms": 30,
+    "outline_width": 0,
+    "outline_cover": 0.5,
+    "matcap": {
+      "size": 9,
+      "values": [
+        [
+          0.1518,
+          0.12,
+          0.062,
+          0.1398,
+          0.187,
+          0.247,
+          0.2696,
+          0.2489,
+          0.2244
+        ],
+        [
+          0.1498,
+          0.1252,
+          0.1813,
+          0.1862,
+          0.2036,
+          0.201,
+          0.275,
+          0.2933,
+          0.1876
+        ],
+        [
+          0.0688,
+          0.2541,
+          0.2035,
+          0.2631,
+          0.2251,
+          0.2257,
+          0.2156,
+          0.3268,
+          0.3305
+        ],
+        [
+          0.1315,
+          0.1679,
+          0.3158,
+          0.248,
+          0.2619,
+          0.2269,
+          0.2377,
+          0.4485,
+          0.4728
+        ],
+        [
+          0.2197,
+          0.1952,
+          0.27,
+          0.345,
+          0.3307,
+          0.2748,
+          0.315,
+          0.5397,
+          0.7073
+        ],
+        [
+          0.1469,
+          0.2092,
+          0.3546,
+          0.3879,
+          0.3551,
+          0.3167,
+          0.409,
+          0.728,
+          0.7691
+        ],
+        [
+          0.1432,
+          0.2169,
+          0.3109,
+          0.34,
+          0.3327,
+          0.382,
+          0.5963,
+          0.8576,
+          0.8992
+        ],
+        [
+          0.1536,
+          0.15,
+          0.2397,
+          0.3111,
+          0.3647,
+          0.48,
+          0.8049,
+          0.8938,
+          0.9211
+        ],
+        [
+          0.1249,
+          0.1726,
+          0.2103,
+          0.2184,
+          0.3515,
+          0.6947,
+          0.8344,
+          0.8942,
+          0.9142
+        ]
+      ],
+      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/glimmora-mega.gif (a single still render, not an animated sprite) snapped to the palette by make_reference.py; style conventions from sprites/ani/glimmora.gif",
+      "samples": 1706
+    },
+    "min_line_px": 4,
+    "grain_max_bands": 1,
+    "min_frames": 3,
+    "dark_line_colours": [
+      "core:0"
+    ],
+    "depth_jump_part": {
+      "teal": 999,
+      "spike": 999,
+      "core": 3
+    },
+    "crease_cos_part": {
+      "teal": -2,
+      "spike": -2,
+      "core": 0.3
+    },
+    "transport_shading": {
+      "key_frame": 0,
+      "search": 4,
+      "tol": 3
+    },
+    "tune_fixed": [
+      "grain_bulb",
+      "grain_core",
+      "grain_petal",
+      "grain_spike",
+      "grain_teal",
+      "rim_light"
+    ],
+    "cast_shadow": {
+      "mode": "cast",
+      "strength": 0.875,
+      "unlit_strength": 0.5,
+      "cover": 0.5
+    },
+    "edge_lift": {
+      "petal": 0.2
+    },
+    "shadow_note": "Showdown's Mega Glimmora has whole dark petals (lower ones) and light ones (upper), not a dark rim along every outline. Cast shadows from a sun above (render.shadow, fitted by fit_shadow.py), rim darkening pinned off (rim_light -9, tune_fixed), petal edge pixels lifted 0.2 (edge_lift).",
+    "hires_lines": {
+      "parts": [
+        "core",
+        "bulb"
+      ],
+      "depth_jump": 1,
+      "crease_cos": 0.6,
+      "cover": 0.2,
+      "note": "crown separators: lines traced from the mesh (Freestyle lines pass: every crown petal's own edge), crown only, drawn 1 px in core:0. Depth/fold detection found only short dashes (shallow overlaps)",
+      "source": "freestyle"
+    },
+    "fast_frames": [
+      [
+        150,
+        239
+      ]
+    ],
+    "frame_anchor": "first",
+    "pixel_bob": {
+      "y": "FY(t)",
+      "x": "FX(t) + jolt(t)"
+    },
+    "smooth_silhouette": true
+  },
+  "qa": {
+    "style_score": 80,
+    "extra_line_px": 20,
+    "missing_line_px": 30,
+    "thick_lines": 0,
+    "diag_2px": 0,
+    "note": "same hard user rules as Lapras (0 thick lines, 0 2-px diagonals, 0 open outline); pop limits from Showdown's Lapras GIF since there is no Mega Glimmora animation to calibrate on",
+    "open_outline": 0,
+    "silhouette_teeth": 7.5,
+    "remedies": [
+      {
+        "steady_window": 2
+      },
+      {
+        "min_frames": 3
+      }
+    ],
+    "note_teeth": "limit = 1.25 x Showdown's own count, as for Lapras (4 -> 5): Showdown's real Glimmora sprite has 6 per frame (pointed petal tips)",
+    "region_parts": [
+      "core",
+      "petal"
+    ],
+    "core_mix_l1": 0.17,
+    "petal_mix_l1": 0.2,
+    "shadow_f1": 0.68,
+    "blob_shade_err": 0.06,
+    "dark_rim_excess": 0.03,
+    "note_shadow": "shadow limits set when the user said Showdown's shadows read stronger: before the fix shadow_f1 0.679, blob_shade_err 0.082, petal dark_rim_excess +0.106",
+    "structure_parts": [
+      "core",
+      "bulb"
+    ],
+    "core_edge_ratio": 1.0,
+    "note_structure": "crown definition vs Showdown (1.0 = same share of edges); was 0.70 with separators off",
+    "core_shape_f1": 0.95,
+    "note_shape": "crown footprint vs Showdown's (F1 within 1 px); was 0.981 before the crown-pose fit",
+    "core_tones": 7,
+    "bulb_tones": 2,
+    "note_tones": "Showdown's crown uses all 7 tones (separator + 6-lilac ramp), the bulb 2 of 3",
+    "blink_rate": 0.1005,
+    "dark_flicker_rate": 0.00493,
+    "pop_max_norm": 6.86,
+    "big_pops_share": 0.759,
+    "motion_calibration": "calibration/floating_carbink.json (Showdown's Carbink): motion limits per frame and sprite pixel; per-frame rules (1-px lines, closed outline, teeth, shadows, crown) stay as they were"
+  },
+  "log": [
+    {
+      "step": "fit_pose",
+      "parts_match": 0.698,
+      "restarts": 20
+    },
+    {
+      "step": "tune_style",
+      "style_score": 56.4
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1951,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 60.8
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.702,
+      "restarts": 20
+    },
+    {
+      "step": "petal sweep (scale, out) scored by compare.py",
+      "best": [
+        1.0,
+        0.13
+      ],
+      "parts_match": 0.715,
+      "silhouette_iou": 0.839
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1922,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 77.6
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2093,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 79.1
+    },
+    {
+      "step": "motion chosen by QA (pops)",
+      "note": "3D bob and 4 deg sway made thin gaps between petals / crown open and close (pops 4-6); sway 3 deg, petals 0.18 further out, no 3D bob: pop max 3.55, 4 steps >= 2"
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2053,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.9
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.703,
+      "restarts": 12
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2039,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.0
+    },
+    {
+      "step": "grain off (tuner had turned it on; it made speckled crown / blotchy petals, the user's 'no grains' rule)",
+      "style_score": 80.1
+    },
+    {
+      "step": "fit_shadow",
+      "light_cam": [
+        -0.383,
+        -0.663,
+        0.643
+      ],
+      "strength": 1.0,
+      "shadow_f1": 0.691,
+      "style_score": 79.9,
+      "before": {
+        "shadow_f1": 0.672,
+        "style_score": 79.9
+      }
+    },
+    {
+      "step": "fit_shadow",
+      "light_cam": [
+        0.0,
+        0.985,
+        -0.174
+      ],
+      "strength": 0.5,
+      "shadow_f1": 0.7,
+      "style_score": 79.9,
+      "blob_shade_err": 0.053,
+      "before": {
+        "shadow_f1": 0.672,
+        "style_score": 79.9,
+        "blob_shade_err": 0.078
+      }
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1699,
+      "size": 9
+    },
+    {
+      "step": "fit_shadow",
+      "light_cam": [
+        0.0,
+        0.985,
+        -0.174
+      ],
+      "strength": 0.5,
+      "shadow_f1": 0.677,
+      "style_score": 80.0,
+      "blob_shade_err": 0.064,
+      "before": {
+        "shadow_f1": 0.672,
+        "style_score": 79.9,
+        "blob_shade_err": 0.084
+      }
+    },
+    {
+      "step": "tune_style",
+      "style_score": 82.8
+    },
+    {
+      "step": "tune_style",
+      "style_score": 83.0
+    },
+    {
+      "step": "tune_style",
+      "style_score": 82.7
+    },
+    {
+      "step": "shadows",
+      "note": "cast shadows from a sun above (0, 0.985, -0.174) strength 1.0, faces turned from it 0.5, rim off, petal edge lift 0.2",
+      "before": {
+        "shadow_f1": 0.679,
+        "blob_shade_err": 0.082,
+        "petal_dark_rim_excess": 0.106
+      },
+      "after_loop": {
+        "shadow_f1": 0.699,
+        "blob_shade_err": 0.059,
+        "dark_rim_excess": -0.089,
+        "style_score": 81.2
+      }
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1644,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 79.3
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1696,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 83.8
+    },
+    {
+      "step": "tune_style",
+      "style_score": 84.0
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1706,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 84.0
+    },
+    {
+      "step": "crown rebuild",
+      "note": "crown palette 5 shades (slate separator #495379 = line), reference re-snapped by hue/saturation and its separators thinned to 1 px, crown lines traced from the mesh (Freestyle)",
+      "before": {
+        "core_edge_ratio": 0.7,
+        "core_mix_l1_vs_new_reference": 0.316
+      },
+      "after": {
+        "core_edge_ratio": 1.181,
+        "core_mix_l1": 0.153,
+        "style_score": 82.7
+      }
+    },
+    {
+      "step": "crown pose fit",
+      "result": "no gain: crown footprint already matches (shape F1 0.981; 2-98% extent 28x33 both); kept rest pose"
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 1709,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 82.1
+    },
+    {
+      "step": "crown ramp",
+      "note": "crown 7 tones (separator + 6 lilacs), bulb its own part (3 mauves); lighting kept from before (re-learning it on the new crown shifted the petals' shadows: shadow_f1 0.656, piece error 0.068)",
+      "after": {
+        "core_tones": 7,
+        "core_mix_l1": 0.12,
+        "shadow_f1": 0.684,
+        "blob_shade_err": 0.06,
+        "style_score": 81.6
+      }
+    }
+  ],
+  "pose_params_previous": {
+    "AZIMUTH": 44.78,
+    "ELEVATION": -36.49,
+    "FOV": 22.5,
+    "YAW": 12.64,
+    "PITCH": 29.89,
+    "ROLL": 28.24,
+    "PETAL_SPREAD": 0,
+    "PETAL_SWAY": 3,
+    "BOB": 0,
+    "PETAL_SCALE": 1.0,
+    "PETAL_OUT": 0.18
+  },
+  "style_previous": {
+    "light": [
+      -0.3546,
+      -0.2689,
+      0.8955
+    ],
+    "thresholds": {
+      "petal": [
+        -0.941,
+        -0.1501,
+        -0.0457
+      ],
+      "core": [
+        -0.6,
+        -0.3,
+        0.0,
+        0.25,
+        0.5
+      ],
+      "teal": [
+        -0.9297
+      ],
+      "spike": [
+        -1.0365,
+        -0.3477
+      ],
+      "bulb": [
+        -0.2,
+        0.3
+      ]
+    },
+    "first_shade": {
+      "petal": 0,
+      "core": 1,
+      "teal": 0,
+      "spike": 0,
+      "bulb": 0
+    },
+    "rim_light": -9,
+    "rim_shade": {
+      "petal": 0,
+      "core": 0,
+      "teal": 0,
+      "spike": 0,
+      "bulb": 0
+    },
+    "inner_line": {
+      "core": "core:0",
+      "bulb": "core:0"
+    },
+    "part_outline": [],
+    "depth_jump": 8,
+    "crease_cos": 0.05,
+    "grain": {
+      "petal": 0,
+      "core": 0,
+      "teal": 0,
+      "spike": 0,
+      "bulb": 0
+    },
+    "outline_outside": true,
+    "outline_diagonals": false,
+    "height": 86,
+    "frame_ms": 30,
+    "outline_width": 0,
+    "outline_cover": 0.5,
+    "matcap": {
+      "size": 9,
+      "values": [
+        [
+          0.2094,
+          0.1683,
+          0.1165,
+          0.1938,
+          0.2352,
+          0.2738,
+          0.2792,
+          0.2528,
+          0.225
+        ],
+        [
+          0.1737,
+          0.1465,
+          0.2335,
+          0.262,
+          0.321,
+          0.2745,
+          0.2961,
+          0.2969,
+          0.1884
+        ],
+        [
+          0.0714,
+          0.26,
+          0.2309,
+          0.3565,
+          0.3242,
+          0.2951,
+          0.2531,
+          0.3352,
+          0.3326
+        ],
+        [
+          0.1315,
+          0.1689,
+          0.3293,
+          0.3033,
+          0.3415,
+          0.3029,
+          0.2732,
+          0.462,
+          0.483
+        ],
+        [
+          0.224,
+          0.2007,
+          0.287,
+          0.4036,
+          0.4143,
+          0.3514,
+          0.3713,
+          0.5586,
+          0.7186
+        ],
+        [
+          0.1743,
+          0.2375,
+          0.3945,
+          0.4717,
+          0.4289,
+          0.3824,
+          0.4509,
+          0.7504,
+          0.799
+        ],
+        [
+          0.2168,
+          0.2525,
+          0.3256,
+          0.3636,
+          0.3607,
+          0.3964,
+          0.6271,
+          0.8743,
+          0.9086
+        ],
+        [
+          0.1943,
+          0.1624,
+          0.2533,
+          0.3154,
+          0.3688,
+          0.4781,
+          0.7966,
+          0.9032,
+          0.9306
+        ],
+        [
+          0.132,
+          0.1838,
+          0.2153,
+          0.222,
+          0.365,
+          0.6964,
+          0.7614,
+          0.8672,
+          0.93
+        ]
+      ],
+      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/glimmora-mega.gif (a single still render, not an animated sprite) snapped to the palette by make_reference.py; style conventions from sprites/ani/glimmora.gif",
+      "samples": 1709
+    },
+    "min_line_px": 4,
+    "grain_max_bands": 1,
+    "min_frames": 3,
+    "dark_line_colours": [
+      "core:0"
+    ],
+    "depth_jump_part": {
+      "teal": 999,
+      "spike": 999,
+      "core": 3
+    },
+    "crease_cos_part": {
+      "teal": -2,
+      "spike": -2,
+      "core": 0.3
+    },
+    "transport_shading": {
+      "key_frame": 0,
+      "search": 4,
+      "tol": 3
+    },
+    "tune_fixed": [
+      "grain_bulb",
+      "grain_core",
+      "grain_petal",
+      "grain_spike",
+      "grain_teal",
+      "rim_light"
+    ],
+    "cast_shadow": {
+      "mode": "cast",
+      "strength": 0.875,
+      "unlit_strength": 0.5,
+      "cover": 0.5
+    },
+    "edge_lift": {
+      "petal": 0.2
+    },
+    "shadow_note": "Showdown's Mega Glimmora has whole dark petals (lower ones) and light ones (upper), not a dark rim along every outline. Cast shadows from a sun above (render.shadow, fitted by fit_shadow.py), rim darkening pinned off (rim_light -9, tune_fixed), petal edge pixels lifted 0.2 (edge_lift).",
+    "hires_lines": {
+      "parts": [
+        "core",
+        "bulb"
+      ],
+      "depth_jump": 1,
+      "crease_cos": 0.6,
+      "cover": 0.2,
+      "note": "crown separators: lines traced from the mesh (Freestyle lines pass: every crown petal's own edge), crown only, drawn 1 px in core:0. Depth/fold detection found only short dashes (shallow overlaps)",
+      "source": "freestyle"
+    }
+  },
+  "fit_motion_fixed": {
+    "PETAL_SCALE": [
+      0.1,
+      0.6,
+      1.1
+    ],
+    "PETAL_OUT": [
+      0.15,
+      0.0,
+      0.9
+    ]
+  },
+  "reference_hue_parts": {
+    "spike": [
+      0.53,
+      0.6
+    ],
+    "teal": [
+      0.44,
+      0.53
+    ],
+    "core": [
+      0.6,
+      0.69,
+      0.0,
+      0.55
+    ],
+    "bulb": [
+      0.69,
+      0.8,
+      0.0,
+      0.42
+    ]
+  },
+  "reference_thin": {
+    "core:0": "core:1"
+  },
+  "fit_weights": {
+    "core": 0.5
+  },
+  "motion_previous": {
+    "pose_params": {
+      "SPIN_T0": 0.57778,
+      "SPIN_LEN": 0.25556,
+      "SPIN_DELAY": 0.03333,
+      "WIND_LEN": 0.07778,
+      "OVER_T0": 0.81111,
+      "OVER_LEN": 0.1,
+      "LAG_PH": 0.2,
+      "RIPPLE": 0.02,
+      "FLOAT_PH": 1.6958,
+      "FLOAT_PX": 5.0393,
+      "BREATH_OPEN": 15,
+      "BREATH_SCALE": 0.08,
+      "WIND_DEG": 20,
+      "SPIN_DEG": 720,
+      "OVER_DEG": 16
+    },
+    "pose": [
+      [
+        "upper_skirt_01",
+        "SCALE",
+        "1 + BREATH_SCALE*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "lower_skirt_01",
+        "SCALE",
+        "1 + BREATH_SCALE*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "left_skirt_a_01",
+        "SCALE",
+        "1 + BREATH_SCALE*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "right_skirt_a_01",
+        "SCALE",
+        "1 + BREATH_SCALE*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "left_skirt_b_01",
+        "SCALE",
+        "1 + BREATH_SCALE*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "right_skirt_b_01",
+        "SCALE",
+        "1 + BREATH_SCALE*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "upper_skirt_01",
+        "A:-1,0,0",
+        "CROWN_SWEEP + CS_U - BREATH_OPEN*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "lower_skirt_01",
+        "A:1,0,0",
+        "CROWN_SWEEP + CS_D - BREATH_OPEN*(0.5 - 0.5*cos(6*pi*t))"
+      ],
+      [
+        "left_skirt_a_01",
+        "A:-0.45,0,0.89",
+        "CROWN_SWEEP + CS_LA"
+      ],
+      [
+        "right_skirt_a_01",
+        "A:-0.45,0,-0.89",
+        "CROWN_SWEEP + CS_RA"
+      ],
+      [
+        "left_skirt_b_01",
+        "A:0.45,0,0.89",
+        "CROWN_SWEEP + CS_LB"
+      ],
+      [
+        "right_skirt_b_01",
+        "A:0.45,0,-0.89",
+        "CROWN_SWEEP + CS_RB"
+      ],
+      [
+        "upper_feeler_02",
+        "SCALE",
+        "PETAL_SCALE"
+      ],
+      [
+        "upper_feeler_02",
+        "LOCZ",
+        "1*PETAL_OUT"
+      ],
+      [
+        "lower_feeler_02",
+        "SCALE",
+        "PETAL_SCALE"
+      ],
+      [
+        "lower_feeler_02",
+        "LOCZ",
+        "-1*PETAL_OUT"
+      ],
+      [
+        "left_feeler_a_02",
+        "SCALE",
+        "PETAL_SCALE"
+      ],
+      [
+        "left_feeler_a_02",
+        "LOCX",
+        "0.857*PETAL_OUT"
+      ],
+      [
+        "left_feeler_a_02",
+        "LOCZ",
+        "0.514*PETAL_OUT"
+      ],
+      [
+        "right_feeler_a_02",
+        "SCALE",
+        "PETAL_SCALE"
+      ],
+      [
+        "right_feeler_a_02",
+        "LOCX",
+        "-0.857*PETAL_OUT"
+      ],
+      [
+        "right_feeler_a_02",
+        "LOCZ",
+        "0.514*PETAL_OUT"
+      ],
+      [
+        "left_feeler_b_02",
+        "SCALE",
+        "PETAL_SCALE"
+      ],
+      [
+        "left_feeler_b_02",
+        "LOCX",
+        "0.857*PETAL_OUT"
+      ],
+      [
+        "left_feeler_b_02",
+        "LOCZ",
+        "-0.514*PETAL_OUT"
+      ],
+      [
+        "right_feeler_b_02",
+        "SCALE",
+        "PETAL_SCALE"
+      ],
+      [
+        "right_feeler_b_02",
+        "LOCX",
+        "-0.857*PETAL_OUT"
+      ],
+      [
+        "right_feeler_b_02",
+        "LOCZ",
+        "-0.514*PETAL_OUT"
+      ],
+      [
+        "root_feeler",
+        "Y",
+        "- PETAL_SWAY*(0.5 - 0.5*cos(4*pi*ts)) - WIND_DEG*bump((t - SPIN_T0)/WIND_LEN) + SPIN_DEG*smoother((t - SPIN_T0 - SPIN_DELAY)/SPIN_LEN) + OVER_DEG*bump((t - OVER_T0)/OVER_LEN)"
+      ],
+      [
+        "waist",
+        "Z",
+        "YAW"
+      ],
+      [
+        "waist",
+        "X",
+        "PITCH"
+      ],
+      [
+        "waist",
+        "Y",
+        "ROLL"
+      ],
+      [
+        "origin",
+        "LOCZ",
+        "BOB*c"
+      ],
+      [
+        "origin",
+        "LOCCAM",
+        "PX_U*(FLOAT_PX*sin(6*pi*t + FLOAT_PH) - round(FLOAT_PX*sin(6*pi*t + FLOAT_PH)))"
+      ],
+      [
+        "upper_feeler_02",
+        "LOCCAM",
+        "PX_U*FLOAT_PX*(sin(6*pi*t + FLOAT_PH - LAG_PH - 0*RIPPLE) - sin(6*pi*t + FLOAT_PH))"
+      ],
+      [
+        "left_feeler_a_02",
+        "LOCCAM",
+        "PX_U*FLOAT_PX*(sin(6*pi*t + FLOAT_PH - LAG_PH - 1*RIPPLE) - sin(6*pi*t + FLOAT_PH))"
+      ],
+      [
+        "left_feeler_b_02",
+        "LOCCAM",
+        "PX_U*FLOAT_PX*(sin(6*pi*t + FLOAT_PH - LAG_PH - 2*RIPPLE) - sin(6*pi*t + FLOAT_PH))"
+      ],
+      [
+        "lower_feeler_02",
+        "LOCCAM",
+        "PX_U*FLOAT_PX*(sin(6*pi*t + FLOAT_PH - LAG_PH - 3*RIPPLE) - sin(6*pi*t + FLOAT_PH))"
+      ],
+      [
+        "right_feeler_b_02",
+        "LOCCAM",
+        "PX_U*FLOAT_PX*(sin(6*pi*t + FLOAT_PH - LAG_PH - 4*RIPPLE) - sin(6*pi*t + FLOAT_PH))"
+      ],
+      [
+        "right_feeler_a_02",
+        "LOCCAM",
+        "PX_U*FLOAT_PX*(sin(6*pi*t + FLOAT_PH - LAG_PH - 5*RIPPLE) - sin(6*pi*t + FLOAT_PH))"
+      ]
+    ],
+    "motion": {
+      "frames": 180,
+      "note": "ours (Showdown has no Mega Glimmora animation; float modelled on Showdown's Carbink). 180 frames = 5.4 s. Float: +-FLOAT_PX = 4.7 px (Carbink: 13 % of its height), split into a whole-pixel shift of the finished sprite (style.pixel_bob, same formula) and the leftover fraction rendered in 3-D along the camera's up (origin LOCCAM), so parts step at different moments like Carbink while the time smoothing only sees sub-pixel change; 3 cycles per loop (60-frame period = the spin window, so the loop is seamless). Desync: the petals trail the crown by LAG_PH (~4 frames), each a little more around the ring (RIPPLE); FLOAT_PH puts the loop start where that trail is ~0, so frame 0 still matches Showdown's still. Breathing: the crown opens BREATH_OPEN and grows BREATH_SCALE while sinking, closes while rising (a jellyfish pulse). Spin, frames 104-163: wind-up WIND_DEG, two turns (smootherstep, peak 29 deg/frame), overshoot OVER_DEG. Petal sway one-sided (0 to -PETAL_SWAY) on slow time ts. FLOAT_PX is set so frame 0 sits on a whole pixel (its rendered fraction is 0: frame 0 is drawn exactly as fitted to Showdown's still)."
+    },
+    "pixel_bob": {
+      "amplitude": 5.0393,
+      "cycles": 3,
+      "phase": 1.6958
+    },
+    "fast_frames": [
+      [
+        104,
+        163
+      ]
+    ]
+  }
+}

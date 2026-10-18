@@ -1,0 +1,368 @@
+{
+  "name": "Mega Golisopod",
+  "model": "MegaGolisopod/MegaGolisopod.blend",
+  "reference": null,
+  "fit_reference": "reference/showdown_base_front.png",
+  "fit_silhouette_only": true,
+  "reference_source": "no Mega Golisopod sprite on Showdown: camera fitted to the shape of Showdown's normal Golisopod (sprites/ani/golisopod.gif); palette from the Mega's own textures with Showdown's conventions",
+  "palette": {
+    "outline": "#24292e",
+    "parts": {
+      "armour": [
+        "#5d656c",
+        "#828b93",
+        "#a9b2b9",
+        "#d3dade"
+      ],
+      "flesh": [
+        "#5e434b",
+        "#82646d",
+        "#a4868f",
+        "#c6aab2"
+      ],
+      "purple": [
+        "#5a2a6a",
+        "#7d3f92",
+        "#a058b8",
+        "#c27ed8"
+      ],
+      "dark": [
+        "#2f3638",
+        "#465052",
+        "#5f6b6a",
+        "#7c8986"
+      ]
+    },
+    "note": "no Mega Golisopod reference: hues from the Mega's own textures, ramps brightened to Showdown's level (4 shades per part like the normal form's sprite), outline a near-black of the armour hue"
+  },
+  "parts": {
+    "materials": {
+      "body_b": "armour|purple|dark",
+      "body_a": "armour|flesh|dark",
+      "eye": "dark"
+    },
+    "default_material": "body",
+    "albedo": {
+      "armour": "#747b81",
+      "flesh": "#7a6168",
+      "purple": "#8b4b9c",
+      "dark": "#4c5655"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      0,
+      1.25
+    ],
+    "distance": 20,
+    "ortho_scale": 4.4,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 460,
+    "height": 460,
+    "depth_range": 3,
+    "freestyle": {},
+    "shadow": {
+      "light_cam": [
+        0.0,
+        0.985,
+        -0.174
+      ],
+      "note": "sun direction (camera space) for cast shadows; fitted by fit_shadow.py + full-loop QA"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 37.62,
+    "ELEVATION": -7.39,
+    "FOV": 23.16,
+    "BREATH": 1.2,
+    "FOLLOW": 2.0,
+    "ARM": 1.5,
+    "LIFT": 10,
+    "SNAP": 30,
+    "FLEX": 8
+  },
+  "pose": [
+    [
+      "spine_01",
+      "X",
+      "BREATH*sin(6*pi*t)"
+    ],
+    [
+      "left_feeler_c_01",
+      "X",
+      "-FOLLOW*sin(6*pi*t - 0.6) - LIFT*bump((t - 0.5500)/0.3167)"
+    ],
+    [
+      "right_feeler_c_01",
+      "X",
+      "-FOLLOW*sin(6*pi*t - 0.6) - LIFT*bump((t - 0.5500)/0.3167)"
+    ],
+    [
+      "left_claw_a",
+      "X",
+      "SNAP*(smoother((t - 0.5833)/0.1167) - smoother((t - 0.7333)/0.0500))"
+    ],
+    [
+      "right_claw_a",
+      "X",
+      "SNAP*(smoother((t - 0.5833)/0.1167) - smoother((t - 0.7333)/0.0500))"
+    ],
+    [
+      "left_arm_01",
+      "Y",
+      "ARM*sin(6*pi*t - 0.4) + FLEX*bump((t - 0.5500)/0.3167)"
+    ],
+    [
+      "right_arm_01",
+      "Y",
+      "-ARM*sin(6*pi*t - 0.4) - FLEX*bump((t - 0.5500)/0.3167)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "ours, modelled on Showdown's normal Golisopod idle (a subtle 39-frame breath). 120 frames = 3.6 s: 3 breaths (spine BREATH deg), the raised claw arms and forearms follow a beat later (FOLLOW, ARM). Signature claw flex, frames 66-104: the claw arms lift LIFT deg, the pincers ease open SNAP deg and snap shut in 6 frames, the forearms flex out FLEX deg, then settle (sin^2 / smootherstep easing). The claw flex (frames 66-105, exactly one breath long so the frames on either side match) is an intentional move beyond the idle: drawn per frame and left out of the idle's pop / flicker limits (style.fast_frames), like Glimmora's spin; every per-frame rule still applies."
+  },
+  "fit": {
+    "AZIMUTH": [
+      15,
+      -10,
+      80
+    ],
+    "ELEVATION": [
+      6,
+      -15,
+      35
+    ],
+    "FOV": [
+      8,
+      0,
+      40
+    ]
+  },
+  "style": {
+    "light": [
+      -0.3546,
+      -0.2689,
+      0.8955
+    ],
+    "thresholds": {
+      "armour": [
+        -0.9074,
+        -0.5609,
+        -0.2591
+      ],
+      "flesh": [
+        -0.7875,
+        -0.5465,
+        -0.3115
+      ],
+      "purple": [
+        -0.6138,
+        -0.3642,
+        -0.1836
+      ],
+      "dark": [
+        -0.6688,
+        -0.4589,
+        -0.2155
+      ]
+    },
+    "first_shade": {
+      "armour": 0,
+      "flesh": 0,
+      "purple": 0,
+      "dark": 0
+    },
+    "rim_light": -9,
+    "rim_shade": {
+      "armour": 0,
+      "flesh": 0,
+      "purple": 0,
+      "dark": 0
+    },
+    "part_outline": [],
+    "depth_jump": 8,
+    "crease_cos": 0.05,
+    "grain": {
+      "armour": 0,
+      "flesh": 0,
+      "purple": 0,
+      "dark": 0
+    },
+    "outline_outside": true,
+    "outline_diagonals": false,
+    "height": 88,
+    "frame_ms": 30,
+    "outline_width": 0,
+    "outline_cover": 0.5,
+    "matcap": {
+      "size": 9,
+      "values": [
+        [
+          0.3345,
+          0.4079,
+          0.4158,
+          0.4806,
+          0.4648,
+          0.3849,
+          0.2692,
+          0.3248,
+          0.3633
+        ],
+        [
+          0.39,
+          0.3694,
+          0.5513,
+          0.6486,
+          0.6337,
+          0.6347,
+          0.4209,
+          0.3657,
+          0.3391
+        ],
+        [
+          0.402,
+          0.5434,
+          0.6157,
+          0.669,
+          0.6282,
+          0.4465,
+          0.504,
+          0.3437,
+          0.2879
+        ],
+        [
+          0.5552,
+          0.6274,
+          0.6774,
+          0.7029,
+          0.671,
+          0.4401,
+          0.353,
+          0.2538,
+          0.1762
+        ],
+        [
+          0.4973,
+          0.448,
+          0.5335,
+          0.421,
+          0.5538,
+          0.5192,
+          0.362,
+          0.2102,
+          0.1752
+        ],
+        [
+          0.3349,
+          0.3156,
+          0.3754,
+          0.4435,
+          0.6623,
+          0.7262,
+          0.4121,
+          0.2817,
+          0.3417
+        ],
+        [
+          0.1887,
+          0.2723,
+          0.2499,
+          0.4763,
+          0.5911,
+          0.7968,
+          0.6664,
+          0.4979,
+          0.526
+        ],
+        [
+          0.1521,
+          0.0914,
+          0.2031,
+          0.2872,
+          0.4901,
+          0.6375,
+          0.7338,
+          0.7106,
+          0.6208
+        ],
+        [
+          0.0444,
+          0.1733,
+          0.3445,
+          0.4235,
+          0.4681,
+          0.5425,
+          0.6747,
+          0.7407,
+          0.7322
+        ]
+      ],
+      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/lapras.gif (frame 0)",
+      "samples": 2258
+    },
+    "min_line_px": 4,
+    "grain_max_bands": 1,
+    "min_frames": 3,
+    "depth_jump_part": {},
+    "crease_cos_part": {},
+    "tune_fixed": [
+      "rim_light",
+      "grain_armour",
+      "grain_flesh",
+      "grain_purple",
+      "grain_dark"
+    ],
+    "cast_shadow": {
+      "mode": "cast",
+      "strength": 0.875,
+      "unlit_strength": 0.5,
+      "cover": 0.5
+    },
+    "frame_anchor": "first",
+    "smooth_silhouette": true,
+    "inner_line": {},
+    "target_shares_default": [
+      0.2,
+      0.32,
+      0.3,
+      0.18
+    ],
+    "fast_frames": [
+      [
+        66,
+        105
+      ]
+    ]
+  },
+  "qa": {
+    "thick_lines": 0,
+    "diag_2px": 0,
+    "open_outline": 0,
+    "silhouette_teeth": 27.5,
+    "blink_rate": 0.08058,
+    "dark_flicker_rate": 0.00668,
+    "pop_max_norm": 3.75,
+    "big_pops_share": 0.718,
+    "motion_calibration": "calibration/idle_golisopod.json (Showdown's normal Golisopod)",
+    "note": "no Mega Golisopod reference: per-frame rules + motion limits; teeth limit as Glimmora's until calibrated on the normal form",
+    "note_teeth": "1.25 x Showdown's normal Golisopod (22 per frame)"
+  },
+  "log": [
+    {
+      "step": "fit_pose",
+      "parts_match": 0.504,
+      "restarts": 12
+    }
+  ],
+  "pose_params_previous": {
+    "AZIMUTH": 30,
+    "ELEVATION": 8,
+    "FOV": 20
+  }
+}

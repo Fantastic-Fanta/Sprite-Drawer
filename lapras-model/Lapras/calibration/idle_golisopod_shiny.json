@@ -1,0 +1,5 @@
+{"source": "https://play.pokemonshowdown.com/sprites/ani-shiny/golisopod.gif (Showdown's shiny Golisopod: the normal sprite's 39 frames recoloured; pixel data read in the browser)",
+ "measured": {"frames": 39, "frame_ms": 30, "size": [83, 80], "solid_px": 3616, "pop_max": 7.1, "big_pops": 32},
+ "limits": {"blink_rate": 0.07656, "dark_flicker_rate": 0.00301, "pop_max_norm": 3.73, "big_pops_share": 0.821},
+ "method": "as floating_carbink.json",
+ "why": "the same animation as the normal sprite, only recoloured: the brighter shiny armour has more contrast against the outline, so the same line moves weigh more (big_pops_share 0.718 -> 0.821). Used for our recoloured shiny front."}

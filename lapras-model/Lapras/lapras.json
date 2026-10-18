@@ -1,0 +1,1030 @@
+{
+  "name": "Lapras",
+  "model": "Lapras.blend",
+  "reference": "reference/showdown_frame0.png",
+  "reference_source": "https://play.pokemonshowdown.com/sprites/ani/lapras.gif (frame 0)",
+  "palette": {
+    "outline": "#373f43",
+    "parts": {
+      "blue": [
+        "#4e748a",
+        "#60b4e0",
+        "#6cbfe7",
+        "#7ed0f2"
+      ],
+      "cream": [
+        "#c3baa7",
+        "#d7cdb8",
+        "#e6dbc6",
+        "#ece0c9",
+        "#fdf9e1"
+      ],
+      "shell": [
+        "#92969c",
+        "#b3b7c3",
+        "#c7ccd8",
+        "#d7d7e8",
+        "#e6e6f7"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "BodyB": "shell",
+      "Eye": "eye"
+    },
+    "default_material": "body",
+    "albedo": {
+      "blue": "#5fb3e3",
+      "cream": "#ece0c9"
+    },
+    "eye": {
+      "dark_below": 110,
+      "dark": "outline",
+      "white_is": "cream",
+      "light": "shell:4",
+      "note": "eye texture pixels darker than dark_below -> outline; pixels whose texture is closest to the white_is albedo -> fixed colour `light` (Showdown draws eye whites in shell colours)",
+      "highlight": "cream:4",
+      "stamp_extra": [
+        "blue:0"
+      ],
+      "stamp": {
+        "box": [
+          24,
+          13,
+          31,
+          19
+        ],
+        "anchor": [
+          26.6,
+          16.2
+        ],
+        "pixels": [
+          [
+            -1.6,
+            -3.2,
+            "blue:0"
+          ],
+          [
+            1.4,
+            -3.2,
+            "blue:0"
+          ],
+          [
+            2.4,
+            -3.2,
+            "blue:0"
+          ],
+          [
+            0.4,
+            -2.2,
+            "outline"
+          ],
+          [
+            1.4,
+            -2.2,
+            "shell:2"
+          ],
+          [
+            2.4,
+            -2.2,
+            "shell:3"
+          ],
+          [
+            3.4,
+            -2.2,
+            "blue:0"
+          ],
+          [
+            -0.6,
+            -1.2,
+            "outline"
+          ],
+          [
+            0.4,
+            -1.2,
+            "outline"
+          ],
+          [
+            1.4,
+            -1.2,
+            "shell:2"
+          ],
+          [
+            2.4,
+            -1.2,
+            "cream:4"
+          ],
+          [
+            3.4,
+            -1.2,
+            "blue:0"
+          ],
+          [
+            -0.6,
+            -0.2,
+            "shell:4"
+          ],
+          [
+            0.4,
+            -0.2,
+            "outline"
+          ],
+          [
+            1.4,
+            -0.2,
+            "outline"
+          ],
+          [
+            2.4,
+            -0.2,
+            "cream:4"
+          ],
+          [
+            3.4,
+            -0.2,
+            "shell:0"
+          ],
+          [
+            -1.6,
+            0.8,
+            "outline"
+          ],
+          [
+            -0.6,
+            0.8,
+            "outline"
+          ],
+          [
+            0.4,
+            0.8,
+            "outline"
+          ],
+          [
+            1.4,
+            0.8,
+            "outline"
+          ],
+          [
+            2.4,
+            0.8,
+            "cream:4"
+          ],
+          [
+            3.4,
+            0.8,
+            "blue:0"
+          ],
+          [
+            -1.6,
+            1.8,
+            "outline"
+          ],
+          [
+            -0.6,
+            1.8,
+            "shell:0"
+          ],
+          [
+            0.4,
+            1.8,
+            "shell:0"
+          ],
+          [
+            1.4,
+            1.8,
+            "blue:0"
+          ],
+          [
+            2.4,
+            1.8,
+            "blue:0"
+          ],
+          [
+            -1.6,
+            2.8,
+            "blue:0"
+          ],
+          [
+            -0.6,
+            2.8,
+            "blue:0"
+          ]
+        ],
+        "note": "eye cut from the reference by make_eye_stamp.py; [dx, dy, colour] relative to the anchor"
+      }
+    }
+  },
+  "style": {
+    "light": [
+      -0.3546,
+      -0.2689,
+      0.8955
+    ],
+    "thresholds": {
+      "blue": [
+        -0.0331,
+        0.1802
+      ],
+      "cream": [
+        -0.1462,
+        -0.0639,
+        -0.0429,
+        0.2935
+      ],
+      "shell": [
+        -1.042,
+        -0.8315,
+        -0.4047,
+        -0.0527
+      ]
+    },
+    "first_shade": {
+      "blue": 1,
+      "cream": 0,
+      "shell": 0
+    },
+    "rim_light": -0.25,
+    "rim_shade": {
+      "blue": 0,
+      "cream": 0,
+      "shell": {
+        "drop": 2
+      }
+    },
+    "inner_line": {
+      "blue": "blue:0",
+      "cream": "cream:0"
+    },
+    "part_outline": [
+      "shell"
+    ],
+    "depth_jump": 2,
+    "crease_cos": 0.85,
+    "grain": {
+      "blue": 2.875,
+      "cream": 0.375,
+      "shell": 18.25
+    },
+    "outline_outside": true,
+    "outline_diagonals": false,
+    "height": 82,
+    "frame_ms": 30,
+    "outline_width": 0,
+    "outline_cover": 0.5,
+    "matcap": {
+      "size": 9,
+      "values": [
+        [
+          0.3345,
+          0.4079,
+          0.4158,
+          0.4806,
+          0.4648,
+          0.3849,
+          0.2692,
+          0.3248,
+          0.3633
+        ],
+        [
+          0.39,
+          0.3694,
+          0.5513,
+          0.6486,
+          0.6337,
+          0.6347,
+          0.4209,
+          0.3657,
+          0.3391
+        ],
+        [
+          0.402,
+          0.5434,
+          0.6157,
+          0.669,
+          0.6282,
+          0.4465,
+          0.504,
+          0.3437,
+          0.2879
+        ],
+        [
+          0.5552,
+          0.6274,
+          0.6774,
+          0.7029,
+          0.671,
+          0.4401,
+          0.353,
+          0.2538,
+          0.1762
+        ],
+        [
+          0.4973,
+          0.448,
+          0.5335,
+          0.421,
+          0.5538,
+          0.5192,
+          0.362,
+          0.2102,
+          0.1752
+        ],
+        [
+          0.3349,
+          0.3156,
+          0.3754,
+          0.4435,
+          0.6623,
+          0.7262,
+          0.4121,
+          0.2817,
+          0.3417
+        ],
+        [
+          0.1887,
+          0.2723,
+          0.2499,
+          0.4763,
+          0.5911,
+          0.7968,
+          0.6664,
+          0.4979,
+          0.526
+        ],
+        [
+          0.1521,
+          0.0914,
+          0.2031,
+          0.2872,
+          0.4901,
+          0.6375,
+          0.7338,
+          0.7106,
+          0.6208
+        ],
+        [
+          0.0444,
+          0.1733,
+          0.3445,
+          0.4235,
+          0.4681,
+          0.5425,
+          0.6747,
+          0.7407,
+          0.7322
+        ]
+      ],
+      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/lapras.gif (frame 0)",
+      "samples": 2258
+    },
+    "min_line_px": 4,
+    "grain_max_bands": 1,
+    "crease_cos_part": {
+      "shell": -2
+    },
+    "depth_jump_part": {
+      "shell": 999
+    },
+    "highlight": {
+      "shell": {
+        "colour": "cream:4",
+        "above": 0.669,
+        "min_edge_dist": 3,
+        "note": "most-lit shell pixels at least 3 px in from the edge (spikes, not the lip) take Showdown's cream-white",
+        "min_border_dist": 6
+      }
+    },
+    "line_side": [
+      "blue"
+    ],
+    "border_lines": [
+      {
+        "between": [
+          "blue",
+          "cream"
+        ],
+        "colour": "blue:0",
+        "box_dx": [
+          -18,
+          4
+        ],
+        "box_dy": [
+          3,
+          12
+        ],
+        "note": "mouth / chin: Showdown's dark-blue line where the blue jaw meets the cream chin (box relative to the eye)"
+      }
+    ],
+    "transport_lines": {
+      "key_frame": 0
+    },
+    "parallel_lines": [
+      {
+        "part": "shell",
+        "distance": 3,
+        "note": "shell lip: outline, 2 lip px, '#' crease at +3 from the first lip pixel (Showdown's '=' shade beside it dropped: it made a 2-px dark band, against the 1-px rule)",
+        "offset": [
+          1,
+          0
+        ]
+      }
+    ],
+    "min_frames": 3,
+    "dark_line_colours": [
+      "blue:0"
+    ]
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      -10,
+      105
+    ],
+    "distance": 1000,
+    "ortho_scale": 440,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 480,
+    "height": 440,
+    "freestyle": {}
+  },
+  "pose_params": {
+    "AZIMUTH": 63.47,
+    "ELEVATION": 5.56,
+    "FOV": 20.74,
+    "BODY_PITCH": -5.58,
+    "NECK_UP": 3.82,
+    "HEAD_TURN": -4.0,
+    "HEAD_PITCH": -10.0,
+    "HEAD_SCALE": 1.0,
+    "L_FLIPPER_FWD": 8.72,
+    "R_FLIPPER_FWD": -43.12,
+    "FRONT_FLIPPER_DOWN": 4.49,
+    "REAR_FLIPPER_BACK": 70,
+    "L_FLIPPER_PITCH": -5.62,
+    "R_FLIPPER_PITCH": -18.75,
+    "BODY_ROLL": 0.0,
+    "TAIL_SIDE": 0.0,
+    "REAR_FLIPPER_PITCH": -10.0,
+    "NECK_SIDE": 0.0
+  },
+  "pose": [
+    [
+      "Waist",
+      "X",
+      "BODY_PITCH + 0.75*s"
+    ],
+    [
+      "Waist",
+      "Y",
+      "BODY_ROLL"
+    ],
+    [
+      "Tail1",
+      "X",
+      "-0.8*BODY_PITCH + 3*c"
+    ],
+    [
+      "Tail1",
+      "Z",
+      "TAIL_SIDE"
+    ],
+    [
+      "LThigh",
+      "X",
+      "-(BODY_PITCH + 0.75*s)"
+    ],
+    [
+      "LThigh",
+      "Z",
+      "REAR_FLIPPER_BACK"
+    ],
+    [
+      "LThigh",
+      "X",
+      "REAR_FLIPPER_PITCH"
+    ],
+    [
+      "LArm",
+      "Z",
+      "-L_FLIPPER_FWD"
+    ],
+    [
+      "LArm",
+      "Y",
+      "FRONT_FLIPPER_DOWN - 4*s"
+    ],
+    [
+      "LArm",
+      "X",
+      "L_FLIPPER_PITCH"
+    ],
+    [
+      "RThigh",
+      "X",
+      "-(BODY_PITCH + 0.75*s)"
+    ],
+    [
+      "RThigh",
+      "Z",
+      "-REAR_FLIPPER_BACK"
+    ],
+    [
+      "RThigh",
+      "X",
+      "REAR_FLIPPER_PITCH"
+    ],
+    [
+      "RArm",
+      "Z",
+      "R_FLIPPER_FWD"
+    ],
+    [
+      "RArm",
+      "Y",
+      "-(FRONT_FLIPPER_DOWN - 4*s)"
+    ],
+    [
+      "RArm",
+      "X",
+      "R_FLIPPER_PITCH"
+    ],
+    [
+      "Neck1",
+      "X",
+      "NECK_UP/2 + 2*c"
+    ],
+    [
+      "Neck1",
+      "Z",
+      "NECK_SIDE/3"
+    ],
+    [
+      "Neck2",
+      "X",
+      "NECK_UP/4 + 2*s"
+    ],
+    [
+      "Neck2",
+      "Z",
+      "NECK_SIDE/3"
+    ],
+    [
+      "Neck3",
+      "X",
+      "NECK_UP/4 - 1.5*c"
+    ],
+    [
+      "Neck3",
+      "Z",
+      "NECK_SIDE/3"
+    ],
+    [
+      "Head",
+      "Z",
+      "HEAD_TURN + 3*s"
+    ],
+    [
+      "Head",
+      "X",
+      "HEAD_PITCH - 3*c"
+    ],
+    [
+      "Head",
+      "SCALE",
+      "HEAD_SCALE"
+    ]
+  ],
+  "motion": {
+    "frames": 89,
+    "note": "s, c = sin/cos of one loop; idle terms are ours, not the game's"
+  },
+  "fit": {
+    "AZIMUTH": [
+      8,
+      0,
+      70
+    ],
+    "ELEVATION": [
+      4,
+      -5,
+      30
+    ],
+    "FOV": [
+      10,
+      0,
+      60
+    ],
+    "BODY_PITCH": [
+      6,
+      -75,
+      0
+    ],
+    "NECK_UP": [
+      8,
+      -20,
+      60
+    ],
+    "HEAD_TURN": [
+      8,
+      -70,
+      20
+    ],
+    "HEAD_PITCH": [
+      8,
+      -60,
+      70
+    ],
+    "HEAD_SCALE": [
+      0.1,
+      1.0,
+      1.4
+    ],
+    "L_FLIPPER_FWD": [
+      15,
+      -90,
+      160
+    ],
+    "R_FLIPPER_FWD": [
+      15,
+      -120,
+      80
+    ],
+    "FRONT_FLIPPER_DOWN": [
+      8,
+      -30,
+      40
+    ],
+    "REAR_FLIPPER_BACK": [
+      10,
+      -20,
+      100
+    ],
+    "L_FLIPPER_PITCH": [
+      15,
+      -90,
+      90
+    ],
+    "R_FLIPPER_PITCH": [
+      15,
+      -90,
+      90
+    ],
+    "BODY_ROLL": [
+      6,
+      -30,
+      30
+    ],
+    "TAIL_SIDE": [
+      10,
+      -50,
+      50
+    ],
+    "REAR_FLIPPER_PITCH": [
+      10,
+      -45,
+      45
+    ],
+    "NECK_SIDE": [
+      8,
+      -45,
+      45
+    ]
+  },
+  "log": [
+    {
+      "step": "fit_pose",
+      "parts_match": 0.776,
+      "restarts": 30
+    },
+    {
+      "step": "tune_style",
+      "style_score": 79.2
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.777,
+      "restarts": 12
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.829,
+      "restarts": 12
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.4
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2153,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.7
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.833,
+      "restarts": 10
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.832,
+      "restarts": 16
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2233,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.7
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2244,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.3
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2244,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 80.3
+    },
+    {
+      "step": "tune_style",
+      "style_score": 84.9
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2246,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 84.1
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.863,
+      "restarts": 12
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2258,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 85.9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 85.2
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.864,
+      "restarts": 20
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2251,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 85.0
+    },
+    {
+      "step": "learn_matcap",
+      "samples": 2258,
+      "size": 9
+    },
+    {
+      "step": "tune_style",
+      "style_score": 83.6
+    },
+    {
+      "step": "tune_style",
+      "style_score": 85.3
+    },
+    {
+      "step": "tune_style",
+      "style_score": 85.7
+    }
+  ],
+  "landmarks": {
+    "eye": {
+      "ref_xy": [
+        26.6,
+        16.1
+      ],
+      "weight": 0.01,
+      "note": "centre of the pupil in the reference frame (x, y px); fit_pose subtracts weight x distance"
+    }
+  },
+  "style_previous": {
+    "light": [
+      -0.3546,
+      -0.2689,
+      0.8955
+    ],
+    "thresholds": {
+      "blue": [
+        -0.0331,
+        0.1802
+      ],
+      "cream": [
+        -0.1462,
+        -0.0639,
+        -0.0429,
+        0.2935
+      ],
+      "shell": [
+        -1.0178,
+        -0.8335,
+        -0.4099,
+        0.0145
+      ]
+    },
+    "first_shade": {
+      "blue": 1,
+      "cream": 0,
+      "shell": 0
+    },
+    "rim_light": -0.25,
+    "rim_shade": {
+      "blue": 0,
+      "cream": 0,
+      "shell": 0
+    },
+    "inner_line": {
+      "blue": "blue:0"
+    },
+    "part_outline": [
+      "shell"
+    ],
+    "depth_jump": 2,
+    "crease_cos": 0.85,
+    "grain": {
+      "blue": 2.875,
+      "cream": 0.375,
+      "shell": 18.25
+    },
+    "outline_outside": true,
+    "outline_diagonals": true,
+    "height": 82,
+    "frame_ms": 30,
+    "outline_width": 1.0,
+    "outline_cover": 0.5,
+    "matcap": {
+      "size": 9,
+      "values": [
+        [
+          0.3345,
+          0.4079,
+          0.4158,
+          0.4806,
+          0.4648,
+          0.3849,
+          0.2692,
+          0.3248,
+          0.3633
+        ],
+        [
+          0.39,
+          0.3694,
+          0.5513,
+          0.6486,
+          0.6337,
+          0.6347,
+          0.4209,
+          0.3657,
+          0.3391
+        ],
+        [
+          0.402,
+          0.5434,
+          0.6157,
+          0.669,
+          0.6282,
+          0.4465,
+          0.504,
+          0.3437,
+          0.2879
+        ],
+        [
+          0.5552,
+          0.6274,
+          0.6774,
+          0.7029,
+          0.671,
+          0.4401,
+          0.353,
+          0.2538,
+          0.1762
+        ],
+        [
+          0.4973,
+          0.448,
+          0.5335,
+          0.421,
+          0.5538,
+          0.5192,
+          0.362,
+          0.2102,
+          0.1752
+        ],
+        [
+          0.3349,
+          0.3156,
+          0.3754,
+          0.4435,
+          0.6623,
+          0.7262,
+          0.4121,
+          0.2817,
+          0.3417
+        ],
+        [
+          0.1887,
+          0.2723,
+          0.2499,
+          0.4763,
+          0.5911,
+          0.7968,
+          0.6664,
+          0.4979,
+          0.526
+        ],
+        [
+          0.1521,
+          0.0914,
+          0.2031,
+          0.2872,
+          0.4901,
+          0.6375,
+          0.7338,
+          0.7106,
+          0.6208
+        ],
+        [
+          0.0444,
+          0.1733,
+          0.3445,
+          0.4235,
+          0.4681,
+          0.5425,
+          0.6747,
+          0.7407,
+          0.7322
+        ]
+      ],
+      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/lapras.gif (frame 0)",
+      "samples": 2258
+    },
+    "min_line_px": 4,
+    "grain_max_bands": 1
+  },
+  "qa": {
+    "style_score": 80,
+    "extra_line_px": 20,
+    "missing_line_px": 30,
+    "thick_lines": 0,
+    "diag_2px": 0,
+    "dark_flicker": 4,
+    "any_blinks": 10,
+    "pop_max": 3.8,
+    "big_pops": 22,
+    "note": "limits for qa.py; 0 = hard user rules; pop limits = Showdown's own GIF (pop max 3.8, 22 of 89 steps)",
+    "remedies": [
+      {
+        "steady_window": 2
+      },
+      {
+        "min_frames": 3
+      }
+    ],
+    "region_parts": [
+      "shell"
+    ],
+    "shell_mix_l1": 0.12,
+    "open_outline": 0,
+    "silhouette_teeth": 5
+  }
+}

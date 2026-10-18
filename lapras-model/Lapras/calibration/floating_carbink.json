@@ -1,0 +1,9 @@
+{
+  "source": "https://play.pokemonshowdown.com/sprites/ani/carbink.gif (Showdown's own floating sprite; pixel data read in the browser, not downloaded)",
+  "measured": {"frames": 83, "frame_ms": 30, "size": [54, 57], "solid_px": 1577, "colours": 15,
+               "any_blinks": 13152, "dark_flicker_outline": 645, "pop_max": 8.62, "big_pops": 63,
+               "float_travel_px": 7.26, "float_cycle_frames": 83, "middle_leads_sides_frames": 2},
+  "limits": {"blink_rate": 0.1005, "dark_flicker_rate": 0.00493, "pop_max_norm": 6.86, "big_pops_share": 0.759},
+  "method": "same rules as check_loop / flicker_map (ported to JS): blinks = colour runs <= 2 frames, dark = the darkest (outline) colour, pops = biggest connected patch of change not explained by a 1-px shift. Rates are per frame and per solid pixel; pop_max_norm = pop_max / sqrt(solid_px / 1000); big_pops_share = steps with a pop >= 2 / steps.",
+  "why": "A floating sprite in Showdown is re-rendered every frame (sub-pixel motion, ~25 % of its pixels change per frame); the absolute limits calibrated on Lapras (whose idle barely moves) would fail Showdown's own Carbink 1000x."
+}

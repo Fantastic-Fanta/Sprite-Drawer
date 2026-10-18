@@ -1,0 +1,28 @@
+# Game models and textures (ripped, not ours to redistribute): keep them locally next to the
+# configs that point at them
+*.blend
+*.blend1
+*.dae
+*.fbx
+*.obj
+*.mtl
+*.glb
+lapras-model/Lapras/Textures/
+lapras-model/Lapras/Shiny/
+dragalge-model/MegaDragalge/
+glimmora-model/MegaGlimmora/
+golisopod-model/MegaGolisopod/
+
+# Showdown reference frames and the silhouettes / encodings made from them
+**/reference/
+
+# Python / OS / tool clutter
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+*.patch
+
+# side-by-side comparisons with Showdown's frames
+*compare*.png
+*_before_after.png

@@ -1,0 +1,91 @@
+{
+  "values": {
+    "style_score": 84.3,
+    "extra_line_px": 14,
+    "missing_line_px": 18,
+    "thick_lines": 0,
+    "diag_2px": 0,
+    "dark_flicker": 3,
+    "open_outline": 0,
+    "silhouette_teeth": 1.91,
+    "any_blinks": 5,
+    "pop_max": 2.99,
+    "big_pops": 21,
+    "shell_mix_l1": 0.104
+  },
+  "pass": true,
+  "checks": [
+    {
+      "name": "style_score",
+      "value": 84.3,
+      "limit": 80,
+      "pass": true
+    },
+    {
+      "name": "extra_line_px",
+      "value": 14,
+      "limit": 20,
+      "pass": true
+    },
+    {
+      "name": "missing_line_px",
+      "value": 18,
+      "limit": 30,
+      "pass": true
+    },
+    {
+      "name": "thick_lines",
+      "value": 0,
+      "limit": 0,
+      "pass": true
+    },
+    {
+      "name": "diag_2px",
+      "value": 0,
+      "limit": 0,
+      "pass": true
+    },
+    {
+      "name": "dark_flicker",
+      "value": 3,
+      "limit": 5,
+      "pass": true
+    },
+    {
+      "name": "any_blinks",
+      "value": 5,
+      "limit": 20,
+      "pass": true
+    },
+    {
+      "name": "pop_max",
+      "value": 2.99,
+      "limit": 3.8,
+      "pass": true
+    },
+    {
+      "name": "big_pops",
+      "value": 21,
+      "limit": 22,
+      "pass": true
+    },
+    {
+      "name": "shell_mix_l1",
+      "value": 0.104,
+      "limit": 0.12,
+      "pass": true
+    },
+    {
+      "name": "open_outline",
+      "value": 0,
+      "limit": 0,
+      "pass": true
+    },
+    {
+      "name": "silhouette_teeth",
+      "value": 1.91,
+      "limit": 5,
+      "pass": true
+    }
+  ]
+}
