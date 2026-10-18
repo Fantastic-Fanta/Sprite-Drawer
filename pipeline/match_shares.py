@@ -13,6 +13,8 @@ import numpy as np
 
 import sprite_style as ss
 
+ss.pin_hash_seed()       # repeatable tie-breaks
+
 cfg_path = Path(sys.argv[1]); cfg = json.loads(cfg_path.read_text())
 passes = ss.load_passes(sys.argv[2], only_first=True)
 box, size = ss.framing(passes, cfg["style"]["height"])

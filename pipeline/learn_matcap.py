@@ -22,6 +22,8 @@ import numpy as np
 import compare
 import sprite_style as ss
 
+ss.pin_hash_seed()       # repeatable tie-breaks
+
 args = sys.argv[1:]
 cfg_path = Path(args[0])
 cfg = json.loads(cfg_path.read_text())

@@ -21,6 +21,8 @@ from PIL import Image
 import compare
 import sprite_style as ss
 
+ss.pin_hash_seed()       # repeatable tie-breaks
+
 args = sys.argv[1:]
 cfg_path, frame_dir, tmp = Path(args[0]), Path(args[1]), Path(args[2])
 MODE = args[args.index("--mode") + 1] if "--mode" in args else "cast"   # cast | unlit

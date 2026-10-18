@@ -16,6 +16,8 @@ import check_loop as cl
 import compare
 import sprite_style as ss
 
+ss.pin_hash_seed()       # repeatable tie-breaks
+
 args = sys.argv[1:]
 cfg = json.load(open(args[0])); fdir, pa, pb = args[1], args[2], args[3]
 passes = ss.load_passes(fdir)

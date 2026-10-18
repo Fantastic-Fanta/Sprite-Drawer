@@ -79,6 +79,17 @@ def components(mask):
     return groups
 
 
+def pin_hash_seed():
+    """Repeatable builds: a few tie-breaks follow Python's string hash order, random per run
+    unless PYTHONHASHSEED is set. Scripts call this first thing; it restarts the script once
+    with the seed pinned to 0."""
+    import os
+    import sys
+    if "PYTHONHASHSEED" not in os.environ:
+        os.environ["PYTHONHASHSEED"] = "0"
+        os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
 _POOL, _POOL_JOBS = None, 0
 
 
