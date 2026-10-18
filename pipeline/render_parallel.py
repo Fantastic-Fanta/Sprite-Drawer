@@ -23,7 +23,10 @@ frames = ([int(v) for v in args[args.index("--frames") + 1].split(",")] if "--fr
 out.mkdir(parents=True, exist_ok=True)
 chunks = [frames[k::jobs] for k in range(jobs) if frames[k::jobs]]     # interleaved: even load
 t0 = time.time()
-procs = [subprocess.Popen([BLENDER, "-b", str(cfg_path.parent / cfg["model"]), "--python", str(here / "render_sprite.py"),
+# one thread per Blender process: the passes are GPU work and single-threaded Freestyle, and the
+# processes already fill the cores (Blender's default, a thread per core each, costs ~12% more CPU)
+threads = os.environ.get("SPRITE_RENDER_THREADS", "1")
+procs = [subprocess.Popen([BLENDER, "-t", threads, "-b", str(cfg_path.parent / cfg["model"]), "--python", str(here / "render_sprite.py"),
                            "--", str(cfg_path), str(out), "--frames", ",".join(map(str, c))],
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) for c in chunks]
 errs = [p.communicate()[0] for p in procs]          # Blender prints Python tracebacks to stdout
