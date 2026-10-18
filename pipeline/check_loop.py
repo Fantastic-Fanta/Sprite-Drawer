@@ -86,6 +86,9 @@ def stairs(a, l, keep=None, blobs=None):
 
 def short_runs(series_stack, max_len=2):
     """per pixel: number of runs (cyclic) of length <= max_len"""
+    import rustcore
+    if rustcore.lib is not None:
+        return rustcore.short_runs(series_stack, max_len)
     n = series_stack.shape[0]
     out = np.zeros(series_stack.shape[1:], int)
     for y, x in np.argwhere((series_stack != series_stack[0]).any(0)):

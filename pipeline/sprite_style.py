@@ -2007,13 +2007,16 @@ def repair(cfg, s, prev=None, nxt=None, protect=None):
 
 def save_gif(cfg, sprites, path):
     pal = palette(cfg)
-    lookup = {c: i for i, c in enumerate(pal)}
     T = len(pal)
+    # palette index per pixel in one lookup (the palette's colours are distinct); a colour outside
+    # the palette, like transparency, gets index T
+    pk = np.array([c[0] << 16 | c[1] << 8 | c[2] for c in pal], np.int64)
+    order = np.argsort(pk)
     frames = []
     for s in sprites:
-        idx = np.full(s.shape[:2], T, np.uint8)
-        for col, i in lookup.items():
-            idx[(s[..., 3] > 0) & np.all(s[..., :3] == col, axis=-1)] = i
+        k = s[..., 0].astype(np.int64) << 16 | s[..., 1].astype(np.int64) << 8 | s[..., 2]
+        j = np.clip(np.searchsorted(pk[order], k), 0, T - 1)
+        idx = np.where((s[..., 3] > 0) & (pk[order][j] == k), order[j], T).astype(np.uint8)
         p = Image.fromarray(idx, "P")
         p.putpalette([v for c in pal for v in c] + [0, 0, 0] * (256 - T))
         frames.append(p)

@@ -79,6 +79,11 @@ def pops(K, block=6):
                 up = np.kron(better, np.ones((block, block), bool))
                 region = resid[:H // block * block, :W // block * block]
                 region[up] = w[:H // block * block, :W // block * block][up]
+        import rustcore
+        if rustcore.lib is not None:
+            best, best_mask = rustcore.best_patch(resid, 0.15)
+            out.append(best); masks.append(best_mask)
+            continue
         m = resid > 0.15                              # visible change (bigger than a shade step)
         seen = np.zeros_like(m); best, best_mask = 0.0, None
         for y0, x0 in zip(*np.nonzero(m)):

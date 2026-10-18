@@ -39,6 +39,10 @@ if os.environ.get("SPRITE_RUST", "1") != "0" and _LIB_PATH.exists():
     lib.sc_seal_parts.restype = ctypes.c_int
     lib.sc_repair.argtypes = [_i64p, _sz, _i64p, _sz, _u8p, _sz, _sz, _u8p, _u8p, _u8p]
     lib.sc_repair.restype = None
+    lib.sc_short_runs.argtypes = [_i64p, _sz, _sz, _sz, _i64p]
+    lib.sc_short_runs.restype = None
+    lib.sc_best_patch.argtypes = [ctypes.POINTER(ctypes.c_double), _sz, _sz, ctypes.c_double, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_size_t)]
+    lib.sc_best_patch.restype = ctypes.c_double
 
 
 def _hexkey(h):
@@ -127,8 +131,10 @@ def steady_events(solid, max_run):
 
 
 def transport_shading_frame(kf, k_rank, f, L, search, tol):
-    names = {n: i for i, n in enumerate(sorted(set(np.unique(f["part"]).tolist()) | set(np.unique(kf["part"]).tolist())))}
-    code = np.vectorize(names.__getitem__, otypes=[np.int32])
+    names = {}                                        # part name -> any int, the same for both frames
+
+    def code(a):
+        return np.fromiter((names.setdefault(x, len(names)) for x in a.ravel().tolist()), np.int32, a.size).reshape(a.shape)
     h, w = kf["solid"].shape
     r, rk = np.ascontiguousarray(f["rest"], np.uint8), np.ascontiguousarray(kf["rest"], np.uint8)
     okf = np.ascontiguousarray((f["rest"][..., 3] > 0) & f["solid"], np.uint8)
@@ -189,3 +195,21 @@ def repair(cfg, s, prev=None, nxt=None, protect=None):
     c, b = pack_cfg(cfg), pack_parts(cfg)
     lib.sc_repair(_p(c, ctypes.c_int64), len(c), _p(b, ctypes.c_int64), len(b), _p(out), h, w, _p(pr), _p(prev), _p(nxt))
     return out
+
+
+def short_runs(series_stack, max_len=2):
+    s = np.ascontiguousarray(series_stack, np.int64)
+    n, hw = s.shape[0], s[0].size
+    out = np.zeros(s.shape[1:], np.int64)
+    lib.sc_short_runs(_p(s, ctypes.c_int64), n, hw, max_len, _p(out, ctypes.c_int64))
+    return out
+
+
+def best_patch(resid, thr):
+    """flicker_map.pops' patch search: (summed weight, [(y, x), ...] in the Python's order)"""
+    r = np.ascontiguousarray(resid, np.float64)
+    h, w = r.shape
+    comp = np.zeros(h * w, np.uint32)
+    k = ctypes.c_size_t(0)
+    best = lib.sc_best_patch(_p(r, ctypes.c_double), h, w, float(thr), _p(comp, ctypes.c_uint32), ctypes.byref(k))
+    return best, [(int(i) // w, int(i) % w) for i in comp[:k.value]]

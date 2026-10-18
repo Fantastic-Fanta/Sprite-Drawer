@@ -10,6 +10,7 @@ mod faults;
 mod parts;
 mod prep;
 mod seal;
+mod qa;
 
 use frame::{Cfg, Frame};
 
@@ -143,4 +144,25 @@ pub unsafe extern "C" fn sc_repair(cfg: *const i64, cfglen: usize, bits: *const 
     let protect = if protect.is_null() { zeros = vec![0u8; h * w]; &zeros[..] } else { std::slice::from_raw_parts(protect, h * w) };
     let opt = |p: *const u8| if p.is_null() { None } else { Some(std::slice::from_raw_parts(p, h * w * 4)) };
     parts::repair(&cfg, &pb, s, h, w, protect, opt(prev), opt(nxt));
+}
+
+/// check_loop.short_runs: series (n x hw, int64) -> out (hw), added to
+#[no_mangle]
+pub unsafe extern "C" fn sc_short_runs(series: *const i64, n: usize, hw: usize, max_len: usize, out: *mut i64) {
+    if n == 0 || hw == 0 {
+        return;
+    }
+    qa::short_runs(std::slice::from_raw_parts(series, n * hw), n, hw, max_len, std::slice::from_raw_parts_mut(out, hw));
+}
+
+/// flicker_map.pops' biggest patch: returns its summed weight; comp (h*w) gets its pixels, ncomp their number
+#[no_mangle]
+pub unsafe extern "C" fn sc_best_patch(resid: *const f64, h: usize, w: usize, thr: f64, comp: *mut u32, ncomp: *mut usize) -> f64 {
+    if h == 0 || w == 0 {
+        *ncomp = 0;
+        return 0.0;
+    }
+    let (best, k) = qa::best_patch(std::slice::from_raw_parts(resid, h * w), h, w, thr, std::slice::from_raw_parts_mut(comp, h * w));
+    *ncomp = k;
+    best
 }
