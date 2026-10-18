@@ -14,6 +14,7 @@ tie-breaks follow Python's per-process hash order. Exit code 1 if anything diffe
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -140,11 +141,13 @@ def main():
             print(f"{name}: built in {t:.1f}s  {'IDENTICAL' if not diff else 'DIFFERS: ' + '; '.join(diff)}")
         elif mode == "render-check":
             new = DATA / "render_check" / name
+            shutil.rmtree(new, ignore_errors=True)
             t = render(name, new)
             diffs = []
+            made = {q.stem: q for q in new.iterdir() if q.suffix in (".png", ".tga")}   # either format
             for p in sorted(q for q in frames_dir(name).iterdir() if q.suffix in (".png", ".tga")):
-                q = new / p.name
-                if not q.exists():
+                q = made.get(p.stem)
+                if q is None:
                     diffs.append(f"{p.name} missing"); continue
                 a, b = np.array(Image.open(p).convert("RGBA")), np.array(Image.open(q).convert("RGBA"))
                 if a.shape != b.shape or (a != b).any():

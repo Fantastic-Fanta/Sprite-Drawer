@@ -853,6 +853,8 @@ before it goes in; a Rust rule also passes `rust/check_kernels.py` on every call
 set builds from config snapshots taken with the goldens (`regress.py golden NAME [--rev GIT_REV]`),
 so work on a Pokemon's config doesn't move the target.
 
+A full-loop render clears old pass files in its output folder first (a longer earlier loop or the other format would otherwise be read as part of it); `--frames` renders update in place.
+
 **Render cache:** a render is reused when nothing it reads has changed (config render / camera /
 pose / motion / parts materials / fast_frames, the .blend and textures, the render scripts,
 Blender, the format, the frames). Re-running a build after a style or QA change skips Blender
@@ -860,7 +862,7 @@ entirely: the four regression sprites take 70 s cold, 19 s from the cache.
 
 | Where | What | Settings |
 |---|---|---|
-| render | one Blender thread per process (more just contend: ~12% more CPU); shadows only in the shadow pass; Freestyle culling; the data render also writes the rest pass (AOV), the id pass (face attribute AOV: only Blender's 8-bit dither differs, +-1, which the nearest-id-colour read ignores) and, with a cast shadow, the shadow pass (second view layer); workers kept up between sprites; renders cached | `SPRITE_RENDER_JOBS` (4 suits 16 GB; more thrash), `SPRITE_RENDER_THREADS` (1), `SPRITE_RENDER_FORMAT=TGA` (raw passes: ~5% faster render, ~2x faster load, ~7x the disk), `SPRITE_RENDER_CACHE` (folder, default `.render_cache/`; `0` = off), `SPRITE_RENDER_CACHE_GB` (20) |
+| render | one Blender thread per process (more just contend: ~12% more CPU); shadows only in the shadow pass; Freestyle culling; the data render also writes the rest pass (AOV), the id pass (face attribute AOV: only Blender's 8-bit dither differs, +-1, which the nearest-id-colour read ignores) and, with a cast shadow, the shadow pass (second view layer); workers kept up between sprites; renders cached | `SPRITE_RENDER_JOBS` (4 suits 16 GB; more thrash), `SPRITE_RENDER_THREADS` (1), `SPRITE_RENDER_FORMAT` (default `TGA`, uncompressed: ~5% faster render and ~2x faster load than `PNG`, same pixels, ~7x the disk: ~1.7 GB for a 330-frame Glimmora render, so the 20 GB render cache holds ~12 such renders), `SPRITE_RENDER_CACHE` (folder, default `.render_cache/`; `0` = off), `SPRITE_RENDER_CACHE_GB` (20) |
 | build | per-frame steps on all cores; frames loaded and prepared by the workers; the per-pixel rules in Rust | `SPRITE_JOBS` (default: all cores; 1 = one process), `SPRITE_RUST=0` (Python only) |
 | repeatable | a few tie-breaks follow Python's string hash order, random per run: the scripts pin `PYTHONHASHSEED` to 0 (`sprite_style.pin_hash_seed`), so a build is the same every time | |
 

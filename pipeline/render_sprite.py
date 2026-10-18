@@ -101,9 +101,9 @@ scene.render.film_transparent = True
 scene.render.resolution_x = cfg["render"]["width"]
 scene.render.resolution_y = cfg["render"]["height"]
 scene.render.resolution_percentage = 100
-# pass files: PNG, or SPRITE_RENDER_FORMAT=TGA for uncompressed Targa (same pixels; ~5% faster to
-# render and ~2x faster to load, ~7x the disk space)
-RAW = os.environ.get("SPRITE_RENDER_FORMAT", "PNG").upper() == "TGA"
+# pass files: uncompressed Targa (default: ~5% faster to render and ~2x faster to load than PNG,
+# same pixels, ~7x the disk space), or SPRITE_RENDER_FORMAT=PNG
+RAW = os.environ.get("SPRITE_RENDER_FORMAT", "TGA").upper() == "TGA"
 EXT = ".tga" if RAW else ".png"
 scene.render.image_settings.file_format = "TARGA_RAW" if RAW else "PNG"
 scene.render.use_file_extension = False

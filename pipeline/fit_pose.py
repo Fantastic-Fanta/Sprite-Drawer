@@ -34,6 +34,7 @@ exec(compile(src.read_text(), str(src), "exec"), g)
 scene, P = g["scene"], g["P"]
 scene.render.resolution_x = cfg["render"]["width"] // 2
 scene.render.resolution_y = cfg["render"]["height"] // 2
+scene.render.image_settings.file_format = "PNG"          # render() below reads fit_*.png
 
 
 def hexrgb(h):

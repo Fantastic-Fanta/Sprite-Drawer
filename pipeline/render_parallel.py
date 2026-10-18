@@ -25,6 +25,7 @@ from pathlib import Path
 BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
 HERE = Path(__file__).resolve().parent
 RENDER_SOURCES = ("render_sprite.py", "render_many.py", "linetrace.py", "motion.py")
+PASS_NAMES = {"color", "id", "data", "rest", "lines", "shadow", "seams", "islands"}
 # files next to the model that a render can load: the .blend and image textures (configs, GIFs
 # and the like often share the folder and must not count)
 MODEL_FILES = {".blend", ".png", ".tga", ".jpg", ".jpeg", ".exr", ".tif", ".tiff", ".bmp", ".webp", ".hdr"}
@@ -42,7 +43,7 @@ def render_key(cfg_path, cfg, frames):
     used = {k: cfg.get(k) for k in ("render", "camera", "pose", "pose_params", "motion")}
     used.update(materials=parts.get("materials"), default_material=parts.get("default_material"),
                 fast_frames=cfg.get("style", {}).get("fast_frames"), frames=frames,
-                format=os.environ.get("SPRITE_RENDER_FORMAT", "PNG").upper())
+                format=os.environ.get("SPRITE_RENDER_FORMAT", "TGA").upper())
     h.update(json.dumps(used, sort_keys=True).encode())
     model_dir = (cfg_path.parent / cfg["model"]).parent
     for root, dirs, files in sorted(os.walk(model_dir)):
@@ -104,6 +105,12 @@ class RenderPool:
         Returns the number of frames, or 0 if they came from the cache."""
         cfg_path, out = Path(cfg_path).resolve(), Path(out).resolve()
         cfg = json.loads(cfg_path.read_text())
+        if frames is None and out.exists():
+            # a whole loop replaces whatever was rendered here before: old pass files (a longer
+            # loop, the other format) would otherwise be read as part of this one
+            for f in out.iterdir():
+                if f.suffix in (".png", ".tga") and f.stem.split("_")[0] in PASS_NAMES:
+                    f.unlink()
         frames = list(range(cfg["motion"]["frames"])) if frames is None else frames
         root = cache_dir() if cache else None
         if root is not None:

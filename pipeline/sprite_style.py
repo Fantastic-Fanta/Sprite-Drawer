@@ -137,8 +137,13 @@ def shift(a, dy, dx, fill):
 # --- loading ------------------------------------------------------------------
 
 def frame_paths(frames_dir, only_first=False):
-    """one path per frame: its colour pass (the other passes sit next to it)"""
-    paths = sorted(p for p in Path(frames_dir).glob("color_*") if p.suffix in (".png", ".tga"))
+    """one path per frame: its colour pass (the other passes sit next to it). A folder rendered
+    again in the other format (PNG / TGA) has both: the newer render counts."""
+    newest = {}
+    for p in Path(frames_dir).glob("color_*"):
+        if p.suffix in (".png", ".tga") and (p.stem not in newest or p.stat().st_mtime > newest[p.stem].stat().st_mtime):
+            newest[p.stem] = p
+    paths = [newest[k] for k in sorted(newest)]
     return paths[:1] if only_first else paths
 
 
