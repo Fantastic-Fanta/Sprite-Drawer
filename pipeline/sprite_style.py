@@ -77,6 +77,39 @@ def components(mask):
     return groups
 
 
+_POOL, _POOL_JOBS = None, 0
+
+
+def _call(job):
+    fn, args = job
+    return fn(*args)
+
+
+def pmap(fn, arg_list):
+    """[fn(*args) for args in arg_list], spread over worker processes (SPRITE_JOBS, default all
+    cores; SPRITE_JOBS=1 runs everything here). Only for per-frame steps that don't depend on
+    each other's results, so the output is the same as the plain loop."""
+    global _POOL, _POOL_JOBS
+    import os
+    jobs = int(os.environ.get("SPRITE_JOBS", os.cpu_count() or 1))
+    if jobs <= 1 or len(arg_list) < 2:
+        return [fn(*a) for a in arg_list]
+    if _POOL is None:
+        import sys
+        import multiprocessing as mp
+        # workers are started with "spawn" (fork isn't safe with macOS's Accelerate) and would
+        # re-run the calling script (make_gif.py has no __main__ guard): hide it while they start
+        main = sys.modules["__main__"]
+        main_file = main.__dict__.pop("__file__", None)
+        try:
+            _POOL, _POOL_JOBS = mp.get_context("spawn").Pool(jobs), jobs
+        finally:
+            if main_file is not None:
+                main.__file__ = main_file
+    chunk = -(-len(arg_list) // (_POOL_JOBS * 2))
+    return _POOL.map(_call, [(fn, a) for a in arg_list], chunksize=chunk)
+
+
 def shift(a, dy, dx, fill):
     """a moved by (dy, dx): out[y, x] = a[y - dy, x - dx], with `fill` coming in at the border."""
     out = np.empty_like(a)
@@ -758,11 +791,17 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
     H, W = s.shape[:2]
     protect = np.zeros((H, W), bool) if protect is None else protect
     DARK = dark_line_colours(cfg)
-    for _ in range(400):
-        solid = s[..., 3] > 0
-        line_all = solid & np.any([np.all(s[..., :3] == c, -1) for c in DARK], 0)   # incl. protected (eye)
-        is_out = solid & np.all(s[..., :3] == OUT, -1)
-        line = line_all & ~protect                              # the ones we may change
+
+    def fixes(y0, y1, x0, x1):
+        """candidates in s[y0:y1, x0:x1] with their new value and score (agreement with the
+        neighbouring frames). Every rule looks at most 2 px away, so on a crop the result is
+        exact except within 2 px of a cut that isn't the canvas edge."""
+        t, pr = s[y0:y1, x0:x1], protect[y0:y1, x0:x1]
+        h, w = t.shape[:2]
+        solid = t[..., 3] > 0
+        line_all = solid & np.any([np.all(t[..., :3] == c, -1) for c in DARK], 0)   # incl. protected (eye)
+        is_out = solid & np.all(t[..., :3] == OUT, -1)
+        line = line_all & ~pr                                   # the ones we may change
         body = solid & ~line_all
         out_ = ~solid
         nb = lambda m, dy, dx: shift(m, dy, dx, False)
@@ -771,7 +810,7 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
         nbo = lambda m, dy, dx: shift(m, dy, dx, True)          # beyond the canvas counts as outside
         touches_out = nbo(out_, 1, 0) | nbo(out_, -1, 0) | nbo(out_, 0, 1) | nbo(out_, 0, -1)
         required = touches_body & touches_out & is_out          # outline pixels that close the shape
-        required |= line & separators(cfg, s, line_all, protect)   # and ones between an outlined part and the rest
+        required |= line & separators(cfg, t, line_all, pr)     # and ones between an outlined part and the rest
         ul, ur, dl, dr = nb(line_all, 1, 1), nb(line_all, 1, -1), nb(line_all, -1, 1), nb(line_all, -1, -1)
         corner = line & (((up & lf) & ~dn & ~rt & ~ul) | ((up & rt) & ~dn & ~lf & ~ur)
                          | ((dn & lf) & ~up & ~rt & ~dl) | ((dn & rt) & ~up & ~lf & ~dr))
@@ -785,34 +824,46 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
         elif corners == "inner":
             corner = corner & ~touches_out
         cand = (corner | along | (in_block & ~required)) & ~required
-        if not cand.any():
-            break
 
         def new_value(y, x):
             if touches_out[y, x] and is_out[y, x]:              # an outline pixel: drop it
                 return np.zeros(4, np.uint8)
-            cols = [tuple(s[y + dy, x + dx][:3]) for dy, dx in NB8
-                    if 0 <= y + dy < H and 0 <= x + dx < W and body[y + dy, x + dx]]
+            cols = [tuple(t[y + dy, x + dx][:3]) for dy, dx in NB8
+                    if 0 <= y + dy < h and 0 <= x + dx < w and body[y + dy, x + dx]]
             if not cols:
                 return np.zeros(4, np.uint8)
             pick = max(set(cols), key=cols.count)
             for o in (prev, nxt):                       # prefer what the neighbouring frames show
-                if o is not None and o[y, x, 3] and tuple(o[y, x, :3]) in cols:
-                    pick = tuple(o[y, x, :3]); break
+                if o is not None and o[y0 + y, x0 + x, 3] and tuple(o[y0 + y, x0 + x, :3]) in cols:
+                    pick = tuple(o[y0 + y, x0 + x, :3]); break
             return np.array((*pick, 255), np.uint8)
 
-        # of all pixels that could be fixed, fix first the one whose new colour agrees with the
-        # neighbouring frames (so keeping lines 1 px doesn't create a blink)
-        best, best_score = None, -1
+        out = []
         for y, x in np.argwhere(cand):
             v = new_value(y, x)
-            score = sum(1 for o in (prev, nxt) if o is not None and np.array_equal(o[y, x], v))
-            if score > best_score:
-                best, best_score = (int(y), int(x), v), score
-                if score == 2:
-                    break
-        y, x, v = best
-        s[y, x] = v
+            score = sum(1 for o in (prev, nxt) if o is not None and np.array_equal(o[y0 + y, x0 + x], v))
+            out.append((y0 + int(y), x0 + int(x), v, score))
+        return out
+
+    # of all pixels that could be fixed, fix first the one whose new colour agrees with the
+    # neighbouring frames (so keeping lines 1 px doesn't create a blink); ties: raster order.
+    # Each fix only changes candidates within 2 px of it, so only a small window is re-checked.
+    score = np.full((H, W), -1, np.int8)
+    value = np.zeros((H, W, 4), np.uint8)
+    for y, x, v, sc in fixes(0, H, 0, W):
+        score[y, x], value[y, x] = sc, v
+    R, M = 3, 3                                     # window re-checked, + context it needs
+    for _ in range(400):
+        i = int(np.argmax(score))                   # first pixel with the best score
+        y, x = divmod(i, W)
+        if score[y, x] < 0:
+            break
+        s[y, x] = value[y, x]
+        wy0, wy1, wx0, wx1 = max(0, y - R), min(H, y + R + 1), max(0, x - R), min(W, x + R + 1)
+        score[wy0:wy1, wx0:wx1] = -1
+        for yy, xx, v, sc in fixes(max(0, y - R - M), min(H, y + R + M + 1), max(0, x - R - M), min(W, x + R + M + 1)):
+            if wy0 <= yy < wy1 and wx0 <= xx < wx1:
+                score[yy, xx], value[yy, xx] = sc, v
     return s
 
 
@@ -842,11 +893,12 @@ def seal_parts(cfg, s, protect=None):
         pm = cl.part_masks(cfg, t, line_all, protect)
         contacts = sum(int((own & cl.n4(other)).sum()) for own, other in pm)
         lm = line_all & ~protect
-        bad = int(blocks2x2(lm).sum()) + cl.stairs(t, lm, cl.separators(cfg, t, lm, protect))
+        # the line faults are only needed to rank options that close a contact (the costly part)
+        bad = lambda: int(blocks2x2(lm).sum()) + cl.stairs(t, lm, cl.separators(cfg, t, lm, protect))
         return contacts, bad, pm
 
     for _ in range(200):
-        contacts, bad, pm = state(s)
+        contacts, _, pm = state(s)
         if not contacts:
             break
         options = []
@@ -867,7 +919,7 @@ def seal_parts(cfg, s, protect=None):
             c, b, _ = state(t)
             if c >= contacts:
                 continue
-            key = (b, c, not own_side)
+            key = (b(), c, not own_side)
             if best is None or key < best[0]:
                 best = (key, y, x, v)
         if best is None:
@@ -924,8 +976,41 @@ def clean_parts(cfg, s, protect=None):
                 return True
         return False
 
+    # which parts each pixel's colour belongs to, as bits: lets numpy skip the start pixels whose
+    # check can't succeed on the frame as it is (a pixel only becomes worth checking again when a
+    # neighbour changes, and run() queues it then), so the result is the same as checking them all
+    names = sorted({n for v in pc.values() for n in v})
+    bit = {n: 1 << i for i, n in enumerate(names)}
+    OBIT = bit.get("O", 0)
+    ck = np.array([c[0] * 65536 + c[1] * 256 + c[2] for c in pc], np.int64)
+    cm = np.array([sum(bit[n] for n in v) for v in pc.values()], np.int64)
+    order_ = np.argsort(ck); ck, cm = ck[order_], cm[order_]
+
+    def part_bits():
+        k = key()
+        j = np.clip(np.searchsorted(ck, k), 0, len(ck) - 1)
+        return np.where((ck[j] == k) & (s[..., 3] > 0), cm[j], 0)
+
+    def could_be_stray():
+        pb = part_bits()
+        elig = (pb != 0) & (pb != OBIT) & ~protect           # a part pixel (not outline, not eye)
+        cnt = np.zeros((H, W), int); clash = np.zeros((H, W), bool)
+        for dy, dx in NB4:
+            e, b = shift(elig, dy, dx, False), shift(pb, dy, dx, 0)
+            cnt += e
+            clash |= e & ((b & pb) != 0)
+        return elig & (cnt >= 2) & ~clash
+
+    def could_be_sliver(name):
+        pb = part_bits()
+        own = (pb & bit[name]) != 0
+        has_own_nb = np.zeros((H, W), bool)
+        for dy, dx in NB4:
+            has_own_nb |= shift(own, dy, dx, False)
+        return (pb == bit[name]) & ~protect & ~has_own_nb
+
     ok = (s[..., 3] > 0) & ~protect
-    run(ok & ~same_colour_nb(key(), ok), stray)
+    run(ok & ~same_colour_nb(key(), ok) & could_be_stray(), stray)
     # a 1-px sliver of an outlined part (no 4-neighbour of its own part, e.g. squeezed between
     # the outline and the body) can't get its own outline without a 2-px line: it takes the
     # most common other-part colour around it instead
@@ -946,7 +1031,7 @@ def clean_parts(cfg, s, protect=None):
                     return True
             return False
         solid = s[..., 3] > 0
-        run(solid & ~protect & ~same_colour_nb(key(), solid), sliver)
+        run(solid & ~protect & ~same_colour_nb(key(), solid) & could_be_sliver(name), sliver)
     return s
 
 
@@ -1448,23 +1533,27 @@ def stylize_loop(cfg, frames, style=None):
         sprites, masks = [None] * n, [None] * n
         for k, i in enumerate(slow):
             sprites[i], masks[i] = slow_sp[k], slow_masks[k]
-        for i in fast:
-            sp = stylize(sub, frames[i], style)
-            pm = stamp_mask(sub, frames[i], sp.shape[:2], (sp.shape[0] - frames[i]["solid"].shape[0]) // 2)
-            sp = repair(sub, sp, None, None, pm)        # close the outline, fill dents, seal parts
-            sp = smooth_silhouette(sub, sp, pm)
-            if sub["style"].get("part_outline"):
-                sp = seal_parts(sub, clean_parts(sub, sp, pm), pm)
-            sp = clean_lines(sub, sp, pm, corners=True)
-            for _ in range(8):                           # cleanup can reopen a pixel: repeat until clean
-                if not hard_faults(sub, sp, pm):
-                    break
-                sp = clean_lines(sub, repair(sub, sp, None, None, pm), pm, corners=True)
-            sprites[i] = fix_faults(sub, sp, pm) if hard_faults(sub, sp, pm) else sp
-            masks[i] = pm
+        for i, (sp, pm) in zip(fast, pmap(fast_frame, [(sub, frames[i], style) for i in fast])):
+            sprites[i], masks[i] = sp, pm
         LAST_EYE_MASKS = masks
         return pixel_bob(cfg, sprites)
     return pixel_bob(cfg, _stylize_loop(cfg, frames, style))
+
+
+def fast_frame(sub, f, style=None):
+    """one frame of style.fast_frames: drawn on its own, then the per-frame hard rules"""
+    sp = stylize(sub, f, style)
+    pm = stamp_mask(sub, f, sp.shape[:2], (sp.shape[0] - f["solid"].shape[0]) // 2)
+    sp = repair(sub, sp, None, None, pm)        # close the outline, fill dents, seal parts
+    sp = smooth_silhouette(sub, sp, pm)
+    if sub["style"].get("part_outline"):
+        sp = seal_parts(sub, clean_parts(sub, sp, pm), pm)
+    sp = clean_lines(sub, sp, pm, corners=True)
+    for _ in range(8):                           # cleanup can reopen a pixel: repeat until clean
+        if not hard_faults(sub, sp, pm):
+            break
+        sp = clean_lines(sub, repair(sub, sp, None, None, pm), pm, corners=True)
+    return (fix_faults(sub, sp, pm) if hard_faults(sub, sp, pm) else sp), pm
 
 
 def slow_t(f, n, fast):
@@ -1539,7 +1628,7 @@ def pixel_bob(cfg, sprites):
 def _stylize_loop(cfg, frames, style=None):
     if len(frames) > 2 and cfg["style"].get("steady_loop", True):
         frames = steady_shape(frames, cfg["style"].get("shape_min_frames", cfg["style"].get("min_frames", 2)))
-    ls = [layers(cfg, f, style) for f in frames]
+    ls = pmap(layers, [(cfg, f, style) for f in frames])
     xy = [f.get("eye_xy") for f in frames]
     if all(p is not None for p in xy):
         # eye position: smoothed over 5 frames, and only moved when it has really moved
@@ -1596,7 +1685,7 @@ def _stylize_loop(cfg, frames, style=None):
                 votes = sum(frames[j][key].astype(int) for j in idx)
                 keep = votes >= 2
                 frames[i] = dict(frames[i], fixed=frames[i]["fixed"] & keep)
-    sprites = [compose(cfg, f, L, style) for f, L in zip(frames, ls)]
+    sprites = pmap(compose, [(cfg, f, L, style) for f, L in zip(frames, ls)])
     protects = [stamp_mask(cfg, f, sp.shape[:2], (sp.shape[0] - f["solid"].shape[0]) // 2)
                 for f, sp in zip(frames, sprites)]
     global LAST_EYE_MASKS
@@ -1607,37 +1696,48 @@ def _stylize_loop(cfg, frames, style=None):
         for it in range(cfg["style"].get("steady_rounds", 12)):   # debounce, repair, until stable
             before = np.stack(sprites)
             d = debounce(sprites, cfg["style"].get("min_frames", 2))
-            sprites = [repair(cfg, d[i], d[i - 1], d[(i + 1) % len(d)], protects[i]) for i in range(len(d))]
+            sprites = pmap(repair, [(cfg, d[i], d[i - 1], d[(i + 1) % len(d)], protects[i]) for i in range(len(d))])
             changed = int((before != np.stack(sprites)).any(-1).sum())
             if os.environ.get("SPRITE_DEBUG"):
                 print(f"  steady round {it + 1}: {changed} pixels changed")
             if not changed:
                 break
         sprites = settle_shading(cfg, sprites, cfg["style"].get("min_frames", 2))
-        sprites = [restamp(cfg, f, sp, pm, eye_zone) for f, sp, pm in zip(frames, sprites, protects)]
         # hard rules last: every part outline closed, every line 1 px, in every frame
-        if cfg["style"].get("smooth_silhouette"):          # 1-px spurs / notches on the silhouette
-            sprites = [smooth_silhouette(cfg, sp, pm) for sp, pm in zip(sprites, protects)]
-        if cfg["style"].get("part_outline"):
-            sprites = [seal_parts(cfg, clean_parts(cfg, sp, pm), pm) for sp, pm in zip(sprites, protects)]
-        sprites = [clean_lines(cfg, sprites[i], protects[i], sprites[i - 1], sprites[(i + 1) % len(sprites)],
-                               corners=True) for i in range(len(sprites))]
+        sprites = pmap(hard_rules, [(cfg, f, sp, pm, eye_zone) for f, sp, pm in zip(frames, sprites, protects)])
+        sprites = pmap(clean_lines, [(cfg, sprites[i], protects[i], sprites[i - 1], sprites[(i + 1) % len(sprites)], True)
+                                     for i in range(len(sprites))])
         sprites = rule_safe_debounce(cfg, sprites, protects, cfg["style"].get("min_frames", 2))
         # a frame that still breaks a hard rule (smoothing over time can leave one, e.g. a 1-px hole
         # next to the body): fix just that frame, as the fast frames are fixed; keep the fix only
         # if it lowers the fault count
-        for i, (sp, pm) in enumerate(zip(sprites, protects)):
-            f0 = hard_faults(cfg, sp, pm)
-            for _ in range(8):
-                if not f0:
-                    break
-                t = clean_lines(cfg, repair(cfg, sp, None, None, pm), pm, corners=True)
-                f1 = hard_faults(cfg, t, pm)
-                if f1 >= f0:
-                    break
-                sp, f0 = t, f1
-            sprites[i] = fix_faults(cfg, sp, pm) if f0 else sp
+        sprites = pmap(last_fix, list(zip([cfg] * len(sprites), sprites, protects)))
     return sprites
+
+
+def hard_rules(cfg, f, sp, pm, eye_zone):
+    """per frame, after time smoothing: the eye stamp, then 1-px silhouette jags and part outlines"""
+    sp = restamp(cfg, f, sp, pm, eye_zone)
+    if cfg["style"].get("smooth_silhouette"):          # 1-px spurs / notches on the silhouette
+        sp = smooth_silhouette(cfg, sp, pm)
+    if cfg["style"].get("part_outline"):
+        sp = seal_parts(cfg, clean_parts(cfg, sp, pm), pm)
+    return sp
+
+
+def last_fix(cfg, sp, pm):
+    """a frame that still breaks a hard rule: fix just that frame (as the fast frames are
+    fixed), keeping each fix only if it lowers the fault count"""
+    f0 = hard_faults(cfg, sp, pm)
+    for _ in range(8):
+        if not f0:
+            break
+        t = clean_lines(cfg, repair(cfg, sp, None, None, pm), pm, corners=True)
+        f1 = hard_faults(cfg, t, pm)
+        if f1 >= f0:
+            break
+        sp, f0 = t, f1
+    return fix_faults(cfg, sp, pm) if f0 else sp
 
 
 def hard_faults(cfg, s, protect):
@@ -1646,7 +1746,8 @@ def hard_faults(cfg, s, protect):
     import check_loop as cl
     DARK = dark_line_colours(cfg)
     l = (s[..., 3] > 0) & np.any([np.all(s[..., :3] == c, -1) for c in DARK], 0) & ~protect
-    return (cl.line_blocks(s, l) + cl.stairs(s, l, cl.separators(cfg, s, l, protect))
+    blobs = cl.pupil_blobs(s, l)
+    return (cl.line_blocks(s, l, blobs) + cl.stairs(s, l, cl.separators(cfg, s, l, protect), blobs)
             + cl.open_outline(cfg, s, l, protect))
 
 

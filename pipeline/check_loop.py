@@ -51,12 +51,12 @@ def pupil_blobs(a, l):
     return blob
 
 
-def line_blocks(a, l):
-    m = l & ~pupil_blobs(a, l)
+def line_blocks(a, l, blobs=None):
+    m = l & ~(pupil_blobs(a, l) if blobs is None else blobs)
     return int((m[:-1, :-1] & m[1:, :-1] & m[:-1, 1:] & m[1:, 1:]).sum())
 
 
-def stairs(a, l, keep=None):
+def stairs(a, l, keep=None, blobs=None):
     """staircase corners + inner lines hugging the outline. keep = line pixels that must stay
     (separators between an outlined part and another part): a corner there is a T-junction,
     exempt exactly like silhouette-closing corners."""
@@ -78,7 +78,7 @@ def stairs(a, l, keep=None):
     along = l & ~to & (rn >= 2)
     if keep is not None:
         along &= ~keep            # a part line meeting the outline (junction), not a band
-    return int(((corner | along) & ~pupil_blobs(a, l)).sum())
+    return int(((corner | along) & ~(pupil_blobs(a, l) if blobs is None else blobs)).sum())
 
 
 def short_runs(series_stack, max_len=2):

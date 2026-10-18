@@ -46,6 +46,9 @@ Measured on the reference frame with `compare.py`, not guessed.
 
 ## 2. Files
 
+Scripts and `calibration/` are in `pipeline/`; each Pokémon's config, reference and outputs sit in
+its own folder (e.g. `lapras-model/Lapras/`).
+
 | File | What it does |
 |---|---|
 | `lapras.json` | everything for one Pokémon: palette, part rules, landmarks, pose bones + params, camera, style numbers, fit ranges, run log |
@@ -78,28 +81,29 @@ Measured on the reference frame with `compare.py`, not guessed.
 
 ```bash
 B=/Applications/Blender.app/Contents/MacOS/Blender
+P=../../pipeline        # run from the Pokémon's folder (here lapras-model/Lapras/)
 # 1. pose + camera fitted to the reference (updates pose_params; 20–30 random starts, ~5 min)
-$B -b Lapras.blend --python fit_pose.py -- lapras.json /tmp/fit --restarts 20
+$B -b Lapras.blend --python $P/fit_pose.py -- lapras.json /tmp/fit --restarts 20
 # 2. render frame 0
-$B -b Lapras.blend --python render_sprite.py -- lapras.json /tmp/f0 --test 0
+$B -b Lapras.blend --python $P/render_sprite.py -- lapras.json /tmp/f0 --test 0
 # 3. lighting, learned from the reference (updates style.matcap)
-python3 learn_matcap.py lapras.json /tmp/f0 --out matcap_xy.json
+python3 $P/learn_matcap.py lapras.json /tmp/f0 --out matcap_xy.json
 # 4. style numbers fitted to the reference (updates style)
-python3 tune_style.py lapras.json /tmp/f0
+python3 $P/tune_style.py lapras.json /tmp/f0
 # 5. check: score + side-by-side picture
-python3 make_gif.py lapras.json /tmp/f0 x --first-only /tmp/f0.png
-python3 compare.py lapras.json /tmp/f0.png --out /tmp/compare.png
+python3 $P/make_gif.py lapras.json /tmp/f0 x --first-only /tmp/f0.png
+python3 $P/compare.py lapras.json /tmp/f0.png --out /tmp/compare.png
 # repeat 1–5 while the score improves; then the full loop:
-$B -b Lapras.blend --python render_sprite.py -- lapras.json /tmp/frames
-python3 make_gif.py lapras.json /tmp/frames lapras_sprite.gif --scale 4
+$B -b Lapras.blend --python $P/render_sprite.py -- lapras.json /tmp/frames
+python3 $P/make_gif.py lapras.json /tmp/frames lapras_sprite.gif --scale 4
 # make_gif runs the quality gate (qa.py) after building; --auto tries the config's qa.remedies
 # on a FAIL and keeps the best; the report is saved as lapras_sprite.qa.json; exit code 1 = FAIL
 # 6. when something fails, look at where:
-python3 flicker_map.py lapras_sprite.gif --pops /tmp/pop.png      # worst pop, before | after
-python3 check_loop.py lapras.json lapras_sprite.gif --heatmap /tmp/flicker.png
-python3 compare.py lapras.json lapras_sprite.gif --out /tmp/compare.png   # 4th panel: extra / missing lines
+python3 $P/flicker_map.py lapras_sprite.gif --pops /tmp/pop.png      # worst pop, before | after
+python3 $P/check_loop.py lapras.json lapras_sprite.gif --heatmap /tmp/flicker.png
+python3 $P/compare.py lapras.json lapras_sprite.gif --out /tmp/compare.png   # 4th panel: extra / missing lines
 ```
-One-off per Pokémon, before step 4: `python3 make_eye_stamp.py lapras.json 24 13 31 19`
+One-off per Pokémon, before step 4: `python3 $P/make_eye_stamp.py lapras.json 24 13 31 19`
 (a box around the eye in the reference frame).
 
 Always look at the `--out` picture as well as the numbers: twice, my eye was wrong (the

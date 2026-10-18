@@ -14,14 +14,13 @@ Finished sprites are in [`final_sprites/`](final_sprites).
 
 ## Usage
 
-From `lapras-model/Lapras/`:
+The scripts are in [`pipeline/`](pipeline). Each Pokémon folder holds its config JSON (palette, pose, camera, style).
 
 ```bash
-python3 render_parallel.py CONFIG.json frames/
-python3 make_gif.py CONFIG.json frames/ out.gif --scale 4
+python3 pipeline/render_parallel.py golisopod-model/golisopod_front.json frames/
+python3 pipeline/make_gif.py golisopod-model/golisopod_front.json frames/ out.gif --scale 4
 ```
 
-Each Pokémon is one config JSON (palette, pose, camera, style). `make_gif.py` also runs the quality checks.
-See [`SPRITE_PIPELINE.md`](lapras-model/Lapras/SPRITE_PIPELINE.md) for the full process.
+`make_gif.py` also runs the quality checks. See [`SPRITE_PIPELINE.md`](pipeline/SPRITE_PIPELINE.md) for the full process.
 
 Fan project, not affiliated with Nintendo, Game Freak or The Pokémon Company.
