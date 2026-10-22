@@ -1,11 +1,5 @@
 # Sprite-Drawer
 
-Turns 3D Pokémon models into animated pixel sprites in the Pokémon Showdown (Gen 6) style.
-
-![Mega Glimmora, Golisopod and Dragalge: front, shiny, back, back shiny](final_sprites/overview.png)
-
-Finished sprites are in [`final_sprites/`](final_sprites).
-
 ## Requirements
 
 - Blender (scripts expect `/Applications/Blender.app`)
