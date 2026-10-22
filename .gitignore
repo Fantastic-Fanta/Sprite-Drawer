@@ -23,6 +23,9 @@ __pycache__/
 .claude/
 *.patch
 
+# scratch configs from fit / motion trials
+*-model/_*.json
+
 # side-by-side comparisons with Showdown's frames
 *compare*.png
 *_before_after.png
