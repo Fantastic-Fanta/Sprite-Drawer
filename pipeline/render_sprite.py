@@ -8,6 +8,7 @@ Writes three images per frame (see SPRITE_PIPELINE.md):
   id_NNNN.png     which part each pixel is: one solid colour per entry of config "parts.materials"
   data_NNNN.png   camera-space normal in R/G, depth in B (EEVEE), for shading + inner lines
   rest_NNNN.png   where on the unposed model each pixel is (EEVEE), for surface-attached lines
+  hull_NNNN.png   with config render.hull: where the inverted hull shows, i.e. the lines (hull_style.py)
 Everything model-specific (bones, camera, materials) comes from CONFIG.json.
 Other scripts (fit_pose.py) exec this file with --setup-only to reuse the scene setup.
 """
@@ -255,6 +256,61 @@ scene.render.line_thickness_mode = "ABSOLUTE"
 scene.render.line_thickness = 1.0
 
 
+# --- Hull pass (optional, config render.hull {thickness, even, weld}): an inverted hull - a copy of
+# every mesh pushed out by `thickness` world units with its normals flipped, back faces culled -
+# in white, with the body as a holdout. What shows is the line: around the silhouette, and inside
+# wherever a nearer part sits more than `thickness` in front of what's behind it. Used by
+# hull_style.py (style.hull). The modifiers stay off except during this pass.
+HULL = cfg["render"].get("hull")
+HULL_MODS, HULL_MATS = [], {}
+if HULL:
+    def _flat_mat(name, node):
+        m = bpy.data.materials.new(name)
+        m.use_nodes = True
+        t = m.node_tree
+        t.nodes.clear()
+        n = t.nodes.new(node)
+        if node == "ShaderNodeEmission":
+            n.inputs["Color"].default_value = (1, 1, 1, 1)
+        t.links.new(n.outputs[0], t.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
+        return m
+    hull_mat, hull_hold = _flat_mat("SpriteHull", "ShaderNodeEmission"), _flat_mat("SpriteHullHold", "ShaderNodeHoldout")
+    hull_mat.use_backface_culling = True
+    for o in meshes:
+        me = o.data
+        if len(me.materials) == 0:
+            me.materials.append(None)
+        HULL_MATS[me.name] = list(me.materials)
+        n_slots = len(me.materials)
+        me.materials.append(hull_mat)             # extra slot: only the hull's faces use it
+        scale = max(o.matrix_world.to_scale())
+        if HULL.get("weld"):
+            # join split (hard-edge) vertices so the shell has no cracks there; smooths its normals
+            # across hard edges, which draws extra lines along creases
+            wd = o.modifiers.new("SpriteHullWeld", "WELD")
+            wd.merge_threshold = 1e-4 / scale
+            HULL_MODS.append(wd)
+        s = o.modifiers.new("SpriteHull", "SOLIDIFY")
+        s.use_flip_normals, s.use_rim, s.offset = True, False, 1.0
+        s.use_even_offset = HULL.get("even", True)
+        s.use_quality_normals = True
+        s.material_offset = n_slots
+        s.thickness = HULL.get("thickness", 0.03) / scale
+        HULL_MODS.append(s)
+    for m in HULL_MODS:
+        m.show_render = m.show_viewport = False
+
+
+def hull_on(on):
+    """switch the hull shell on (body a holdout) or off (the model as it was)"""
+    for m in HULL_MODS:
+        m.show_render = m.show_viewport = on
+    for o in meshes:
+        for i, m in enumerate(HULL_MATS[o.data.name]):
+            o.data.materials[i] = hull_hold if on else m
+    bpy.context.view_layer.update()
+
+
 # --- Shadow pass (optional, config render.shadow): white diffuse lit by one hard sun, no ambient.
 # Compared with the sun's N.L (from the data pass) it tells which pixels are in a *cast* shadow:
 # facing the light but blocked by another part (petals under the crown, a chin over a neck).
@@ -368,7 +424,8 @@ def place_camera():
         cam_data.ortho_scale = CAM["ortho_scale"]
         dist = CAM["distance"]
     cam.location = target + direction * dist
-    cam.rotation_euler = (-direction).to_track_quat("-Z", "Y").to_euler()
+    # "-Z" looks along the view; "Y" is this camera's up axis, kept toward world Z
+    cam.rotation_euler = (-direction).to_track_quat("-Z", CAM.get("up", "Y")).to_euler()
     depth.inputs["From Min"].default_value = dist - DEPTH_RANGE
     depth.inputs["From Max"].default_value = dist + DEPTH_RANGE
 
@@ -404,12 +461,44 @@ def slow_t(f, n, fast):
     return (f - lost) / (n - total)
 
 
-def pose_at(t):
-    """Apply config "pose" at loop position t in [0, 1); s/c are one sine cycle (the idle)."""
-    for pb in arm.pose.bones:
-        pb.rotation_mode = "QUATERNION"
-        pb.matrix_basis = Matrix.Identity(4)
+CLIP = cfg.get("motion", {}).get("clip")
+
+
+def apply_clip(t):
+    """Play one of the model's own actions. t in [0, 1) covers its frame range once, so a
+    looping clip's last frame (a copy of the first) is not drawn twice."""
+    action = bpy.data.actions[CLIP]
+    ad = arm.animation_data or arm.animation_data_create()
+    if ad.action != action:
+        ad.action = action
+        if action.slots:
+            ad.action_slot = action.slots[0]
+    start, end = action.frame_range
+    frame = start + (t % 1.0) * (end - start)
+    scene.frame_set(int(frame), subframe=frame - int(frame))
     bpy.context.view_layer.update()
+    if cfg.get("pose"):
+        # config "pose" offsets on top of the clip: freeze the clip's pose for this frame and unbind
+        # the action, or rendering re-evaluates the action and drops the offsets
+        basis = {pb.name: pb.matrix_basis.copy() for pb in arm.pose.bones}
+        ad.action = None
+        for pb in arm.pose.bones:
+            pb.matrix_basis = basis[pb.name]
+        bpy.context.view_layer.update()
+
+
+def pose_at(t):
+    """Apply config "pose" at loop position t in [0, 1); s/c are one sine cycle (the idle).
+    motion.clip plays that action instead of starting from the bind pose."""
+    if CLIP:
+        apply_clip(t)
+    else:
+        for pb in arm.pose.bones:
+            pb.rotation_mode = "QUATERNION"
+            pb.matrix_basis = Matrix.Identity(4)
+        bpy.context.view_layer.update()
+    if not cfg.get("pose"):
+        return
     # s, c: one sine / cosine cycle per loop; t: loop position 0..1 (for timed events, e.g. a spin);
     # ts: "slow time" - loop position with the fast frames (style.fast_frames) cut out, so the slow
     # motions pause during a fast event and the loop outside it stays seamless (see slow_t);
@@ -469,13 +558,22 @@ def render_frame(t, name):
     pose_at(t)
     if SH:
         aim_sun(SH["light_cam"])
-    for kind in ("color", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + tuple(TEX_PASSES):   # id: from data
+    for kind in ("color", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + (("hull",) if HULL else ()) + tuple(TEX_PASSES):   # id: from data
         if kind == "lines" and LINES_TRACE:
             alpha = linetrace.trace(scene, meshes, FS.get("crease_angle", 140), FS.get("thickness", 3.0), LINES_KINDS)
             (linetrace.write_tga if RAW else linetrace.write_png)(f"{out_dir}/lines_{name}{EXT}", alpha)
             continue
         if kind == "shadow" and SHADOW_VL is not None:
             continue                          # came out of the data render
+        if kind == "hull":
+            use_pass("data")                  # unlit EEVEE, no anti-aliasing
+            bpy.context.view_layer.material_override = None
+            scene.view_settings.view_transform = "Standard"
+            hull_on(True)
+            scene.render.filepath = f"{out_dir}/hull_{name}{EXT}"
+            bpy.ops.render.render(write_still=True)
+            hull_on(False)
+            continue
         if kind == "data" and SHADOW_VL is not None:
             use_pass("shadow")                # lit: sun and shadows on (data is emission: unaffected)
             bpy.context.view_layer.material_override = data_mat

@@ -222,7 +222,19 @@ def prepare(cfg, color_im, id_im, data_im, *rest):
     d = np.array(data_im.crop(box).resize(size, Image.Resampling.NEAREST)).astype(float)
     solid = c[..., 3] > 127
     albedo = np.array(color_im.crop(box).resize(size, Image.Resampling.NEAREST))[..., :3].astype(float)
-    if (~(np.array(color_im.crop(box).resize(size, Image.Resampling.NEAREST))[..., 3] > 127) & solid).any():
+    # parts.sample "box": the colour is the average of the render samples inside the sprite pixel
+    # (empty samples left out), not the one texel at the centre. Centre sampling keeps every
+    # stray texel as its own speck.
+    if cfg["parts"].get("sample") == "box":
+        hi = np.array(color_im.crop(box))
+        opaque = hi[..., 3] > 127
+        cov = np.array(Image.fromarray(opaque.astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)).astype(float) / 255
+        acc = []
+        for ch in range(3):
+            plane = np.where(opaque, hi[..., ch], 0).astype(np.uint8)
+            acc.append(np.array(Image.fromarray(plane).resize(size, Image.Resampling.BOX)).astype(float))
+        albedo = np.stack(acc, -1) / np.maximum(cov[..., None], 1e-3)
+    if (~(np.array(color_im.crop(box).resize(size, Image.Resampling.NEAREST))[..., 3] > 127) & solid).any() and cfg["parts"].get("sample") != "box":
         # centre sample fell outside the shape on a covered edge pixel: borrow the box colour
         near_alpha = np.array(color_im.crop(box).resize(size, Image.Resampling.NEAREST))[..., 3] > 127
         albedo[solid & ~near_alpha] = c[solid & ~near_alpha][:, :3]
@@ -258,6 +270,78 @@ def prepare(cfg, color_im, id_im, data_im, *rest):
         else:
             part[m] = name
 
+    # parts.sample "cover": the old full-resolution coverage sample. Each render texel is labelled,
+    # single-texel noise is dropped, then a sprite pixel takes the colour that fills it. A centre
+    # texel has no neighbours to continue a line, so the mark breaks into stairs.
+    if cfg["parts"].get("sample") == "cover" and cfg["parts"].get("default_material") in order:
+        col_hi = np.array(color_im.crop(box))[..., :3].astype(np.float32)
+        a_hi = np.array(color_im.crop(box))[..., 3] > 127
+        lab = np.argmin(((col_hi[..., None, :] - alb_cols) ** 2).sum(-1), -1).astype(np.int16)
+        lab = np.where(a_hi, lab, np.int16(-1))
+        for _ in range(int(cfg["parts"].get("cover_smooth", 1))):
+            stack = np.stack([np.roll(np.roll(lab, dy, 0), dx, 1) for dy in (-1, 0, 1) for dx in (-1, 0, 1)])
+            counts = np.stack([(stack == i).sum(0) for i in range(len(alb_names))])
+            mode = counts.argmax(0).astype(np.int16)
+            lab = np.where((lab >= 0) & (counts.max(0) >= 5), mode, lab)
+        fracs = [np.array(Image.fromarray((lab == i).astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)) / 255
+                 for i in range(len(alb_names))]
+        best = np.stack(fracs, -1).argmax(-1)
+        di = order.index(cfg["parts"]["default_material"])
+        m = solid & (which == di) & ~eye_area
+        part[m] = np.array(alb_names, dtype=object)[best][m]
+        # cell rings are a few texels wide; grow white into the body so a 1 px gap closes
+        # and the ring stays one mark instead of scattered dashes
+        white = part == "white"
+        body = (part == "green") | (part == "gray")
+        for _ in range(2):
+            grown = white.copy()
+            for dy, dx in NB4:
+                grown |= shift(white, dy, dx, False)
+            white = white | (solid & grown & body)
+        part = np.where(white, "white", part)
+
+    # parts.sample "flat": knock out single-texel noise, then the colour that covers the pixel.
+    # A centre texel of a filtered texture lands on the fringe and comes back as a speck.
+    if cfg["parts"].get("sample") == "flat" and cfg["parts"].get("default_material") in order:
+        col_hi = np.array(color_im.crop(box))[..., :3].astype(np.float32)
+        a_hi = np.array(color_im.crop(box))[..., 3] > 127
+        lab = np.argmin(((col_hi[..., None, :] - alb_cols) ** 2).sum(-1), -1).astype(np.int16)
+        lab = np.where(a_hi, lab, np.int16(-1))
+        for _ in range(2):
+            stack = np.stack([np.roll(np.roll(lab, dy, 0), dx, 1) for dy in (-1, 0, 1) for dx in (-1, 0, 1)])
+            counts = np.stack([(stack == i).sum(0) for i in range(len(alb_names))])
+            mode = counts.argmax(0).astype(np.int16)
+            lab = np.where((lab >= 0) & (counts.max(0) >= 5), mode, lab)
+        fracs = [np.array(Image.fromarray((lab == i).astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)) / 255
+                 for i in range(len(alb_names))]
+        best = np.stack(fracs, -1).argmax(-1)
+        di = order.index(cfg["parts"]["default_material"])
+        m = solid & (which == di) & ~eye_area
+        part[m] = np.array(alb_names, dtype=object)[best][m]
+        # close 1 px gaps in a mark: a body pixel with the same mark on opposite sides is the mark
+        for _ in range(2):
+            for name in ("white", "pink", "red", "blue", "yellow"):
+                if name not in alb_names:
+                    continue
+                mk = part == name
+                bridge = (shift(mk, 0, -1, False) & shift(mk, 0, 1, False)) | (shift(mk, -1, 0, False) & shift(mk, 1, 0, False))
+                part = np.where(solid & bridge & (part != name), name, part)
+
+    # parts.majority: a body pixel takes the albedo that covers most of it, not the one centre
+    # texel. Centre sampling turns a thin texture mark into a broken 1 px dither (the X, the
+    # cracks, the hexes) that crawls as the model moves.
+    if cfg["parts"].get("majority") and cfg["parts"].get("sample") != "flat" and cfg["parts"].get("default_material") in order:
+        col_hi = np.array(color_im.crop(box))[..., :3].astype(np.float32)
+        a_hi = np.array(color_im.crop(box))[..., 3] > 127
+        near_hi = np.argmin(((col_hi[..., None, :] - alb_cols) ** 2).sum(-1), -1)
+        near_hi = np.where(a_hi, near_hi, -1)
+        fracs = [np.array(Image.fromarray((near_hi == i).astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)) / 255
+                 for i in range(len(alb_names))]
+        best = np.stack(fracs, -1).argmax(-1)
+        di = order.index(cfg["parts"]["default_material"])
+        m = solid & (which == di) & ~eye_area
+        part[m] = np.array(alb_names, dtype=object)[best][m]
+
     if "eye" in order:
         # Eyes by coverage at full render resolution, not one centre sample: a sprite pixel is
         # pupil if at least `cover` of it is pupil, eye-white likewise. Point sampling made the
@@ -284,6 +368,25 @@ def prepare(cfg, color_im, id_im, data_im, *rest):
         if len(xs_):
             kx_, ky_ = (box[2] - box[0]) / size[0], (box[3] - box[1]) / size[1]
             eye_xy = ((xs_.mean() + 0.5) / kx_ - 0.5, (ys_.mean() + 0.5) / ky_ - 0.5)
+
+    # thin accent markings (parts.accent_cover {part: cover}, per Pokemon) by coverage at full render
+    # resolution, like the eyes: a sprite pixel takes the accent part if at least `cover` of it shows
+    # that colour, within the materials that allow it. One centre sample per pixel kept a ~1-px
+    # marking (Mega Golisopod's purple lightning) only where the sample happened to land on it
+    acc = cfg["parts"].get("accent_cover")
+    if acc:
+        id_hi = np.array(id_im.crop(box)).astype(float)
+        col_hi = np.array(color_im.crop(box))[..., :3].astype(float)
+        solid_hi = id_hi[..., 3] > 127
+        which_hi = np.argmin(((id_hi[..., None, :3] - ID_RGB[None, None, :len(order)]) ** 2).sum(-1), -1)
+        for name, cover in acc.items():
+            groups = [i for i, g in enumerate(order) if name in g.split("|") and "|" in g]
+            for gi in groups:
+                allowed = [alb_names.index(k) for k in order[gi].split("|")]
+                near_hi = np.array(allowed)[np.argmin(((col_hi[..., None, :] - alb_cols[allowed]) ** 2).sum(-1), -1)]
+                hit = solid_hi & (which_hi == gi) & (near_hi == alb_names.index(name))
+                frac = np.array(Image.fromarray(hit.astype(np.uint8) * 255).resize(size, Image.Resampling.BOX)) / 255
+                part[solid & (which == gi) & (frac >= cover) & ~eye_area] = name
 
     # small fragments of a part (parts.min_region {part: px}, per Pokemon): a piece of that part
     # smaller than px pixels takes the part most of its border touches - scattered splashes of an
@@ -392,15 +495,138 @@ def prepare(cfg, color_im, id_im, data_im, *rest):
         lv = np.clip(np.round(il[..., :3] / 36), 0, 7).astype(int)
         plate = np.where(il[..., 3] > 127, lv[..., 0] * 64 + lv[..., 1] * 8 + lv[..., 2], 0)
         plate[~solid] = 0
+    if cfg["parts"].get("smooth"):
+        part = smooth_parts(part, solid, cfg["parts"]["smooth"])
+    rest = (np.array(rest_im.crop(box).resize(size, Image.Resampling.NEAREST)) if rest_im is not None else None)
+    if cfg["parts"].get("fill_holes"):
+        solid, part, n, d, rest = fill_holes(solid, part, n, d, rest, float(cfg["parts"]["fill_holes"]))
+        if plate is not None:
+            plate[~solid] = 0
     return {"solid": solid, "n": n, "depth": d[..., 2], "has_data": d[..., 3] > 0, "cast": cast, "unlit": unlit_frac, "line_cov": line_cov,
             "seam_cov": seam_cov, "plate": plate,
             "detail": detail, "part": part, "fixed": fixed, "fixed_rgb": fixed_rgb, "eye_area": eye_area,
             "eye_xy": eye_xy,
-            "rest": (np.array(rest_im.crop(box).resize(size, Image.Resampling.NEAREST)) if rest_im is not None else None),
+            "rest": rest,
             # Freestyle line coverage per sprite pixel (0..1), from the full-size line render
             "fs_cov": (np.array(lines_im.crop(box).getchannel("A").resize(size, Image.Resampling.BOX)) / 255
                        if lines_im is not None else None),
             "alpha_hi": alpha_hi, "hi_margin": margin, "hi_per_px": (kx, ky)}
+
+
+def smooth_parts(part, solid, rounds):
+    """A pixel with 3 of its 4 neighbours in one other part joins that part. Knocks the
+    1 px jogs off texture marks without removing the mark."""
+    names = sorted({p for p in set(part[solid].tolist()) if p})
+    code = {n: i + 1 for i, n in enumerate(names)}
+    a = np.zeros(part.shape, np.int16)
+    for n, i in code.items():
+        a[part == n] = i
+    for _ in range(int(rounds)):
+        stack = np.stack([shift(a, dy, dx, 0) for dy, dx in NB4])
+        best = np.zeros_like(a)
+        bestn = np.zeros_like(a)
+        for i in range(1, len(names) + 1):
+            cnt = (stack == i).sum(0).astype(np.int16)
+            take = cnt > bestn
+            bestn = np.where(take, cnt, bestn)
+            best = np.where(take, i, best)
+        a = np.where(solid & (bestn >= 3) & (best != 0), best, a)
+    out = part.copy()
+    for n, i in code.items():
+        out[a == i] = n
+    return out
+
+
+def fill_holes(solid, part, n, d, rest, agree):
+    """Close a hole inside one part (a slit in the tail, a missed pixel). A hole whose
+    border is at least `agree` one part is filled from the nearest pixel of that part.
+    A gap between two different parts is left alone."""
+    from collections import deque
+    H, W = solid.shape
+    seen = np.zeros_like(solid)
+    q = deque()
+    for y in range(H):
+        for x in (0, W - 1):
+            if not solid[y, x] and not seen[y, x]:
+                seen[y, x] = True
+                q.append((y, x))
+    for x in range(W):
+        for y in (0, H - 1):
+            if not solid[y, x] and not seen[y, x]:
+                seen[y, x] = True
+                q.append((y, x))
+    while q:
+        y, x = q.popleft()
+        for dy, dx in NB4:
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < H and 0 <= nx < W and not solid[ny, nx] and not seen[ny, nx]:
+                seen[ny, nx] = True
+                q.append((ny, nx))
+    holes = ~solid & ~seen
+    seen2 = np.zeros_like(holes)
+    for y0, x0 in np.argwhere(holes):
+        if seen2[y0, x0]:
+            continue
+        comp, st = [], [(int(y0), int(x0))]
+        seen2[y0, x0] = True
+        while st:
+            y, x = st.pop()
+            comp.append((y, x))
+            for dy, dx in NB4:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and holes[ny, nx] and not seen2[ny, nx]:
+                    seen2[ny, nx] = True
+                    st.append((ny, nx))
+        border = {}
+        for y, x in comp:
+            for dy, dx in NB4:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and solid[ny, nx] and part[ny, nx]:
+                    border[part[ny, nx]] = border.get(part[ny, nx], 0) + 1
+        if not border:
+            continue
+        name = max(border, key=border.get)
+        if border[name] < agree * sum(border.values()):
+            continue
+        src = np.zeros_like(solid)
+        for y, x in comp:
+            for dy, dx in NB4:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and solid[ny, nx] and part[ny, nx] == name:
+                    src[ny, nx] = True
+        if not src.any():
+            continue
+        dist = np.full((H, W), -1, np.int32)
+        sy = np.zeros((H, W), np.int32)
+        sx = np.zeros((H, W), np.int32)
+        dq = deque()
+        for y, x in np.argwhere(src):
+            y, x = int(y), int(x)
+            dist[y, x] = 0
+            sy[y, x], sx[y, x] = y, x
+            dq.append((y, x))
+        mark = np.zeros_like(solid)
+        for y, x in comp:
+            mark[y, x] = True
+        while dq:
+            y, x = dq.popleft()
+            for dy, dx in NB4:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and mark[ny, nx] and dist[ny, nx] < 0:
+                    dist[ny, nx] = dist[y, x] + 1
+                    sy[ny, nx], sx[ny, nx] = sy[y, x], sx[y, x]
+                    dq.append((ny, nx))
+        for y, x in comp:
+            if dist[y, x] < 0:
+                continue
+            yy, xx = int(sy[y, x]), int(sx[y, x])
+            solid[y, x] = True
+            part[y, x] = name
+            n[y, x] = n[yy, xx]
+            d[y, x] = d[yy, xx]
+            if rest is not None:
+                rest[y, x] = rest[yy, xx]
+    return solid, part, n, d, rest
 
 
 def grow(mask, steps):
@@ -507,6 +733,23 @@ def lighting(st, f, grain=True):
         for name, v in (lift.items() if isinstance(lift, dict) else ((p, lift) for p in set(f["part"][f["solid"]].tolist()))):
             add[d1 & (f["part"] == name)] = v
         base = base + add
+    ds = st.get("depth_shade")
+    if ds:
+        # per Pokemon (style.depth_shade {radius, jump, strength}): a pixel with a nearer part of
+        # the body within `radius` px, more than `jump` depth levels in front of it, is pushed down
+        # by `strength` - the dark masses Showdown puts behind claws, between legs and under the
+        # torso, which separate the parts without a cast shadow
+        r, solid = int(ds.get("radius", 3)), f["solid"]
+        dep = np.where(solid, f["depth"].astype(float), -np.inf)
+        near = dep.copy()
+        for dy in range(-r, r + 1):
+            for dx in range(-r, r + 1):
+                if dy * dy + dx * dx <= r * r:
+                    near = np.maximum(near, shift(dep, dy, dx, -np.inf))
+        gap = np.zeros_like(dep)
+        np.subtract(near, dep, out=gap, where=solid)
+        behind = solid & (gap > ds.get("jump", 20))
+        base = base - ds.get("strength", 0.5) * behind
     cs = st.get("cast_shadow")
     if cs and f.get("cast") is not None:
         # cast shadow: a pixel mostly covered by it is pushed down by `strength` (light values
@@ -748,6 +991,23 @@ def layers(cfg, f, style=None):
                 line |= join
                 weak |= join
 
+    pl_cfg = st.get("plate_lines")
+    if pl_cfg and f.get("plate") is not None:
+        # per Pokemon (style.plate_lines {parts, min_px}): a line wherever the plate (UV island,
+        # islands pass) changes, drawn on the upper / left plate's side - one closed outline per
+        # armour piece, as Showdown draws them, rather than the UV seams' web. Plates under
+        # `min_px` sprite pixels draw no border (sampling specks, not pieces)
+        P = f["plate"]
+        pp = np.isin(part, pl_cfg["parts"]) & solid & ~f["eye_area"] & (P > 0)
+        ids, counts = np.unique(P[pp], return_counts=True)
+        big = pp & np.isin(P, ids[counts >= pl_cfg.get("min_px", 6)])
+        on = np.zeros_like(pp)
+        for dy, dx in ((1, 0), (0, 1)):
+            nb, nb_big = shift(P, -dy, -dx, 0), shift(big, -dy, -dx, False)
+            on |= big & nb_big & (nb != P)
+        line |= on
+        weak |= on
+
     if st.get("line_source") == "freestyle" and f.get("fs_cov") is not None:
         # lines traced from the mesh (creases, inner contours, borders): replaces the per-pixel
         # depth / fold detection, which re-traced lines differently every frame
@@ -845,8 +1105,15 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
     A dropped outline pixel becomes transparent; a dropped inner pixel takes the most common
     body colour around it. protect = pixels never touched (the eye stamp). With prev / next
     frames, where there is a choice the replacement agreeing with them is preferred."""
-    if rustcore.lib is not None:
+    steps = bool(cfg["style"].get("line_steps"))
+    if steps:
+        # per Pokemon (style.line_steps): Showdown-style lines - staircase corners stay (31% of
+        # Showdown's Golisopod line pixels are such steps) and so does the last pixel of an inner
+        # line where it meets the outline (dropping it left a 1-px gap at every junction)
+        corners = False
+    if rustcore.lib is not None and not steps:          # line_steps: Python only for now
         return rustcore.clean_lines(cfg, s, protect, prev, nxt, corners)
+    import check_loop
     OUT = colour(cfg, "outline")
     s = s.copy()
     H, W = s.shape[:2]
@@ -878,6 +1145,8 @@ def clean_lines(cfg, s, protect=None, prev=None, nxt=None, corners=True):
         ring = line & touches_out
         ring_n8 = sum(nb(ring, dy, dx).astype(int) for dy, dx in NB8)
         along = line & ~touches_out & (ring_n8 >= 2)
+        if steps:
+            along &= ~check_loop.line_junctions(line_all, along, ring)
         blk = blocks2x2(line_all)
         in_block = (blk | nb(blk, 1, 0) | nb(blk, 0, 1) | nb(blk, 1, 1)) & line
         if not corners:
@@ -957,7 +1226,7 @@ def seal_parts(cfg, s, protect=None):
         contacts = sum(int((own & cl.n4(other)).sum()) for own, other in pm)
         lm = line_all & ~protect
         # the line faults are only needed to rank options that close a contact (the costly part)
-        bad = lambda: int(blocks2x2(lm).sum()) + cl.stairs(t, lm, cl.separators(cfg, t, lm, protect))
+        bad = lambda: int(blocks2x2(lm).sum()) + cl.stairs(t, lm, cl.separators(cfg, t, lm, protect), steps=bool(cfg["style"].get("line_steps")))
         return contacts, bad, pm
 
     for _ in range(200):
@@ -1146,6 +1415,52 @@ def compose(cfg, f, L, style=None):
         if len(comp) < need and (main in st.get("min_line_px_part", {}) or not any(edge[y, x] for y, x in comp)):
             ys, xs = zip(*comp)
             inner[ys, xs] = False
+
+    if st.get("drop_line_dots"):
+        # per Pokemon (style.drop_line_dots): an inner line pixel with no other line pixel around
+        # it and away from the silhouette is a dot, not a line - carried lines (transport_lines)
+        # break into these where the surface match drifts, and they read as speckle
+        nb = np.zeros_like(inner)
+        out_nb = np.zeros_like(inner)
+        for dy, dx in NB8:
+            nb |= shift(inner, dy, dx, False)
+            out_nb |= ~shift(solid, dy, dx, False)
+        inner &= nb | out_nb
+
+    lj = st.get("line_join")
+    if lj and not L.get("_transported"):
+        # per Pokemon (style.line_join {reach}): a line end that stops up to `reach` px short of
+        # another line or the outline is carried on, straight, until it meets it - Showdown's
+        # plate lines always run into the outline, so a 1 px gap reads as a broken drawing
+        reach = int(lj.get("reach", 2))
+        def touches(y, x, own):
+            for dy, dx in NB8:
+                yy, xx = y + dy, x + dx
+                if not (0 <= yy < h and 0 <= xx < w) or not solid[yy, xx]:
+                    return True
+                if inner[yy, xx] and (yy, xx) not in own:
+                    return True
+            return False
+        for y, x in np.argwhere(inner):
+            nbs = [(y + dy, x + dx) for dy, dx in NB8
+                   if 0 <= y + dy < h and 0 <= x + dx < w and inner[y + dy, x + dx]]
+            if len(nbs) != 1:
+                continue
+            own = {(y, x), nbs[0]} | {(nbs[0][0] + dy, nbs[0][1] + dx) for dy, dx in NB8}
+            if touches(y, x, own):
+                continue
+            dy, dx = y - nbs[0][0], x - nbs[0][1]
+            path = []
+            for k in range(1, reach + 1):
+                yy, xx = y + dy * k, x + dx * k
+                if not (0 <= yy < h and 0 <= xx < w) or not solid[yy, xx] or f["eye_area"][yy, xx]:
+                    break
+                path.append((yy, xx))
+                own |= {(y + dy * (k - 1), x + dx * (k - 1))}
+                if touches(yy, xx, own | set(path)):
+                    for py, px in path:
+                        inner[py, px] = True
+                    break
 
     # a line on a border between two parts goes on the preferred part's side (Showdown draws
     # the mouth on the blue side of the blue/cream crease, in dark blue)
@@ -1713,9 +2028,98 @@ def pixel_bob(cfg, sprites):
     return out
 
 
+def hold_part_flicker(frames, window=1):
+    """A one-frame flip between a mark and the body is the edge landing on a different texel.
+    Keep the colour the surrounding frames agree on. A change that stays is kept."""
+    n = len(frames)
+    names = sorted({p for f in frames for p in set(f["part"].ravel().tolist()) if p})
+    code = {name: i + 1 for i, name in enumerate(names)}
+    inv = {i: name for name, i in code.items()}
+    enc = []
+    for f in frames:
+        a = np.zeros(f["part"].shape, np.int16)
+        for name, i in code.items():
+            a[f["part"] == name] = i
+        enc.append(a)
+    out = []
+    need = window + 1
+    for i in range(n):
+        idx = [(i + k) % n for k in range(-window, window + 1)]
+        solid = np.all([frames[j]["solid"] for j in idx], 0) & ~frames[i]["fixed"]
+        stack = np.stack([enc[j] for j in idx])
+        best = np.zeros(enc[i].shape, np.int16)
+        best_n = np.zeros(enc[i].shape, np.int16)
+        for name, k in code.items():
+            cnt = (stack == k).sum(0).astype(np.int16)
+            take = cnt > best_n
+            best = np.where(take, k, best)
+            best_n = np.where(take, cnt, best_n)
+        part = np.array(frames[i]["part"], copy=True)
+        use = solid & (best_n >= need) & (best != enc[i])
+        for k in code.values():
+            part[use & (best == k)] = inv[k]
+        out.append(dict(frames[i], part=part))
+    return out
+
+
+def transport_parts(frames, key_frame=0, search=12, tol=4):
+    """Give every frame the key frame's part labels, matched through the rest pass.
+
+    The colour pass is re-sampled every frame, so a mark's edge pixels flip between the mark
+    and the body (a pink pixel of the X becomes gray, then pink again). That reads as residue
+    of the previous frame and as the marks crawling out of sync with the body. Part labels
+    stick to the surface instead: a pixel takes the key frame's part when it shows the same
+    spot of the model."""
+    if any(f.get("rest") is None for f in frames):
+        return frames
+    kf = frames[key_frame]
+    rk = kf["rest"][..., :3].astype(np.float32)
+    okk = (kf["rest"][..., 3] > 0) & kf["solid"]
+    h, w = kf["solid"].shape
+    limit = tol * tol * 3
+    out = []
+    for i, f in enumerate(frames):
+        if i == key_frame:
+            out.append(f)
+            continue
+        r = f["rest"][..., :3].astype(np.float32)
+        okf = (f["rest"][..., 3] > 0) & f["solid"] & ~f["fixed"]
+        best = np.full((h, w), np.inf)
+        got = np.array(f["part"], copy=True)
+        for dy in range(-search, search + 1):
+            for dx in range(-search, search + 1):
+                ys0, ys1 = max(0, -dy), min(h, h - dy)
+                xs0, xs1 = max(0, -dx), min(w, w - dx)
+                tgt = (slice(ys0, ys1), slice(xs0, xs1))
+                src = (slice(ys0 + dy, ys1 + dy), slice(xs0 + dx, xs1 + dx))
+                d = ((r[tgt] - rk[src]) ** 2).sum(-1) + 0.01 * (dy * dy + dx * dx)
+                valid = okf[tgt] & okk[src]
+                d = np.where(valid, d, np.inf)
+                upd = d < best[tgt]
+                best[tgt] = np.where(upd, d, best[tgt])
+                got[tgt] = np.where(upd, kf["part"][src], got[tgt])
+        use = best <= limit
+        part = np.array(f["part"], copy=True)
+        part[use] = got[use]
+        out.append(dict(f, part=part))
+    return out
+
+
 def _stylize_loop(cfg, frames, style=None):
     if len(frames) > 2 and cfg["style"].get("steady_loop", True):
         frames = steady_shape(frames, cfg["style"].get("shape_min_frames", cfg["style"].get("min_frames", 2)))
+    tp = cfg["style"].get("transport_parts")
+    if tp and len(frames) > 2:
+        frames = transport_parts(frames, tp.get("key_frame", 0), tp.get("search", 12), tp.get("tol", 4))
+        if tp.get("smooth"):
+            # per Pokemon (style.transport_parts.smooth): carried labels match the key frame's
+            # through the rest pass pixel by pixel, which saws a mark's edge on every other frame;
+            # the same 3-of-4 smoothing as parts.smooth evens it again (the key frame is untouched)
+            k = tp.get("key_frame", 0)
+            frames = [f if i == k else dict(f, part=smooth_parts(f["part"], f["solid"] & ~f["fixed"], tp["smooth"]))
+                      for i, f in enumerate(frames)]
+    if cfg["style"].get("hold_parts") and len(frames) > 2:
+        frames = hold_part_flicker(frames, int(cfg["style"]["hold_parts"]))
     ls = pmap(layers, [(cfg, f, style) for f in frames])
     xy = [f.get("eye_xy") for f in frames]
     if all(p is not None for p in xy):
@@ -1831,13 +2235,14 @@ def last_fix(cfg, sp, pm):
 def hard_faults(cfg, s, protect):
     """the hard rules, counted exactly as the checks count them: 2x2 line blocks, 2-px
     diagonals, open outline / part leakage"""
-    if rustcore.lib is not None:
+    steps = bool(cfg["style"].get("line_steps"))
+    if rustcore.lib is not None and not steps:          # line_steps: Python only for now
         return rustcore.hard_faults(cfg, s, protect)
     import check_loop as cl
     DARK = dark_line_colours(cfg)
     l = (s[..., 3] > 0) & np.any([np.all(s[..., :3] == c, -1) for c in DARK], 0) & ~protect
     blobs = cl.pupil_blobs(s, l)
-    return (cl.line_blocks(s, l, blobs) + cl.stairs(s, l, cl.separators(cfg, s, l, protect), blobs)
+    return (cl.line_blocks(s, l, blobs) + cl.stairs(s, l, cl.separators(cfg, s, l, protect), blobs, steps)
             + cl.open_outline(cfg, s, l, protect))
 
 

@@ -21,7 +21,7 @@ ss.pin_hash_seed()       # repeatable tie-breaks
 args = sys.argv[1:]
 cfg = json.load(open(args[0])); fdir, pa, pb = args[1], args[2], args[3]
 passes = ss.load_passes(fdir)
-names = sorted(p.name for p in __import__("pathlib").Path(fdir).glob("color_*.png"))
+names = sorted(p.name for p in __import__("pathlib").Path(fdir).glob("color_*.*"))
 box, size = ss.framing(passes, cfg["style"]["height"], anchor=[0])
 info = compare.colour_info(cfg)
 LINE = [cl.hexrgb(cfg["palette"]["outline"])] + [cl.colour_ref(cfg, r) for r in cfg["style"].get("dark_line_colours", [])]
@@ -40,7 +40,7 @@ for name, p in zip(names, passes):
         ya, xa = np.nonzero(a); yb, xb = np.nonzero(b)
         A = np.stack([ya, xa], 1)[:, None]; B = np.stack([yb, xb], 1)[None]
         gap = int(np.abs(A - B).max(-1).min())
-    print(f"{name}: thick {cl.line_blocks(s, l)}  diag {cl.stairs(s, l, cl.separators(cfg, s, l, z))}  "
+    print(f"{name}: thick {cl.line_blocks(s, l)}  diag {cl.stairs(s, l, cl.separators(cfg, s, l, z), steps=bool(cfg['style'].get('line_steps')))}  "
           f"open {cl.open_outline(cfg, s, l, z)}  teeth {cl.teeth(cfg, s)}  closest {pa}-{pb} {gap} px")
     imgs.append(s)
 if "--png" in args:

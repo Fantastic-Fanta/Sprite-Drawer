@@ -137,6 +137,28 @@ python3 pipeline/palette_swap.py CONFIG.json CONFIG_shiny.json out/NAME.gif out/
 The shiny is the finished normal sprite with its colours swapped, like Showdown's. Two parts must
 not share a colour if only one of them changes in the shiny.
 
+### Hull style (optional)
+
+An alternative look with flat palette colours, three cel bands, and lines from an inverted hull,
+so the 3D model decides where interior lines go. It replaces the line and shading rules, so
+there's no tracing and no paint script. Example: `mega-zygarde-za/zygarde_hull_front.json`.
+
+```json
+"render": {"hull": {"thickness": 0.03, "even": true, "weld": false}},
+"style":  {"hull": {"cover": 0.35, "weak_cover": 0.12, "bands": [0.454, 0.748], "ring": true}}
+```
+
+- `render.hull` adds a `hull_NNNN` pass: every mesh pushed out by `thickness` world units with
+  flipped normals and back faces culled. About 1 sprite px of world units gives 1 px lines.
+  Keep `weld` off: it closes cracks at hard edges but adds lines along creases.
+- `style.hull` turns the hull pass into lines. A pixel is line where the hull covers `cover` of it;
+  1–2 px gaps are filled where the hull still covers `weak_cover`. `ring` closes the silhouette.
+  `bands` are the N.L limits for one shade darker / lighter; leave them out to take frame 0's
+  25th / 70th percentile. Parts whose `style.thresholds` are all 9 stay flat (or set `flat_parts`).
+- Lines are never thinned or moved. Each pixel takes the colour of the part most of its samples
+  show, leaving out samples under the hull. Bits of a part up to 3 px touching a line take the
+  colour around them.
+
 ### 9. Back view
 
 The back camera is the front camera turned 180°: azimuth + 180, elevation negated, with the same
@@ -251,6 +273,7 @@ therefore skips Blender entirely. Lines come from `linetrace.py` by default;
 | `render_many.py` | Blender worker kept up between sprites (used by `build_all`) |
 | `make_gif.py` | frames → sprite GIF, then QA |
 | `sprite_style.py` | the look: shading, palette bands, lines, cleanup, stabilisation over time |
+| `hull_style.py` | the hull style: flat colours, cel bands, inverted-hull lines (`style.hull`) |
 | `linetrace.py` | mesh edges as lines (replaces Freestyle) |
 | `motion.py` | motion helpers shared by render, style and checks |
 | `fit_pose.py` | Blender: fit pose + camera to the reference |

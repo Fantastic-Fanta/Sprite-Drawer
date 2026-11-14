@@ -69,8 +69,8 @@
     "perspective_fov": "FOV"
   },
   "render": {
-    "width": 460,
-    "height": 460,
+    "width": 1000,
+    "height": 1000,
     "depth_range": 3,
     "freestyle": {},
     "shadow": {
@@ -293,7 +293,7 @@
     },
     "outline_outside": true,
     "outline_diagonals": false,
-    "height": 88,
+    "height": 191,
     "frame_ms": 30,
     "outline_width": 0,
     "outline_cover": 0.5,

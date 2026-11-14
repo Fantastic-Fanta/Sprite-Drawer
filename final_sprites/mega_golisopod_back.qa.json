@@ -4,17 +4,17 @@
     "diag_2px": 0,
     "dark_flicker": 0,
     "open_outline": 0,
-    "silhouette_teeth": 1.45,
+    "silhouette_teeth": 2.43,
     "any_blinks": 0,
-    "pop_max": 3.19,
-    "big_pops": 20,
+    "pop_max": 3.29,
+    "big_pops": 37,
     "blink_rate": 0.0,
     "dark_flicker_rate": 0.0,
-    "pop_max_norm": 1.71,
-    "big_pops_share": 0.253,
-    "tone_mix_l1": 0.378,
-    "shade_slivers": 0.09,
-    "blotch_share": 0.0097
+    "pop_max_norm": 0.88,
+    "big_pops_share": 0.468,
+    "tone_mix_l1": 0.373,
+    "shade_slivers": 0.044,
+    "blotch_share": 0.005
   },
   "pass": true,
   "checks": [
@@ -50,37 +50,37 @@
     },
     {
       "name": "pop_max_norm",
-      "value": 1.71,
+      "value": 0.88,
       "limit": 3.75,
       "pass": true
     },
     {
       "name": "big_pops_share",
-      "value": 0.253,
+      "value": 0.468,
       "limit": 0.718,
       "pass": true
     },
     {
       "name": "silhouette_teeth",
-      "value": 1.45,
+      "value": 2.43,
       "limit": 27.5,
       "pass": true
     },
     {
       "name": "tone_mix_l1",
-      "value": 0.378,
+      "value": 0.373,
       "limit": 0.45,
       "pass": true
     },
     {
       "name": "shade_slivers",
-      "value": 0.09,
+      "value": 0.044,
       "limit": 0.15,
       "pass": true
     },
     {
       "name": "blotch_share",
-      "value": 0.0097,
+      "value": 0.005,
       "limit": 0.011,
       "pass": true
     }

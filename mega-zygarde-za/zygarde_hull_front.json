@@ -1,0 +1,412 @@
+{
+  "name": "Mega Zygarde",
+  "model": "MegaZygarde.blend",
+  "reference": null,
+  "reference_source": "no Mega Zygarde sprite: front camera on the model's own battle-wait loop (pm0770_51_00_20001_battlewait01_loop); colours from its flat texture",
+  "palette": {
+    "outline": "#141210",
+    "parts": {
+      "green": [
+        "#2f6210",
+        "#4a8a16",
+        "#68b01e",
+        "#84c838",
+        "#a4e050"
+      ],
+      "black": [
+        "#303030",
+        "#3b3b3b",
+        "#454545",
+        "#505050"
+      ],
+      "gray": [
+        "#3c3632",
+        "#524c46",
+        "#6e6660",
+        "#8a827c",
+        "#a8a09a"
+      ],
+      "white": [
+        "#d8d8d8",
+        "#e5e5e5",
+        "#f2f2f2",
+        "#ffffff"
+      ],
+      "red": [
+        "#8a1c16",
+        "#9f2319",
+        "#b3291d",
+        "#c83020"
+      ],
+      "blue": [
+        "#185080",
+        "#1d659b",
+        "#237bb5",
+        "#2890d0"
+      ],
+      "pink": [
+        "#d8b0ec",
+        "#e2bff2",
+        "#eccdf9",
+        "#f6dcff"
+      ],
+      "yellow": [
+        "#d4b438",
+        "#dfc550",
+        "#ebd768",
+        "#f6e880"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {},
+    "default_material": "body",
+    "sample": "cover",
+    "cover_smooth": 1,
+    "fill_holes": 0.8,
+    "min_region": {
+      "white": 6,
+      "yellow": 20,
+      "blue": 20,
+      "red": 36,
+      "pink": 20
+    },
+    "albedo": {
+      "green": "#70b820",
+      "black": "#0a0a0a",
+      "gray": "#403838",
+      "white": "#f0f0f0",
+      "red": "#881008",
+      "blue": "#105090",
+      "pink": "#e8b0f8",
+      "yellow": "#e0e080"
+    },
+    "smooth": 2
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      -1.05,
+      3.6
+    ],
+    "distance": 30,
+    "ortho_scale": 18,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 2000,
+    "height": 2000,
+    "depth_range": 8,
+    "freestyle": {},
+    "hull": {
+      "thickness": 0.03,
+      "even": true,
+      "weld": false
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 50,
+    "ELEVATION": 15,
+    "FOV": 32
+  },
+  "pose": [
+    [
+      "head",
+      "Z",
+      "40"
+    ]
+  ],
+  "motion": {
+    "frames": 64,
+    "clip": "pm0770_51_00_20001_battlewait01_loop",
+    "note": "the GLB's own battle-wait loop, 64 frames; not a pose built in the config; head bone turned 40 deg toward the camera on top of the clip (pose), so the core's face shows both eyes"
+  },
+  "style": {
+    "light": [
+      -0.15,
+      0.45,
+      0.88
+    ],
+    "thresholds": {
+      "green": [
+        -0.2177,
+        -0.1012,
+        9,
+        9
+      ],
+      "black": [
+        0.2,
+        0.5,
+        0.8
+      ],
+      "gray": [
+        -0.4614,
+        -0.271,
+        9,
+        9
+      ],
+      "white": [
+        9,
+        9,
+        9
+      ],
+      "red": [
+        9,
+        9,
+        9
+      ],
+      "blue": [
+        9,
+        9,
+        9
+      ],
+      "pink": [
+        9,
+        9,
+        9
+      ],
+      "yellow": [
+        9,
+        9,
+        9
+      ]
+    },
+    "grain": {
+      "green": 0,
+      "black": 0,
+      "gray": 0,
+      "white": 0,
+      "red": 0,
+      "blue": 0,
+      "pink": 0,
+      "yellow": 0
+    },
+    "first_shade": {
+      "green": 0,
+      "black": 0,
+      "gray": 0,
+      "white": 1,
+      "red": 1,
+      "blue": 1,
+      "pink": 1,
+      "yellow": 1
+    },
+    "rim_light": -9,
+    "rim_shade": {},
+    "inner_line": {},
+    "part_outline": [],
+    "depth_jump": 16,
+    "crease_cos": -1,
+    "outline_outside": true,
+    "outline_diagonals": false,
+    "outline_width": 0,
+    "height": 300,
+    "frame_ms": 30,
+    "shade_blur": 8,
+    "min_line_px": 12,
+    "min_line_px_part": {
+      "gray": 24,
+      "green": 18,
+      "red": 12,
+      "pink": 12,
+      "blue": 12,
+      "yellow": 12,
+      "white": 12,
+      "black": 12
+    },
+    "min_region": 40,
+    "steady_window": 0,
+    "min_frames": 0,
+    "shape_min_frames": 0,
+    "hold_parts": 1,
+    "transport_parts": {
+      "key_frame": 0,
+      "search": 6,
+      "tol": 4
+    },
+    "transport_lines": {
+      "key_frame": 0,
+      "search": 6,
+      "tol": 4
+    },
+    "transport_shading": {
+      "key_frame": 0,
+      "search": 6,
+      "tol": 4
+    },
+    "matcap": {
+      "size": 9,
+      "values": [
+        [
+          0.3345,
+          0.4079,
+          0.4158,
+          0.4806,
+          0.4648,
+          0.3849,
+          0.2692,
+          0.3248,
+          0.3633
+        ],
+        [
+          0.39,
+          0.3694,
+          0.5513,
+          0.6486,
+          0.6337,
+          0.6347,
+          0.4209,
+          0.3657,
+          0.3391
+        ],
+        [
+          0.402,
+          0.5434,
+          0.6157,
+          0.669,
+          0.6282,
+          0.4465,
+          0.504,
+          0.3437,
+          0.2879
+        ],
+        [
+          0.5552,
+          0.6274,
+          0.6774,
+          0.7029,
+          0.671,
+          0.4401,
+          0.353,
+          0.2538,
+          0.1762
+        ],
+        [
+          0.4973,
+          0.448,
+          0.5335,
+          0.421,
+          0.5538,
+          0.5192,
+          0.362,
+          0.2102,
+          0.1752
+        ],
+        [
+          0.3349,
+          0.3156,
+          0.3754,
+          0.4435,
+          0.6623,
+          0.7262,
+          0.4121,
+          0.2817,
+          0.3417
+        ],
+        [
+          0.1887,
+          0.2723,
+          0.2499,
+          0.4763,
+          0.5911,
+          0.7968,
+          0.6664,
+          0.4979,
+          0.526
+        ],
+        [
+          0.1521,
+          0.0914,
+          0.2031,
+          0.2872,
+          0.4901,
+          0.6375,
+          0.7338,
+          0.7106,
+          0.6208
+        ],
+        [
+          0.0444,
+          0.1733,
+          0.3445,
+          0.4235,
+          0.4681,
+          0.5425,
+          0.6747,
+          0.7407,
+          0.7322
+        ]
+      ],
+      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/lapras.gif (frame 0)",
+      "samples": 2258
+    },
+    "target_shares": {
+      "gray": [
+        0.05,
+        0.16,
+        0.62,
+        0.13,
+        0.04
+      ],
+      "green": [
+        0.06,
+        0.18,
+        0.58,
+        0.13,
+        0.05
+      ],
+      "red": [
+        0.08,
+        0.74,
+        0.14,
+        0.04
+      ],
+      "pink": [
+        0.08,
+        0.74,
+        0.14,
+        0.04
+      ],
+      "blue": [
+        0.08,
+        0.74,
+        0.14,
+        0.04
+      ],
+      "yellow": [
+        0.08,
+        0.74,
+        0.14,
+        0.04
+      ],
+      "white": [
+        0.08,
+        0.74,
+        0.14,
+        0.04
+      ],
+      "black": [
+        0.08,
+        0.74,
+        0.14,
+        0.04
+      ]
+    },
+    "part_tones": {
+      "gray": 3,
+      "green": 3
+    },
+    "frame_anchor": "first",
+    "hull": {
+      "cover": 0.35,
+      "weak_cover": 0.12,
+      "bands": [
+        0.454,
+        0.748
+      ],
+      "ring": true
+    }
+  }
+}

@@ -4,18 +4,18 @@
     "diag_2px": 0,
     "dark_flicker": 0,
     "open_outline": 0,
-    "silhouette_teeth": 0.61,
+    "silhouette_teeth": 2.52,
     "any_blinks": 0,
-    "pop_max": 4.94,
-    "big_pops": 33,
+    "pop_max": 6.02,
+    "big_pops": 65,
     "blink_rate": 0.0,
     "dark_flicker_rate": 0.0,
-    "pop_max_norm": 2.43,
-    "big_pops_share": 0.418,
-    "shade_slivers": 0.118,
-    "blotch_share": 0.0043
+    "pop_max_norm": 1.49,
+    "big_pops_share": 0.823,
+    "shade_slivers": 0.059,
+    "blotch_share": 0.0055
   },
-  "pass": true,
+  "pass": false,
   "checks": [
     {
       "name": "thick_lines",
@@ -49,31 +49,31 @@
     },
     {
       "name": "pop_max_norm",
-      "value": 2.43,
+      "value": 1.49,
       "limit": 3.73,
       "pass": true
     },
     {
       "name": "big_pops_share",
-      "value": 0.418,
+      "value": 0.823,
       "limit": 0.821,
-      "pass": true
+      "pass": false
     },
     {
       "name": "silhouette_teeth",
-      "value": 0.61,
+      "value": 2.52,
       "limit": 27.5,
       "pass": true
     },
     {
       "name": "shade_slivers",
-      "value": 0.118,
+      "value": 0.059,
       "limit": 0.15,
       "pass": true
     },
     {
       "name": "blotch_share",
-      "value": 0.0043,
+      "value": 0.0055,
       "limit": 0.011,
       "pass": true
     }

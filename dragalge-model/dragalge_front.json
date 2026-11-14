@@ -2,9 +2,9 @@
   "name": "Mega Dragalge",
   "model": "MegaDragalge/MegaDragalge_parts.blend",
   "reference": null,
-  "fit_reference": "reference/mega_still_sil.png",
-  "fit_silhouette_only": true,
-  "reference_source": "Showdown has only a placeholder for Mega Dragalge (sprites/ani/dragalge-mega.gif: a still, downscaled 3D render, ~200 colours): camera fitted to its silhouette, part hues taken from it (incl. the olive horns the composite textures miss), ramps brightened to Showdown's level; motion modelled on Showdown's normal Dragalge",
+  "fit_reference": "reference/home_front_parts.png",
+  "fit_silhouette_only": false,
+  "reference_source": "pose and camera fitted to the game's own render of the Mega (Pokemon HOME sprite, mirrored to face left like Showdown's front sprites, part-coded: reference/home_front_parts.png)",
   "palette": {
     "outline": "#2a1a1f",
     "parts": {
@@ -51,6 +51,7 @@
     "materials": {
       "body_b": "purple|red",
       "body_b_01": "fin",
+      "wing_red": "red",
       "body_a": "skin|purple|red",
       "eye": "iris",
       "kelp": "kelp"
@@ -64,7 +65,7 @@
       "red": "#a44d58",
       "iris": "#c14d60"
     },
-    "note": "kelp = the hair-mesh faces skinned to the horn bones (own material in MegaDragalge_parts.blend, made by kelp_mat.py); fin and iris kept apart from purple/red because their shiny colours stay put"
+    "note": "kelp = the hair-mesh faces skinned to the horn bones (kelp_mat.py); wing_red = the wing faces in texture layer R (layer_mat.py): the game tints that side of each wing crimson (same hue as the chest, so part red, green in the shiny), the other side stays the albedo's purple (fin: purple in the shiny too); iris kept apart from red because the eyes stay red"
   },
   "camera": {
     "azimuth": "AZIMUTH",
@@ -94,9 +95,9 @@
     }
   },
   "pose_params": {
-    "AZIMUTH": 68,
-    "ELEVATION": 3,
-    "FOV": 38.97,
+    "AZIMUTH": 10,
+    "ELEVATION": 1.75,
+    "FOV": 48.61,
     "SWAY": 3.0,
     "HEAD": 1.8,
     "FIN": 1.2,
@@ -109,9 +110,138 @@
     "REST": 8.0,
     "FEELER_W": 2.5,
     "SPLAY": 5.0,
-    "HORN": 0.7
+    "HORN": 0.7,
+    "LX": 41.89,
+    "LY": 58.75,
+    "LZ": 7.38,
+    "RX": -4.84,
+    "RY": -20.9,
+    "RZ": 64.27,
+    "LD": 4.7,
+    "RD": -30,
+    "SPX": 30.2,
+    "NKX": -12.98,
+    "HDZ": 30,
+    "TLX": -16.28,
+    "FBX": 40,
+    "HBX": 12.45
   },
   "pose": [
+    [
+      "left_hair_a_02",
+      "A:1,0,0",
+      "LX"
+    ],
+    [
+      "left_hair_a_02",
+      "A:0,1,0",
+      "LY"
+    ],
+    [
+      "left_hair_a_02",
+      "A:0,0,1",
+      "LZ"
+    ],
+    [
+      "right_hair_a_02",
+      "A:1,0,0",
+      "RX"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0,1,0",
+      "RY"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0,0,1",
+      "RZ"
+    ],
+    [
+      "spine_01",
+      "A:1,0,0",
+      "SPX"
+    ],
+    [
+      "neck_01",
+      "A:1,0,0",
+      "NKX"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HDZ"
+    ],
+    [
+      "tail_01",
+      "A:1,0,0",
+      "TLX"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:1,0,0",
+      "FBX"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:1,0,0",
+      "FBX"
+    ],
+    [
+      "hair_b_01",
+      "A:1,0,0",
+      "HBX"
+    ],
+    [
+      "left_hair_a_05",
+      "A:1,0,0",
+      "-LD"
+    ],
+    [
+      "left_hair_a_07",
+      "A:1,0,0",
+      "-0.7*LD"
+    ],
+    [
+      "left_hair_c_03",
+      "A:1,0,0",
+      "-LD"
+    ],
+    [
+      "left_hair_c_05",
+      "A:1,0,0",
+      "-0.7*LD"
+    ],
+    [
+      "left_hair_b_03",
+      "A:1,0,0",
+      "-LD"
+    ],
+    [
+      "right_hair_a_05",
+      "A:1,0,0",
+      "-RD"
+    ],
+    [
+      "right_hair_a_07",
+      "A:1,0,0",
+      "-0.7*RD"
+    ],
+    [
+      "right_hair_c_03",
+      "A:1,0,0",
+      "-RD"
+    ],
+    [
+      "right_hair_c_05",
+      "A:1,0,0",
+      "-0.7*RD"
+    ],
+    [
+      "right_hair_b_03",
+      "A:1,0,0",
+      "-RD"
+    ],
     [
       "spine_01",
       "A:0,1,0",
@@ -269,19 +399,89 @@
   },
   "fit": {
     "AZIMUTH": [
-      15,
-      -40,
+      8,
+      10,
       80
     ],
     "ELEVATION": [
-      6,
-      -15,
-      35
+      5,
+      -5,
+      45
     ],
     "FOV": [
+      6,
+      15,
+      60
+    ],
+    "LX": [
+      10,
+      -30,
+      90
+    ],
+    "LY": [
+      10,
+      -60,
+      60
+    ],
+    "LZ": [
+      10,
+      -60,
+      60
+    ],
+    "RX": [
+      10,
+      -30,
+      90
+    ],
+    "RY": [
+      10,
+      -60,
+      60
+    ],
+    "RZ": [
+      10,
+      -40,
+      100
+    ],
+    "LD": [
       8,
-      5,
+      -30,
+      50
+    ],
+    "RD": [
+      8,
+      -30,
+      50
+    ],
+    "SPX": [
+      6,
+      -20,
+      35
+    ],
+    "NKX": [
+      6,
+      -35,
+      25
+    ],
+    "HDZ": [
+      6,
+      -30,
+      30
+    ],
+    "TLX": [
+      8,
+      -40,
       40
+    ],
+    "FBX": [
+      8,
+      -40,
+      40
+    ],
+    "HBX": [
+      8,
+      -40,
+      60
     ]
   },
   "style": {
@@ -292,29 +492,29 @@
     ],
     "thresholds": {
       "skin": [
-        -1.0174,
-        -0.9014,
-        -0.6103
+        -0.6711,
+        -0.5785,
+        -0.512
       ],
       "kelp": [
-        -0.7067,
-        -0.3638,
-        -0.3095
+        -0.5629,
+        -0.3667,
+        -0.3142
       ],
       "fin": [
-        -0.6087,
-        -0.5338,
-        -0.405
+        -0.7528,
+        -0.5307,
+        -0.2994
       ],
       "purple": [
-        -0.894,
-        -0.8508,
-        -0.5607
+        -0.753,
+        -0.605,
+        -0.4934
       ],
       "red": [
-        -1.0191,
-        -0.9033,
-        -0.5145
+        -0.5415,
+        0.0598,
+        0.3414
       ],
       "iris": [
         -0.8,
@@ -498,7 +698,21 @@
       ]
     ],
     "shade_blur": 2,
-    "min_region": 0
+    "min_region": 0,
+    "target_shares": {
+      "red": [
+        0.15,
+        0.3,
+        0.35,
+        0.2
+      ],
+      "fin": [
+        0.2,
+        0.35,
+        0.3,
+        0.15
+      ]
+    }
   },
   "qa": {
     "thick_lines": 0,
@@ -550,6 +764,11 @@
     {
       "step": "clean-up",
       "note": "shade_blur 2 + min_region 14 (broad shade masses), plate / feather lines (depth_jump 3, crease_cos 0.5), lighter shade shares; islands merged only under 4 px (a merge then can't make a pop >= 2), lines + shading decided on frame 0 and carried with the body"
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.73,
+      "note": "wings streaming back like the HOME render, crimson outer layer; fit_pose.py --local; head turned 30 deg to the viewer (both eyestalks show, as in the HOME render), rest refitted"
     }
   ],
   "pose_params_previous": {
@@ -565,5 +784,10 @@
     "LIFT": 22.0,
     "BEAT": 12.0,
     "REAR": 8.0
+  },
+  "fit_weights": {
+    "fin": 0.25,
+    "red": 0.15,
+    "kelp": 0.3
   }
 }

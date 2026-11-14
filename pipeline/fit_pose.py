@@ -1,7 +1,7 @@
 """Fit the pose + camera numbers in CONFIG.json to the reference Showdown frame.
 
 Run:
-  Blender -b MODEL.blend --python fit_pose.py -- CONFIG.json TMP_DIR [--restarts 30] [--seed 1]
+  Blender -b MODEL.blend --python fit_pose.py -- CONFIG.json TMP_DIR [--restarts 30] [--seed 1] [--local K]
 Updates CONFIG.json "pose_params" in place (the old values are kept in "pose_params_previous").
 
 Method (see SPRITE_PIPELINE.md, step 3):
@@ -13,7 +13,8 @@ Method (see SPRITE_PIPELINE.md, step 3):
     outline, stops the fit cheating (e.g. turning the face away to fill the head shape).
   * Search: random starts inside the "fit" ranges, each refined by coordinate descent
     (nudge one number up/down, keep improvements, halve steps when stuck); the best start
-    is then refined further.
+    is then refined further. --local K: restarts start within K steps of the current pose instead
+    of anywhere in the ranges (for many numbers, where uniform random starts land far off).
 Runs inside Blender's Python (numpy only, no PIL).
 """
 import bpy, sys, json, os, random
@@ -188,8 +189,13 @@ def descend(params, budget, steps=None):
 start = {k: P[k] for k in SEARCH}
 results = [descend(start, 150)]
 print(f"FIT current pose -> {results[0][0]:.3f}")
+LOCAL = float(args[args.index("--local") + 1]) if "--local" in args else None
 for r in range(restarts):
-    trial = {k: round(random.uniform(lo, hi), 2) for k, (_, lo, hi) in SEARCH.items()}
+    if LOCAL:
+        trial = {k: round(min(hi, max(lo, start[k] + random.uniform(-LOCAL, LOCAL) * st)), 2)
+                 for k, (st, lo, hi) in SEARCH.items()}
+    else:
+        trial = {k: round(random.uniform(lo, hi), 2) for k, (_, lo, hi) in SEARCH.items()}
     results.append(descend(trial, 120))
     print(f"FIT start {r + 1:2d}/{restarts} -> {results[-1][0]:.3f}   best so far {max(x[0] for x in results):.3f}")
 best_score, best = max(results, key=lambda x: x[0])

@@ -50,6 +50,18 @@ box, size = ss.framing(None, cfg["style"]["height"], anchor=_anchor, boxes=[b fo
 
 
 def build(style_cfg, path):
+    if style_cfg["style"].get("hull"):
+        # flat colours, cel bands and inverted-hull lines (render.hull pass)
+        import hull_style
+        sprites = hull_style.loop(style_cfg, paths, box, size)
+        ss.save_gif(style_cfg, sprites, path)
+        return sprites
+    if style_cfg["style"].get("paint_over"):
+        # per Pokemon: a paint script draws the frames, its key frames carried through the loop
+        import paint_over
+        sprites = paint_over.loop(style_cfg, cfg_path, paths, box, size)
+        paint_over.save_gif(style_cfg, sprites, path)
+        return sprites
     frames = ss.pmap(ss.load_prepare, [(style_cfg, p, box, size) for p in paths])   # loaded by the workers
     sprites = ss.stylize_loop(style_cfg, frames)   # stabilised over time
     ss.save_gif(style_cfg, sprites, path)
@@ -60,8 +72,12 @@ def build(style_cfg, path):
 
 
 if first_only:
-    f = ss.prepare(cfg, *ss.load_frame(paths[0]), box, size)
-    Image.fromarray(ss.stylize(cfg, f)).save(first_only)
+    if cfg["style"].get("hull"):
+        import hull_style
+        Image.fromarray(hull_style.loop(cfg, paths, box, size)[0]).save(first_only)
+    else:
+        f = ss.prepare(cfg, *ss.load_frame(paths[0]), box, size)
+        Image.fromarray(ss.stylize(cfg, f)).save(first_only)
     print(f"wrote {first_only}")
     sys.exit(0)
 
@@ -157,6 +173,10 @@ if "--scale" in args:
     k = int(args[args.index("--scale") + 1])
     big = [Image.fromarray(s).resize((s.shape[1] * k, s.shape[0] * k), Image.Resampling.NEAREST) for s in sprites]
     big_path = str(Path(out_path).with_name(Path(out_path).stem + f"_{k}x.gif"))
-    ss.save_gif(cfg, [np.array(b) for b in big], big_path)
+    if cfg["style"].get("paint_over"):
+        import paint_over
+        paint_over.save_gif(cfg, [np.array(b) for b in big], big_path)
+    else:
+        ss.save_gif(cfg, [np.array(b) for b in big], big_path)
     print(f"wrote {big_path}")
 sys.exit(0 if ok else 1)

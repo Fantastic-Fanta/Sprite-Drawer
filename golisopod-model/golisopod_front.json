@@ -2,40 +2,40 @@
   "name": "Mega Golisopod",
   "model": "MegaGolisopod/MegaGolisopod.blend",
   "reference": null,
-  "fit_reference": "reference/showdown_base_front.png",
-  "fit_silhouette_only": true,
-  "reference_source": "no Mega Golisopod sprite on Showdown: camera fitted to the shape of Showdown's normal Golisopod (sprites/ani/golisopod.gif); palette from the Mega's own textures with Showdown's conventions",
+  "fit_reference": "reference/home_front_parts.png",
+  "fit_silhouette_only": false,
+  "reference_source": "no Mega Golisopod sprite on Showdown: pose and camera fitted to the game's own render of the Mega (Pokemon HOME sprite, part-coded: reference/home_front_parts.png); palette from the Mega's textures and that render",
   "palette": {
-    "outline": "#24292e",
+    "outline": "#1b1f22",
     "parts": {
       "armour": [
-        "#565d64",
-        "#939ca4",
-        "#cdd4da",
-        "#eff3f6"
+        "#3f454b",
+        "#646c73",
+        "#8d959c",
+        "#b7bec4"
       ],
       "flesh": [
-        "#6b4f57",
-        "#957780",
-        "#bea2aa",
-        "#e0cbd1"
+        "#3b2a2f",
+        "#5a4147",
+        "#7a5b62",
+        "#9a7a80"
       ],
       "purple": [
-        "#5a2a6a",
-        "#7d3f92",
-        "#a058b8",
-        "#c27ed8"
+        "#4a1d5a",
+        "#7a2f8c",
+        "#a246b6",
+        "#c46ed6"
       ],
       "dark": [
-        "#2f3638",
-        "#465052",
-        "#5f6b6a",
-        "#7c8986"
+        "#22282a",
+        "#353d3f",
+        "#4b5557",
+        "#66706f"
       ]
     },
-    "note": "no Mega Golisopod reference: hues from the Mega's own textures, ramps brightened to Showdown's level (4 shades per part like the normal form's sprite), outline a near-black of the armour hue; armour re-spaced like Showdown's metal (dark core, light tones near white: luma .36/.60/.82/.95)",
+    "note": "in-game Mega Golisopod colours (HOME render): gunmetal armour, dark maroon flesh, vivid purple lightning marks, slate claws; 4 shades per part, ramps spread wider than the game's for Showdown-level contrast",
     "lines": {
-      "armour": "#3d454b"
+      "armour": "#2c3236"
     }
   },
   "parts": {
@@ -69,8 +69,8 @@
     "perspective_fov": "FOV"
   },
   "render": {
-    "width": 460,
-    "height": 460,
+    "width": 1000,
+    "height": 1000,
     "depth_range": 3,
     "freestyle": {},
     "shadow": {
@@ -98,66 +98,184 @@
     }
   },
   "pose_params": {
-    "AZIMUTH": 80,
-    "ELEVATION": 6.07,
-    "FOV": 23.16,
+    "AZIMUTH": 74.53,
+    "ELEVATION": 14.91,
+    "FOV": 33.02,
     "BREATH": 0.7,
     "FOLLOW": 0.9,
     "ARM": 0.7,
     "LIFT": 10,
     "SNAP": 30,
     "FLEX": -10,
-    "SH_DOWN": 22.11,
-    "SH_FWD": 8.32,
-    "EL_DOWN": 18.62,
-    "EL_FWD": 24.8,
-    "THRUST": 22
+    "THRUST": 22,
+    "SPX": 4.64,
+    "SPZ": 0.62,
+    "HDX": 3.57,
+    "HDZ": 16.72,
+    "LSD": 32.79,
+    "LSF": 33.85,
+    "LED": 29.67,
+    "LEF": 32.76,
+    "LRL": -63.83,
+    "RSD": -8.38,
+    "RSF": 16.3,
+    "RED": 11.91,
+    "REF": 69.42,
+    "RRL": -15.26,
+    "LFX": 30.44,
+    "LFY": 8.72,
+    "RFX": 1.88,
+    "RFY": -6.11,
+    "LAZ": 4.42,
+    "LAY": -30,
+    "RAZ": 15.55,
+    "RAY": 14.52,
+    "WAZ": -6.37,
+    "LSR": 9.57,
+    "RSR": 16.37,
+    "LF2": -0.08,
+    "RF2": -1.52
   },
   "pose": [
     [
       "spine_01",
       "X",
+      "SPX"
+    ],
+    [
+      "spine_01",
+      "Z",
+      "SPZ"
+    ],
+    [
+      "head",
+      "X",
+      "HDX"
+    ],
+    [
+      "head",
+      "Z",
+      "HDZ"
+    ],
+    [
+      "left_arm_01",
+      "Y",
+      "LSD"
+    ],
+    [
+      "left_arm_01",
+      "Z",
+      "-LSF"
+    ],
+    [
+      "left_arm_02",
+      "Y",
+      "LED"
+    ],
+    [
+      "left_arm_02",
+      "Z",
+      "-LEF"
+    ],
+    [
+      "left_arm_02",
+      "X",
+      "LRL"
+    ],
+    [
+      "right_arm_01",
+      "Y",
+      "-RSD"
+    ],
+    [
+      "right_arm_01",
+      "Z",
+      "RSF"
+    ],
+    [
+      "right_arm_02",
+      "Y",
+      "-RED"
+    ],
+    [
+      "right_arm_02",
+      "Z",
+      "REF"
+    ],
+    [
+      "right_arm_02",
+      "X",
+      "RRL"
+    ],
+    [
+      "left_feeler_c_01",
+      "X",
+      "LFX"
+    ],
+    [
+      "left_feeler_c_01",
+      "Y",
+      "LFY"
+    ],
+    [
+      "right_feeler_c_01",
+      "X",
+      "RFX"
+    ],
+    [
+      "right_feeler_c_01",
+      "Y",
+      "-RFY"
+    ],
+    [
+      "waist",
+      "Z",
+      "WAZ"
+    ],
+    [
+      "left_leg_a_01",
+      "Z",
+      "-LAZ"
+    ],
+    [
+      "left_leg_a_01",
+      "Y",
+      "LAY"
+    ],
+    [
+      "right_leg_a_01",
+      "Z",
+      "RAZ"
+    ],
+    [
+      "right_leg_a_01",
+      "Y",
+      "-RAY"
+    ],
+    [
+      "left_arm_01",
+      "X",
+      "LSR"
+    ],
+    [
+      "right_arm_01",
+      "X",
+      "RSR"
+    ],
+    [
+      "left_feeler_c_02",
+      "X",
+      "LF2"
+    ],
+    [
+      "right_feeler_c_02",
+      "X",
+      "RF2"
+    ],
+    [
+      "spine_01",
+      "X",
       "BREATH*sin(6*pi*t)"
-    ],
-    [
-      "left_arm_01",
-      "Y",
-      "SH_DOWN"
-    ],
-    [
-      "left_arm_01",
-      "Z",
-      "-SH_FWD"
-    ],
-    [
-      "left_arm_02",
-      "Y",
-      "EL_DOWN"
-    ],
-    [
-      "left_arm_02",
-      "Z",
-      "-EL_FWD"
-    ],
-    [
-      "right_arm_01",
-      "Y",
-      "-SH_DOWN"
-    ],
-    [
-      "right_arm_01",
-      "Z",
-      "SH_FWD"
-    ],
-    [
-      "right_arm_02",
-      "Y",
-      "-EL_DOWN"
-    ],
-    [
-      "right_arm_02",
-      "Z",
-      "EL_FWD"
     ],
     [
       "left_feeler_c_01",
@@ -202,38 +320,158 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "ours, modelled on Showdown's normal Golisopod idle (a subtle 39-frame breath) and its stance: the big claw arms hang at the sides with the claws forward and down (rest pose SH_DOWN / SH_FWD / EL_DOWN / EL_FWD, fitted to the normal form's Showdown silhouette; the model's bind pose is a T-pose). 120 frames = 3.6 s: 3 breaths (spine BREATH deg), the claw arms and the raised upper claws following a beat later (ARM, FOLLOW). Signature claw strike, frames 66-105: the claws thrust forward THRUST deg and up, the upper pincers snap open and shut (SNAP), all eased; drawn per frame (style.fast_frames)"
+    "note": "ours, modelled on Showdown's normal Golisopod idle (a subtle 39-frame breath) and its stance: rest pose = the game's own pose of the Mega (HOME render), fitted bone by bone (spine, head, both claw arms, raised claws, front legs, camera; the model's bind pose is a T-pose). 120 frames = 3.6 s: 3 breaths (spine BREATH deg), the claw arms and the raised upper claws following a beat later (ARM, FOLLOW). Signature claw strike, frames 66-105: the claws thrust forward THRUST deg and up, the upper pincers snap open and shut (SNAP), all eased; drawn per frame (style.fast_frames)"
   },
   "fit": {
     "AZIMUTH": [
       8,
-      15,
-      60
+      30,
+      90
     ],
     "ELEVATION": [
       5,
-      -15,
-      15
+      -5,
+      25
     ],
-    "SH_DOWN": [
-      12,
-      0,
-      85
-    ],
-    "SH_FWD": [
-      12,
-      -30,
+    "FOV": [
+      6,
+      10,
       60
     ],
-    "EL_DOWN": [
-      12,
-      -20,
-      90
+    "SPX": [
+      6,
+      0,
+      35
     ],
-    "EL_FWD": [
+    "SPZ": [
+      6,
+      -25,
+      25
+    ],
+    "HDX": [
+      6,
+      -25,
+      25
+    ],
+    "HDZ": [
+      6,
+      -25,
+      25
+    ],
+    "LSD": [
       12,
       -30,
+      75
+    ],
+    "LSF": [
+      12,
+      -20,
+      85
+    ],
+    "LED": [
+      12,
+      -40,
+      85
+    ],
+    "LEF": [
+      12,
+      -20,
+      95
+    ],
+    "LRL": [
+      15,
+      -70,
       70
+    ],
+    "RSD": [
+      12,
+      -30,
+      75
+    ],
+    "RSF": [
+      12,
+      -20,
+      85
+    ],
+    "RED": [
+      12,
+      -40,
+      85
+    ],
+    "REF": [
+      12,
+      -20,
+      95
+    ],
+    "RRL": [
+      15,
+      -70,
+      70
+    ],
+    "LFX": [
+      10,
+      -30,
+      45
+    ],
+    "LFY": [
+      10,
+      -40,
+      40
+    ],
+    "RFX": [
+      10,
+      -30,
+      45
+    ],
+    "RFY": [
+      10,
+      -40,
+      40
+    ],
+    "LAZ": [
+      8,
+      -40,
+      40
+    ],
+    "LAY": [
+      8,
+      -30,
+      30
+    ],
+    "RAZ": [
+      8,
+      -40,
+      40
+    ],
+    "RAY": [
+      8,
+      -30,
+      30
+    ],
+    "WAZ": [
+      6,
+      -30,
+      30
+    ],
+    "LSR": [
+      12,
+      -60,
+      60
+    ],
+    "RSR": [
+      12,
+      -60,
+      60
+    ],
+    "LF2": [
+      10,
+      -40,
+      40
+    ],
+    "RF2": [
+      10,
+      -40,
+      40
     ]
   },
   "style": {
@@ -244,24 +482,24 @@
     ],
     "thresholds": {
       "armour": [
-        -0.3871,
-        -0.1246,
-        -0.0005
+        -0.3314,
+        -0.156,
+        -0.0358
       ],
       "flesh": [
-        -0.8789,
-        -0.739,
-        -0.549
+        -0.9652,
+        -0.8136,
+        -0.5323
       ],
       "purple": [
-        -0.8727,
-        -0.6711,
-        -0.5067
+        -0.5689,
+        -0.4833,
+        -0.0114
       ],
       "dark": [
-        -0.7305,
-        -0.6566,
-        -0.4541
+        -0.8129,
+        -0.726,
+        -0.245
       ]
     },
     "first_shade": {
@@ -288,7 +526,7 @@
     },
     "outline_outside": true,
     "outline_diagonals": false,
-    "height": 88,
+    "height": 191,
     "frame_ms": 30,
     "outline_width": 0,
     "outline_cover": 0.5,
@@ -548,6 +786,15 @@
     {
       "step": "camera",
       "note": "AZIMUTH 60 -> 80: nearly front-on like Showdown's Golisopod, claws framing the torso (chosen by eye from 60/70/80)"
+    },
+    {
+      "step": "fit_pose",
+      "parts_match": 0.817,
+      "note": "pose + camera fitted to the HOME render of the Mega (user: copy the in-game pose exactly); fit_pose.py --local"
+    },
+    {
+      "step": "resolution",
+      "note": "style.height 191 and render 1000px so the front GIF is about 200x200, with the same render samples per sprite pixel as the 88px sprite"
     }
   ],
   "pose_params_previous": {
@@ -564,5 +811,9 @@
     "SH_FWD": 10,
     "EL_DOWN": 30,
     "EL_FWD": 30
+  },
+  "fit_weights": {
+    "purple": 0.25,
+    "dark": 0.25
   }
 }

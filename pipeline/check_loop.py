@@ -59,10 +59,25 @@ def line_blocks(a, l, blobs=None):
     return int((m[:-1, :-1] & m[1:, :-1] & m[:-1, 1:] & m[1:, 1:]).sum())
 
 
-def stairs(a, l, keep=None, blobs=None):
+def line_junctions(l, along, ring):
+    """'along' pixels that are really the end of an inner line running into the outline: they
+    have a line 8-neighbour that is neither on the ring nor itself along (the rest of that line).
+    A band hugging the outline has only ring / along neighbours, so it stays a fault."""
+    rest = np.pad(l & ~along & ~ring, 1)
+    h, w = l.shape
+    nb = np.zeros_like(l)
+    for dy in (-1, 0, 1):
+        for dx in (-1, 0, 1):
+            if dy or dx:
+                nb |= rest[1 + dy:h + 1 + dy, 1 + dx:w + 1 + dx]
+    return along & nb
+
+
+def stairs(a, l, keep=None, blobs=None, steps=False):
     """staircase corners + inner lines hugging the outline. keep = line pixels that must stay
     (separators between an outlined part and another part): a corner there is a T-junction,
-    exempt exactly like silhouette-closing corners."""
+    exempt exactly like silhouette-closing corners. steps (style.line_steps): Showdown-style
+    lines, where staircase corners and line ends meeting the outline are allowed."""
     solid = a[..., 3] > 0
     body = solid & ~l
     P = lambda m: np.pad(m, 1)
@@ -81,6 +96,9 @@ def stairs(a, l, keep=None, blobs=None):
     along = l & ~to & (rn >= 2)
     if keep is not None:
         along &= ~keep            # a part line meeting the outline (junction), not a band
+    if steps:
+        corner = np.zeros_like(corner)
+        along &= ~line_junctions(l, along, l & to)
     return int(((corner | along) & ~(pupil_blobs(a, l) if blobs is None else blobs)).sum())
 
 
@@ -257,7 +275,8 @@ def loop_metrics(cfg, path):
              "dark_flicker_rate": round(float(short_runs(outline_only.astype(int)).sum()) / (n_slow * solid_px), 5),
              "solid_px": round(solid_px)}
     thick = [line_blocks(a, l) for a, l in zip(frames, line)]
-    stair = [stairs(a, l, separators(cfg, a, l, e)) for a, l, e in zip(frames, line, eyes)]
+    steps = bool(cfg["style"].get("line_steps"))
+    stair = [stairs(a, l, separators(cfg, a, l, e), steps=steps) for a, l, e in zip(frames, line, eyes)]
     opened = [open_outline(cfg, a, l, e) for a, l, e in zip(frames, line, eyes)]
     return {"frames": len(frames), "dark_flicker": int(flick.sum()), "any_blinks": int(short_runs(key).sum()),
             "thick_lines": int(sum(thick)), "thick_lines_max": int(max(thick)),
