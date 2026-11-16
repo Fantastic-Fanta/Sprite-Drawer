@@ -1,7 +1,7 @@
 """Make the shiny config from a normal one: same geometry, motion and shading, shiny colours.
 
 Run:  python3 -I make_shiny.py CONFIG.json SHINY.json [--keep-steps]
---keep-steps (use with palette_swap.py): instead of scaling every shade by the light ratio (which
+--keep-steps (use with make_gif.py --shiny): instead of scaling every shade by the light ratio (which
 stretches or clips a ramp that gets much brighter), keep the normal ramp's lightness steps.
 The shiny textures ("..._rare_alb ...") share the normal textures' UV layout, so each texture
 pixel can be compared directly: every pixel is assigned to a part (nearest albedo, limited by

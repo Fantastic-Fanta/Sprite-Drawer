@@ -4,7 +4,7 @@
 Build: every models/<pokemon>/ (no arguments), the named Pokemon (models/ folder names, e.g.
 mega-absol-z), or single configs. Each sprite config (*_front.json, *_back.json) is rendered,
 built (make_gif.py, quality gate included) with its 4x copy, and recoloured into its shiny when
-NAME_shiny.json sits next to it (palette_swap.py). Output: out/<pokemon>/NAME(_shiny)(_4x).gif, or
+NAME_shiny.json sits next to it (make_gif.py --shiny). Output: out/<pokemon>/NAME(_shiny)(_4x).gif, or
 straight into DIR with --out. The next sprite renders (Blender, mostly GPU) while the previous one
 builds (CPU). Prints a line per step; exit code 1 if any step fails (the others still run).
 
@@ -24,7 +24,7 @@ ROOT = HERE.parent
 MODELS, SPRITES, OUT = ROOT / "models", ROOT / "sprites", ROOT / "out"
 SCALE = "4"
 sys.path.insert(0, str(HERE))
-from render_parallel import RenderPool      # noqa: E402
+from blender import RenderPool      # noqa: E402
 
 
 def sprite_configs(folder):
@@ -117,7 +117,7 @@ def main():
                 if shiny.exists():
                     sgif = d / f"{shiny.stem}.gif"
                     sgif.unlink(missing_ok=True)
-                    run([HERE / "palette_swap.py", cfg, shiny, gif, sgif] + extra, f"shiny {shiny.stem}", sgif)
+                    run([HERE / "make_gif.py", "--shiny", cfg, shiny, gif, sgif] + extra, f"shiny {shiny.stem}", sgif)
             if not keep:
                 shutil.rmtree(frames, ignore_errors=True)
 

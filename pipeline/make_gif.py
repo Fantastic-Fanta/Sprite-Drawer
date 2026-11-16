@@ -1,20 +1,49 @@
-"""Turn render_sprite.py output into a pixel sprite GIF (sprite_style.py's look).
+"""Make a sprite GIF: from render_sprite.py's frames (sprite_style.py's look), or a shiny from a
+finished one.
 
 Run:  python3 make_gif.py CONFIG.json FRAMES_DIR out.gif [--scale 4] [--first-only out.png]
+      python3 make_gif.py --shiny NORMAL.json SHINY.json normal.gif shiny.gif [--scale 4]
 
 --scale N also writes out_Nx.gif, enlarged with hard pixel edges.
 --first-only writes just frame 0 as a PNG (quick checks).
 Exit code 1 if a frame touches the render's edge (the model is cut off).
+
+--shiny makes the shiny the way Showdown's are made: the finished normal sprite, recoloured. Every
+pixel keeps its part and shade index; only the colour changes, from the normal config's palette
+to the shiny config's (make_shiny.py writes SHINY.json), so the shiny has exactly the normal
+sprite's shapes, lines and motion. Fails if the normal sprite has a colour outside its palette or
+two normal colours would map onto one shiny colour.
 """
 import json
 import sys
 from pathlib import Path
 
+import numpy as np
 from PIL import Image
 
 import sprite_style as ss
 
 args = sys.argv[1:]
+scale = args[args.index("--scale") + 1] if "--scale" in args else None
+
+if args[0] == "--shiny":
+    norm_cfg, shiny_cfg = (json.loads(Path(p).read_text()) for p in args[1:3])
+    a, b = ss.palette(norm_cfg), ss.palette(shiny_cfg)
+    assert len(a) == len(b), "palettes differ in size"
+    cmap = {tuple(x): tuple(y) for x, y in zip(a, b)}
+    assert len(set(cmap.values())) == len(cmap), "two normal colours map to one shiny colour"
+    sprites = []
+    for f in ss.gif_frames(args[3]):
+        s = f.copy()
+        on = s[..., 3] > 0
+        missing = {tuple(c) for c in s[on][:, :3]} - set(cmap)
+        assert not missing, f"colours not in the normal palette: {sorted(missing)}"
+        for x, y in cmap.items():
+            s[on & np.all(f[..., :3] == x, axis=-1), :3] = y
+        sprites.append(s)
+    ss.save_gifs(shiny_cfg, sprites, args[4], scale)
+    sys.exit(0)
+
 cfg_path = Path(args[0])
 cfg = json.loads(cfg_path.read_text())
 frames_dir, out_path = args[1], args[2]
@@ -49,6 +78,5 @@ if first_only:
     print(f"wrote {first_only}")
     sys.exit(0)
 
-ss.save_gifs(cfg, mirror(ss.loop(cfg, paths, box, size)), out_path,
-             args[args.index("--scale") + 1] if "--scale" in args else None)
+ss.save_gifs(cfg, mirror(ss.loop(cfg, paths, box, size)), out_path, scale)
 sys.exit(1 if clipped else 0)

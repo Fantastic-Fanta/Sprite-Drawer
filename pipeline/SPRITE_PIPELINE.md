@@ -19,7 +19,7 @@ plus textures, local only) and one config per view: `mega_golisopod_front.json`,
 `mega_golisopod_back.json`, and a `_shiny.json` next to each. Approved GIFs go to
 `sprites/mega-golisopod/`.
 
-Commands below run from the repo root, with `B=/Applications/Blender.app/Contents/MacOS/Blender`.
+Commands below run from the repo root.
 
 ## Build existing sprites
 
@@ -83,7 +83,7 @@ With a Showdown sprite of the Pokémon (`reference`: frame 0 as `reference/showd
 exact pixels), fit the pose and camera to it:
 
 ```bash
-$B -b MODEL.blend --python pipeline/fit_pose.py -- CONFIG.json out/fit --restarts 20
+python3 pipeline/blender.py --timeout 1800 -- -b MODEL.blend --python pipeline/fit_pose.py -- CONFIG.json out/fit --restarts 20
 ```
 
 This updates `pose_params` in place. Use `--local K` to start the restarts near the current pose,
@@ -93,7 +93,7 @@ and `--only` to fit a subset of params. Without a reference (most Megas), set `A
 ### 4. Check frame 0
 
 ```bash
-python3 pipeline/render_parallel.py CONFIG.json out/f0 --frames 0
+python3 pipeline/blender.py render CONFIG.json out/f0 --frames 0
 python3 pipeline/make_gif.py CONFIG.json out/f0 x --first-only out/f0.png
 ```
 
@@ -105,7 +105,7 @@ FOV together (`make_gif` fails on a cut-off frame).
 Watch the motion live while you edit it:
 
 ```bash
-$B MODEL.blend --python pipeline/live_preview.py -- CONFIG.json
+python3 pipeline/preview.py CONFIG.json --live
 ```
 
 Blender opens on the sprite camera and plays the loop; save the config and it reloads in a
@@ -122,7 +122,7 @@ python3 pipeline/build.py CONFIG.json
 
 ```bash
 python3 -I pipeline/make_shiny.py CONFIG.json CONFIG_shiny.json --keep-steps
-python3 pipeline/palette_swap.py CONFIG.json CONFIG_shiny.json out/NAME.gif out/NAME_shiny.gif --scale 4
+python3 pipeline/make_gif.py --shiny CONFIG.json CONFIG_shiny.json out/NAME.gif out/NAME_shiny.gif --scale 4
 ```
 
 The shiny is the finished normal sprite with its colours swapped, like Showdown's. Two parts must
@@ -212,18 +212,18 @@ itself. Any other style change skips Blender entirely.
 | Script | Purpose |
 |---|---|
 | `build.py` | render + build + shiny + 4x for every / named Pokémon; `--publish` to `sprites/` |
-| `render_sprite.py` | Blender: pose the model, render the colour / ID / data / hull passes |
-| `render_parallel.py` | render over several Blender processes, with the cache |
-| `render_many.py` | Blender worker kept up between sprites (used by `build.py`) |
-| `make_gif.py` | frames → sprite GIF |
+| `regress.py` | regression tests (`full` = build and render checks) |
+| `blender.py` | running Blender: the render pool and its cache, machine-wide slots, one-off runs with a timeout, `--status` / `--reap` |
+| `render_sprite.py` | inside Blender: pose the model, render the colour / ID / data / hull passes |
+| `make_gif.py` | frames → sprite GIF; `--shiny` recolours a finished GIF into its shiny |
 | `sprite_style.py` | the look: part colours, shade bands, hull lines |
 | `motion.py` | motion helpers shared by render and style |
-| `fit_pose.py` | Blender: fit pose + camera to the reference |
-| `make_shiny.py`, `palette_swap.py` | shiny config and shiny recolour |
-| `regress.py` | regression tests |
-| `prep_model.py` (+ `prep_scene.py`) | model zip → model folder, `.blend`, draft config (palette from the textures, camera, size), `RIG.md` |
-| `preview.py` | Workbench sheet of a few loop frames from several views, in seconds: judge pose and motion without a build |
+| `make_shiny.py` | normal config → shiny config (colours measured from the shiny textures) |
+| `prep_model.py` | model zip → model folder, `.blend`, draft config (palette from the textures, camera, size), `RIG.md` |
+| `preview.py` | Workbench sheet of a few loop frames from several views, in seconds; `--live` plays the loop in Blender's window, reloaded on every config save |
 | `check_motion.py` | the idle rules in sprite px: frozen / big / jitter / loop seam / feet / visible clipping |
 | `package.py` | front config → back + shiny configs, build, contact sheet, check, report skeleton |
-| `blender_slot.py` | machine-wide cap on Blender processes, timeouts, stray-Blender reaper |
-| `live_preview.py` | the loop playing live in Blender's window, reloaded on every config save |
+| `fit_pose.py` | inside Blender: fit pose + camera to a Showdown reference frame |
+
+Scripts with an "inside Blender" part (`prep_model`, `preview`, `check_motion`, `blender`) run that
+part when Blender starts them; you always run them with plain `python3`.

@@ -244,7 +244,7 @@ def blender_main():
 def main():
     import tempfile
     sys.path.insert(0, str(HERE))
-    import blender_slot
+    import blender
     a = sys.argv[1:]
     if not a or a[0] in ("-h", "--help"):
         print(__doc__); sys.exit(0 if a else 1)
@@ -253,7 +253,7 @@ def main():
     model = cfg.parent / json.loads(cfg.read_text())["model"]
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(a[a.index("--json") + 1]) if "--json" in a else Path(tmp) / "check.json"
-        code = blender_slot.run(["-b", "--python-exit-code", "1", str(model), "--python", __file__, "--", str(cfg), str(out), str(samples),
+        code = blender.run(["-b", "--python-exit-code", "1", str(model), "--python", __file__, "--", str(cfg), str(out), str(samples),
                                  "0" if "--no-clip" in a else "1"], 900)
         if code or not out.exists():
             print(f"check failed (Blender exit {code})"); sys.exit(1)

@@ -2,7 +2,7 @@
 
 Run:
   Blender -b MODEL.blend --python render_sprite.py -- CONFIG.json OUT_DIR [--frames 0:60 | 0,5,9]
-(render_parallel.py runs several of these at once, one slice of the loop each)
+(blender.py runs several of these at once, one slice of the loop each)
 Writes these images per frame (see SPRITE_PIPELINE.md), read by sprite_style.py:
   color_NNNN  flat texture colours (Workbench), transparent background
   id_NNNN     which material group each pixel shows (only with parts.materials)
@@ -423,7 +423,7 @@ def plant():
     """motion.plant: bones (each ankle, say) that stay put while the body above them moves: a body
     dip or sway bends the two bones above each one (thigh and shin) instead of sliding or lifting
     the foot. Each is held at its head's mean position over the loop. Run again whenever pose /
-    pose_params change (live_preview does)."""
+    pose_params change (preview.py --live does)."""
     PLANT.clear()
     bones = cfg.get("motion", {}).get("plant", [])
     if not bones:
@@ -489,7 +489,7 @@ def render_frame(t, name):
 if setup_only:
     pass
 elif "--frames" in args:
-    # a subset of the loop's frames, named as in the full loop (render_parallel.py splits the
+    # a subset of the loop's frames, named as in the full loop (blender.py splits the
     # loop across several Blender processes this way); "0,5,9" or "0:60" (end exclusive)
     spec = args[args.index("--frames") + 1]
     fs = range(*map(int, spec.split(":"))) if ":" in spec else [int(v) for v in spec.split(",")]

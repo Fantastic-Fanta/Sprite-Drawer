@@ -7,7 +7,7 @@ Run (from anywhere):
   python3 pipeline/regress.py render-check [NAME ...]  render again, compare every pass with the cached render
   python3 pipeline/regress.py full [NAME ...]          both checks (the pre-push hook runs check)
 NAME: lapras, glimmora, golisopod, dragalge, dragalge_back, zygarde, zygarde_back (default: all); a sprite with a shiny
-(SHINY below) also checks its palette_swap recolour. Data lives in .regress/ (gitignored):
+(SHINY below) also checks its shiny recolour. Data lives in .regress/ (gitignored):
 the config snapshots, the rendered passes per sprite and the golden GIFs. Checks always use the
 snapshot taken with the golden (paths made absolute), so editing a config - or another session
 editing it - doesn't move the target; --rev takes the config as committed at that revision. Builds run with PYTHONHASHSEED fixed, since some
@@ -70,10 +70,10 @@ def snapshot(name, rev=None, rel=None, key=None):
 
 
 def shiny(name, normal_gif, out_gif):
-    """the shiny recolour of a built sprite (palette_swap.py), if the sprite has one"""
+    """the shiny recolour of a built sprite (make_gif.py --shiny), if the sprite has one"""
     if name not in SHINY:
         return
-    r = subprocess.run([sys.executable, str(HERE / "palette_swap.py"), str(config(name)), str(DATA / "configs" / f"{name}_shiny.json"),
+    r = subprocess.run([sys.executable, str(HERE / "make_gif.py"), "--shiny", str(config(name)), str(DATA / "configs" / f"{name}_shiny.json"),
                         str(normal_gif), str(out_gif)], env=dict(os.environ, PYTHONHASHSEED=SEED), capture_output=True, text=True)
     if "Traceback" in r.stderr:
         print(r.stderr[-3000:])
@@ -82,7 +82,7 @@ def shiny(name, normal_gif, out_gif):
 
 def render(name, out):
     t0 = time.time()
-    subprocess.run([sys.executable, str(HERE / "render_parallel.py"), str(config(name)), str(out), "--no-cache"], check=True)
+    subprocess.run([sys.executable, str(HERE / "blender.py"), "render", str(config(name)), str(out), "--no-cache"], check=True)
     return time.time() - t0
 
 
