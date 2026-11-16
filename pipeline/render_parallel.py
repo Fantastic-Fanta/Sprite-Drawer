@@ -3,7 +3,7 @@
 Run:  python3 render_parallel.py CONFIG.json OUT_DIR [--jobs 4] [--frames 0,30,60,...] [--no-cache]
 Same output as render_sprite.py on its own (each frame keeps its loop number), ~jobs x faster
 on a multi-core machine. --frames renders only those frames (a quick preview of the motion).
-In a script, RenderPool keeps the Blender processes up between sprites (build_all.py), so
+In a script, RenderPool keeps the Blender processes up between sprites (build.py), so
 Blender starts and compiles its shaders once per process rather than once per sprite.
 Renders are cached (SPRITE_RENDER_CACHE: a folder, default .render_cache/ in the repo; 0 = off):
 a render whose inputs are unchanged - the config's render / camera / pose / motion / parts

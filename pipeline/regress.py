@@ -5,6 +5,7 @@ Run (from anywhere):
                                                        build, save the result as golden
   python3 pipeline/regress.py check [NAME ...]         build again, compare with the golden frame by frame
   python3 pipeline/regress.py render-check [NAME ...]  render again, compare every pass with the cached render
+  python3 pipeline/regress.py full [NAME ...]          both checks (the pre-push hook runs check)
 NAME: lapras, glimmora, golisopod, dragalge, dragalge_back, zygarde, zygarde_back (default: all); a sprite with a shiny
 (SHINY below) also checks its palette_swap recolour. Data lives in .regress/ (gitignored):
 the config snapshots, the rendered passes per sprite and the golden GIFs. Checks always use the
@@ -27,15 +28,15 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 DATA = ROOT / ".regress"
 CONFIGS = {
-    "lapras": "lapras-model/Lapras/lapras.json",
-    "glimmora": "glimmora-model/glimmora_front.json",
-    "golisopod": "golisopod-model/golisopod_front.json",
-    "dragalge": "dragalge-model/dragalge_front.json",
-    "dragalge_back": "dragalge-model/dragalge_back.json",      # back view + the shiny recolour
-    "zygarde": "mega-zygarde-za/zygarde_front.json",
-    "zygarde_back": "mega-zygarde-za/zygarde_back.json",
+    "lapras": "models/lapras/lapras_front.json",
+    "glimmora": "models/mega-glimmora/mega_glimmora_front.json",
+    "golisopod": "models/mega-golisopod/mega_golisopod_front.json",
+    "dragalge": "models/mega-dragalge/mega_dragalge_front.json",
+    "dragalge_back": "models/mega-dragalge/mega_dragalge_back.json",      # back view + the shiny recolour
+    "zygarde": "models/mega-zygarde/mega_zygarde_front.json",
+    "zygarde_back": "models/mega-zygarde/mega_zygarde_back.json",
 }
-SHINY = {"dragalge_back": "dragalge-model/dragalge_back_shiny.json"}
+SHINY = {"dragalge_back": "models/mega-dragalge/mega_dragalge_back_shiny.json"}
 SEED = "0"
 
 
@@ -119,6 +120,11 @@ def main():
     args = [a for i, a in enumerate(args) if a != "--rev" and (i == 0 or args[i - 1] != "--rev")]
     mode = args[0] if args else "check"
     names = args[1:] or list(CONFIGS)
+    if mode == "full":
+        for m in ("check", "render-check"):
+            if subprocess.run([sys.executable, __file__, m] + names).returncode:
+                sys.exit(1)
+        return
     failed = False
     for name in names:
         golden = DATA / "golden" / f"{name}.gif"

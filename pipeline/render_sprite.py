@@ -1,7 +1,7 @@
 """Render a posed model as frame sequences for the sprite pipeline.
 
 Run:
-  Blender -b MODEL.blend --python render_sprite.py -- CONFIG.json OUT_DIR [--test 0,0.5] [--frames 0:60 | 0,5,9]
+  Blender -b MODEL.blend --python render_sprite.py -- CONFIG.json OUT_DIR [--frames 0:60 | 0,5,9]
 (render_parallel.py runs several of these at once, one slice of the loop each)
 Writes these images per frame (see SPRITE_PIPELINE.md), read by sprite_style.py:
   color_NNNN  flat texture colours (Workbench), transparent background
@@ -24,7 +24,6 @@ import motion
 args = sys.argv[sys.argv.index("--") + 1:]
 cfg = json.loads(Path(args[0]).read_text())
 out_dir = args[1]
-test_ts = [float(t) for t in args[args.index("--test") + 1].split(",")] if "--test" in args else None
 setup_only = "--setup-only" in args
 
 P = dict(cfg["pose_params"])          # fit_pose.py updates this dict in place
@@ -114,8 +113,7 @@ meshes = [o for o in scene.objects if o.type == "MESH" and not o.hide_render]
 # flipped, back faces culled - in white, with the body as a holdout. What shows is the line:
 # around the silhouette, and inside wherever a nearer part sits more than the hull's thickness in
 # front of what's behind it. The modifiers stay off except during this pass.
-# render.hull (optional): {"thickness_px": 1.15, "thickness": world units, "even": true, "weld": false,
-#   "spike": 2.0}
+# render.hull (optional): {"thickness_px": 1.15, "thickness": world units, "even": true, "spike": 2.0}
 #   thickness_px  line width in sprite px; turned into world units from frame 0's size on screen
 #                 and style.height (set_hull_thickness), so every model gets the same line width
 #   thickness     world units instead (overrides thickness_px)
@@ -123,8 +121,6 @@ meshes = [o for o in scene.objects if o.type == "MESH" and not o.hide_render]
 #   spike         largest offset of a hull vertex, in thicknesses: even offset at a needle tip is
 #                 capped to it (cap_spikes)
 #   cap_each_frame  cap spikes for every frame's pose, not only frame 0's (cap_spikes_now)
-#   weld          join split (hard-edge) vertices first: closes cracks at hard edges, but smooths
-#                 the shell's normals across them, which draws extra lines along creases
 HULL = cfg["render"].get("hull", {})
 HULL_MODS, HULL_MATS = [], {}
 
@@ -150,11 +146,7 @@ for o in meshes:
     HULL_MATS[me.name] = list(me.materials)
     n_slots = len(me.materials)
     me.materials.append(hull_mat)             # extra slot: only the hull's faces use it
-    if HULL.get("weld"):
-        wd = o.modifiers.new("SpriteHullWeld", "WELD")
-        wd.merge_threshold = 1e-4 / max(o.matrix_world.to_scale())
-        HULL_MODS.append(wd)
-    s = o.modifiers.new("SpriteHull", "SOLIDIFY")
+    s =o.modifiers.new("SpriteHull", "SOLIDIFY")
     s.use_flip_normals, s.use_rim, s.offset = True, False, 1.0
     s.use_even_offset = HULL.get("even", True)
     s.use_quality_normals = True
@@ -216,43 +208,19 @@ def cap_spikes():
     (Golisopod's claws) that is a spike many times the line width, drawn as a long strand. Measure
     each vertex's offset at frame 0 and scale any beyond render.hull.spike x the thickness back to
     it (a solidify vertex-group weight); every other vertex keeps its even offset."""
-    import numpy as np
-    limit = HULL.get("spike", 2.0)
     pose_at(0.0)
     hull_on(True)
-    dg = bpy.context.evaluated_depsgraph_get()
-    capped = 0
-    for o in meshes:
-        s = o.modifiers.get("SpriteHull")
-        n = len(o.data.vertices)
-        if s is None or n == 0:
-            continue
-        me = o.evaluated_get(dg).to_mesh()
-        co = np.empty(len(me.vertices) * 3)
-        me.vertices.foreach_get("co", co)
-        o.evaluated_get(dg).to_mesh_clear()
-        if len(co) != 6 * n:                          # a weld changed the vertex count
-            continue
-        co = co.reshape(2, n, 3)
-        w = np.clip(limit * s.thickness / np.maximum(np.linalg.norm(co[1] - co[0], axis=1), 1e-12), 0, 1)
-        far = np.nonzero(w < 1)[0]
-        if not len(far):
-            continue
-        vg = o.vertex_groups.new(name="SpriteHullCap")
-        vg.add(np.nonzero(w >= 1)[0].tolist(), 1.0, "REPLACE")
-        for i in far:
-            vg.add([int(i)], float(w[i]), "REPLACE")
-        s.vertex_group, s.thickness_vertex_group = vg.name, 0.0
-        capped += len(far)
+    capped = cap_spikes_now()
     hull_on(False)
     print(f"hull spikes capped at {capped} vertices")
 
 
 def cap_spikes_now():
-    """render.hull.cap_each_frame: cap_spikes for the current pose (call with the hull on). A
-    corner that only turns needle-sharp later in the loop (a deep bend, a squashed joint) would
-    otherwise draw a long black strand in those frames. Offsets are measured with the cap off, so
-    each frame's weights depend on its pose alone, whichever process renders it."""
+    """cap_spikes for the current pose (call with the hull on); returns the capped vertex count.
+    render.hull.cap_each_frame runs it every frame: a corner that only turns needle-sharp later in
+    the loop (a deep bend, a squashed joint) would otherwise draw a long black strand in those
+    frames. Offsets are measured with the cap off, so each frame's weights depend on its pose
+    alone, whichever process renders it."""
     import numpy as np
     limit = HULL.get("spike", 2.0)
     mods = [(o, o.modifiers.get("SpriteHull")) for o in meshes if len(o.data.vertices)]
@@ -261,24 +229,28 @@ def cap_spikes_now():
         s.vertex_group = ""
     bpy.context.view_layer.update()
     dg = bpy.context.evaluated_depsgraph_get()
+    capped = 0
     for o, s in mods:
         n = len(o.data.vertices)
         me = o.evaluated_get(dg).to_mesh()
         co = np.empty(len(me.vertices) * 3)
         me.vertices.foreach_get("co", co)
         o.evaluated_get(dg).to_mesh_clear()
-        if len(co) != 6 * n:                          # a weld changed the vertex count
+        if len(co) != 6 * n:                          # not the plain 2n of a solidify: leave it
             continue
-        co = co.reshape(2, n, 3)
+        co = co.reshape(2, n, 3)                      # the original vertices, then the shell's
         w = np.clip(limit * s.thickness / np.maximum(np.linalg.norm(co[1] - co[0], axis=1), 1e-12), 0, 1)
-        if (w >= 1).all():
+        far = np.nonzero(w < 1)[0]
+        if not len(far):
             continue
         vg = o.vertex_groups.get("SpriteHullCap") or o.vertex_groups.new(name="SpriteHullCap")
         vg.add(np.nonzero(w >= 1)[0].tolist(), 1.0, "REPLACE")
-        for i in np.nonzero(w < 1)[0]:
+        for i in far:
             vg.add([int(i)], float(w[i]), "REPLACE")
         s.vertex_group, s.thickness_vertex_group = vg.name, 0.0
+        capped += len(far)
     bpy.context.view_layer.update()
+    return capped
 
 
 def use_pass(kind):
@@ -342,28 +314,24 @@ AXES = {"X": Vector((1, 0, 0)), "Y": Vector((0, 1, 0)), "Z": Vector((0, 0, 1))}
 to_arm = arm.matrix_world.inverted().to_3x3()
 
 
-def rotate_world(name, axis, degrees):
+def rotate(pb, world_axis, degrees):
     """Rotate a pose bone about a world axis through its head (children follow)."""
-    pb = arm.pose.bones[name]
-    a = (to_arm @ AXES[axis]).normalized()
     m = pb.matrix.copy()
-    rot = Matrix.Rotation(math.radians(degrees), 4, a)
     head = m.translation.copy()
+    rot = Matrix.Rotation(math.radians(degrees), 4, (to_arm @ world_axis).normalized())
     pb.matrix = Matrix.Translation(head) @ rot @ Matrix.Translation(-head) @ m
     bpy.context.view_layer.update()
 
 
-def slow_t(f, n, fast):
-    """frame f of n -> 0..1 position in the loop with the fast frame ranges removed (held still
-    during them)."""
-    total = sum(b - a for a, b in fast)
-    lost = 0
-    for a, b in sorted(fast):
-        if f >= b:
-            lost += b - a
-        elif f > a:
-            return (a - lost) / (n - total)
-    return (f - lost) / (n - total)
+def move(pb, world_offset):
+    """Move a pose bone by a world-space offset (children follow)."""
+    pb.matrix = Matrix.Translation(to_arm @ world_offset) @ pb.matrix
+    bpy.context.view_layer.update()
+
+
+def cam_axis(i):
+    """the sprite camera's right (0), up (1) or view (2) direction in world space"""
+    return (cam.matrix_world.to_3x3() @ Vector([float(i == k) for k in range(3)])).normalized()
 
 
 CLIP = cfg.get("motion", {}).get("clip")
@@ -408,7 +376,7 @@ def pose_at(t):
     # ts: "slow time" - loop position with the fast frames (style.fast_frames) cut out, so the slow
     # motions pause during a fast event and the loop outside it stays seamless (see slow_t);
     # helpers (smooth, smoother, bump, damp, jitter, wave, ...) and motion.functions: motion.py
-    ts = slow_t(t * FRAMES, FRAMES, cfg["style"].get("fast_frames", []))
+    ts = motion.slow_t(t * FRAMES, FRAMES, cfg["style"].get("fast_frames", []))
     env = motion.env(cfg, P)
     env.update(s=math.sin(2 * math.pi * t), c=math.cos(2 * math.pi * t), t=t, ts=ts)
     for bone, axis, expr in cfg["pose"]:
@@ -435,28 +403,15 @@ def pose_at(t):
                 pb.scale = tuple(1.0 if i == axis_of[pb.name] else value for i in range(3))
             bpy.context.view_layer.update()
         elif axis.startswith("A:"):           # "A:x,y,z": rotate about any world axis through the bone head
-            v = Vector([float(c) for c in axis[2:].split(",")]).normalized()
-            pb = arm.pose.bones[bone]
-            m = pb.matrix.copy(); head = m.translation.copy()
-            pb.matrix = Matrix.Translation(head) @ Matrix.Rotation(math.radians(value), 4, (to_arm @ v).normalized()) @ Matrix.Translation(-head) @ m
-            bpy.context.view_layer.update()
-        elif axis in ("LOCCAM", "LOCCAMX"):   # move along the camera's up / right direction (model units):
-            pb = arm.pose.bones[bone]           # screen-vertical / screen-horizontal
-            d = (cam.matrix_world.to_3x3() @ Vector((0, 1, 0) if axis == "LOCCAM" else (1, 0, 0))).normalized()
-            pb.matrix = Matrix.Translation(to_arm @ (d * value)) @ pb.matrix
-            bpy.context.view_layer.update()
+            rotate(arm.pose.bones[bone], Vector([float(c) for c in axis[2:].split(",")]).normalized(), value)
+        elif axis in ("LOCCAM", "LOCCAMX"):   # move along the camera's up / right (screen-vertical /
+            move(arm.pose.bones[bone], cam_axis(1 if axis == "LOCCAM" else 0) * value)   # horizontal)
         elif axis == "ROLLCAM":               # rotate about the camera's view axis through the bone head:
-            pb = arm.pose.bones[bone]           # an in-picture tilt (+ = counter-clockwise on screen)
-            v = (cam.matrix_world.to_3x3() @ Vector((0, 0, 1))).normalized()
-            m = pb.matrix.copy(); head = m.translation.copy()
-            pb.matrix = Matrix.Translation(head) @ Matrix.Rotation(math.radians(value), 4, (to_arm @ v).normalized()) @ Matrix.Translation(-head) @ m
-            bpy.context.view_layer.update()
+            rotate(arm.pose.bones[bone], cam_axis(2), value)   # an in-picture tilt (+ = counter-clockwise)
         elif axis.startswith("LOC"):          # LOCX / LOCY / LOCZ: move along a world axis (model units)
-            pb = arm.pose.bones[bone]
-            pb.matrix = Matrix.Translation(to_arm @ (AXES[axis[3]] * value)) @ pb.matrix
-            bpy.context.view_layer.update()
-        else:
-            rotate_world(bone, axis, value)
+            move(arm.pose.bones[bone], AXES[axis[3]] * value)
+        else:                                 # X / Y / Z: rotate about a world axis through the bone head
+            rotate(arm.pose.bones[bone], AXES[axis], value)
     if PLANT:
         hold_planted()
 
@@ -533,9 +488,6 @@ def render_frame(t, name):
 
 if setup_only:
     pass
-elif test_ts is not None:
-    for i, t in enumerate(test_ts):
-        render_frame(t, f"{i + 1:04d}")
 elif "--frames" in args:
     # a subset of the loop's frames, named as in the full loop (render_parallel.py splits the
     # loop across several Blender processes this way); "0,5,9" or "0:60" (end exclusive)

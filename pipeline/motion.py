@@ -7,7 +7,6 @@ motion.functions {name: expr in t}: named functions of the loop position t (0..1
 every pose expression and from each other (e.g. "FY": "hover(t) + lift(t)").
 style.pixel_bob {"y": expr, "x": expr}: whole-pixel shift of each finished sprite (+y = up,
 +x = right), rounded per frame; the pose renders the leftover fraction (e.g. FY - round(FY)).
-The older form {amplitude, cycles, phase[, slow_time]} (a vertical sine) still works.
 """
 import math
 
@@ -77,10 +76,6 @@ def offsets(cfg, n):
     pb = cfg["style"].get("pixel_bob")
     if not pb:
         return [(0, 0)] * n
-    if "amplitude" in pb:
-        Af, ff = float(pb["amplitude"]), cfg["style"].get("fast_frames", [])
-        return [(int(round(Af * math.sin(2 * math.pi * pb.get("cycles", 1) * (slow_t(i, n, ff) if pb.get("slow_time") else i / n)
-                                         + pb.get("phase", 0.0)))), 0) for i in range(n)]
     e = env(cfg)
     ev = lambda expr, t: int(round(eval(expr, e, {"t": t}))) if expr else 0
     return [(ev(pb.get("y"), i / n), ev(pb.get("x"), i / n)) for i in range(n)]

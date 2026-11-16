@@ -1,13 +1,13 @@
 """Finished front config -> everything delivered for review, no LLM needed:
 back config, both shiny configs, the build, a contact sheet, the motion check, a report skeleton.
 
-Run:  python3 pipeline/package.py FRONT.json [--out out/overnight/NAME] [--back-elevation 15] [--no-build]
+Run:  python3 pipeline/package.py FRONT.json [--out out/POKEMON] [--back-elevation 15] [--no-build]
   NAME_back.json         the front config with the camera turned round: azimuth + 180, elevation
                          --back-elevation (default: the front's, at least 10: looking down on the
                          back, never up from below); pose, motion, palette, style unchanged
   NAME_front_shiny.json  make_shiny.py --keep-steps (palette from the model's _rare_ textures)
   NAME_back_shiny.json   the back config with the front shiny's colours
-  OUT/                   NAME_front/back(_shiny)(_4x).gif via build_all.py, sheet.png (8 frames of
+  OUT/                   NAME_front/back(_shiny)(_4x).gif via build.py, sheet.png (8 frames of
                          each GIF), check.txt (check_motion.py on the front), report.md (filled
                          where it can be; the motion idea and the rule-by-rule review are left to write),
                          with a spike scan (frames whose outline pixels jump: a hull spike, or a dark
@@ -66,7 +66,7 @@ def main():
         print(__doc__); sys.exit(0 if a and a[0] in ("-h", "--help") else 1)
     front = Path(a[0]).resolve()
     stem = re.sub(r"_front$", "", front.stem)
-    out = Path(a[a.index("--out") + 1]) if "--out" in a else ROOT / "out" / "overnight" / stem
+    out = Path(a[a.index("--out") + 1]) if "--out" in a else ROOT / "out" / front.parent.name
     out = out.resolve(); out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads(front.read_text())
     log, t0 = [], time.time()
@@ -99,7 +99,7 @@ def main():
 
     if "--no-build" in a:
         print(f"configs written; no build"); return
-    run([HERE / "build_all.py", out, front, back_path, "--scale", "4"], log)
+    run([HERE / "build.py", front, back_path, "--out", out], log)
     check = run([HERE / "check_motion.py", front], log)
     (out / "check.txt").write_text(check)
 

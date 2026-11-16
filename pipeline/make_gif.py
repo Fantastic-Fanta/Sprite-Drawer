@@ -10,7 +10,6 @@ import json
 import sys
 from pathlib import Path
 
-import numpy as np
 from PIL import Image
 
 import sprite_style as ss
@@ -50,16 +49,6 @@ if first_only:
     print(f"wrote {first_only}")
     sys.exit(0)
 
-sprites = mirror(ss.loop(cfg, paths, box, size))
-ss.save_gif(cfg, sprites, out_path)
-h, w = sprites[0].shape[:2]
-print(f"wrote {out_path}: {len(sprites)} frames, {w}x{h}")
-
-if "--scale" in args:
-    k = int(args[args.index("--scale") + 1])
-    big = [np.array(Image.fromarray(s).resize((s.shape[1] * k, s.shape[0] * k), Image.Resampling.NEAREST))
-           for s in sprites]
-    big_path = str(Path(out_path).with_name(Path(out_path).stem + f"_{k}x.gif"))
-    ss.save_gif(cfg, big, big_path)
-    print(f"wrote {big_path}")
+ss.save_gifs(cfg, mirror(ss.loop(cfg, paths, box, size)), out_path,
+             args[args.index("--scale") + 1] if "--scale" in args else None)
 sys.exit(1 if clipped else 0)
