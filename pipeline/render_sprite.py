@@ -205,12 +205,10 @@ def rotate(pb, world_axis, degrees):
     head = m.translation.copy()
     rot = Matrix.Rotation(math.radians(degrees), 4, (to_arm @ world_axis).normalized())
     pb.matrix = Matrix.Translation(head) @ rot @ Matrix.Translation(-head) @ m
-    upd()
 
 
 def move(pb, world_offset):
     pb.matrix = Matrix.Translation(to_arm @ world_offset) @ pb.matrix
-    upd()
 
 
 cam_axis = lambda i: (cam.matrix_world.to_3x3() @ Vector([float(i == k) for k in range(3)])).normalized()
@@ -236,7 +234,38 @@ def apply_clip(t):
         upd()
 
 
+def batched(pose):
+    """pose entries as (bone, axis, compiled expr, update after it): an entry reads its bone's and ancestors' pose
+    matrices and writes its bone (SCALEW: its chain), so it goes in a batch after every earlier entry that wrote
+    what it reads or writes, and not before one that read what it writes: same values, one update per batch"""
+    up = lambda b: {b.name} | (up(b.parent) if b.parent else set())
+    rw, level = [], []
+    for bone, axis, _ in pose:
+        b = arm.data.bones[bone]
+        rw.append((up(b), {bone} | ({c.name for c in b.children_recursive} if axis == "SCALEW" else set())))
+    for i, (r, w) in enumerate(rw):
+        level.append(max([level[j] + 1 for j in range(i) if rw[j][1] & (r | w)] +
+                         [level[j] for j in range(i) if rw[j][0] & w] + [0]))
+    order = sorted(range(len(pose)), key=lambda i: (level[i], i))
+    return [(*pose[i][:2], compile(pose[i][2], "pose", "eval"), k + 1 == len(order) or level[order[k + 1]] != level[i])
+            for k, i in enumerate(order)]
+
+
+POSE = batched(cfg.get("pose") or [])
+DEFORM = [m for o in scene.objects for m in o.modifiers if m.type == "ARMATURE" and m.show_viewport]
+
+
 def pose_at(t):
+    """config "pose" at loop position t; the meshes deform once, after it (armature modifiers off till then)"""
+    for m in DEFORM:
+        m.show_viewport = False
+    pose_bones(t)
+    for m in DEFORM:
+        m.show_viewport = True
+    upd()
+
+
+def pose_bones(t):
     """config "pose" [bone, axis, expr] at loop position t (s/c: one sine cycle, ts: slow time; motion.py)"""
     if CLIP:
         apply_clip(t)
@@ -245,16 +274,15 @@ def pose_at(t):
             pb.rotation_mode = "QUATERNION"
             pb.matrix_basis = Matrix.Identity(4)
         upd()
-    if not cfg.get("pose"):
+    if not POSE:
         return
     env = motion.env(cfg, P)
     env.update(s=math.sin(2 * math.pi * t), c=math.cos(2 * math.pi * t), t=t,
                ts=motion.slow_t(t * FRAMES, FRAMES, cfg["style"].get("fast_frames", [])))
-    for bone, axis, expr in cfg["pose"]:
+    for bone, axis, expr, flush in POSE:
         value, pb = eval(expr, env), arm.pose.bones[bone]
         if axis == "SCALE":
             pb.scale = (value, value, value)
-            upd()
         elif axis == "SCALEW":                   # widen a chain without lengthening it (own axes, no inherited scale)
             axis_of = {}
             for q in [pb] + list(pb.children_recursive):
@@ -267,7 +295,6 @@ def pose_at(t):
                     axis_of[q.name] = axis_of.get(b.parent.name, 1) if b.parent else 1
                 b.inherit_scale = "NONE"
                 q.scale = tuple(1.0 if i == axis_of[q.name] else value for i in range(3))
-            upd()
         elif axis.startswith("A:"):              # about any world axis through the bone head
             rotate(pb, Vector([float(c) for c in axis[2:].split(",")]).normalized(), value)
         elif axis in ("LOCCAM", "LOCCAMX"):      # along the camera's up / right
@@ -278,6 +305,8 @@ def pose_at(t):
             move(pb, AXES[axis[3]] * value)
         else:
             rotate(pb, AXES[axis], value)
+        if flush:
+            upd()
     if PLANT:
         hold_planted()
 
