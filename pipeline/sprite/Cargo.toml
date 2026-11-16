@@ -1,11 +1,15 @@
 [package]
-name = "sprite_gpu"
+name = "sprite"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 bytemuck = { version = "1.25.2", features = ["derive"] }
+gif = "0.13"
 pollster = "1.0.1"
 rayon = "1.12.0"
-serde_json = "1.0.154"
+serde_json = { version = "1.0.154", features = ["preserve_order"] }
 wgpu = "30.0.2"
+
+[profile.release]
+debug = false

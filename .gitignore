@@ -19,9 +19,9 @@ models/*/*.md
 models/*/motion.note
 models/mega-greninja-za/
 
-# build output, render cache, regression data, Blender slot locks
+# build output, bake cache, regression data, Blender slot locks
 out/
-.render_cache/
+.bake_cache/
 .regress/
 .blender_slots/
 

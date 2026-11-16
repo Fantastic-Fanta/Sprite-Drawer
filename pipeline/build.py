@@ -2,11 +2,13 @@
 python3 build.py --publish POKEMON ...          out/<pokemon>/ -> sprites/<pokemon>/ (after review)
 Per front config: front, back (camera turned 180, from above) and, when the model has *_rare_alb textures,
 both shinies (palette recoloured), each with a 4x copy. Optional overrides in the front config:
-"back": {...} merged into the derived back, "shiny": {"palette": {...}} instead of the derived palette."""
+"back": {...} merged into the derived back, "shiny": {"palette": {...}} instead of the derived palette.
+Blender poses each loop (bake.py, BakePool); sprite/ (Rust, GPU) renders it and draws the GIFs."""
 import copy
 import json
 import queue
 import shutil
+import subprocess
 import sys
 import threading
 import time
@@ -19,8 +21,11 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 MODELS, SPRITES, OUT = ROOT / "models", ROOT / "sprites", ROOT / "out"
 sys.path.insert(0, str(HERE))
-import sprite_style as ss                      # noqa: E402
-from blender import RenderPool                  # noqa: E402
+import motion                                   # noqa: E402
+from blender import BakePool                    # noqa: E402
+
+CRATE = HERE / "sprite"
+SPRITE = CRATE / "target/release/sprite"
 
 
 def merge(a, b):
@@ -123,6 +128,7 @@ def shiny_palette(cfg):
 
 def build(names, out=None):
     """build the named Pokemon (models/ folder names); returns the failed steps"""
+    subprocess.run(["cargo", "build", "--release", "-q"], cwd=CRATE, check=True)
     jobs = []
     for name in names:
         for front in sorted((MODELS / name).glob("*_front.json")):
@@ -130,45 +136,45 @@ def build(names, out=None):
                 continue
             cfg, stem, dest = load(front), front.stem[:-6], Path(out or OUT / name)
             for view, c in (("front", cfg), ("back", back_of(cfg))):
-                sp = shiny_palette(c)
-                jobs.append((f"{stem}_{view}", c, sp and dict(c, palette=sp), dest))
-    work, rendered, failed, t0 = Path(out or OUT) / "frames", queue.Queue(), [], time.time()
+                jobs.append((f"{stem}_{view}", c, shiny_palette(c), dest))
+    work, baked, failed, t0 = Path(out or OUT) / "frames", queue.Queue(), [], time.time()
     log = lambda m: print(f"[{time.time() - t0:6.1f}s] {m}", flush=True)
 
-    def renderer():
-        with RenderPool() as pool:               # one pool for the batch: Blender starts once per worker
+    def baker():
+        with BakePool() as pool:                 # one pool for the batch: Blender starts once per worker
             for name, cfg, _, _ in jobs:
                 t = time.time()
                 try:
-                    n = pool.render(cfg, work / name)
-                    log(f"render {name}: {'done' if n else 'cached'} in {time.time() - t:.1f}s")
-                    rendered.put(name)
+                    n = pool.bake(cfg, work / name)
+                    log(f"bake {name}: {'done' if n else 'cached'} in {time.time() - t:.1f}s")
+                    baked.put(name)
                 except RuntimeError as e:
-                    log(f"render {name}: FAILED\n{e}"); failed.append(name); rendered.put(None)
-        rendered.put(False)
+                    log(f"bake {name}: FAILED\n{e}"); failed.append(name); baked.put(None)
+        baked.put(False)
 
-    def builder():                               # CPU work while the next sprite renders
+    def drawer():                                # GPU + CPU work while the next loop bakes
         for name, cfg, shiny, dest in jobs:
-            if (got := rendered.get()) is False:
+            if (got := baked.get()) is False:
                 return
             if got is None:
                 continue
             t = time.time()
-            try:
-                dest.mkdir(parents=True, exist_ok=True)
-                sprites, clipped = ss.sprites(cfg, work / name)
-                ss.save_gif(cfg, sprites, dest / f"{name}.gif")
-                if shiny:
-                    ss.save_gif(shiny, ss.recolour(cfg, shiny, sprites), dest / f"{name}_shiny.gif")
+            dest.mkdir(parents=True, exist_ok=True)
+            job = work / name / "job.json"
+            job.write_text(json.dumps({"config": cfg, "bake": str(work / name), "shiny": shiny, "out": str(dest / name),
+                                       "offsets": motion.offsets(cfg, cfg["motion"]["frames"])}))
+            r = subprocess.run([str(SPRITE), str(job)], capture_output=True, text=True)
+            if r.returncode:
+                log(f"draw {name}: FAILED\n{r.stderr[-3000:]}"); failed.append(name)
+            else:
+                clipped = json.loads(r.stdout.splitlines()[-1])["clipped"]
                 if clipped:
                     failed.append(name)
-                log(f"build {name}: {'CUT OFF at the render edge (widen render.width/height)' if clipped else 'done'}"
+                log(f"draw {name}: {'CUT OFF at the render edge (widen render.width/height)' if clipped else 'done'}"
                     f" in {time.time() - t:.1f}s")
-            except Exception as e:
-                log(f"build {name}: FAILED {e!r}"); failed.append(name)
             shutil.rmtree(work / name, ignore_errors=True)
 
-    threads = [threading.Thread(target=renderer), threading.Thread(target=builder)]
+    threads = [threading.Thread(target=baker), threading.Thread(target=drawer)]
     for t in threads:
         t.start()
     for t in threads:

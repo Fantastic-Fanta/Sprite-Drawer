@@ -1,4 +1,4 @@
-"""Motion maths shared by render_sprite.py and sprite_style.py: expression helpers, motion.functions
+"""Motion maths shared by bake.py and build.py: expression helpers, motion.functions
 (named functions of t, 0..1), style.pixel_bob (whole-pixel shift per frame).
 """
 import math

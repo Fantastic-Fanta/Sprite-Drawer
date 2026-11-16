@@ -1,4 +1,4 @@
-"""python3 regress.py [POKEMON ...]: rebuild (renders cached unless the render code changed) and compare every
+"""python3 regress.py [POKEMON ...]: rebuild (bakes cached unless the bake code changed) and compare every
 GIF with sprites/<pokemon>/, pixel for pixel. Exit 1 if any differs. The pre-push hook runs it."""
 import shutil
 import sys

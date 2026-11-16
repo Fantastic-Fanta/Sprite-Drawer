@@ -1,6 +1,8 @@
-"""Inside Blender (blender.py's worker, JOB = {config, out, frames}): render each frame's passes as TGA:
-color_ (flat texture), id_ (material group), data_ (camera-space normal), hull_ (inverted-hull lines)."""
-import bpy, sys, math
+"""Inside Blender (blender.py's worker, JOB = {config, out, frames}): pose each frame and write the geometry the
+GPU renderer (sprite/) draws: frame_NNNN.bin (body positions and corner normals, hull positions); the worker
+with frame 0 also writes meta.json (camera, materials, sizes), static.bin (topology, UVs, materials), tex_*.rgba."""
+import bpy, json, math, sys
+import numpy as np
 from pathlib import Path
 from mathutils import Matrix, Vector
 
@@ -20,65 +22,37 @@ for o in scene.objects:
     if o.name.startswith("Icosphere"):          # the glTF importer's bone-display helper
         o.hide_render = True
 r = scene.render
-r.film_transparent, r.resolution_percentage, r.use_file_extension = True, 100, False
-r.resolution_x, r.resolution_y = cfg["render"]["width"], cfg["render"]["height"]
-r.image_settings.file_format, r.image_settings.color_mode, r.image_settings.color_depth = "TARGA_RAW", "RGBA", "8"
-shading = scene.display.shading
-shading.light, shading.show_object_outline, shading.show_specular_highlight = "FLAT", False, False
+r.resolution_percentage, r.resolution_x, r.resolution_y = 100, cfg["render"]["width"], cfg["render"]["height"]
 
-# id pass: one flat colour per material group (parts.materials {name fragment: "part|part"})
-ID_ORDER = [PM["default_material"]] + sorted(set(PM.get("materials", {}).values()))
-ID_RGB = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1),
-          (0.5, 0, 0), (0, 0.5, 0), (0, 0, 0.5), (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5)]
-assert len(ID_ORDER) <= len(ID_RGB), f"{len(ID_ORDER)} material groups: at most {len(ID_RGB)}"
-for mat in bpy.data.materials:
-    images = [n.image.name for n in (mat.node_tree.nodes if mat.node_tree else []) if n.type == "TEX_IMAGE" and n.image]
+# material groups (parts.materials {name fragment: "part|part"}), in sprite/'s order; a material without a
+# texture is drawn in its group's colour here (it was the id pass's diffuse colour)
+GROUPS = [PM["default_material"]] + sorted(set(PM.get("materials", {}).values()))
+GROUP_RGB = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1),
+             (0.5, 0, 0), (0, 0.5, 0), (0, 0, 0.5), (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5)]
+assert len(GROUPS) <= len(GROUP_RGB), f"{len(GROUPS)} material groups: at most {len(GROUP_RGB)}"
+
+
+def group_of(mat):
+    images = [n.image.name for n in (mat.node_tree.nodes if mat and mat.node_tree else []) if n.type == "TEX_IMAGE" and n.image]
     group = PM["default_material"]
     for key, name in PM.get("materials", {}).items():
-        if any(key in i for i in images) or key in mat.name:
+        if any(key in i for i in images) or (mat and key in mat.name):
             group = name
-    mat.diffuse_color = (*ID_RGB[ID_ORDER.index(group)], 1)
+    return GROUPS.index(group)
 
-# data pass: EEVEE, one emission material: camera-space normal * 0.5 + 0.5 in R/G
-data_mat = bpy.data.materials.new("SpriteData")
-data_mat.use_nodes = True
-nt = data_mat.node_tree
-nt.nodes.clear()
-N, L = nt.nodes.new, nt.links.new
-geo, vt = N("ShaderNodeNewGeometry"), N("ShaderNodeVectorTransform")
-vt.vector_type, vt.convert_from, vt.convert_to = "NORMAL", "WORLD", "CAMERA"
-half = N("ShaderNodeVectorMath"); half.operation = "MULTIPLY_ADD"
-half.inputs[1].default_value = half.inputs[2].default_value = (0.5, 0.5, 0.5)
-sep, comb, emit, outn = N("ShaderNodeSeparateXYZ"), N("ShaderNodeCombineColor"), N("ShaderNodeEmission"), N("ShaderNodeOutputMaterial")
-L(geo.outputs["Normal"], vt.inputs["Vector"]); L(vt.outputs["Vector"], half.inputs[0]); L(half.outputs["Vector"], sep.inputs["Vector"])
-L(sep.outputs["X"], comb.inputs[0]); L(sep.outputs["Y"], comb.inputs[1])
-L(comb.outputs["Color"], emit.inputs["Color"]); L(emit.outputs["Emission"], outn.inputs["Surface"])
+
 meshes = [o for o in scene.objects if o.type == "MESH" and not o.hide_render]
 
 
-# hull pass: each mesh's solidify shell (flipped normals, back faces culled) in white, the body a holdout:
-# what shows is the line. render.hull: thickness_px (sprite px) or thickness (world), even, spike, cap_each_frame
-def flat_mat(name, node):
-    m = bpy.data.materials.new(name)
-    m.use_nodes = True
-    m.node_tree.nodes.clear()
-    n = m.node_tree.nodes.new(node)
-    if node == "ShaderNodeEmission":
-        n.inputs["Color"].default_value = (1, 1, 1, 1)
-    m.node_tree.links.new(n.outputs[0], m.node_tree.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
-    return m
-
-
-hull_mat, hull_hold = flat_mat("SpriteHull", "ShaderNodeEmission"), flat_mat("SpriteHullHold", "ShaderNodeHoldout")
-hull_mat.use_backface_culling = True
-HULL_MODS, HULL_MATS, HULL_T = [], {}, None
+# hull: each mesh's solidify shell (flipped normals; its faces take the extra material slot). render.hull:
+# thickness_px (sprite px) or thickness (world), even, spike, cap_each_frame
+HULL_MODS, N_SLOTS, HULL_T = [], {}, None
 for o in meshes:
     me = o.data
     if len(me.materials) == 0:
         me.materials.append(None)
-    HULL_MATS[me.name] = list(me.materials)
-    n_slots = len(me.materials)
-    me.materials.append(hull_mat)
+    n_slots = N_SLOTS[o.name] = len(me.materials)
+    me.materials.append(None)
     s = o.modifiers.new("SpriteHull", "SOLIDIFY")
     s.use_flip_normals, s.use_rim, s.offset = True, False, 1.0
     s.use_even_offset, s.use_quality_normals, s.material_offset = HULL.get("even", True), True, n_slots
@@ -89,9 +63,6 @@ for o in meshes:
 def hull_on(on):
     for m in HULL_MODS:
         m.show_render = m.show_viewport = on
-    for o in meshes:
-        for i, m in enumerate(HULL_MATS[o.data.name]):
-            o.data.materials[i] = hull_hold if on else m
     upd()
 
 
@@ -101,7 +72,6 @@ def set_hull_thickness():
     if "thickness" in HULL:
         HULL_T = HULL["thickness"]
     else:
-        import numpy as np
         pose_at(0.0)
         dg = bpy.context.evaluated_depsgraph_get()
         W, H = r.resolution_x, r.resolution_y
@@ -134,7 +104,6 @@ def set_hull_thickness():
 def cap_spikes():
     """scale back any hull vertex offset beyond render.hull.spike (default 2) thicknesses (needle tips),
     via a solidify vertex-group weight measured with the cap off, from the current pose alone"""
-    import numpy as np
     limit = HULL.get("spike", 2.0)
     mods = [(o, o.modifiers.get("SpriteHull")) for o in meshes if len(o.data.vertices)]
     mods = [(o, s) for o, s in mods if s is not None]
@@ -161,24 +130,6 @@ def cap_spikes():
             vg.add([int(i)], float(w[i]), "REPLACE")
         s.vertex_group, s.thickness_vertex_group = vg.name, 0.0
     upd()
-
-
-def use_pass(kind):
-    vl = bpy.context.view_layer
-    r.use_freestyle = False
-    if kind in ("color", "id"):
-        r.engine, vl.material_override, scene.view_settings.view_transform = "BLENDER_WORKBENCH", None, "Standard"
-        r.filter_size = 1.5 if kind == "color" else 0.01
-        shading.color_type = "TEXTURE" if kind == "color" else "MATERIAL"
-        scene.display.render_aa = "8" if kind == "color" else "OFF"
-        return
-    r.engine = "BLENDER_EEVEE"
-    for a in ("use_shadows", "use_raytracing", "use_volumetric_shadows", "use_gtao"):
-        if hasattr(scene.eevee, a):
-            setattr(scene.eevee, a, False)
-    scene.eevee.taa_render_samples, r.filter_size = 1, 0.01
-    vl.material_override = None if kind == "hull" else data_mat
-    scene.view_settings.view_transform = "Standard" if kind == "hull" else "Raw"
 
 
 cam_data = bpy.data.cameras.new("SpriteCam")
@@ -355,18 +306,110 @@ def hold_planted():
     upd()
 
 
+
+
+# --- the geometry dump
+out = Path(out_dir)
+
+
+def image_of(mat):
+    """the image node Workbench's texture colour uses: the active one, else the first"""
+    nodes = [n for n in (mat.node_tree.nodes if mat and mat.node_tree else []) if n.type == "TEX_IMAGE" and n.image]
+    return (mat.node_tree.nodes.active if mat.node_tree.nodes.active in nodes else nodes[0]) if nodes else None
+
+
+MATS, TEXTURES = {}, {}
+
+
+def material(m):
+    """index of m in meta materials (texture, sampler, colour, group)"""
+    if m not in MATS:
+        node, tex = image_of(m), None
+        if node:
+            im = node.image
+            if im.name not in TEXTURES:
+                w, h = im.size
+                px = np.empty(w * h * 4, np.float32)
+                im.pixels.foreach_get(px)
+                (out / f"tex_{len(TEXTURES)}.rgba").write_bytes(np.round(np.clip(px, 0, 1) * 255).astype(np.uint8).tobytes())
+                TEXTURES[im.name] = {"w": w, "h": h, "srgb": im.colorspace_settings.name.lower().startswith("srgb"),
+                                     "cutoff": im.alpha_mode not in ("NONE", "CHANNEL_PACKED"), "premul": im.alpha_mode == "PREMUL"}
+            tex = list(TEXTURES).index(im.name)
+        t = TEXTURES[node.image.name] if node else {"cutoff": False, "premul": False}
+        MATS[m] = {"tex": tex, "nearest": bool(node and node.interpolation == "Closest"), "extension": node.extension if node else "REPEAT",
+                   "cutoff": t["cutoff"], "premul": t["premul"], "group": group_of(m),
+                   "color": GROUP_RGB[group_of(m)] if m else (0.8, 0.8, 0.8)}
+    return list(MATS).index(m)
+
+
+def grab(o, dg, static):
+    """world positions, corner normals (as EEVEE gets them) and, with static, topology / UVs / slots"""
+    me = o.evaluated_get(dg).to_mesh()
+    co = np.empty(len(me.vertices) * 3, np.float32); me.vertices.foreach_get("co", co)
+    M = np.array(o.matrix_world, np.float64)
+    pos = (co.reshape(-1, 3) @ M[:3, :3].T + M[:3, 3]).astype(np.float32)
+    nrm = np.empty(len(me.loops) * 3, np.float32); me.corner_normals.foreach_get("vector", nrm)
+    if not r.use_high_quality_normals:           # GPU_PackedNormal: 10-bit, truncated
+        nrm = np.clip(np.trunc(np.clip(nrm, -1, 1) * 511), -512, 511).astype(np.float32) / 511
+    nrm = (nrm.reshape(-1, 3) @ np.linalg.inv(M[:3, :3]).astype(np.float32)).astype(np.float32)  # M^-T n, not renormalised
+    st = None
+    if static:
+        me.calc_loop_triangles()
+        get = lambda seq, attr, n: (lambda a: (seq.foreach_get(attr, a), a)[1])(np.empty(n, np.int32))
+        nt = len(me.loop_triangles)
+        uvl = next((l for l in me.uv_layers if l.active_render), me.uv_layers.active)
+        uv = np.zeros(len(me.loops) * 2, np.float32)
+        if uvl:
+            uvl.data.foreach_get("uv", uv)
+        st = (get(me.loop_triangles, "loops", nt * 3), get(me.loops, "vertex_index", len(me.loops)), uv,
+              get(me.loop_triangles, "material_index", nt))
+    o.evaluated_get(dg).to_mesh_clear()
+    return pos, nrm, st
+
+
+def frame(f, static=False):
+    """body (hull off) and body + shell (hull on) of frame f"""
+    pose_at(f / FRAMES)
+    body = [grab(o, bpy.context.evaluated_depsgraph_get(), static) for o in meshes]
+    hull_on(True)
+    if HULL.get("cap_each_frame"):
+        cap_spikes()
+    hull = [grab(o, bpy.context.evaluated_depsgraph_get(), static) for o in meshes]
+    hull_on(False)
+    return body, hull
+
+
+def write_static(body, hull):
+    def concat(parts):
+        tl, lv, uv, mi, vo, lo = [], [], [], [], 0, 0
+        for pos, nrm, (t, l, u, m) in parts:
+            tl.append(t + lo); lv.append(l + vo); uv.append(u); mi.append(m); vo += len(pos); lo += len(nrm)
+        return np.concatenate(tl), np.concatenate(lv), np.concatenate(uv), mi
+    slots = [[s.material for s in o.material_slots] or [None] for o in meshes]
+    btl, blv, buv, bmi = concat(body)
+    bmat = np.concatenate([np.array([material(m) for m in sm], np.int32)[np.minimum(mi, len(sm) - 1)] for mi, sm in zip(bmi, slots)])
+    htl, hlv, _, hmi = concat(hull)
+    shell = np.concatenate([(mi >= N_SLOTS[o.name]).astype(np.int32) for mi, o in zip(hmi, meshes)])
+    with open(out / "static.bin", "wb") as fh:
+        for a in (btl, blv, buv, bmat, htl, hlv, shell):
+            fh.write(np.ascontiguousarray(a).tobytes())
+    dg = bpy.context.evaluated_depsgraph_get()
+    W, H = r.resolution_x, r.resolution_y
+    count = lambda parts, tl, lv: {"verts": sum(len(p) for p, _, _ in parts), "loops": len(lv), "tris": len(tl) // 3}
+    (out / "meta.json").write_text(json.dumps({
+        "width": W, "height": H, "persp": cam_data.type == "PERSP", "materials": list(MATS.values()),
+        "proj": np.array(cam.calc_matrix_camera(dg, x=W, y=H)).tolist(), "view": np.array(cam.matrix_world.inverted()).tolist(),
+        "body": count(body, btl, blv), "hull": count(hull, htl, hlv), "textures": list(TEXTURES.values())}))
+
+
+out.mkdir(parents=True, exist_ok=True)
 plant()
 for f in JOB["frames"]:
     if HULL_T is None:
         set_hull_thickness()
-    pose_at(f / FRAMES)
-    for kind in ("color",) + (("id",) if len(ID_ORDER) > 1 else ()) + ("data", "hull"):
-        use_pass(kind)
-        if kind == "hull":
-            hull_on(True)
-            if HULL.get("cap_each_frame"):
-                cap_spikes()
-        r.filepath = f"{out_dir}/{kind}_{f + 1:04d}.tga"
-        bpy.ops.render.render(write_still=True)
-        if kind == "hull":
-            hull_on(False)
+    body, hull = frame(f, f == 0)
+    if f == 0:
+        write_static(body, hull)
+    with open(out / f"frame_{f:04d}.bin", "wb") as fh:
+        for a in [p for p, _, _ in body] + [n for _, n, _ in body] + [p for p, _, _ in hull]:
+            fh.write(a.tobytes())

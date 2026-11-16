@@ -37,12 +37,14 @@ python3 pipeline/regress.py
 
 - `sprites/<pokemon>/`: the finished GIFs (front, back, shinies, each with a 4x copy)
 - `models/<pokemon>/`: one config per sprite. The models themselves are local only.
-- `pipeline/`: the scripts. Each one prints its usage at the top.
+- `pipeline/`: the scripts. Each one prints its usage at the top. Blender poses the model (`bake.py`);
+  `pipeline/sprite/` (Rust) renders the passes on the GPU and draws the GIFs.
 
 ## Requirements
 
 - Blender: on `PATH`, at `SPRITE_BLENDER`, or the macOS app
 - Python 3 with numpy and Pillow
+- Rust (`cargo`; `build.py` compiles `pipeline/sprite/` on first use) and a GPU with Metal, Vulkan or DX12
 
 It sizes itself to the machine: one Blender per 4 GB of RAM (`SPRITE_BLENDER_SLOTS` overrides it).
 

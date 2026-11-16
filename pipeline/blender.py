@@ -1,5 +1,5 @@
-"""Blender under machine-wide slots (file locks in .blender_slots/), and the render pool with its cache
-(.render_cache/). One-off: python3 blender.py [--timeout 900] -- BLENDER_ARGS...
+"""Blender under machine-wide slots (file locks in .blender_slots/), and the bake pool with its cache
+(.bake_cache/). One-off: python3 blender.py [--timeout 900] -- BLENDER_ARGS...
 SPRITE_BLENDER: the Blender executable (default: `blender` on PATH, else the macOS app).
 SPRITE_BLENDER_SLOTS: Blender processes at once (default: 1 per 4 GB of RAM, at most one per core, 1-8)."""
 import fcntl
@@ -21,11 +21,11 @@ from pathlib import Path
 
 BLENDER = os.environ.get("SPRITE_BLENDER") or shutil.which("blender") or "/Applications/Blender.app/Contents/MacOS/Blender"
 HERE = Path(__file__).resolve().parent
-LOCKS, CACHE = HERE.parent / ".blender_slots", HERE.parent / ".render_cache"
+LOCKS, CACHE = HERE.parent / ".blender_slots", HERE.parent / ".bake_cache"
 MODEL_FILES = {".blend", ".png", ".tga", ".jpg", ".jpeg", ".exr", ".tif", ".tiff", ".bmp", ".webp", ".hdr"}
 RAM_GB = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / 2 ** 30
 SLOTS = int(os.environ.get("SPRITE_BLENDER_SLOTS") or max(1, min(8, os.cpu_count() or 1, int(RAM_GB // 4))))
-HANG, CACHE_GB = 180, 20
+HANG, CACHE_GB = 180, 10
 
 
 def acquire(count, label):
@@ -69,8 +69,8 @@ def run(args, timeout=900):
             f.close()
 
 
-def render_key(cfg, frames):
-    """hash of everything a render depends on"""
+def bake_key(cfg, frames):
+    """hash of everything a bake depends on"""
     h = hashlib.sha256()
     st, pm = cfg.get("style", {}), cfg.get("parts", {})
     used = {k: cfg.get(k) for k in ("render", "camera", "pose", "pose_params", "motion")}
@@ -84,7 +84,7 @@ def render_key(cfg, frames):
             if Path(f).suffix.lower() in MODEL_FILES:
                 s = os.stat(os.path.join(root, f))
                 h.update(f"{os.path.relpath(os.path.join(root, f), model_dir)}:{s.st_size}:{s.st_mtime_ns};".encode())
-    for f in ("render_sprite.py", "motion.py"):
+    for f in ("bake.py", "motion.py"):
         h.update((HERE / f).read_bytes())
     s = os.stat(BLENDER)
     h.update(f"{inspect.getsource(serve)}blender:{s.st_size}:{s.st_mtime_ns}".encode())
@@ -99,23 +99,23 @@ def link_tree(src, dst):
             os.link(f, dst / f.name)
 
 
-class RenderPool:
-    """SLOTS Blender workers (blender.py --serve); render() splits a loop's frames over them"""
+class BakePool:
+    """SLOTS Blender workers (blender.py --serve); bake() splits a loop's frames over them"""
 
     def __init__(self):
         self.procs, self.slots, self.next_id = None, [], 0
 
-    def render(self, cfg, out, cache=True):
-        """render the loop of cfg (a config dict, model path absolute) into out; 0 if from the cache"""
+    def bake(self, cfg, out, cache=True):
+        """bake the loop of cfg (a config dict, model path absolute) into out; 0 if from the cache"""
         out = Path(out)
         shutil.rmtree(out, ignore_errors=True)
         frames = list(range(cfg["motion"]["frames"]))
-        entry = CACHE / render_key(cfg, frames)
+        entry = CACHE / bake_key(cfg, frames)
         if cache and (entry / ".complete").exists():
             link_tree(entry, out)
             os.utime(entry / ".complete")
             return 0
-        self._render(cfg, out, frames)
+        self._bake(cfg, out, frames)
         if cache:
             tmp = CACHE / f".tmp-{os.getpid()}-{entry.name}"
             shutil.rmtree(tmp, ignore_errors=True)
@@ -139,9 +139,9 @@ class RenderPool:
         threading.Thread(target=lambda: ([lines.put(l) for l in proc.stdout], lines.put(None)), daemon=True).start()
         return proc, lines
 
-    def _render(self, cfg, out, frames):
+    def _bake(self, cfg, out, frames):
         if self.procs is None:
-            self.slots = acquire(SLOTS, f"render pool {cfg.get('name', '')}")
+            self.slots = acquire(SLOTS, f"bake pool {cfg.get('name', '')}")
             self.procs = [self._spawn() for _ in self.slots]
         out.mkdir(parents=True, exist_ok=True)
         n, errors = len(self.procs), []
@@ -166,10 +166,10 @@ class RenderPool:
                     if line.startswith(f"@@FAIL {rid}"):
                         return errors.append(line.split(" ", 2)[2].replace(" | ", "\n"))
                     log.append(line)
-                print(f"render worker {k} hung: restarting it", file=sys.stderr, flush=True)
+                print(f"bake worker {k} hung: restarting it", file=sys.stderr, flush=True)
                 proc.kill(); proc.wait()
                 self.procs[k] = self._spawn()
-            errors.append(f"render worker {k} hung 3 times")
+            errors.append(f"bake worker {k} hung 3 times")
 
         ts = [threading.Thread(target=one, args=(k, frames[k::n])) for k in range(n) if frames[k::n]]
         for t in ts:
@@ -192,9 +192,9 @@ class RenderPool:
 
 
 def serve():
-    """inside Blender: one job per stdin line, render_sprite.py on the freshly reopened model"""
+    """inside Blender: one job per stdin line, bake.py on the freshly reopened model"""
     import bpy
-    src = HERE / "render_sprite.py"
+    src = HERE / "bake.py"
     code = compile(src.read_text(), str(src), "exec")
     for line in sys.stdin:
         if not line.strip():
