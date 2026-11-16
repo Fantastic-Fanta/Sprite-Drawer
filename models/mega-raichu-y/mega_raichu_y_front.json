@@ -1,8 +1,6 @@
 {
   "name": "Mega Raichu Y",
   "model": "MegaRaichuY/MegaRaichuY_clip_shut.blend",
-  "reference": "reference/official_art.png",
-  "reference_source": "official Mega Dimension artwork + PokeAPI front sprite (randompokemonpicker CDN, id 10305)",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {

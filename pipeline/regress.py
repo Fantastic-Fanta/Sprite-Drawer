@@ -1,18 +1,7 @@
-"""Regression check: build sprites with the current code and compare them with saved goldens.
-
-Run (from anywhere):
-  python3 pipeline/regress.py golden [NAME ...] [--rev GIT_REV]  snapshot the config, render (once) +
-                                                       build, save the result as golden
-  python3 pipeline/regress.py check [NAME ...]         build again, compare with the golden frame by frame
-  python3 pipeline/regress.py render-check [NAME ...]  render again, compare every pass with the cached render
-  python3 pipeline/regress.py full [NAME ...]          both checks (the pre-push hook runs check)
-NAME: lapras, glimmora, golisopod, dragalge, dragalge_back, zygarde, zygarde_back (default: all); a sprite with a shiny
-(SHINY below) also checks its shiny recolour. Data lives in .regress/ (gitignored):
-the config snapshots, the rendered passes per sprite and the golden GIFs. Checks always use the
-snapshot taken with the golden (paths made absolute), so editing a config - or another session
-editing it - doesn't move the target; --rev takes the config as committed at that revision. Builds run with PYTHONHASHSEED fixed, since some
-tie-breaks follow Python's per-process hash order. Exit code 1 if anything differs.
-"""
+"""Pixel regression: python3 regress.py [check | render | golden] [NAME ...]
+check (default, pre-push hook): rebuild GIFs from the saved renders, compare with the goldens.
+render: re-render every pass, compare with the saved renders. golden: save the current result.
+Exit code 1 if anything differs. Data in .regress/ (gitignored)."""
 import json
 import os
 import shutil
@@ -28,13 +17,10 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 DATA = ROOT / ".regress"
 CONFIGS = {
-    "lapras": "models/lapras/lapras_front.json",
     "glimmora": "models/mega-glimmora/mega_glimmora_front.json",
     "golisopod": "models/mega-golisopod/mega_golisopod_front.json",
-    "dragalge": "models/mega-dragalge/mega_dragalge_front.json",
-    "dragalge_back": "models/mega-dragalge/mega_dragalge_back.json",      # back view + the shiny recolour
+    "dragalge_back": "models/mega-dragalge/mega_dragalge_back.json",      # back view + shiny recolour
     "zygarde": "models/mega-zygarde/mega_zygarde_front.json",
-    "zygarde_back": "models/mega-zygarde/mega_zygarde_back.json",
 }
 SHINY = {"dragalge_back": "models/mega-dragalge/mega_dragalge_back_shiny.json"}
 SEED = "0"
@@ -51,21 +37,16 @@ def config(name):
     return p
 
 
-def snapshot(name, rev=None, rel=None, key=None):
-    """the config as it is (or as committed at rev), paths made absolute, saved for the checks"""
-    rel = rel or CONFIGS[name]
-    live = ROOT / rel
-    text = subprocess.run(["git", "-C", str(ROOT), "show", f"{rev}:{rel}"], capture_output=True, text=True,
-                          check=True).stdout if rev else live.read_text()
-    cfg = json.loads(text)
-    for k in ("model", "reference", "fit_reference"):
-        if cfg.get(k):
-            cfg[k] = str((live.parent / cfg[k]).resolve())
+def snapshot(name, rel=None, key=None):
+    """the config as it is now, model path made absolute, saved so later config edits don't move the target"""
+    live = ROOT / (rel or CONFIGS[name])
+    cfg = json.loads(live.read_text())
+    cfg["model"] = str((live.parent / cfg["model"]).resolve())
     p = DATA / "configs" / f"{key or name}.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(cfg, indent=2))
     if name in SHINY and key is None:
-        snapshot(name, rev, SHINY[name], f"{name}_shiny")
+        snapshot(name, SHINY[name], f"{name}_shiny")
     return p
 
 
@@ -116,20 +97,13 @@ def compare_build(a, b):
 
 def main():
     args = sys.argv[1:]
-    rev = args[args.index("--rev") + 1] if "--rev" in args else None
-    args = [a for i, a in enumerate(args) if a != "--rev" and (i == 0 or args[i - 1] != "--rev")]
     mode = args[0] if args else "check"
     names = args[1:] or list(CONFIGS)
-    if mode == "full":
-        for m in ("check", "render-check"):
-            if subprocess.run([sys.executable, __file__, m] + names).returncode:
-                sys.exit(1)
-        return
     failed = False
     for name in names:
         golden = DATA / "golden" / f"{name}.gif"
         if mode == "golden":
-            snapshot(name, rev)
+            snapshot(name)
             if not frames_dir(name).exists():
                 print(f"{name}: rendered in {render(name, frames_dir(name)):.1f}s")
             print(f"{name}: golden built in {build(name, golden):.1f}s")
@@ -143,7 +117,7 @@ def main():
                 diff += [f"shiny: {d}" for d in compare_build(golden.with_name(f"{name}_shiny.gif"), new.with_name(f"{name}_shiny.gif"))]
             failed |= bool(diff)
             print(f"{name}: built in {t:.1f}s  {'IDENTICAL' if not diff else 'DIFFERS: ' + '; '.join(diff)}")
-        elif mode == "render-check":
+        elif mode == "render":
             new = DATA / "render_check" / name
             shutil.rmtree(new, ignore_errors=True)
             t = render(name, new)

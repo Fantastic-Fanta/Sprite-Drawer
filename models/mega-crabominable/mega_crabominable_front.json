@@ -1,8 +1,6 @@
 {
   "name": "Mega Crabominable",
   "model": "MegaCrabominable/MegaCrabominable.blend",
-  "reference": null,
-  "reference_source": "Pokemon HOME sprite + Legends Z-A official art of Mega Crabominable (reference/, from Pokepedia); pose set by eye to the HOME stance",
   "palette": {
     "outline": "#0f0e17",
     "parts": {

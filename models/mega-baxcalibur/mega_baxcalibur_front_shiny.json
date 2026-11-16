@@ -1,8 +1,6 @@
 {
   "name": "Mega Baxcalibur (shiny)",
   "model": "MegaBaxcalibur/MegaBaxcalibur.blend",
-  "reference": "reference/home_render.png",
-  "reference_source": "Pokemon HOME render (serebii.net/pokemonhome/pokemon/998-m.png) + official art (serebii.net/pokemon/art/998-m.png)",
   "palette": {
     "outline": "#100f0f",
     "parts": {
@@ -595,6 +593,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_baxcalibur_front.json"
+  }
 }

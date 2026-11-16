@@ -1,8 +1,6 @@
 {
   "name": "Mega Barbaracle",
   "model": "MegaBarbaracle/MegaBarbaracle_body.blend",
-  "reference": "reference/home.png",
-  "reference_source": "HOME render (rotomlabs home-sprites) + official Z-A artwork (rotomlabs official-artwork), in reference/",
   "palette": {
     "outline": "#0e1011",
     "parts": {

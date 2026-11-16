@@ -1,8 +1,6 @@
 {
   "name": "Mega Pyroar (back)",
   "model": "MegaPyroar/MegaPyroar.blend",
-  "reference": null,
-  "reference_source": "package.py: the front config (mega_pyroar_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
   "palette": {
     "outline": "#120f0e",
     "parts": {

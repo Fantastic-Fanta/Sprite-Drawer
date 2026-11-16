@@ -1,8 +1,6 @@
 {
   "name": "Mega Hawlucha",
   "model": "MegaHawlucha/MegaHawlucha.blend",
-  "reference": "reference/mega_official_art.jpg",
-  "reference_source": "Mega Hawlucha official art (pokemondb) for colours/proportions; stance from base Hawlucha HOME render + official art (arms spread wide, wings hanging), turned into a sumo crouch per user feedback",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {

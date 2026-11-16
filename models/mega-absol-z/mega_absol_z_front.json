@@ -1,8 +1,6 @@
 {
   "name": "Mega Absol Z",
   "model": "MegaAbsolZ/MegaAbsolZ.blend",
-  "reference": null,
-  "reference_source": "reference/home_sprite.png, reference/official_art.png (Pok\u00e9p\u00e9dia)",
   "palette": {
     "outline": "#0a1016",
     "parts": {

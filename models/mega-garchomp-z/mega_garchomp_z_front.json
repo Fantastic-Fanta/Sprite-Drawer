@@ -1,8 +1,6 @@
 {
   "name": "Mega Garchomp Z",
   "model": "MegaGarchompZ/MegaGarchompZ_idle.blend",
-  "reference": "reference/official_artwork.png",
-  "reference_source": "Sugimori official artwork (reference/official_artwork.png), dream-world art (reference/dream_world.png), Champions menu icon (reference/menu_icon.png): airborne, legs dangling, arm-blades spread",
   "palette": {
     "outline": "#0f0f14",
     "parts": {

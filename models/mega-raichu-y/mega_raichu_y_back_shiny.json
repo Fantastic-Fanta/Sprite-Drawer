@@ -1,8 +1,6 @@
 {
   "name": "Mega Raichu Y (shiny) (back)",
   "model": "MegaRaichuY/MegaRaichuY_clip_shut.blend",
-  "reference": "reference/official_art.png",
-  "reference_source": "package.py: the front config (mega_raichu_y_front.json) with the camera turned round (azimuth + 180) and looking down from 20 deg",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {
@@ -165,6 +163,5 @@
     "frame_ms": 20,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_raichu_y_front.json"
+  }
 }

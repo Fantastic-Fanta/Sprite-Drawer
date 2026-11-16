@@ -1,8 +1,6 @@
 {
   "name": "Mega Malamar (back)",
   "model": "MegaMalamar/MegaMalamar_anim.blend",
-  "reference": null,
-  "reference_source": "package.py: the front config (mega_malamar_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
   "palette": {
     "outline": "#0e0f17",
     "parts": {

@@ -1,8 +1,6 @@
 {
   "name": "Mega Darkrai",
   "model": "MegaDarkrai/MegaDarkrai_idle.blend",
-  "reference": "reference/mega_darkrai_lpza_art.png",
-  "reference_source": "Official Legends Z-A art (pokepedia.fr, M\u00e9ga-Darkrai-LPZA.png): faces right with the one visible eye (right eye) on show; shot from that side (azimuth 112) and mirrored so the sprite faces left.",
   "palette": {
     "outline": "#0f0f10",
     "parts": {

@@ -1,8 +1,6 @@
 {
   "name": "Mega Absol Z (shiny)",
   "model": "MegaAbsolZ/MegaAbsolZ.blend",
-  "reference": null,
-  "reference_source": "reference/home_sprite.png, reference/official_art.png (Pok\u00e9p\u00e9dia)",
   "palette": {
     "outline": "#0a1016",
     "parts": {
@@ -726,6 +724,5 @@
     "frame_anchor": "first",
     "despeckle": 2,
     "mirror": true
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_absol_z_front.json"
+  }
 }

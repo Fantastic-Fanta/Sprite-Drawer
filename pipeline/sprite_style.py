@@ -1,36 +1,6 @@
-"""The sprite look: render_sprite.py's passes -> palette pixel art.
-
-Flat palette colours, cel bands and inverted-hull lines. The lines are wherever the hull shows
-(render.hull), so where every line goes - silhouette and interior - is decided by the 3D model,
-with no tracing, painting or per-Pokemon line rules.
-
-Config (style section; every key but height / frame_ms is optional):
-  "height": 86, "frame_ms": 30   sprite height in px (frame 0), GIF frame time
-  "light": [x, y, z]             light direction in camera space (x right, y up, z to the viewer);
-                                 default LIGHT, from the upper left like the games' sprites
-  "bands": [lo, hi]              N.L below lo: one shade darker, above hi: one lighter
-                                 (default: frame 0's 25th / 70th percentile, fixed for the loop)
-  "flat_parts": ["red", ...]     parts that keep their texture shade (marks, gems)
-  "deep_parts": {"core": [10, 30, 70, 90]}   parts shaded up to two steps: N.L percentiles of that
-                                 part's own pixels in frame 0 (fixed for the loop) - below the 1st two
-                                 darker, below the 2nd one darker, above the 3rd one lighter, above
-                                 the 4th two lighter (shows the contours of a part with a long ramp)
-  "cover": 0.35                  a sprite pixel is line where the hull covers this much of it
-  "weak_cover": 0.12             ...and a 1-2 px gap in a line is filled where it covers this much
-  "ring": true                   outline right outside the body where the hull left a crack
-  "despeckle": 2                 fill islands of up to this many px of another shade, inside one
-                                 part, take the shade around them (see despeckle); default 0 = off
-  "fast_frames", "frame_anchor"  motion timing / pixel grid (make_gif.py, render_sprite.py)
-
-Per sprite pixel, from the full-size passes (color_, id_, data_, hull_ next to each other):
-  * the part is the palette part most of its render samples snap to (nearest palette shade,
-    or with parts.match "albedo" nearest parts.albedo texture colour), leaving out the samples
-    under the hull (they belong to the line); a sample of a material in parts.materials (id_
-    pass) only snaps to the parts its group allows ("purple|red"); its colour is the mean of those samples, snapped to
-    that part's shades - a pixel on a border takes one side's colour, never a blend
-  * the shade moves one step down / up by the light on the mean normal of those samples
-  * lines are the outline colour, never thinned or moved; bits of a part up to SLIVER px along a
-    line (texture colour reaching past the edge the line follows) take the colour around them
+"""The sprite look: render_sprite.py's passes -> palette pixel art (flat colours, cel bands, hull lines).
+style keys: height, frame_ms (required); light [x,y,z]; bands [lo,hi]; flat_parts; deep_parts;
+cover; weak_cover; ring; despeckle; fast_frames; frame_anchor; pixel_bob; mirror.
 """
 import json
 import os

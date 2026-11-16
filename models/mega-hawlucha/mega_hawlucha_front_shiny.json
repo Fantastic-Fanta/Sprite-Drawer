@@ -1,8 +1,6 @@
 {
   "name": "Mega Hawlucha (shiny)",
   "model": "MegaHawlucha/MegaHawlucha.blend",
-  "reference": "reference/mega_official_art.jpg",
-  "reference_source": "Mega Hawlucha official art (pokemondb) for colours/proportions; stance from base Hawlucha HOME render + official art (arms spread wide, wings hanging), turned into a sumo crouch per user feedback",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {
@@ -800,6 +798,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_hawlucha_front.json"
+  }
 }

@@ -1,8 +1,6 @@
 {
   "name": "Mega Scovillain",
   "model": "MegaScovillain/MegaScovillain.blend",
-  "reference": "reference/za_render.png",
-  "reference_source": "Legends Z-A menu render (serebii.net legendsz-a/pokemon/952-m.png), shiny in reference/za_render_shiny.png; v1's official artwork kept as reference/official.png",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {

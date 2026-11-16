@@ -1,12 +1,5 @@
-"""Shared motion maths: the expression helpers, the config's named motion functions, and the
-whole-pixel sprite offsets (style.pixel_bob). Used by render_sprite.py (inside Blender) and
-sprite_style.py, so the rendered sub-pixel part of a float and the whole-pixel shift of the
-finished sprite always come from the same formula.
-
-motion.functions {name: expr in t}: named functions of the loop position t (0..1), callable from
-every pose expression and from each other (e.g. "FY": "hover(t) + lift(t)").
-style.pixel_bob {"y": expr, "x": expr}: whole-pixel shift of each finished sprite (+y = up,
-+x = right), rounded per frame; the pose renders the leftover fraction (e.g. FY - round(FY)).
+"""Motion maths shared by render_sprite.py and sprite_style.py: expression helpers, motion.functions
+(named functions of t, 0..1), style.pixel_bob (whole-pixel shift per frame).
 """
 import math
 

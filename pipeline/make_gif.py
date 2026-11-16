@@ -1,18 +1,6 @@
-"""Make a sprite GIF: from render_sprite.py's frames (sprite_style.py's look), or a shiny from a
-finished one.
-
-Run:  python3 make_gif.py CONFIG.json FRAMES_DIR out.gif [--scale 4] [--first-only out.png]
-      python3 make_gif.py --shiny NORMAL.json SHINY.json normal.gif shiny.gif [--scale 4]
-
---scale N also writes out_Nx.gif, enlarged with hard pixel edges.
---first-only writes just frame 0 as a PNG (quick checks).
-Exit code 1 if a frame touches the render's edge (the model is cut off).
-
---shiny makes the shiny the way Showdown's are made: the finished normal sprite, recoloured. Every
-pixel keeps its part and shade index; only the colour changes, from the normal config's palette
-to the shiny config's (make_shiny.py writes SHINY.json), so the shiny has exactly the normal
-sprite's shapes, lines and motion. Fails if the normal sprite has a colour outside its palette or
-two normal colours would map onto one shiny colour.
+"""python3 make_gif.py CONFIG.json FRAMES_DIR out.gif [--scale 4] [--first-only out.png]
+python3 make_gif.py --shiny NORMAL.json SHINY.json normal.gif shiny.gif [--scale 4]
+--shiny recolours the finished normal GIF palette to palette. Exit 1 if the model touches the render edge.
 """
 import json
 import sys

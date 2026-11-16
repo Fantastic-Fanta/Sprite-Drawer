@@ -1,8 +1,6 @@
 {
   "name": "Mega Glimmora (back) (shiny)",
   "model": "MegaGlimmora/MegaGlimmora.blend",
-  "reference": null,
-  "reference_source": "no Mega back sprite on Showdown: camera fitted to the silhouette of Showdown's normal Glimmora back sprite (sprites/ani-back/glimmora.gif); size = front height x 87/82 (normal form's back/front)",
   "palette": {
     "outline": "#191b27",
     "parts": {
@@ -462,56 +460,5 @@
         90
       ]
     }
-  },
-  "fit": {
-    "AZIMUTH": [
-      15,
-      149.47,
-      289.47
-    ],
-    "ELEVATION": [
-      8,
-      -30,
-      50
-    ]
-  },
-  "pose_params_previous": {
-    "AZIMUTH": 219.47,
-    "ELEVATION": 15.0,
-    "FOV": 24.09,
-    "YAW": 15.37,
-    "PITCH": 24.3,
-    "ROLL": 24.99,
-    "PETAL_SPREAD": 0,
-    "PETAL_SWAY": 3,
-    "BOB": 0,
-    "PETAL_SCALE": 1.0,
-    "PETAL_OUT": 0.18,
-    "CROWN_SWEEP": 0.0,
-    "CS_U": 0.0,
-    "CS_D": 0.0,
-    "CS_LA": 0.0,
-    "CS_RA": 0.0,
-    "CS_LB": 0.0,
-    "CS_RB": 0.0,
-    "SPIN_DEG": 720,
-    "SPIN_T0": 0.57778,
-    "SPIN_LEN": 0.25556,
-    "SPIN_DELAY": 0.03333,
-    "WIND_DEG": 20,
-    "WIND_LEN": 0.07778,
-    "OVER_DEG": 16,
-    "OVER_T0": 0.81111,
-    "OVER_LEN": 0.1,
-    "LAG_PH": 0.2,
-    "RIPPLE": 0.02,
-    "FLOAT_PH": 1.6958,
-    "BREATH_OPEN": 15,
-    "BREATH_SCALE": 0.08,
-    "FLOAT_PX": 5.0393,
-    "PX_U": 0.0422
-  },
-  "fit_reference": "reference/base_back_sil.png",
-  "fit_silhouette_only": true,
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to glimmora_front.json"
+  }
 }

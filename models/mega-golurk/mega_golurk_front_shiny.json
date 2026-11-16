@@ -1,8 +1,6 @@
 {
   "name": "Mega Golurk (shiny)",
   "model": "MegaGolurk/MegaGolurk_sprite.blend",
-  "reference": "reference/home_render.png",
-  "reference_source": "HOME render (rotomlabs) + Z-A official art (Pok\u00e9pedia), in reference/",
   "palette": {
     "outline": "#160a19",
     "parts": {
@@ -534,6 +532,5 @@
     "flat_parts": [
       "mark"
     ]
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_golurk_front.json"
+  }
 }

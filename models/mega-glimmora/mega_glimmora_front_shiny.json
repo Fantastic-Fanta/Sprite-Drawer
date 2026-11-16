@@ -1,8 +1,6 @@
 {
   "name": "Mega Glimmora (shiny)",
   "model": "MegaGlimmora/MegaGlimmora.blend",
-  "reference": null,
-  "reference_source": "https://play.pokemonshowdown.com/sprites/ani/glimmora-mega.gif (a single still render, not an animated sprite) snapped to the palette by make_reference.py; style conventions from sprites/ani/glimmora.gif",
   "palette": {
     "outline": "#191b27",
     "parts": {
@@ -462,89 +460,5 @@
         90
       ]
     }
-  },
-  "fit": {
-    "AZIMUTH": [
-      4,
-      29.78,
-      59.78
-    ],
-    "ELEVATION": [
-      4,
-      -45,
-      -21.490000000000002
-    ],
-    "FOV": [
-      4,
-      7.5,
-      37.5
-    ],
-    "YAW": [
-      4,
-      -2.3599999999999994,
-      27.64
-    ],
-    "PITCH": [
-      4,
-      14.89,
-      40
-    ],
-    "ROLL": [
-      4,
-      13.239999999999998,
-      40
-    ],
-    "CROWN_SWEEP": [
-      10,
-      -50,
-      40
-    ],
-    "CS_U": [
-      10,
-      -40,
-      40
-    ],
-    "CS_D": [
-      10,
-      -40,
-      40
-    ],
-    "CS_LA": [
-      10,
-      -40,
-      40
-    ],
-    "CS_RA": [
-      10,
-      -40,
-      40
-    ],
-    "CS_LB": [
-      10,
-      -40,
-      40
-    ],
-    "CS_RB": [
-      10,
-      -40,
-      40
-    ]
-  },
-  "fit_weights": {
-    "core": 0.5
-  },
-  "pose_params_previous": {
-    "AZIMUTH": 44.78,
-    "ELEVATION": -36.49,
-    "FOV": 22.5,
-    "YAW": 12.64,
-    "PITCH": 29.89,
-    "ROLL": 28.24,
-    "PETAL_SPREAD": 0,
-    "PETAL_SWAY": 3,
-    "BOB": 0,
-    "PETAL_SCALE": 1.0,
-    "PETAL_OUT": 0.18
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to glimmora_front.json"
+  }
 }

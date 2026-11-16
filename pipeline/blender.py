@@ -1,32 +1,9 @@
-"""Everything about running Blender: a machine-wide cap on Blender processes, the render pool
-with its cache, and the render worker that runs inside Blender.
-
-  python3 pipeline/blender.py render CONFIG.json OUT_DIR [--jobs 4] [--frames 0,30,60] [--no-cache]
-      render the loop (or those frames) with several Blender processes at once; same output as
-      render_sprite.py on its own, ~jobs x faster
-  python3 pipeline/blender.py [--timeout 900] -- [Blender args...]
-      a one-off Blender under a slot (killed, with anything it started, on the timeout, on Ctrl-C,
-      or when this script is killed), e.g.  -- -b MODEL.blend --python look.py -- CONFIG.json out/look
-  python3 pipeline/blender.py --status     what holds the slots, and any background Blenders
-  python3 pipeline/blender.py --reap       kill stray background Blenders (-b, parent gone)
-
-Slots: SPRITE_BLENDER_SLOTS (default 4, the render pool's size, which fills a 16 GB Mac). Every
-Blender process holds one: a RenderPool one per worker, a one-off run one. A run without a free
-slot waits instead of piling more Blenders onto the machine. Slots are file locks in
-.blender_slots/: the system drops a lock the moment its process dies, so a killed run never leaves
-a slot taken.
-
-Render cache (SPRITE_RENDER_CACHE: a folder, default .render_cache/; 0 = off): a render whose
-inputs are unchanged - the config's render / camera / pose / motion / parts materials,
-style.height and fast_frames, the .blend and textures next to the model, the render code, Blender,
-the output format, the frames - is hard-linked from the cache instead of rendered again.
-SPRITE_RENDER_CACHE_GB caps its size (default 20; oldest first). A worker silent for
-SPRITE_RENDER_HANG_S seconds (default 180) is hung: killed, replaced, its frames rendered again.
-
-Inside Blender (blender.py -- --serve, started by RenderPool): reads one job per line on stdin,
-{"id", "model": .blend, "config", "out", "frames": "0,4,8"}, runs render_sprite.py on the freshly
-reopened .blend (Blender starts and compiles its shaders once per worker, not once per sprite),
-and answers "@@DONE id" or "@@FAIL id <error>".
+"""Blender runner: machine-wide slots (file locks in .blender_slots/, SPRITE_BLENDER_SLOTS, default 4),
+the render pool and its cache (.render_cache/, SPRITE_RENDER_CACHE=0 turns it off).
+  python3 blender.py render CONFIG.json OUT_DIR [--jobs 4] [--frames 0,30,60] [--no-cache]
+  python3 blender.py [--timeout 900] -- BLENDER_ARGS...     one-off Blender under a slot
+  python3 blender.py --status | --reap                       show slots / kill stray Blenders
+Inside Blender, "-- --serve" is the pool's worker: one JSON job per stdin line.
 """
 import fcntl
 import hashlib

@@ -1,8 +1,6 @@
 {
   "name": "Mega Malamar",
   "model": "MegaMalamar/MegaMalamar_anim.blend",
-  "reference": null,
-  "reference_source": "reference/official_render.png (TPC render via dittobase) + reference/battle_alakazam.jpg (in-game)",
   "palette": {
     "outline": "#0e0f17",
     "parts": {

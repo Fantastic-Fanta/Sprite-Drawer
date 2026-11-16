@@ -1,8 +1,6 @@
 {
   "name": "Mega Magearna (back)",
   "model": "MegaMagearna/MegaMagearna.blend",
-  "reference": "reference/801-m.png",
-  "reference_source": "package.py: the front config (mega_magearna_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {

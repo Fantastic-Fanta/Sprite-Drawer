@@ -1,8 +1,6 @@
 {
   "name": "Mega Baxcalibur (shiny) (back)",
   "model": "MegaBaxcalibur/MegaBaxcalibur.blend",
-  "reference": "reference/home_render.png",
-  "reference_source": "package.py: the front config (mega_baxcalibur_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
   "palette": {
     "outline": "#100f0f",
     "parts": {
@@ -595,6 +593,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_baxcalibur_front.json"
+  }
 }

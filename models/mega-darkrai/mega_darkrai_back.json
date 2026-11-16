@@ -1,8 +1,6 @@
 {
   "name": "Mega Darkrai (back)",
   "model": "MegaDarkrai/MegaDarkrai_idle.blend",
-  "reference": "reference/mega_darkrai_lpza_art.png",
-  "reference_source": "package.py: the front config (mega_darkrai_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
   "palette": {
     "outline": "#0f0f10",
     "parts": {

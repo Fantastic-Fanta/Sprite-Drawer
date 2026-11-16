@@ -1,8 +1,6 @@
 {
   "name": "Mega Staraptor",
   "model": "MegaStaraptor/MegaStaraptor_open.blend",
-  "reference": "reference/home_sprite.png",
-  "reference_source": "Pokepedia: HOME sprite (home_sprite.png) and Legends Z-A official art (official_art.png); flying, wings raised in a V, talons forward",
   "palette": {
     "outline": "#110f0d",
     "parts": {

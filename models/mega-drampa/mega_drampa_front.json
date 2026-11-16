@@ -1,8 +1,6 @@
 {
   "name": "Mega Drampa",
   "model": "MegaDrampa/MegaDrampa.blend",
-  "reference": "reference/official_art.png",
-  "reference_source": "official Legends Z-A art (pokebip.com mega-draieul.png)",
   "palette": {
     "outline": "#0d1013",
     "parts": {

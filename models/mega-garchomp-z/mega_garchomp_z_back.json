@@ -1,8 +1,6 @@
 {
   "name": "Mega Garchomp Z (back)",
   "model": "MegaGarchompZ/MegaGarchompZ_idle.blend",
-  "reference": "reference/official_artwork.png",
-  "reference_source": "package.py: the front config (mega_garchomp_z_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
   "palette": {
     "outline": "#0f0f14",
     "parts": {

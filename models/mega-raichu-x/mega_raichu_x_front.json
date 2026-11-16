@@ -1,8 +1,6 @@
 {
   "name": "Mega Raichu X",
   "model": "MegaRaichuX/MegaRaichuX_anim.blend",
-  "reference": null,
-  "reference_source": "HOME render + Legends Z-A official art (pokepedia.fr), reference/; motion: the game's battlewait from the user's Z-A pack",
   "palette": {
     "outline": "#120f0d",
     "parts": {

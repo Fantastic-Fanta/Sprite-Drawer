@@ -1,8 +1,6 @@
 {
   "name": "Mega Scolipede (shiny)",
   "model": "MegaScolipede/MegaScolipede.blend",
-  "reference": null,
-  "reference_source": "official Mega Scolipede art (reference/mega_scolipede_official_art.jpg); v2 pose: crouched, neck in an S, head aimed to strike",
   "palette": {
     "outline": "#0e100f",
     "parts": {
@@ -492,6 +490,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_scolipede_front.json"
+  }
 }

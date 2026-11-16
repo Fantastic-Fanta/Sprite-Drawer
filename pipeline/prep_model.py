@@ -1,17 +1,6 @@
-"""Model zip (or folder) -> a ready-to-pose sprite folder: no LLM needed for any of it.
-
-Run:  python3 pipeline/prep_model.py MODEL.zip|DIR [--slug mega-greninja] [--height 200] [--force]
-Makes models/SLUG/ in the repo:
-  models/SLUG/<Model>/       the unzipped rip and its .blend (gitignored)
-  models/SLUG/prep/          rest_front/side/top.png (Workbench views of the bind pose), scene.json
-  models/SLUG/RIG.md         what the posing step needs: size, facing, bone tree with each bone's own
-                             axes (for "A:x,y,z" bends), foot candidates for motion.plant, materials -> parts
-  models/SLUG/SLUG_front.json the draft config: palette and parts from the texture colours actually
-                             on the model, camera framed to its size, style.height, hull 0.95,
-                             despeckle 2, a 120-frame loop; pose empty (the bind pose), motion to write
-Then: pose and animate it (the new-sprite skill), then package.py builds back, shinies and GIFs.
-Slug: from the zip name ("... #0658 Mega Greninja.zip" -> mega-greninja). Exit code 2 = the model
-can't be used as it is (no armature, no importable file, missing textures): see the message.
+"""python3 prep_model.py MODEL.zip|DIR [--slug NAME] [--height 200] [--force]
+Makes models/SLUG/: the unzipped model, RIG.md (bones, axes, feet, materials), prep/rest_*.png and a
+draft SLUG_front.json (palette from the textures, camera framed, bind pose). Exit 2: model unusable.
 """
 import json
 import math
@@ -226,8 +215,6 @@ def main():
     cfg = {
         "name": slug.replace("-", " ").title(),
         "model": str(blend.relative_to(base)),
-        "reference": None,
-        "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
         "palette": {"outline": outline, "parts": {n: p["shades"] for n, p in parts.items()}},
         "parts": {"materials": {m: "|".join(ps) for m, ps in by_mat.items()} if len(by_mat) > 1 else {},
                   "default_material": max(info["materials"], key=lambda m: info["materials"][m]["area"]),

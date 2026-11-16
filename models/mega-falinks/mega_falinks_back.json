@@ -1,8 +1,6 @@
 {
   "name": "Mega Falinks (back)",
   "model": "MegaFalinks/MegaFalinks.blend",
-  "reference": null,
-  "reference_source": "package.py: the front config (mega_falinks_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
   "palette": {
     "outline": "#100f0e",
     "parts": {

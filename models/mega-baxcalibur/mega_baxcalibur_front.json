@@ -1,8 +1,6 @@
 {
   "name": "Mega Baxcalibur",
   "model": "MegaBaxcalibur/MegaBaxcalibur.blend",
-  "reference": "reference/home_render.png",
-  "reference_source": "Pokemon HOME render (serebii.net/pokemonhome/pokemon/998-m.png) + official art (serebii.net/pokemon/art/998-m.png)",
   "palette": {
     "outline": "#100f0f",
     "parts": {

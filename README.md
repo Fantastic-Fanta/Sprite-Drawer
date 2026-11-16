@@ -1,39 +1,19 @@
 # Sprite-Drawer
 
-Animated pixel sprites from 3D Pokémon models: flat palette colours, cel bands, and lines from an
-inverted hull, so the 3D model decides where every line goes.
+Animated pixel sprites from 3D Pokémon models (palette colours, cel bands, inverted-hull lines).
 
-```
-sprites/<pokemon>/   finished GIFs: <name>_front, _back, _front_shiny, _back_shiny, each with a _4x copy
-models/<pokemon>/    the configs (palette, pose, motion, camera); the ripped model sits here locally
-pipeline/            the scripts (see pipeline/SPRITE_PIPELINE.md)
-```
+- `sprites/<pokemon>/`: the finished GIFs
+- `models/<pokemon>/`: the configs. The models themselves are local only.
+- `pipeline/`: the scripts. Each one prints its usage at the top.
 
-## Requirements
-
-- Blender at `/Applications/Blender.app`
-- Python 3 with `numpy` and `Pillow`
-- The models themselves: they aren't in this repo
-
-## Build
+Needs Blender at `/Applications/Blender.app` and Python 3 with numpy and Pillow.
 
 ```bash
-python3 pipeline/build.py                         # every Pokémon
-python3 pipeline/build.py mega-absol-z            # one (its models/ folder name)
-python3 pipeline/build.py --publish mega-absol-z  # copy the reviewed GIFs from out/ into sprites/
+python3 pipeline/build.py [POKEMON]            # build into out/<pokemon>/ (all Pokémon if none named)
+python3 pipeline/build.py --publish POKEMON    # copy the approved GIFs into sprites/
+python3 pipeline/regress.py                    # pixel regression; the pre-push hook runs it
 ```
 
-`build.py` renders and builds the front and back, their shinies and the 4x copies into
-`out/<pokemon>/`. Renders are cached, so rebuilding after a style change skips Blender.
-
-## Tests
-
-```bash
-python3 pipeline/regress.py        # rebuild the test sprites and compare every pixel (~20 s)
-python3 pipeline/regress.py full   # also re-render them in Blender (~3 min)
-```
-
-A pre-push hook (`.githooks/`) runs the first whenever a push changes `pipeline/`. Turn it on in a
-fresh clone with `git config core.hooksPath .githooks`.
+In a fresh clone, turn the hook on with `git config core.hooksPath .githooks`.
 
 Fan project, not affiliated with Nintendo, Game Freak or The Pokémon Company.

@@ -1,8 +1,6 @@
 {
   "name": "Mega Chesnaught",
   "model": "MegaChesnaught/MegaChesnaught_anim.blend",
-  "reference": null,
-  "reference_source": "Game idle from the Legends Z-A animation pack (pack/source/Chesnaught.glb); HOME / official art in reference/ for colours",
   "palette": {
     "outline": "#150e08",
     "parts": {

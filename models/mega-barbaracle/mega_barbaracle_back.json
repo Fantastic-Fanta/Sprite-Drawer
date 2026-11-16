@@ -1,8 +1,6 @@
 {
   "name": "Mega Barbaracle (back)",
   "model": "MegaBarbaracle/MegaBarbaracle_body.blend",
-  "reference": "reference/home.png",
-  "reference_source": "package.py: the front config (mega_barbaracle_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
   "palette": {
     "outline": "#0e1011",
     "parts": {

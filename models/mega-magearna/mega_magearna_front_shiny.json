@@ -1,8 +1,6 @@
 {
   "name": "Mega Magearna (shiny)",
   "model": "MegaMagearna/MegaMagearna.blend",
-  "reference": "reference/801-m.png",
-  "reference_source": "Official Sugimori art (serebii 801-m.png; pokemondb magearna-mega_art.jpg)",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {
@@ -421,6 +419,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_magearna_front.json"
+  }
 }

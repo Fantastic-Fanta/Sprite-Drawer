@@ -1,8 +1,6 @@
 {
   "name": "Mega Zeraora (back)",
   "model": "MegaZeraora/MegaZeraora_anim.blend",
-  "reference": "reference/home.png",
-  "reference_source": "package.py: the front config (mega_zeraora_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
   "palette": {
     "outline": "#0f100f",
     "parts": {

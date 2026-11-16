@@ -1,8 +1,6 @@
 {
   "name": "Mega Darkrai (shiny) (back)",
   "model": "MegaDarkrai/MegaDarkrai_idle.blend",
-  "reference": "reference/mega_darkrai_lpza_art.png",
-  "reference_source": "package.py: the front config (mega_darkrai_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
   "palette": {
     "outline": "#0f0f10",
     "parts": {
@@ -104,6 +102,5 @@
     "frame_anchor": "first",
     "despeckle": 2,
     "mirror": true
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_darkrai_front.json"
+  }
 }

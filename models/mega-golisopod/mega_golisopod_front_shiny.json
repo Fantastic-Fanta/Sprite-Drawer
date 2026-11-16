@@ -1,10 +1,6 @@
 {
   "name": "Mega Golisopod (shiny)",
   "model": "MegaGolisopod/MegaGolisopod.blend",
-  "reference": null,
-  "reference_source": "no Mega Golisopod sprite on Showdown: camera fitted to the shape of Showdown's normal Golisopod (sprites/ani/golisopod.gif); palette from the Mega's own textures with Showdown's conventions",
-  "fit_reference": "reference/showdown_base_front.png",
-  "fit_silhouette_only": true,
   "palette": {
     "outline": "#24292e",
     "parts": {
@@ -186,53 +182,5 @@
       ]
     ],
     "frame_anchor": "first"
-  },
-  "fit": {
-    "AZIMUTH": [
-      8,
-      15,
-      60
-    ],
-    "ELEVATION": [
-      5,
-      -15,
-      15
-    ],
-    "SH_DOWN": [
-      12,
-      0,
-      85
-    ],
-    "SH_FWD": [
-      12,
-      -30,
-      60
-    ],
-    "EL_DOWN": [
-      12,
-      -20,
-      90
-    ],
-    "EL_FWD": [
-      12,
-      -30,
-      70
-    ]
-  },
-  "pose_params_previous": {
-    "AZIMUTH": 37.62,
-    "ELEVATION": -7.39,
-    "FOV": 23.16,
-    "BREATH": 1.2,
-    "FOLLOW": 1.5,
-    "ARM": 1.1,
-    "LIFT": 10,
-    "SNAP": 30,
-    "FLEX": 8,
-    "SH_DOWN": 45,
-    "SH_FWD": 10,
-    "EL_DOWN": 30,
-    "EL_FWD": 30
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to golisopod_front.json"
+  }
 }

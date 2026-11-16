@@ -1,8 +1,6 @@
 {
   "name": "Mega Baxcalibur (back)",
   "model": "MegaBaxcalibur/MegaBaxcalibur.blend",
-  "reference": "reference/home_render.png",
-  "reference_source": "package.py: the front config (mega_baxcalibur_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
   "palette": {
     "outline": "#100f0f",
     "parts": {

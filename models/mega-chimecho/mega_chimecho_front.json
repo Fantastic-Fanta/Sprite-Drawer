@@ -1,8 +1,6 @@
 {
   "name": "Mega Chimecho",
   "model": "MegaChimecho/MegaChimecho.blend",
-  "reference": null,
-  "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
   "palette": {
     "outline": "#1f060a",
     "parts": {

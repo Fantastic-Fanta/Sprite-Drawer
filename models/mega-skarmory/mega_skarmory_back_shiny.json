@@ -1,8 +1,6 @@
 {
   "name": "Mega Skarmory (shiny) (back)",
   "model": "MegaSkarmory/MegaSkarmory.blend",
-  "reference": "reference/home_227-m.png",
-  "reference_source": "package.py: the front config (mega_skarmory_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
   "palette": {
     "outline": "#0a1018",
     "parts": {
@@ -508,6 +506,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_skarmory_front.json Hand fix (mega-skarmory-model/scratch fix_shiny, see report): yellow -> silver #bdbbae and navy -> olive #645e47 from the _rare_ textures via keep_steps(); blades -> green, muted from the texture's #04c400 to #3aa83a."
+  }
 }

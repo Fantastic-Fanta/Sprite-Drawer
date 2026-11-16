@@ -1,8 +1,6 @@
 {
   "name": "Mega Skarmory",
   "model": "MegaSkarmory/MegaSkarmory.blend",
-  "reference": "reference/home_227-m.png",
-  "reference_source": "Serebii: Pokemon HOME render (reference/home_227-m.png) and Legends Z-A image (reference/za_art_227-m.png); airborne, wings up in a V, legs trailing",
   "palette": {
     "outline": "#0a1018",
     "parts": {

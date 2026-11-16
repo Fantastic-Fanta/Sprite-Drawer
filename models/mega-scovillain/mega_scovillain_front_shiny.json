@@ -1,8 +1,6 @@
 {
   "name": "Mega Scovillain (shiny)",
   "model": "MegaScovillain/MegaScovillain.blend",
-  "reference": "reference/za_render.png",
-  "reference_source": "Legends Z-A menu render (serebii.net legendsz-a/pokemon/952-m.png), shiny in reference/za_render_shiny.png; v1's official artwork kept as reference/official.png",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {
@@ -694,6 +692,5 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_scovillain_front.json"
+  }
 }

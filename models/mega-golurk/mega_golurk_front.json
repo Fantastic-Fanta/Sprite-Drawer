@@ -1,8 +1,6 @@
 {
   "name": "Mega Golurk",
   "model": "MegaGolurk/MegaGolurk_sprite.blend",
-  "reference": "reference/home_render.png",
-  "reference_source": "HOME render (rotomlabs) + Z-A official art (Pok\u00e9pedia), in reference/",
   "palette": {
     "outline": "#160a19",
     "parts": {

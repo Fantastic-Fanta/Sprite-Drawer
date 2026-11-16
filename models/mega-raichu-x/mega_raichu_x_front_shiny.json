@@ -1,8 +1,6 @@
 {
   "name": "Mega Raichu X (shiny)",
   "model": "MegaRaichuX/MegaRaichuX_anim.blend",
-  "reference": null,
-  "reference_source": "HOME render + Legends Z-A official art (pokepedia.fr), reference/; motion: the game's battlewait from the user's Z-A pack",
   "palette": {
     "outline": "#120f0d",
     "parts": {
@@ -136,6 +134,5 @@
     "frame_ms": 20,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_raichu_x_front.json"
+  }
 }

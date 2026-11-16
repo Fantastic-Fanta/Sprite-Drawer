@@ -1,8 +1,6 @@
 {
   "name": "Mega Lucario Z",
   "model": "MegaLucarioZ/MegaLucarioZ_idle.blend",
-  "reference": null,
-  "reference_source": "the game's own idle (battlewait01_loop) from the user's Mega Lucario Z pack, played as is; camera from the left-front per the skill",
   "palette": {
     "outline": "#0f0f11",
     "parts": {

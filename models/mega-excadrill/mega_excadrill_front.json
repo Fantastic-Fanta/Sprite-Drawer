@@ -1,8 +1,6 @@
 {
   "name": "Mega Excadrill",
   "model": "MegaExcadrill/MegaExcadrill_idle.blend",
-  "reference": null,
-  "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
   "palette": {
     "outline": "#0f0f0f",
     "parts": {
@@ -105,6 +103,5 @@
     "frame_ms": 40,
     "frame_anchor": "first",
     "despeckle": 2
-  },
-  "model_note": "pm0530_51_00_drill_mesh (the drill-form example) is hidden in MegaExcadrill_idle.blend by hide_drill.py: the sprite is only the Pokemon (user, 2026-11-15)"
+  }
 }

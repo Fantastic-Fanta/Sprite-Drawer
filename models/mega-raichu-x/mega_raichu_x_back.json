@@ -1,8 +1,6 @@
 {
   "name": "Mega Raichu X (back)",
   "model": "MegaRaichuX/MegaRaichuX_anim.blend",
-  "reference": null,
-  "reference_source": "package.py: the front config (mega_raichu_x_front.json) with the camera turned round (azimuth + 180) and looking down from 20 deg",
   "palette": {
     "outline": "#120f0d",
     "parts": {

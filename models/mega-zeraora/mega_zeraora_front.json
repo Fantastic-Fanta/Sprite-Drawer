@@ -1,8 +1,6 @@
 {
   "name": "Mega Zeraora",
   "model": "MegaZeraora/MegaZeraora_anim.blend",
-  "reference": "reference/home.png",
-  "reference_source": "Pokemon HOME render (pokepedia.fr Sprite_0807_Mega_HOME.png); LPZA official art in reference/art.png",
   "palette": {
     "outline": "#0f100f",
     "parts": {

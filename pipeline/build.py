@@ -1,15 +1,6 @@
-"""Build sprites: python3 pipeline/build.py [POKEMON | CONFIG.json ...] [--out DIR] [--keep-frames]
-                     python3 pipeline/build.py --publish POKEMON [POKEMON ...]
-
-Build: every models/<pokemon>/ (no arguments), the named Pokemon (models/ folder names, e.g.
-mega-absol-z), or single configs. Each sprite config (*_front.json, *_back.json) is rendered,
-built (make_gif.py, quality gate included) with its 4x copy, and recoloured into its shiny when
-NAME_shiny.json sits next to it (make_gif.py --shiny). Output: out/<pokemon>/NAME(_shiny)(_4x).gif, or
-straight into DIR with --out. The next sprite renders (Blender, mostly GPU) while the previous one
-builds (CPU). Prints a line per step; exit code 1 if any step fails (the others still run).
-
-Publish: once the GIFs in out/<pokemon>/ are approved, copy them into sprites/<pokemon>/ as they
-are (no rebuild, so what was reviewed is what lands).
+"""python3 build.py [POKEMON | CONFIG.json ...] [--out DIR] [--keep-frames]   -> out/<pokemon>/
+python3 build.py --publish POKEMON ...                                    out/<pokemon>/ -> sprites/<pokemon>/
+Renders each *_front / *_back config, makes its GIF + 4x copy, and its shiny from NAME_shiny.json.
 """
 import queue
 import shutil

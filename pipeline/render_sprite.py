@@ -1,15 +1,6 @@
-"""Render a posed model as frame sequences for the sprite pipeline.
-
-Run:
-  Blender -b MODEL.blend --python render_sprite.py -- CONFIG.json OUT_DIR [--frames 0:60 | 0,5,9]
-(blender.py runs several of these at once, one slice of the loop each)
-Writes these images per frame (see SPRITE_PIPELINE.md), read by sprite_style.py:
-  color_NNNN  flat texture colours (Workbench), transparent background
-  id_NNNN     which material group each pixel shows (only with parts.materials)
-  data_NNNN   camera-space normal in R/G (EEVEE), for the shade bands
-  hull_NNNN   where the inverted hull shows, i.e. the lines
-Everything model-specific (bones, camera, material groups) comes from CONFIG.json.
-Other scripts (fit_pose.py) exec this file with --setup-only to reuse the scene setup.
+"""Blender -b MODEL.blend --python render_sprite.py -- CONFIG.json OUT_DIR [--frames 0:60 | 0,5,9] [--setup-only]
+Writes per frame: color_ (flat texture), id_ (material group), data_ (camera-space normal), hull_ (lines).
+Normally run through blender.py.
 """
 import bpy, sys, math, json, os
 from pathlib import Path
@@ -26,7 +17,7 @@ cfg = json.loads(Path(args[0]).read_text())
 out_dir = args[1]
 setup_only = "--setup-only" in args
 
-P = dict(cfg["pose_params"])          # fit_pose.py updates this dict in place
+P = dict(cfg["pose_params"])
 FRAMES = cfg["motion"]["frames"]
 CAM = cfg["camera"]
 
@@ -43,7 +34,7 @@ for o in scene.objects:
         o.hide_render = True
 
 # --- Texture swap (render.texture_swap {"name fragment": "new file"}): e.g. the shiny textures,
-# same UV layout as the normal ones (make_shiny.py writes this)
+# same UV layout as the normal ones (make_configs.py writes this)
 for img in bpy.data.images:
     for frag, new in cfg["render"].get("texture_swap", {}).items():
         if frag in img.filepath or frag in img.name:
