@@ -85,8 +85,7 @@
   "pose": [],
   "motion": {
     "frames": 139,
-    "clip": "pm0445_52_00.001|pm0445_52_00|pm0445_52_00_20001_battlewait01_loop",
-    "note": "the game's own idle (battlewait01_loop, 251 frames at 60 fps = 250 steps = 4.17 s) from the user's pack, moved onto the textured model: a levitating land shark holding itself up in the air, arm-blades spread and making small balancing strokes, tail swaying behind. 139 frames x 30 ms = 4.17 s, game speed (1.8 game frames per sprite frame, sub-frame sampled); no config pose on top"
+    "clip": "pm0445_52_00.001|pm0445_52_00|pm0445_52_00_20001_battlewait01_loop"
   },
   "style": {
     "height": 200,

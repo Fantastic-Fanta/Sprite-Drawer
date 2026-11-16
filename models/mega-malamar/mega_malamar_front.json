@@ -154,8 +154,7 @@
   },
   "motion": {
     "frames": 72,
-    "clip": "pm0727_51_00_20001_battlewait01_loop",
-    "note": "The game's own battle idle (pm0727_51_00_20001_battlewait01_loop from the user's Legends Z-A animation pack, frames 1-131 at 60 fps; frame 131 repeats frame 1, so one loop is 130 frames = 2.167 s), moved onto the textured no-glow copy (move_clip.py; only the action, none of the pack's shiny textures). Played as is with no pose or motion on top. 72 frames x 30 ms = 2.160 s, the game's speed (0.3% fast)."
+    "clip": "pm0727_51_00_20001_battlewait01_loop"
   },
   "style": {
     "height": 200,

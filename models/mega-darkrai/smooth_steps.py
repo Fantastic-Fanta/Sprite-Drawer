@@ -1,4 +1,4 @@
-"""Ease out the one-frame jumps baked into the game idle (run after move_clip.py save).
+"""Ease out the one-frame jumps baked into the game idle (run after pipeline/move_clip.py).
 
 The pack's battlewait01_loop has single-frame rotation steps on three spike chains
 (left_horn_b_04 f89, right_horn_b_04 f78/f105, horn_a_04 f55/f96/f181/f232): a 5-9 deg pop of the

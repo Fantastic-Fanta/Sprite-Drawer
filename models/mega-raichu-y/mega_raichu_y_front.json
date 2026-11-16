@@ -150,8 +150,7 @@
   "motion": {
     "frames": 51,
     "clip": "pm0026_52_00_00001_battlewait01_loop",
-    "plant": [],
-    "note": "Mega Raichu Y idles standing in its static pose (as in the rest pose and the Raichu X redo): the game's own battle idle for this form, pm0026_52_00_00001_battlewait01_loop from the user's Legends Z-A pack, played on the textured body copy (MegaRaichuY/MegaRaichuY_clip_shut.blend), no offset or scale, with the mouth damped and tucked so it reads shut (shut_mouth.py F=0.7 on the jaw and lip bones; JB 0.015 LOCY pushes the lower jaw and lower lips back into the head). Game speed: frames 1-62 at 60 fps = 1.017 s; 51 frames x 20 ms = 1.020 s, seamless loop."
+    "plant": []
   },
   "style": {
     "height": 200,

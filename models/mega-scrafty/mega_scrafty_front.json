@@ -467,7 +467,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "Slouching hooded delinquent, feet planted wide: two slow breaths per loop drive a small body dip with a lazy side-to-side weight shift once per loop; the shoulders and hands tug the baggy pants up a beat later, the cocked head (and the hood with it) gives a cocky little nod after that, and the light trailing hood strips, side flaps, tail and pants flaps follow last and swing most, the long strips with a faint faster flutter.",
     "functions": {
       "br": "0.5*(1-cos(2*pi*CYC*t))"
     },

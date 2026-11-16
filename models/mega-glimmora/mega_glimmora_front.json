@@ -432,8 +432,7 @@
       "tilt": "TILT_DEG*sin(2*pi*CYC*t)",
       "FY": "hover(t)",
       "FX": "drift(t)"
-    },
-    "note": "120 frames x 50 ms = 6 s. Petal ring turns once per loop. Float: CYC=2 floats per loop (3 s each), crest broad / trough quick, sideways drift and pendulum rock with it; petals trail the body by LAG_F frames and bob. Petal sway: each petal bends base -> tip (CURL_C=2 per loop, tip 0.15 behind) and SWAY_C=2 swings per loop, phases stepping round the ring. Every motion is a whole number of cycles per loop, so frame 120 = frame 0."
+    }
   },
   "style": {
     "height": 200,
@@ -455,6 +454,50 @@
         70,
         90
       ]
+    }
+  },
+  "back": {
+    "style": {
+      "height": 212
+    },
+    "pose_params": {
+      "ELEVATION": 29.1
+    }
+  },
+  "shiny": {
+    "palette": {
+      "outline": "#191b27",
+      "parts": {
+        "petal": [
+          "#0a6d5e",
+          "#0e8d85",
+          "#11a3a5",
+          "#13bec1"
+        ],
+        "core": [
+          "#334b84",
+          "#3d53ad",
+          "#465fc5",
+          "#4c66e1",
+          "#506aec",
+          "#4f7ce8",
+          "#5e83f3"
+        ],
+        "teal": [
+          "#5c9594",
+          "#79c5be"
+        ],
+        "spike": [
+          "#31434a",
+          "#476675",
+          "#638b9f"
+        ],
+        "bulb": [
+          "#2f4881",
+          "#3b5993",
+          "#486cab"
+        ]
+      }
     }
   }
 }

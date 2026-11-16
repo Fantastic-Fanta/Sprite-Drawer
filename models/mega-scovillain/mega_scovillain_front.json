@@ -671,7 +671,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "menacing two-headed hydra (Z-A render: heads up on either side, red necktie spike hanging in the middle): the driver is the heads' weave: a wave travels up each S-curved neck (two cycles a loop, in the screen plane plus a quarter-cycle-off depth sway, so the heads circle), the two necks half a cycle apart; each head yaws and nods a beat after its collar, and once a loop each head draws back, snaps forward with its jaw gaping then shutting (red at 0.22, green at 0.72); the braced body pants and shifts against the weave, feet planted; the necktie spike, tongues, tail and cloth flaps trail and kick after each snap",
     "plant": [
       "left_foot",
       "right_foot"

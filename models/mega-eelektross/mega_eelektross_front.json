@@ -131,8 +131,7 @@
   ],
   "motion": {
     "frames": 100,
-    "clip": "pm0604_51_00_20001_battlewait01_loop",
-    "note": "An eel swimming in place: a travelling wave runs head to tail along all three eels. The game's own idle (pm0604_51_00_20001_battlewait01_loop from the Z-A pack, 121 frames at 60 fps = 2.0 s; _10001_ is identical) drives everything: the body rolls and dips, the main tail carries a sideways wave root to tip, the two white side eels carry an up-down wave root to tip, the fins, horn and mouths follow. Added on top: a vertical travelling wave on the main body (hips -> tail_08, about each bone's own pitch axis, SWV=6 deg/joint growing to the tip, 0.09 loop later per joint, one cycle per loop) so the main eel also rides up and down the waves like the side eels. 100 frames x 20 ms = 2.0 s, game speed."
+    "clip": "pm0604_51_00_20001_battlewait01_loop"
   },
   "style": {
     "height": 200,

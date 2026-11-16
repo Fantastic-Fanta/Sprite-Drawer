@@ -664,7 +664,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "old cloud dragon roaring from its cloud: the driver is one roar per loop - the S-curved neck draws back, then lunges forward as the jaw opens wide and holds, then eases shut; an S-wave travels up the neck the whole loop (forward/back and side to side, growing toward the head) like a snaky eastern dragon; the head is turned toward the camera so the face reads even with the mouth open; the body keeps its slow hover bob, cloud lobes, wing tufts and tail cloud undulate trailing further the further out they are, whiskers and brows flick back on the roar and flutter; nothing planted (it floats)",
     "functions": {
       "R": "smoother((t % 1 - 0.30)/0.18) * (1 - smoother((t % 1 - 0.60)/0.28))",
       "W": "bump((t % 1 - 0.04)/0.36)"

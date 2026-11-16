@@ -120,8 +120,7 @@
   "pose": [],
   "motion": {
     "frames": 50,
-    "clip": "pm0026_51_00_00001_battlewait01_loop",
-    "note": "The game's own grounded battle idle for Mega Raichu X: pm0026_51_00_00001_battlewait01_loop from the user's Legends Z-A pack (Mega Raichu X.fbx, 60 fps, frames 1-61 = 60 frames = 1.000 s), moved onto the textured sprite body without the glow shell (move_clip.py -> MegaRaichuX_anim.blend); it lands bone-for-bone (0.0000 gap, scale 1). It stands in the model's static pose (feet planted wide, arms out, tails up behind) and idles in place: the body bobs, the arms and ears bounce, the tails sway. No pose or extra motion in the config. 50 frames x 20 ms = 1.000 s, exactly the game's speed."
+    "clip": "pm0026_51_00_00001_battlewait01_loop"
   },
   "style": {
     "height": 200,

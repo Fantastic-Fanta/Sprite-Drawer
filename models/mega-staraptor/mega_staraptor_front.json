@@ -956,7 +956,6 @@
   ],
   "motion": {
     "frames": 150,
-    "note": "Mega Staraptor flies with big, airy wingbeats: two slow beats per loop (1.4 s each). A slow, powerful down-stroke takes ~65% of the beat, the spread wing glides for a moment low in the stroke while the feathers settle, then a lighter folding up-stroke (elbow and wrist tuck, hand flips) unfolds at the top. Primaries flex and settle a step later, as if carried by the air. The body floats up on the down-stroke and drifts slowly down; talons dangle and swing a third of a beat late; the head stays level and steady.",
     "functions": {
       "pw0": "CYC*t - WARP*(1 - cos(2*pi*CYC*t))/(2*pi)",
       "pw": "pw0(t) + GLIDE*sin(2*pi*(pw0(t) - GPH))/(2*pi)",

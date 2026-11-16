@@ -526,7 +526,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "A knight on guard, built from six troopers joined at their hip knobs: leader a is head and torso, b the shield arm, c the machete arm (its horn is the blade), d the pelvis hanging on the leg troopers' inner knobs, e/f the legs (left foot forward). Driver: a slow weight shift from leg to leg, the pelvis sinking into the loaded leg; the torso follows a beat later and leans over it, the arm troopers a beat after that, and the shield and blade last, with their own small ready-motion (blade tip circling, shield tilting). Legs squat a little under the load.",
     "functions": {
       "W": "sin(2*pi*t)",
       "DIP": "0.5 - 0.5*cos(4*pi*t)",

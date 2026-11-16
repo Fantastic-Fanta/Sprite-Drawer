@@ -512,7 +512,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "Mega Golurk, a huge rocky ghost mech: it barely moves. Rest pose = official art with the raised fist lowered: both arms hang, mirrored; wide stance, both feet flat and planted on one ground plane. One driver: one slow breath/hum per loop (120 f = 3.6 s): the chest pitches a fraction of a degree (the legs take it back, feet still), the head nods and turns slightly a beat later, the heavy arms sway late (shoulder, then elbow), the gold glow orbs pulse and sway after the body, the ghost flames drift slowly with a lag up the chain.",
     "plant": [
       "left_foot",
       "right_foot"

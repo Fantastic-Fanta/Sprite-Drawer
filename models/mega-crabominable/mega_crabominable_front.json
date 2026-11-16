@@ -776,7 +776,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "Crabby abomination squaring up on its two planted ice shards: a slow growling breath per loop drives the body (dips ~1-2 px, the legs bend under it, the chest rocks). The head is held low and turned to the camera, the jaw held open in a snarl that opens wider a beat after the breath with a quick growl rumble on top. Each huge pincer swings on its own eased loop (up/down plus forward/back a quarter cycle later), the right one 0.4 of a loop behind the left and a little smaller; shoulder, upper arm, forearm, wrist and claw each lag the one before, the dark fur fringe trails last, and the body turns slightly toward the rising fist. Back mane, chest feelers, leg spikes and the yellow antenna follow the breath.",
     "functions": {
       "B": "sin(2*pi*t)",
       "F": "wave(t, SK)",

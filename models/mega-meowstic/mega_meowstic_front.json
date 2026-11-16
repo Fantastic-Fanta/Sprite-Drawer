@@ -450,8 +450,7 @@
     ]
   ],
   "motion": {
-    "frames": 120,
-    "note": "Mega Meowstic floats on its psychic power (Z-A render: legs dangling, two long tails hanging and curling below): nothing touches the ground, so nothing is planted. One driver: a slow hover bob, one per 3.6 s loop. The chest and head follow a beat later, then the big ears, arms and dangling legs; the light hair strands, collar and hip flaps lag more, and the two tails sway slowest and most, their tips last with a small flutter."
+    "frames": 120
   },
   "style": {
     "height": 200,

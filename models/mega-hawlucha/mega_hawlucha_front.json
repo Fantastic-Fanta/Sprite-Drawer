@@ -778,7 +778,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "Brawler bird in a sumo crouch, sizing up an opponent: low wide squat, feet planted and toed out, knees bent out, body leaning in, wings held out and forward like a wrestler's arms with the claws open, head low and level, glaring. One driver: a slow heavy side-to-side weight shift on the bent legs (hips ~3 px each way, planted ankles), settling a little lower at each side. The chest coils and rolls a beat after the hips; the head counters it and stays locked on the target. The arms flex a beat later (shoulders turn, elbows and claws tighten at each side), the wing feathers later still with a small flutter at the tips; crest plumes and tail feathers trail furthest, swinging opposite the hips. Menacing and ready to spring, never sleepy.",
     "functions": {
       "S": "sin(2*pi*t)",
       "P": "0.5 - 0.5*cos(4*pi*t)"

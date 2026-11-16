@@ -487,7 +487,6 @@
   ],
   "motion": {
     "frames": 96,
-    "note": "Mega Skarmory is a steel bird in flight (HOME render and Z-A art: airborne, body pitched forward, bladed wings raised in a V, legs and toe blades trailing): the wingbeat is the driver. Two beats per loop (1.44 s each): a big eased down-stroke (~57% of the beat, shoulder from ~60 deg above level to ~25 below, sweeping forward and pronating so the blade faces show), then a quicker folding up-stroke (wing sweeps back, blade fan closes, tips droop). The body rises on the down-stroke and sinks on the up-stroke, pitching a little; the head counter-nods so the face stays steady and readable; blade joints, crest, legs, toe blades and tail each lag a step further behind.",
     "functions": {
       "pw": "CYC*t - WARP*(1 - cos(2*pi*CYC*t))/(2*pi)",
       "wd": "cos(2*pi*pw(t))",
@@ -499,5 +498,47 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
+  },
+  "shiny": {
+    "palette": {
+      "outline": "#0a1018",
+      "parts": {
+        "yellow": [
+          "#a8a59a",
+          "#bdbaae",
+          "#cac8bc",
+          "#d7d5c9",
+          "#e0dfd3"
+        ],
+        "navy": [
+          "#514b36",
+          "#655f48",
+          "#706852",
+          "#79715a",
+          "#837c63"
+        ],
+        "blade": [
+          "#23972e",
+          "#3da839",
+          "#4cb040",
+          "#55b948",
+          "#5fc350"
+        ],
+        "mouth": [
+          "#9f686a",
+          "#b57d7e",
+          "#c08788",
+          "#f2b5b6",
+          "#ffc8c9"
+        ],
+        "eye": [
+          "#9c0d1c",
+          "#c01324",
+          "#dc2430",
+          "#f04848",
+          "#ff7474"
+        ]
+      }
+    }
   }
 }

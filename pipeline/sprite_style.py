@@ -1,13 +1,12 @@
-"""The sprite look: render_sprite.py's passes -> palette pixel art (flat colours, cel bands, hull lines).
+"""The sprite look: render_sprite.py's passes -> palette pixel art GIFs (flat colours, cel bands, hull lines).
 style keys: height, frame_ms (required); light [x,y,z]; bands [lo,hi]; flat_parts; deep_parts;
-cover; weak_cover; ring; despeckle; fast_frames; frame_anchor; pixel_bob; mirror.
-"""
+cover; weak_cover; ring; despeckle; fast_frames; frame_anchor; pixel_bob; mirror."""
 import json
 import os
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageSequence
+from PIL import Image
 
 NB4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
 NB8 = NB4 + ((1, 1), (1, -1), (-1, 1), (-1, -1))
@@ -45,25 +44,14 @@ def _call(job):
 
 
 def pmap(fn, arg_list):
-    """[fn(*args) for args in arg_list], spread over worker processes (SPRITE_JOBS, default all
-    cores; SPRITE_JOBS=1 runs everything here). Only for per-frame steps that don't depend on
-    each other's results, so the output is the same as the plain loop."""
+    """[fn(*args) for args in arg_list] over worker processes (SPRITE_JOBS, default: every core)"""
     global _POOL, _POOL_JOBS
     jobs = int(os.environ.get("SPRITE_JOBS", os.cpu_count() or 1))
     if jobs <= 1 or len(arg_list) < 2:
         return [fn(*a) for a in arg_list]
-    if _POOL is None:
-        import sys
+    if _POOL is None:                            # spawn: fork isn't safe with macOS's Accelerate
         import multiprocessing as mp
-        # workers are started with "spawn" (fork isn't safe with macOS's Accelerate) and would
-        # re-run the calling script (make_gif.py has no __main__ guard): hide it while they start
-        main = sys.modules["__main__"]
-        main_file = main.__dict__.pop("__file__", None)
-        try:
-            _POOL, _POOL_JOBS = mp.get_context("spawn").Pool(jobs), jobs
-        finally:
-            if main_file is not None:
-                main.__file__ = main_file
+        _POOL, _POOL_JOBS = mp.get_context("spawn").Pool(jobs), jobs
     chunk = -(-len(arg_list) // (_POOL_JOBS * 2))
     return _POOL.map(_call, [(fn, a) for a in arg_list], chunksize=chunk)
 
@@ -79,26 +67,12 @@ def shift(a, dy, dx, fill):
 
 # --- loading and framing ----------------------------------------------------------
 
-def frame_paths(frames_dir, only_first=False):
-    """one path per frame: its colour pass (the other passes sit next to it). A folder rendered
-    again in the other format (PNG / TGA) has both: the newer render counts."""
-    newest = {}
-    for p in Path(frames_dir).glob("color_*"):
-        if p.suffix in (".png", ".tga") and (p.stem not in newest or p.stat().st_mtime > newest[p.stem].stat().st_mtime):
-            newest[p.stem] = p
-    paths = [newest[k] for k in sorted(newest)]
-    return paths[:1] if only_first else paths
-
-
-def alpha_bbox(color):
-    return color.getchannel("A").point(lambda a: 255 if a > 8 else 0).getbbox()
-
-
 def color_info(p):
-    """a frame's box for framing(), and whether it touches the render's edge (cut off)"""
+    """a frame's alpha box for framing(), and whether it touches the render's edge (cut off)"""
     color = Image.open(p).convert("RGBA")
     a = np.array(color.getchannel("A")) > 8
-    return alpha_bbox(color), bool(a[0].any() or a[-1].any() or a[:, 0].any() or a[:, -1].any())
+    return color.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox(), \
+        bool(a[0].any() or a[-1].any() or a[:, 0].any() or a[:, -1].any())
 
 
 def framing(height, boxes, anchor=None):
@@ -406,47 +380,53 @@ def bob(cfg, sprites):
     return out
 
 
-# --- GIFs -------------------------------------------------------------------------
+# --- GIFs ---------------------------------------------------------------------------
 
-def save_gif(cfg, sprites, path):
+def sprites(cfg, frames_dir):
+    """the loop's finished sprites, and whether any frame touches the render's edge (widen the render)"""
+    paths = sorted(Path(frames_dir).glob("color_*.tga"))
+    info = pmap(color_info, [(p,) for p in paths])
+    # pixel grid: frame_anchor "first" = frame 0's; with fast_frames the slow frames'; else the whole loop's
+    st = cfg["style"]
+    fast = {i for a, b in st.get("fast_frames", []) for i in range(a, b + 1)}
+    anchor = [0] if st.get("frame_anchor") == "first" else [i for i in range(len(paths)) if i not in fast] if fast else None
+    box, size = framing(st["height"], [b for b, _ in info], anchor=anchor)
+    out = loop(cfg, paths, box, size)
+    return ([s[:, ::-1].copy() for s in out] if st.get("mirror") else out), any(c for _, c in info)
+
+
+def recolour(cfg, shiny_cfg, sprites):
+    """the shiny: every pixel's colour moved from cfg's palette to shiny_cfg's, entry by entry"""
+    a, b = palette(cfg), palette(shiny_cfg)
+    assert len(a) == len(b), "palettes differ in size"
+    cmap = {tuple(x): tuple(y) for x, y in zip(a, b)}
+    assert len(set(cmap.values())) == len(cmap), "two normal colours map to one shiny colour"
+    out = []
+    for f in sprites:
+        s, on = f.copy(), f[..., 3] > 0
+        missing = {tuple(c) for c in f[on][:, :3]} - set(cmap)
+        assert not missing, f"colours not in the palette: {sorted(missing)}"
+        for x, y in cmap.items():
+            s[on & np.all(f[..., :3] == x, axis=-1), :3] = y
+        out.append(s)
+    return out
+
+
+def save_gif(cfg, sprites, path, scale=4):
+    """path and its path_4x copy (hard pixel edges)"""
     pal = palette(cfg)
     T = len(pal)
-    # palette index per pixel in one lookup (the palette's colours are distinct); a colour outside
-    # the palette, like transparency, gets index T
     pk = np.array([c[0] << 16 | c[1] << 8 | c[2] for c in pal], np.int64)
     order = np.argsort(pk)
-    frames = []
-    for s in sprites:
-        k = s[..., 0].astype(np.int64) << 16 | s[..., 1].astype(np.int64) << 8 | s[..., 2]
-        j = np.clip(np.searchsorted(pk[order], k), 0, T - 1)
-        idx = np.where((s[..., 3] > 0) & (pk[order][j] == k), order[j], T).astype(np.uint8)
-        p = Image.fromarray(idx, "P")
-        p.putpalette([v for c in pal for v in c] + [0, 0, 0] * (256 - T))
-        frames.append(p)
-    frames[0].save(path, save_all=True, append_images=frames[1:], duration=cfg["style"]["frame_ms"],
-                   loop=0, transparency=T, disposal=2, optimize=False)
-
-
-def save_gifs(cfg, sprites, path, scale=None):
-    """save_gif, plus with scale k a PATH_kx.gif copy enlarged with hard pixel edges"""
-    save_gif(cfg, sprites, path)
-    print(f"wrote {path}: {len(sprites)} frames, {sprites[0].shape[1]}x{sprites[0].shape[0]}")
-    if scale:
-        k = int(scale)
-        big = [s.repeat(k, 0).repeat(k, 1) for s in sprites]
-        big_path = str(Path(path).with_name(Path(path).stem + f"_{k}x.gif"))
-        save_gif(cfg, big, big_path)
-        print(f"wrote {big_path}")
-
-
-def gif_frames(path):
-    """All frames of a GIF as RGBA arrays, one per display tick: GIF writers merge identical
-    consecutive frames into one longer frame, so a frame shown for 2 ticks is repeated twice."""
-    arrs, durs = [], []
-    for im in ImageSequence.Iterator(Image.open(path)):     # (the iterator re-uses one image object)
-        arrs.append(np.array(im.convert("RGBA"))); durs.append(im.info.get("duration", 0) or 0)
-    base = min([d for d in durs if d > 0], default=0)
-    out = []
-    for a, d in zip(arrs, durs):
-        out += [a] * (max(1, round(d / base)) if base else 1)
-    return out
+    for k, p in ((1, Path(path)), (scale, Path(path).with_name(Path(path).stem + f"_{scale}x.gif"))):
+        frames = []
+        for s in sprites:
+            s = s.repeat(k, 0).repeat(k, 1) if k > 1 else s
+            key = s[..., 0].astype(np.int64) << 16 | s[..., 1].astype(np.int64) << 8 | s[..., 2]
+            j = np.clip(np.searchsorted(pk[order], key), 0, T - 1)
+            idx = np.where((s[..., 3] > 0) & (pk[order][j] == key), order[j], T).astype(np.uint8)
+            im = Image.fromarray(idx, "P")
+            im.putpalette([v for c in pal for v in c] + [0, 0, 0] * (256 - T))
+            frames.append(im)
+        frames[0].save(p, save_all=True, append_images=frames[1:], duration=cfg["style"]["frame_ms"],
+                       loop=0, transparency=T, disposal=2, optimize=False)

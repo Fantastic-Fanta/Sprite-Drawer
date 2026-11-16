@@ -1,16 +1,14 @@
-"""Blender runner: machine-wide slots (file locks in .blender_slots/, SPRITE_BLENDER_SLOTS, default 4),
-the render pool and its cache (.render_cache/, SPRITE_RENDER_CACHE=0 turns it off).
-  python3 blender.py render CONFIG.json OUT_DIR [--jobs 4] [--frames 0,30,60] [--no-cache]
-  python3 blender.py [--timeout 900] -- BLENDER_ARGS...     one-off Blender under a slot
-  python3 blender.py --status | --reap                       show slots / kill stray Blenders
-Inside Blender, "-- --serve" is the pool's worker: one JSON job per stdin line.
-"""
+"""Blender under machine-wide slots (file locks in .blender_slots/), and the render pool with its cache
+(.render_cache/). One-off: python3 blender.py [--timeout 900] -- BLENDER_ARGS...
+SPRITE_BLENDER: the Blender executable (default: `blender` on PATH, else the macOS app).
+SPRITE_BLENDER_SLOTS: Blender processes at once (default: 1 per 4 GB of RAM, at most one per core, 1-8)."""
 import fcntl
 import hashlib
 import inspect
 import json
 import os
 import queue
+import random
 import shutil
 import signal
 import subprocess
@@ -21,355 +19,200 @@ import traceback
 from collections import deque
 from pathlib import Path
 
-BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
+BLENDER = os.environ.get("SPRITE_BLENDER") or shutil.which("blender") or "/Applications/Blender.app/Contents/MacOS/Blender"
 HERE = Path(__file__).resolve().parent
-LOCKS = HERE.parent / ".blender_slots"
-RENDER_SOURCES = ("render_sprite.py", "motion.py")
-PASS_NAMES = {"color", "id", "data", "hull"}
-RETRIES = 2          # restarts of a hung render worker (SPRITE_RENDER_HANG_S) before the render fails
-# files next to the model that a render can load: the .blend and image textures (configs, GIFs
-# and the like often share the folder and must not count)
+LOCKS, CACHE = HERE.parent / ".blender_slots", HERE.parent / ".render_cache"
 MODEL_FILES = {".blend", ".png", ".tga", ".jpg", ".jpeg", ".exr", ".tif", ".tiff", ".bmp", ".webp", ".hdr"}
+RAM_GB = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / 2 ** 30
+SLOTS = int(os.environ.get("SPRITE_BLENDER_SLOTS") or max(1, min(8, os.cpu_count() or 1, int(RAM_GB // 4))))
+HANG, CACHE_GB = 180, 20
 
 
-# --- slots ---------------------------------------------------------------------------------------
-
-def n_slots():
-    return int(os.environ.get("SPRITE_BLENDER_SLOTS", 4))
-
-
-def acquire(count=1, label=""):
-    """block until `count` slots are free; returns their open lock files (close them, or exit, to
-    free the slots). All or nothing: a request that can't get every slot it needs lets go of the
-    ones it got and tries again a moment later, so two pools never each hold part and wait forever."""
-    import random
+def acquire(count, label):
+    """block until `count` slots are free (all or nothing, so two pools never deadlock)"""
     LOCKS.mkdir(exist_ok=True)
-    warned, start = False, time.time()
-    count = min(count, n_slots())
+    count = min(count, SLOTS)
     while True:
         held = []
-        for i in range(n_slots()):
+        for i in range(SLOTS):
             if len(held) == count:
                 break
             f = open(LOCKS / f"slot{i}", "a+")
             try:
                 fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                held.append(f)
             except BlockingIOError:
                 f.close()
-                continue
-            held.append(f)
         if len(held) == count:
             for f in held:
                 f.seek(0); f.truncate(); f.write(f"{os.getpid()} {label}\n"); f.flush()
             return held
-        release(held)
-        if not warned and time.time() - start > 5:
-            print(f"waiting for {count} Blender slot(s) (--status shows who has them)", file=sys.stderr, flush=True)
-            warned = True
-        time.sleep(0.3 + random.random() * (0.4 if count == 1 else 1.2))
+        for f in held:
+            f.close()
+        time.sleep(0.3 + random.random())
 
 
-def release(held):
-    for f in held:
-        f.close()
-
-
-def status():
-    LOCKS.mkdir(exist_ok=True)
-    for i in range(n_slots()):
-        p = LOCKS / f"slot{i}"
-        f = open(p, "a+")
-        try:
-            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            print(f"slot {i}: free")
-        except BlockingIOError:
-            print(f"slot {i}: {p.read_text().strip()}")
-        f.close()
-    for pid, ppid, etime, cmd in strays(all_bg=True):
-        print(f"{'STRAY ' if ppid == 1 else ''}blender {pid} (parent {ppid}, up {etime}): {cmd[:120]}")
-
-
-def strays(all_bg=False):
-    """background Blender processes ((pid, ppid, elapsed, command)); only orphans unless all_bg"""
-    out = subprocess.run(["ps", "-axo", "pid=,ppid=,etime=,command="], capture_output=True, text=True).stdout
-    found = []
-    for line in out.splitlines():
-        parts = line.split(None, 3)
-        if len(parts) < 4 or not parts[3].startswith(BLENDER):
-            continue
-        pid, ppid = int(parts[0]), int(parts[1])
-        if " -b " not in f" {parts[3]} ":
-            continue                                     # a window someone is looking at: never touched
-        if all_bg or ppid == 1:
-            found.append((pid, ppid, parts[2], parts[3]))
-    return found
-
-
-def reap():
-    for pid, _, etime, cmd in strays():
-        os.kill(pid, signal.SIGKILL)
-        print(f"killed stray blender {pid} (up {etime}): {cmd[:120]}")
-
-
-def run(blender_args, timeout):
-    held = acquire(1, "one-off: " + " ".join(blender_args)[:150])
-    proc = subprocess.Popen([BLENDER] + blender_args, start_new_session=True)
-
-    def kill(*_):
-        try:
-            os.killpg(proc.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
+def run(args, timeout=900):
+    """one Blender (args after the executable) under a slot; killed with its children on timeout"""
+    held = acquire(1, " ".join(args)[:150])
+    proc = subprocess.Popen([BLENDER] + args, start_new_session=True)
+    kill = lambda *_: os.killpg(proc.pid, signal.SIGKILL) if proc.poll() is None else None
     signal.signal(signal.SIGTERM, lambda *a: (kill(), sys.exit(143)))
-    signal.signal(signal.SIGHUP, lambda *a: (kill(), sys.exit(129)))
     try:
-        code = proc.wait(timeout=timeout)
+        return proc.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
-        kill()
-        print(f"blender.py: killed Blender after {timeout:.0f}s", file=sys.stderr, flush=True)
-        code = 124
+        kill(); print(f"killed Blender after {timeout:.0f}s", file=sys.stderr); return 124
     except KeyboardInterrupt:
-        kill()
-        code = 130
+        kill(); return 130
     finally:
-        release(held)
-    return code
+        for f in held:
+            f.close()
 
 
-# --- the render pool and its cache ---------------------------------------------------------------
-
-def cache_dir():
-    v = os.environ.get("SPRITE_RENDER_CACHE", str(HERE.parent / ".render_cache"))
-    return None if v == "0" else Path(v)
-
-
-def render_key(cfg_path, cfg, frames):
-    """hash of everything a render depends on (see the module docstring)"""
+def render_key(cfg, frames):
+    """hash of everything a render depends on"""
     h = hashlib.sha256()
+    st, pm = cfg.get("style", {}), cfg.get("parts", {})
     used = {k: cfg.get(k) for k in ("render", "camera", "pose", "pose_params", "motion")}
-    used.update(materials=cfg.get("parts", {}).get("materials"), default_material=cfg.get("parts", {}).get("default_material"),
-                height=cfg.get("style", {}).get("height"),
-                fast_frames=cfg.get("style", {}).get("fast_frames"), frames=frames,
-                format=os.environ.get("SPRITE_RENDER_FORMAT", "TGA").upper())
+    used.update(materials=pm.get("materials"), default_material=pm.get("default_material"), height=st.get("height"),
+                fast_frames=st.get("fast_frames"), frames=frames)
     h.update(json.dumps(used, sort_keys=True).encode())
-    model_dir = (cfg_path.parent / cfg["model"]).parent
+    model_dir = Path(cfg["model"]).parent
     for root, dirs, files in sorted(os.walk(model_dir)):
         dirs.sort()
         for f in sorted(files):
-            if Path(f).suffix.lower() not in MODEL_FILES:
-                continue
-            st = os.stat(os.path.join(root, f))
-            h.update(f"{os.path.relpath(os.path.join(root, f), model_dir)}:{st.st_size}:{st.st_mtime_ns};".encode())
-    for f in RENDER_SOURCES:
+            if Path(f).suffix.lower() in MODEL_FILES:
+                s = os.stat(os.path.join(root, f))
+                h.update(f"{os.path.relpath(os.path.join(root, f), model_dir)}:{s.st_size}:{s.st_mtime_ns};".encode())
+    for f in ("render_sprite.py", "motion.py"):
         h.update((HERE / f).read_bytes())
-    h.update(inspect.getsource(serve).encode())          # the worker's own code
-    st = os.stat(BLENDER)
-    h.update(f"blender:{st.st_size}:{st.st_mtime_ns}".encode())
+    s = os.stat(BLENDER)
+    h.update(f"{inspect.getsource(serve)}blender:{s.st_size}:{s.st_mtime_ns}".encode())
     return h.hexdigest()[:32]
 
 
 def link_tree(src, dst):
-    """every file of src into dst, hard-linked (copied where links can't be made)"""
     dst.mkdir(parents=True, exist_ok=True)
     for f in src.iterdir():
         if f.is_file() and not f.name.startswith("."):
-            target = dst / f.name
-            target.unlink(missing_ok=True)
-            try:
-                os.link(f, target)
-            except OSError:
-                shutil.copy2(f, target)
-
-
-def trim_cache(root):
-    """keep the cache under SPRITE_RENDER_CACHE_GB, dropping the least recently used renders"""
-    cap = float(os.environ.get("SPRITE_RENDER_CACHE_GB", 20)) * 1e9
-    entries = []
-    for d in root.iterdir():
-        if (d / ".complete").exists():
-            entries.append(((d / ".complete").stat().st_mtime, sum(f.stat().st_size for f in d.iterdir()), d))
-    total = sum(s for _, s, _ in entries)
-    for _, size, d in sorted(entries):
-        if total <= cap:
-            break
-        shutil.rmtree(d, ignore_errors=True)
-        total -= size
+            (dst / f.name).unlink(missing_ok=True)
+            os.link(f, dst / f.name)
 
 
 class RenderPool:
-    """N Blender workers (blender.py -- --serve); render() splits a loop's frames over them"""
+    """SLOTS Blender workers (blender.py --serve); render() splits a loop's frames over them"""
 
-    def __init__(self, jobs=None, threads=None):
-        # 4 suits a 16 GB machine; more processes thrash (shared GPU / memory): SPRITE_RENDER_JOBS on a bigger one
-        jobs = jobs or int(os.environ.get("SPRITE_RENDER_JOBS", 4))
-        # one thread per Blender process: the passes are GPU work and single-threaded Freestyle, and the
-        # processes already fill the cores (Blender's default, a thread per core each, costs ~12% more CPU)
-        threads = threads or os.environ.get("SPRITE_RENDER_THREADS", "1")
-        self.jobs, self.threads, self.procs = jobs, threads, None     # started on the first real render
-        self.slots = []
-        self.next_id = 0
+    def __init__(self):
+        self.procs, self.slots, self.next_id = None, [], 0
 
-    def render(self, cfg_path, out, frames=None, cache=True):
-        """render frames (default: the whole loop) of CONFIG into out; raises on a failed worker.
-        Returns the number of frames, or 0 if they came from the cache."""
-        cfg_path, out = Path(cfg_path).resolve(), Path(out).resolve()
-        cfg = json.loads(cfg_path.read_text())
-        if frames is None and out.exists():
-            # a whole loop replaces whatever was rendered here before: old pass files (a longer
-            # loop, the other format) would otherwise be read as part of this one
-            for f in out.iterdir():
-                if f.suffix in (".png", ".tga") and f.stem.split("_")[0] in PASS_NAMES:
-                    f.unlink()
-        frames = list(range(cfg["motion"]["frames"])) if frames is None else frames
-        root = cache_dir() if cache else None
-        if root is not None:
-            entry = root / render_key(cfg_path, cfg, frames)
-            if (entry / ".complete").exists():
-                link_tree(entry, out)
-                os.utime(entry / ".complete")                     # recently used
-                return 0
-        n = self._render(cfg_path, cfg, out, frames)
-        if root is not None:
-            tmp = root / f".tmp-{os.getpid()}-{entry.name}"
+    def render(self, cfg, out, cache=True):
+        """render the loop of cfg (a config dict, model path absolute) into out; 0 if from the cache"""
+        out = Path(out)
+        shutil.rmtree(out, ignore_errors=True)
+        frames = list(range(cfg["motion"]["frames"]))
+        entry = CACHE / render_key(cfg, frames)
+        if cache and (entry / ".complete").exists():
+            link_tree(entry, out)
+            os.utime(entry / ".complete")
+            return 0
+        self._render(cfg, out, frames)
+        if cache:
+            tmp = CACHE / f".tmp-{os.getpid()}-{entry.name}"
             shutil.rmtree(tmp, ignore_errors=True)
             link_tree(out, tmp)
-            (tmp / ".complete").write_text(str(cfg_path))
+            (tmp / ".complete").write_text(cfg.get("name", ""))
             shutil.rmtree(entry, ignore_errors=True)
             tmp.rename(entry)
-            trim_cache(root)
-        return n
+            ents = sorted(((d / ".complete").stat().st_mtime, sum(f.stat().st_size for f in d.iterdir()), d)
+                          for d in CACHE.iterdir() if (d / ".complete").exists())
+            total = sum(s for _, s, _ in ents)
+            for _, s, d in ents:                     # drop the least recently used beyond CACHE_GB
+                if total <= CACHE_GB * 1e9:
+                    break
+                shutil.rmtree(d, ignore_errors=True); total -= s
+        return len(frames)
 
     def _spawn(self):
-        """one worker: the Blender process and a queue of its output lines (None when it exits),
-        read by a thread so a silent worker can be timed out"""
-        proc = subprocess.Popen([BLENDER, "-t", str(self.threads), "-b", "--python", str(HERE / "blender.py"), "--", "--serve"],
-                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                text=True, bufsize=1)
+        proc = subprocess.Popen([BLENDER, "-t", "1", "-b", "--python", str(HERE / "blender.py"), "--", "--serve"],
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
         lines = queue.Queue()
-
-        def pump():
-            for line in proc.stdout:
-                lines.put(line)
-            lines.put(None)
-        threading.Thread(target=pump, daemon=True).start()
+        threading.Thread(target=lambda: ([lines.put(l) for l in proc.stdout], lines.put(None)), daemon=True).start()
         return proc, lines
 
-    def _render(self, cfg_path, cfg, out, frames):
+    def _render(self, cfg, out, frames):
         if self.procs is None:
-            # a few frames need no more workers than frames (a 2-frame look shouldn't take the machine)
-            self.slots = acquire(min(self.jobs, len(frames)), f"render pool: {cfg_path.name}")
+            self.slots = acquire(SLOTS, f"render pool {cfg.get('name', '')}")
             self.procs = [self._spawn() for _ in self.slots]
         out.mkdir(parents=True, exist_ok=True)
-        n = len(self.procs)
-        chunks = [frames[k::n] for k in range(n)]                          # interleaved: even load
-        errors = []
-        # a worker silent this long is hung (seen: macOS's Metal shader cache deadlocking a worker at
-        # 0% CPU forever); it is killed, replaced, and its frames rendered again (at most RETRIES times)
-        hang = float(os.environ.get("SPRITE_RENDER_HANG_S", 180))
+        n, errors = len(self.procs), []
+        self.next_id += 1
 
-        def one(k, chunk, jid):
-            if not chunk:
-                return
-            for attempt in range(RETRIES + 1):
+        def one(k, chunk):
+            for attempt in range(3):                 # a worker silent for HANG s is hung: replaced, retried
                 proc, lines = self.procs[k]
-                rid = f"{jid}.{attempt}"
-                proc.stdin.write(json.dumps({"id": rid, "model": str(cfg_path.parent / cfg["model"]), "config": str(cfg_path),
-                                             "out": str(out), "frames": ",".join(map(str, chunk))}) + "\n")
+                rid = f"{self.next_id}.{k}.{attempt}"
+                proc.stdin.write(json.dumps({"id": rid, "config": cfg, "out": str(out), "frames": chunk}) + "\n")
                 proc.stdin.flush()
                 log = deque(maxlen=40)
                 while True:
                     try:
-                        line = lines.get(timeout=hang)
+                        line = lines.get(timeout=HANG)
                     except queue.Empty:
-                        break                                              # hung: retry below
+                        break
                     if line is None:
-                        errors.append("Blender exited:\n" + "".join(log)); return
+                        return errors.append("Blender exited:\n" + "".join(log))
                     if line.startswith(f"@@DONE {rid}"):
                         return
                     if line.startswith(f"@@FAIL {rid}"):
-                        errors.append(line.split(" ", 2)[2].replace(" | ", "\n")); return
+                        return errors.append(line.split(" ", 2)[2].replace(" | ", "\n"))
                     log.append(line)
-                print(f"render worker {k} silent for {hang:.0f}s: restarting it ({attempt + 1}/{RETRIES})",
-                      file=sys.stderr, flush=True)
-                proc.kill()
-                proc.wait()
+                print(f"render worker {k} hung: restarting it", file=sys.stderr, flush=True)
+                proc.kill(); proc.wait()
                 self.procs[k] = self._spawn()
-            errors.append(f"render worker {k} hung {RETRIES + 1} times (frames {chunk[:5]}...)")
+            errors.append(f"render worker {k} hung 3 times")
 
-        self.next_id += 1
-        ts = [threading.Thread(target=one, args=(k, c, f"{self.next_id}.{k}")) for k, c in enumerate(chunks)]
+        ts = [threading.Thread(target=one, args=(k, frames[k::n])) for k in range(n) if frames[k::n]]
         for t in ts:
             t.start()
         for t in ts:
             t.join()
         if errors:
             raise RuntimeError(errors[0][-3000:])
-        return len(frames)
-
-    def close(self):
-        for p, _ in self.procs or []:
-            p.stdin.close()
-        for p, _ in self.procs or []:
-            p.wait()
-        release(self.slots)
-        self.slots = []
 
     def __enter__(self):
         return self
 
     def __exit__(self, *exc):
-        self.close()
+        for p, _ in self.procs or []:
+            p.stdin.close()
+        for p, _ in self.procs or []:
+            p.wait()
+        for f in self.slots:
+            f.close()
 
-
-# --- the worker, inside Blender ------------------------------------------------------------------
 
 def serve():
+    """inside Blender: one job per stdin line, render_sprite.py on the freshly reopened model"""
     import bpy
     src = HERE / "render_sprite.py"
     code = compile(src.read_text(), str(src), "exec")
-    argv0 = sys.argv[0]
     for line in sys.stdin:
         if not line.strip():
             continue
         job = json.loads(line)
         try:
-            bpy.ops.wm.open_mainfile(filepath=str(job["model"]))         # a clean scene for every job
-            sys.argv = [argv0, "--python", str(src), "--", str(job["config"]), str(job["out"])] + \
-                (["--frames", job["frames"]] if job.get("frames") else [])
-            exec(code, {"__name__": "__main__", "__file__": str(src)})
+            bpy.ops.wm.open_mainfile(filepath=job["config"]["model"])
+            exec(code, {"__name__": "__main__", "__file__": str(src), "JOB": job})
             print(f"@@DONE {job['id']}", flush=True)
         except Exception:
             print(f"@@FAIL {job['id']} " + traceback.format_exc().replace("\n", " | "), flush=True)
 
 
-def main():
-    a = sys.argv[1:]
-    if a and a[0] == "render":
-        jobs = int(a[a.index("--jobs") + 1]) if "--jobs" in a else None
-        frames = [int(v) for v in a[a.index("--frames") + 1].split(",")] if "--frames" in a else None
-        t0 = time.time()
-        try:
-            with RenderPool(jobs) as pool:
-                n = pool.render(a[1], a[2], frames, cache="--no-cache" not in a)
-        except RuntimeError as e:
-            print(e); sys.exit(1)
-        if n:
-            print(f"rendered {n} frames with {len(pool.procs or [])} processes in {time.time() - t0:.0f}s")
-        else:
-            print(f"frames from the render cache in {time.time() - t0:.1f}s")
-    elif "--status" in a:
-        status()
-    elif "--reap" in a:
-        reap()
-    elif "--" in a:
-        timeout = float(a[a.index("--timeout") + 1]) if "--timeout" in a[:a.index("--")] else 900
-        sys.exit(run(a[a.index("--") + 1:], timeout))
-    else:
-        print(__doc__)
-
-
 if __name__ == "__main__":
     if "--serve" in sys.argv:
         serve()
+    elif "--" in sys.argv:
+        a = sys.argv[1:]
+        sys.exit(run(a[a.index("--") + 1:], float(a[a.index("--timeout") + 1]) if a[0] == "--timeout" else 900))
     else:
-        main()
+        print(__doc__)

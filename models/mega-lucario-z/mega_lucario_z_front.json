@@ -87,8 +87,7 @@
   "pose": [],
   "motion": {
     "frames": 100,
-    "clip": "pm0448_52_00|pm0448_52_00|pm0448_52_00_00001_battlewait01_loop",
-    "note": "the game's own idle (battlewait01_loop, 181 frames at 60 fps = 3.0 s) from the user's pack, moved onto the textured model; 100 frames x 30 ms = 3.0 s, game speed; no config pose on top"
+    "clip": "pm0448_52_00|pm0448_52_00|pm0448_52_00_00001_battlewait01_loop"
   },
   "style": {
     "height": 200,

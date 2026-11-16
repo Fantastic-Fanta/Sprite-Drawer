@@ -1,5 +1,5 @@
 #!/bin/sh
-# Runs the regression check (pipeline/regress.py check, about 20 s) when the push changes pipeline/.
+# Runs the regression check (pipeline/regress.py) when the push changes pipeline/.
 # Every sprite must still come out pixel for pixel the same. Skip once with: git push --no-verify
 z=0000000000000000000000000000000000000000
 while read lref lsha rref rsha; do
@@ -7,7 +7,7 @@ while read lref lsha rref rsha; do
   if [ "$rsha" = $z ]; then range=$(git merge-base origin/main "$lsha" 2>/dev/null)..$lsha; else range=$rsha..$lsha; fi
   if git diff --name-only $range -- pipeline/ | grep -q .; then
     echo "pre-push: pipeline/ changed, running the regression check"
-    exec /usr/local/bin/python3 pipeline/regress.py check
+    exec /usr/local/bin/python3 pipeline/regress.py
   fi
 done
 exit 0

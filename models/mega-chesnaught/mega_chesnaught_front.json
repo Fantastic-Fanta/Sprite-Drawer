@@ -50,8 +50,7 @@
         "#1c1414",
         "#f2f2f2"
       ]
-    },
-    "note": "shell = cream armour/shields (shiny green), fur = white face/chest fur (shiny tan), maroon = fur cape and shell rims (shiny orange), green = gauntlets/chest plate/spots (shiny dark red-brown), brown = dark chest/inner (kept), yellow = mask and claws (kept), eye = sclera/pupil (flat)"
+    }
   },
   "parts": {
     "materials": {
@@ -97,8 +96,7 @@
   "pose": [],
   "motion": {
     "frames": 78,
-    "clip": "pm0722_51_00_00001_battlewait01_loop",
-    "note": "The game's own battle idle (battlewait01_loop from the user's Legends Z-A animation pack, frames 0.4-56.4 at 24 fps = 2.333 s), moved onto the textured body copy without spear and vines; no pose or motion in the config. 78 frames x 30 ms = 2.340 s, the game's speed."
+    "clip": "pm0722_51_00_00001_battlewait01_loop"
   },
   "style": {
     "height": 200,

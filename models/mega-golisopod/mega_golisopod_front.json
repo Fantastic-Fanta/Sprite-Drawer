@@ -309,7 +309,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "ours: a calm breathing idle. Rest pose = the game's own pose of the Mega (HOME render), fitted bone by bone with the feet held on the ground. 120 frames = 3.6 s = 2 breaths: the chest lifts (spine BR, BR2), the head, claw arms (AB, EB) and raised claws (CB, CB2) follow a beat later. Legs: the body rises a little with each breath (DIP) and shifts its weight side to side once a loop (SW); the ankles stay planted (motion.plant), so the legs bend under it",
     "plant": [
       "left_foot_a",
       "left_foot_b",
@@ -322,5 +321,41 @@
     "frame_ms": 30,
     "frame_anchor": "first",
     "despeckle": 2
+  },
+  "back": {
+    "pose_params": {
+      "ELEVATION": 15
+    }
+  },
+  "shiny": {
+    "palette": {
+      "outline": "#24292e",
+      "parts": {
+        "armour": [
+          "#555d67",
+          "#929da7",
+          "#ccd4dd",
+          "#eef3f9"
+        ],
+        "flesh": [
+          "#7e636b",
+          "#a88c94",
+          "#d0b6be",
+          "#f3dfe5"
+        ],
+        "purple": [
+          "#6d1918",
+          "#9b2c2a",
+          "#c4453f",
+          "#e56b61"
+        ],
+        "dark": [
+          "#3f474a",
+          "#566164",
+          "#6e7c7c",
+          "#8b9a98"
+        ]
+      }
+    }
   }
 }

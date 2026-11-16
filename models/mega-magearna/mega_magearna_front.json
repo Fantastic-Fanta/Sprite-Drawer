@@ -406,8 +406,7 @@
     ],
     "functions": {
       "w": "sin(2*pi*t)"
-    },
-    "note": "Graceful clockwork doll: one slow weight shift from foot to foot drives it (120 x 30 ms = 3.6 s). The hips glide SHIFT px and roll SWAY deg, sinking DIP px each time the weight passes centre (planted feet, knees giving); the chest counter-balances and breathes twice per loop; the head tilts after it, the ribbon-ears trail further and swing most. The free arm floats out and in like a port de bras, elbow and wrist each a beat behind. The gun arm stays steady, aiming, with only a slight float; its flower is rigid. The skirt swings like a bell a beat behind the hips, its side panels a beat later. The gears hover on their own soft bob."
+    }
   },
   "style": {
     "height": 165,

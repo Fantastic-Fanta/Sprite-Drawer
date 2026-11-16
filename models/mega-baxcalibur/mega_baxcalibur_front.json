@@ -577,7 +577,6 @@
   ],
   "motion": {
     "frames": 120,
-    "note": "growling breath of a heavy predator (HOME stance: low forward-leaning body on bent legs, balanced by the tail; eyes wide open; shoulders hunched, claws spread). Based on the Showdown animated idle of base Baxcalibur (reference/showdown_ani_baxcalibur.gif: one slow breath a loop, the torso heaves up and sinks, the knees take it, the tail sweeps slowly). Driver: one breath per loop, slow inhale (~63%), forceful exhale (~37%) (phase warp K). Inhale: the body rises (RISE), the chest and ribcage heave up and back (BR, BR2), the shoulders rise (SHU), the blade and back plates ride it (BL, FL), the jaw eases mostly shut. Exhale: the neck pushes forward and a little low along its line (NFY, NFZ, a translation, not a pitch), the neck holds the head's height against the heave (HZ) and the head pitch only counters the chest (HPC), so the head travels forward and back, not up and down. The jaw opens into the growl (JAW) with a fast rumble (RUM), the shoulders hunch, the elbows, wrists and claws cock and fan, each a beat later. The tail base lifts against the head push and a slow sideways wave runs to the tip. Feet planted flat; the body only translates vertically, so the knees bend and the feet keep their angle.",
     "plant": [
       "left_foot",
       "right_foot"

@@ -455,8 +455,7 @@
       "swing": "-cos(2*pi*t)",
       "bowf": "BOWF*sin(2*pi*(t - BOWF_LAG))",
       "fing": "FING*sin(2*pi*(t - FING_LAG))"
-    },
-    "note": "Floating wind chime (Psychic/Steel, light, hangs in the air): the driver is one slow eased bob (crest broad, trough quick) plus a sideways drift per 3.6 s loop, so the ring traces a small ellipse and leans into the drift. Everything that hangs trails it: the six chimes swing as pendulums a beat behind, their paper streamers lag more toward the tips and flutter twice a loop; the little Chimecho inside the ring sways on its string with its tail trailing; the bow lobes dip as the body rises and the fingers follow later. Whole cycles per loop."
+    }
   },
   "style": {
     "height": 180,

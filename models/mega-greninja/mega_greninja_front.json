@@ -95,8 +95,7 @@
   "pose": [],
   "motion": {
     "frames": 67,
-    "clip": "pm0725_51_00_20001_battlewait01_loop",
-    "note": "The game's own idle from the official Legends Z-A pack (battlewait01_loop): hangs upside down from its spinning water shuriken. Played as-is, one loop of 48.4 frames at 24 fps (2.017 s) over 67 frames at 30 ms (2.010 s)."
+    "clip": "pm0725_51_00_20001_battlewait01_loop"
   },
   "style": {
     "height": 200,

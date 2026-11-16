@@ -104,8 +104,7 @@
   "pose": [],
   "motion": {
     "frames": 89,
-    "clip": "pm0719_51_00_20001_battlewait01_loop",
-    "note": "The game's own idle (pm0719_51_00_20001_battlewait01_loop from the Z-A animation pack, 64 frames at 24 fps = 2.67 s), played as is with nothing on top. In it Mega Delphox already surfs: it stands sideways across the main broom (the broom runs fore-aft under its feet, its chest to the side), head turned toward travel, arms out for balance, and the two small brooms sail alongside at head height on the same heading, drifting and bobbing; the flames lick. 89 frames x 30 ms = 2.67 s matches the game speed."
+    "clip": "pm0719_51_00_20001_battlewait01_loop"
   },
   "style": {
     "height": 150,

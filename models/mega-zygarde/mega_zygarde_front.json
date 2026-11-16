@@ -100,8 +100,7 @@
   ],
   "motion": {
     "frames": 64,
-    "clip": "pm0770_51_00_20001_battlewait01_loop",
-    "note": "the GLB's own battle-wait loop, 64 frames; not a pose built in the config; head bone turned 40 deg toward the camera on top of the clip (pose), so the core's face shows both eyes"
+    "clip": "pm0770_51_00_20001_battlewait01_loop"
   },
   "style": {
     "height": 300,
@@ -114,5 +113,10 @@
       "pink",
       "yellow"
     ]
+  },
+  "back": {
+    "pose_params": {
+      "ELEVATION": -15
+    }
   }
 }
