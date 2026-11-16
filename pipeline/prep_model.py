@@ -1,12 +1,12 @@
 """Model zip (or folder) -> a ready-to-pose sprite folder: no LLM needed for any of it.
 
 Run:  python3 pipeline/prep_model.py MODEL.zip|DIR [--slug mega-greninja] [--height 200] [--force]
-Makes SLUG-model/ in the repo:
-  SLUG-model/<Model>/        the unzipped rip and its .blend (gitignored)
-  SLUG-model/prep/           rest_front/side/top.png (Workbench views of the bind pose), scene.json
-  SLUG-model/RIG.md          what the posing step needs: size, facing, bone tree with each bone's own
+Makes models/SLUG/ in the repo:
+  models/SLUG/<Model>/       the unzipped rip and its .blend (gitignored)
+  models/SLUG/prep/          rest_front/side/top.png (Workbench views of the bind pose), scene.json
+  models/SLUG/RIG.md         what the posing step needs: size, facing, bone tree with each bone's own
                              axes (for "A:x,y,z" bends), foot candidates for motion.plant, materials -> parts
-  SLUG-model/SLUG_front.json the draft config: palette and parts from the texture colours actually
+  models/SLUG/SLUG_front.json the draft config: palette and parts from the texture colours actually
                              on the model, camera framed to its size, style.height, hull 0.95,
                              despeckle 2, a 120-frame loop; pose empty (the bind pose), motion to write
 Then: pose and animate it (the new-sprite skill), then package.py builds back, shinies and GIFs.
@@ -171,7 +171,7 @@ def main():
     src = Path(a[0]).expanduser()
     slug = a[a.index("--slug") + 1] if "--slug" in a else slug_of(src.stem)
     height = int(a[a.index("--height") + 1]) if "--height" in a else 200
-    base = ROOT / f"{slug}-model"
+    base = ROOT / "models" / slug
     stem = slug.replace("-", "_")
     cfg_path = base / f"{stem}_front.json"
     if cfg_path.exists() and "--force" not in a:

@@ -4,7 +4,7 @@ in real time, reloaded whenever the config is saved. For working on a motion; th
 
 Run (not -b: it opens Blender's window):
   $B MODEL.blend --python pipeline/live_preview.py -- CONFIG.json
-  e.g. $B golisopod-model/MegaGolisopod/MegaGolisopod.blend --python pipeline/live_preview.py -- golisopod-model/golisopod_front.json
+  e.g. $B models/mega-golisopod/MegaGolisopod/MegaGolisopod.blend --python pipeline/live_preview.py -- models/mega-golisopod/mega_golisopod_front.json
 Edit pose / pose_params / motion (plant too) / style.fast_frames / camera in the config and save: the viewport
 picks it up within a fraction of a second and keeps playing. Space pauses, arrow keys step frames.
 --selftest: set up and bake once, print the timings, quit (works with -b).

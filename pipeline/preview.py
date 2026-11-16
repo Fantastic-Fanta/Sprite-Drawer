@@ -4,7 +4,7 @@ seconds not minutes) of a few loop frames, from the sprite camera and other angl
 Run:  python3 pipeline/preview.py CONFIG.json OUT.png [--frames 8] [--views sprite,side,top,back] [--size 200]
 Rows = views, columns = frames evenly over the loop (frame numbers printed under them). Runs its
 Blender under a machine slot (blender_slot.py) with a timeout. Judge pose and motion here; build
-with build_all.py only once both pass.
+with build.py only once both pass.
 """
 import json
 import math

@@ -1,11 +1,15 @@
-"""Build many sprites, keeping the machine busy: the next sprite renders (Blender, mostly GPU)
-while the previous one builds (make_gif, CPU), instead of one after the other.
+"""Build sprites: python3 pipeline/build.py [POKEMON | CONFIG.json ...] [--out DIR] [--keep-frames]
+                     python3 pipeline/build.py --publish POKEMON [POKEMON ...]
 
-Run:  python3 pipeline/build_all.py OUT_DIR CONFIG.json [CONFIG.json ...] [--scale 4] [--keep-frames]
-Each CONFIG is a normal sprite: it is rendered to OUT_DIR/frames/NAME, built to OUT_DIR/NAME.gif
-(make_gif.py, quality gate included), and if NAME_shiny.json sits next to it, recoloured to
-OUT_DIR/NAME_shiny.gif (palette_swap.py). Frames are deleted after their build unless
---keep-frames. Prints a line per step; exit code 1 if any step fails (the others still run).
+Build: every models/<pokemon>/ (no arguments), the named Pokemon (models/ folder names, e.g.
+mega-absol-z), or single configs. Each sprite config (*_front.json, *_back.json) is rendered,
+built (make_gif.py, quality gate included) with its 4x copy, and recoloured into its shiny when
+NAME_shiny.json sits next to it (palette_swap.py). Output: out/<pokemon>/NAME(_shiny)(_4x).gif, or
+straight into DIR with --out. The next sprite renders (Blender, mostly GPU) while the previous one
+builds (CPU). Prints a line per step; exit code 1 if any step fails (the others still run).
+
+Publish: once the GIFs in out/<pokemon>/ are approved, copy them into sprites/<pokemon>/ as they
+are (no rebuild, so what was reviewed is what lands).
 """
 import queue
 import shutil
@@ -16,17 +20,50 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+MODELS, SPRITES, OUT = ROOT / "models", ROOT / "sprites", ROOT / "out"
+SCALE = "4"
 sys.path.insert(0, str(HERE))
 from render_parallel import RenderPool      # noqa: E402
 
 
+def sprite_configs(folder):
+    """a model folder's sprite configs: front and back (their shinies are built from them)"""
+    return sorted(p for p in folder.glob("*.json") if p.stem.endswith(("_front", "_back")) and not p.name.startswith("_"))
+
+
+def pokemon_of(cfg):
+    return cfg.parent.name if cfg.parent.parent == MODELS else cfg.stem.rsplit("_", 1)[0].replace("_", "-")
+
+
+def publish(names):
+    for name in names:
+        src = OUT / name
+        gifs = sorted(src.glob("*.gif"))
+        if not gifs:
+            sys.exit(f"{name}: nothing built in {src.relative_to(ROOT)}/ (build it first)")
+        dst = SPRITES / name
+        dst.mkdir(parents=True, exist_ok=True)
+        for g in gifs:
+            shutil.copy2(g, dst / g.name)
+        print(f"{name}: {len(gifs)} GIFs -> {dst.relative_to(ROOT)}/")
+
+
 def main():
     args = sys.argv[1:]
-    scale = args[args.index("--scale") + 1] if "--scale" in args else None
+    if "--publish" in args:
+        return publish([a for a in args if a != "--publish"])
     keep = "--keep-frames" in args
-    pos = [a for i, a in enumerate(args) if not a.startswith("--") and (i == 0 or args[i - 1] != "--scale")]
-    out, configs = Path(pos[0]), [Path(c).resolve() for c in pos[1:]]
-    out.mkdir(parents=True, exist_ok=True)
+    flat = Path(args[args.index("--out") + 1]).resolve() if "--out" in args else None
+    pos = [a for i, a in enumerate(args) if not a.startswith("--") and (i == 0 or args[i - 1] != "--out")]
+    configs = []
+    for a in pos or sorted(d.name for d in MODELS.iterdir() if d.is_dir()):
+        p = Path(a)
+        configs += [p.resolve()] if p.suffix == ".json" else sprite_configs(MODELS / a)
+    if not configs:
+        sys.exit("no sprite configs found")
+    dest = lambda cfg: flat or OUT / pokemon_of(cfg)
+    work = flat or OUT
     rendered = queue.Queue()
     failed = []
     t0 = time.time()
@@ -52,7 +89,7 @@ def main():
         # one pool for the whole batch: each Blender process starts once, not once per sprite
         with RenderPool() as pool:
             for cfg in configs:
-                frames = out / "frames" / cfg.stem
+                frames = work / "frames" / cfg.stem
                 t = time.time()
                 try:
                     n = pool.render(cfg, frames)
@@ -70,13 +107,15 @@ def main():
             cfg, frames = item
             if frames is None:
                 continue
-            gif = out / f"{cfg.stem}.gif"
-            extra = ["--scale", scale] if scale else []
+            d = dest(cfg)
+            d.mkdir(parents=True, exist_ok=True)
+            gif = d / f"{cfg.stem}.gif"
+            extra = ["--scale", SCALE]
             gif.unlink(missing_ok=True)
             if run([HERE / "make_gif.py", cfg, frames, gif] + extra, f"build {cfg.stem}", gif):
                 shiny = cfg.with_name(cfg.stem + "_shiny.json")
                 if shiny.exists():
-                    sgif = out / f"{shiny.stem}.gif"
+                    sgif = d / f"{shiny.stem}.gif"
                     sgif.unlink(missing_ok=True)
                     run([HERE / "palette_swap.py", cfg, shiny, gif, sgif] + extra, f"shiny {shiny.stem}", sgif)
             if not keep:

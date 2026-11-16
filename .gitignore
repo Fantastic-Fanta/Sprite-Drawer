@@ -1,5 +1,7 @@
-# Game models and textures (ripped, not ours to redistribute): keep them locally next to the
-# configs that point at them
+# models/<pokemon>/ is tracked for its configs and model-prep scripts only. Everything else in it
+# stays local: the ripped model and textures (not ours to redistribute), references, prep output,
+# scratch, working notes
+models/*/*/
 *.blend
 *.blend1
 *.dae
@@ -7,56 +9,26 @@
 *.obj
 *.mtl
 *.glb
-lapras-model/Lapras/Textures/
-lapras-model/Lapras/Shiny/
-dragalge-model/MegaDragalge/
-glimmora-model/MegaGlimmora/
-golisopod-model/MegaGolisopod/
+*.png
+!sprites/overview.png
+models/*/_*.json
+models/*/*.v[0-9]*.*
+models/*/gen*.py
+models/*/fix_shiny.py
+models/*/*.md
+models/*/motion.note
+models/mega-greninja-za/
 
-# Showdown reference frames and the silhouettes / encodings made from them
-**/reference/
+# build output, render cache, regression data, Blender slot locks
+out/
+.render_cache/
+.regress/
+.blender_slots/
 
-# Python / OS / tool clutter
+# tool clutter
 __pycache__/
 *.pyc
 .DS_Store
 .claude/
 *.patch
-
-# scratch configs from fit / motion trials
-*-model/_*.json
-
-# side-by-side comparisons with Showdown's frames
-*compare*.png
-*_before_after.png
-
-# regression data (renders of the models above)
-.regress/
-
-# render cache (render_parallel.py)
-.render_cache/
-
-# every model folder's subfolders (the ripped model, textures, references); configs sit at the top
-*-model/*/
-# machine-wide Blender slot locks (pipeline/blender_slot.py)
-.blender_slots/
-# build output (review GIFs, overnight runs); finished sprites go to final_sprites/
-out/
-
-# ripped textures dropped next to non "-model" configs
-mega-zygarde-za/textures/
-# scratch configs and debug renders
-mega-zygarde-za/_*.json
-*_check.png
 model-links.md
-
-# per-model working notes and pose generators: local only
-RIG.md
-REDO.md
-motion.note
-*-model/gen*.py
-*-model/fix_shiny.py
-*.v[0-9]*.json
-*.v[0-9]*.py
-*-model/scratch/
-mega-greninja-za-model/
