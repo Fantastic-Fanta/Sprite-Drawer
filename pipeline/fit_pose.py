@@ -1,19 +1,20 @@
 """Fit the pose + camera numbers in CONFIG.json to the reference Showdown frame.
 
 Run:
-  Blender -b MODEL.blend --python fit_pose.py -- CONFIG.json TMP_DIR [--restarts 30] [--seed 1]
+  Blender -b MODEL.blend --python fit_pose.py -- CONFIG.json TMP_DIR [--restarts 30] [--seed 1] [--local K]
 Updates CONFIG.json "pose_params" in place (the old values are kept in "pose_params_previous").
 
 Method (see SPRITE_PIPELINE.md, step 3):
   * Reference part map: every reference pixel's palette colour -> part (or outline).
-  * Ours: render the ID + colour passes at low resolution (no anti-aliasing), classify each
-    pixel into a part the same way sprite_style.py does, scale to the reference height.
+  * Ours: render the colour pass at low resolution (no anti-aliasing), classify each pixel
+    into a part the same way sprite_style.py does, scale to the reference height.
   * Score: best over small shifts of the share of the combined shape where both have the
     same part (reference outline pixels match anything). Matching parts, not just the
     outline, stops the fit cheating (e.g. turning the face away to fill the head shape).
   * Search: random starts inside the "fit" ranges, each refined by coordinate descent
     (nudge one number up/down, keep improvements, halve steps when stuck); the best start
-    is then refined further.
+    is then refined further. --local K: restarts start within K steps of the current pose instead
+    of anywhere in the ranges (for many numbers, where uniform random starts land far off).
 Runs inside Blender's Python (numpy only, no PIL).
 """
 import bpy, sys, json, os, random
@@ -69,11 +70,10 @@ ys, xs = np.nonzero(ref)
 ref = ref[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
 RH, RW = ref.shape
 
-# our part map, classified like sprite_style.prepare
-ORDER = [cfg["parts"]["default_material"]] + sorted(set(cfg["parts"]["materials"].values()))
-ID_RGB = np.array([(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1)], float)[:len(ORDER)]
-ALB_NAMES = list(cfg["parts"]["albedo"])
-ALB = np.array([hexrgb(cfg["parts"]["albedo"][k]) for k in ALB_NAMES], float) / 255
+# our part map: each pixel's texture colour -> the part of its nearest palette shade, as in
+# sprite_style.measure
+PAL = np.array([hexrgb(h) for shades in cfg["palette"]["parts"].values() for h in shades], float) / 255
+PAL_PART = np.array([i + 1 for i, shades in enumerate(cfg["palette"]["parts"].values()) for _ in shades])
 
 
 def render(kind):
@@ -88,32 +88,10 @@ def render(kind):
 def our_parts():
     g["place_camera"]()
     g["pose_at"](0.0)
-    ids, col = render("id"), render("color")
-    solid = ids[..., 3] > 0.5
-    which = np.argmin(((ids[..., None, :3] - ID_RGB) ** 2).sum(-1), -1)
-    nearest = np.argmin(((col[..., None, :3] - ALB) ** 2).sum(-1), -1)
-    out = np.zeros(solid.shape, int)
-    split = np.array([PARTS.index(n) + 1 for n in ALB_NAMES])
-    for i, name in enumerate(ORDER):
-        m = solid & (which == i)
-        if name in PARTS:
-            out[m] = PARTS.index(name) + 1
-        elif "|" in name:   # a material limited to some parts ("petal|teal"): nearest of those
-            allowed = [ALB_NAMES.index(k) for k in name.split("|")]
-            near_sub = np.array(allowed)[np.argmin(((col[..., None, :3] - ALB[allowed]) ** 2).sum(-1), -1)]
-            out[m] = split[near_sub[m]]
-        else:   # body / eye: split by texture colour
-            out[m] = split[nearest[m]]
-        if name == "eye":   # same rules as sprite_style: pupils -> outline, whites -> fixed colour's part
-            eye = cfg["parts"]["eye"]
-            lum = col[..., :3] @ np.array([0.3, 0.6, 0.1]) * 255
-            dark = m & (lum < eye["dark_below"])
-            white = m & ~dark & (nearest == ALB_NAMES.index(eye["white_is"]))
-            out[dark] = 9
-            light_part = eye["light"].split(":")[0]
-            if light_part in PARTS:
-                out[white] = PARTS.index(light_part) + 1
-    return out
+    col = render("color")
+    solid = col[..., 3] > 0.5
+    nearest = np.argmin(((col[..., None, :3] - PAL) ** 2).sum(-1), -1)
+    return np.where(solid, PAL_PART[nearest], 0)
 
 
 def score(ours):
@@ -128,8 +106,6 @@ def score(ours):
     small = crop[(np.arange(RH) * h // RH)[:, None], (np.arange(nw) * w // nw)[None, :]]
     W = max(RW, nw) + 12
     A = np.zeros((RH, W), int); A[:, 6:6 + RW] = ref
-    eye = cfg.get("landmarks", {}).get("eye")
-    ey, ex = np.nonzero(small == 9)               # our pupils (the only outline-coded pixels)
     best = -9.0
     for dx in range(-6, 7):
         if 6 + dx < 0 or 6 + dx + nw > W:
@@ -144,12 +120,6 @@ def score(ours):
             code = PARTS.index(pname) + 1
             pa, pb = A == code, B == code
             s += wgt * (pa & pb).sum() / max(1, (pa | pb).sum())
-        if eye:   # landmark: pull our eye centre to the reference's
-            if len(ex):
-                d = np.hypot(ex.mean() + dx - eye["ref_xy"][0], ey.mean() - eye["ref_xy"][1])
-            else:
-                d = 30.0                          # eye not visible at all
-            s -= eye["weight"] * d
         best = max(best, s)
     return best
 
@@ -188,8 +158,13 @@ def descend(params, budget, steps=None):
 start = {k: P[k] for k in SEARCH}
 results = [descend(start, 150)]
 print(f"FIT current pose -> {results[0][0]:.3f}")
+LOCAL = float(args[args.index("--local") + 1]) if "--local" in args else None
 for r in range(restarts):
-    trial = {k: round(random.uniform(lo, hi), 2) for k, (_, lo, hi) in SEARCH.items()}
+    if LOCAL:
+        trial = {k: round(min(hi, max(lo, start[k] + random.uniform(-LOCAL, LOCAL) * st)), 2)
+                 for k, (st, lo, hi) in SEARCH.items()}
+    else:
+        trial = {k: round(random.uniform(lo, hi), 2) for k, (_, lo, hi) in SEARCH.items()}
     results.append(descend(trial, 120))
     print(f"FIT start {r + 1:2d}/{restarts} -> {results[-1][0]:.3f}   best so far {max(x[0] for x in results):.3f}")
 best_score, best = max(results, key=lambda x: x[0])

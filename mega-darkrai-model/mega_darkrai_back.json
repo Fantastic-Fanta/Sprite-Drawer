@@ -1,0 +1,103 @@
+{
+  "name": "Mega Darkrai (back)",
+  "model": "MegaDarkrai/MegaDarkrai_idle.blend",
+  "reference": "reference/mega_darkrai_lpza_art.png",
+  "reference_source": "package.py: the front config (mega_darkrai_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#0f0f10",
+    "parts": {
+      "black": [
+        "#2b2b2d",
+        "#3a3a3c",
+        "#444446",
+        "#4c4c4e",
+        "#545456"
+      ],
+      "slate": [
+        "#4a4a55",
+        "#55555f",
+        "#5e5e68",
+        "#686873",
+        "#74747f"
+      ],
+      "red": [
+        "#e20058",
+        "#fc066c",
+        "#ff2676",
+        "#ff3980",
+        "#ff498b"
+      ],
+      "silver": [
+        "#c0c3c6",
+        "#d6d9dd",
+        "#e2e5e8",
+        "#edf1f4",
+        "#f9fcff"
+      ],
+      "eye": [
+        "#7a1270",
+        "#a8199a",
+        "#d01fb8",
+        "#e04ccc",
+        "#ec8ae4"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_b_03": "red",
+      "r_eye": "eye|black|silver",
+      "body_b_02": "black|slate|red",
+      "body_b_01": "black|slate",
+      "body_b_00": "black|slate"
+    },
+    "default_material": "body_a",
+    "match": "albedo",
+    "albedo": {
+      "black": "#4a4a4a",
+      "slate": "#5b5b64",
+      "red": "#fd006b",
+      "silver": "#d5dadd",
+      "eye": "#e020c0"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      1.042,
+      0.917
+    ],
+    "distance": 23.55,
+    "ortho_scale": 5.3,
+    "perspective_fov": "FOV",
+    "note": "azimuth 112 + style.mirror: the right eye only shows from the model's right-front"
+  },
+  "render": {
+    "width": 1600,
+    "height": 1600,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 292.0,
+    "ELEVATION": 12.0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 100,
+    "clip": "pm0491_51_00_20001_battlewait01_loop",
+    "note": "The game's own battle idle (pm0491_51_00_20001_battlewait01_loop from the user's animation pack, 241 frames at 60 fps = 240 steps = 4.000 s, frame 241 a copy of frame 1), moved onto a copy of the textured model (MegaDarkrai_idle.blend, move_clip.py; rig identical, 249/249 bones, 0 offset, 0 deg, object scale 1). smooth_steps.py eases 7 one-frame rotation pops baked into the clip (horn_a_04, left/right_horn_b_04) over 8 frames. 100 frames x 40 ms = 4.000 s, game speed (every 2.4 game frames; 30 ms would need 133.3 frames)."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 40,
+    "frame_anchor": "first",
+    "despeckle": 2,
+    "mirror": true
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "name": "Mega Greninja (back)",
+  "model": "MegaGreninja/MegaGreninja_za.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_greninja_front.json) with the camera turned round (azimuth + 180) and looking down from 16 deg",
+  "palette": {
+    "outline": "#110f10",
+    "parts": {
+      "water": [
+        "#3f799c",
+        "#548eb2",
+        "#5f99bd",
+        "#69a4c8",
+        "#74afd4"
+      ],
+      "black": [
+        "#1a1419",
+        "#2c242a",
+        "#352d33",
+        "#3e353c",
+        "#473e45"
+      ],
+      "pink": [
+        "#a95361",
+        "#c16875",
+        "#cc737f",
+        "#d87d8a",
+        "#e48894"
+      ],
+      "navy": [
+        "#141c64",
+        "#233079",
+        "#2b3a84",
+        "#34448f",
+        "#3c4e9a"
+      ],
+      "cream": [
+        "#c3bf81",
+        "#d9d697",
+        "#e5e1a2",
+        "#f0edad",
+        "#fcf9b9"
+      ],
+      "silver": [
+        "#a6bbc8",
+        "#bcd1df",
+        "#c7ddea",
+        "#d2e8f6",
+        "#def4ff"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_c_00": "water",
+      "r_eye": "pink|silver",
+      "l_eye": "pink|black|silver",
+      "body_b": "pink",
+      "body_a": "black|navy|silver|cream"
+    },
+    "default_material": "body_c_01",
+    "albedo": {
+      "water": "#548eb2",
+      "black": "#2c242a",
+      "pink": "#c16976",
+      "navy": "#233079",
+      "cream": "#d9d697",
+      "silver": "#bed3e0"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      1.48
+    ],
+    "distance": 23.23,
+    "ortho_scale": 4.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 800,
+    "hull": {
+      "thickness_px": 0.95,
+      "even": false,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 250.0,
+    "ELEVATION": 16.0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 67,
+    "clip": "pm0725_51_00_20001_battlewait01_loop",
+    "note": "The game's own idle from the official Legends Z-A pack (battlewait01_loop): hangs upside down from its spinning water shuriken. Played as-is, one loop of 48.4 frames at 24 fps (2.017 s) over 67 frames at 30 ms (2.010 s)."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

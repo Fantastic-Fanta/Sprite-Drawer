@@ -5,9 +5,9 @@ Run:  python3 -I make_shiny.py CONFIG.json SHINY.json [--keep-steps]
 stretches or clips a ramp that gets much brighter), keep the normal ramp's lightness steps.
 The shiny textures ("..._rare_alb ...") share the normal textures' UV layout, so each texture
 pixel can be compared directly: every pixel is assigned to a part (nearest albedo, limited by
-the material groups as in prepare()), and per part the mean colour change normal -> shiny is
+the material groups), and per part the mean colour change normal -> shiny is
 measured in linear light. Each palette shade of that part is moved by the same change, so the
-shade ramp (and every shading / line decision) stays exactly as tuned; only colours change.
+shade ramp stays as it is; only colours change.
 The outline stays (Showdown's shinies keep it). Writes render.texture_swap and parts.albedo.
 """
 import json
@@ -105,27 +105,15 @@ for k in names:
         report[k] = "too few texture pixels: colours kept"; continue
     ratio = (s_s / n + 1e-4) / (s_n / n + 1e-4)
     shiny_alb = np.clip(np.round(srgb(lin(alb[k]) * ratio)), 0, 255)
-    # a part's inner-line colour (palette.lines[part]) moves with the part, as the darkest step
-    line = [cfg["palette"]["lines"][k]] if k in cfg["palette"].get("lines", {}) else []
     if KEEP_STEPS:
-        ramp = keep_steps(line + cfg["palette"]["parts"][k], alb[k], shiny_alb)
+        ramp = keep_steps(cfg["palette"]["parts"][k], alb[k], shiny_alb)
     else:
         ramp = ["#%02x%02x%02x" % tuple(np.clip(np.round(srgb(lin(hexrgb(h)) * ratio)), 0, 255).astype(int))
-                for h in line + cfg["palette"]["parts"][k]]
-    if line:
-        shiny_cfg["palette"]["lines"][k] = ramp[0]
-    shiny_cfg["palette"]["parts"][k] = ramp[len(line):]
+                for h in cfg["palette"]["parts"][k]]
+    shiny_cfg["palette"]["parts"][k] = ramp
     shiny_cfg["parts"]["albedo"][k] = "#%02x%02x%02x" % tuple(shiny_alb.astype(int))
     report[k] = {"texture_px": n, "linear_ratio": [round(float(v), 3) for v in ratio], "palette": shiny_cfg["palette"]["parts"][k]}
 shiny_cfg["render"]["texture_swap"] = swap
-q = shiny_cfg.get("qa", {})
-# brightness mix: checked on the normal sprite only. The shiny is an exact recolour of it with the
-# brightness steps kept (palette_swap.py); its overall brightness comes from the game's shiny
-# textures, not from shading choices (Showdown's own back / back-shiny Golisopod differ by 0.96)
-for k in ("tone_mix_l1", "tone_ref", "tone_ref_shiny"):
-    q.pop(k, None)
-# limits measured on Showdown's own shiny of the same animation, where there is one (qa_shiny)
-q.update(q.pop("qa_shiny", {}))
 shiny_cfg["name"] = cfg["name"] + " (shiny)"
 shiny_cfg["shiny_note"] = ("shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, "
                            "applied to every shade); geometry, motion, lighting and shading decisions identical to " + cfg_path.name)

@@ -1,0 +1,164 @@
+{
+  "name": "Mega Raichu Y (back)",
+  "model": "MegaRaichuY/MegaRaichuY_clip_shut.blend",
+  "reference": "reference/official_art.png",
+  "reference_source": "package.py: the front config (mega_raichu_y_front.json) with the camera turned round (azimuth + 180) and looking down from 20 deg",
+  "palette": {
+    "outline": "#0f0f0f",
+    "parts": {
+      "yellow": [
+        "#e2c000",
+        "#f9d700",
+        "#ffe328",
+        "#ffee3c",
+        "#fffa4d"
+      ],
+      "gold": [
+        "#d88e00",
+        "#f0a400",
+        "#fcaf21",
+        "#ffbb34",
+        "#ffc644"
+      ],
+      "brown": [
+        "#4a3111",
+        "#5d4324",
+        "#674d2d",
+        "#7a5e3f",
+        "#8c704f"
+      ],
+      "black": [
+        "#030303",
+        "#0e0e0e",
+        "#161616",
+        "#1e1e1e",
+        "#262626"
+      ],
+      "pink": [
+        "#985a5c",
+        "#af6f70",
+        "#ba797b",
+        "#efaaab",
+        "#ffbdbe"
+      ],
+      "white": [
+        "#d4d4d4",
+        "#ebebeb",
+        "#f7f7f7",
+        "#fcfcfc",
+        "#fcfcfc"
+      ],
+      "blue": [
+        "#0a4a60",
+        "#0d5f7c",
+        "#0f799c",
+        "#2a93b6",
+        "#4fb0cf"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_b_01": "yellow|brown",
+      "l_eye": "brown|white|black|blue",
+      "body_a_02": "pink",
+      "body_a_01": "gold|black",
+      "body_b_00": "yellow|brown|gold",
+      "r_eye": "brown|white|black|blue"
+    },
+    "default_material": "body_a_00",
+    "albedo": {
+      "yellow": "#fad700",
+      "gold": "#f1a501",
+      "brown": "#654a2b",
+      "black": "#0e0e0e",
+      "pink": "#c17f81",
+      "white": "#ececec",
+      "blue": "#0f799c"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      0.4,
+      0.55
+    ],
+    "distance": 17.55,
+    "ortho_scale": 3.1,
+    "perspective_fov": 30
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 245.0,
+    "ELEVATION": 20.0,
+    "JB": 0.015
+  },
+  "pose": [
+    [
+      "lower_jaw_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "left_lower_jaw_a_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "left_lower_jaw_b_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "left_lower_jaw_c_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "left_lower_jaw_d_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "right_lower_jaw_a_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "right_lower_jaw_b_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "right_lower_jaw_c_01",
+      "LOCY",
+      "JB"
+    ],
+    [
+      "right_lower_jaw_d_01",
+      "LOCY",
+      "JB"
+    ]
+  ],
+  "motion": {
+    "frames": 51,
+    "clip": "pm0026_52_00_00001_battlewait01_loop",
+    "plant": [],
+    "note": "Mega Raichu Y idles standing in its static pose (as in the rest pose and the Raichu X redo): the game's own battle idle for this form, pm0026_52_00_00001_battlewait01_loop from the user's Legends Z-A pack, played on the textured body copy (MegaRaichuY/MegaRaichuY_clip_shut.blend), no offset or scale, with the mouth damped and tucked so it reads shut (shut_mouth.py F=0.7 on the jaw and lip bones; JB 0.015 LOCY pushes the lower jaw and lower lips back into the head). Game speed: frames 1-62 at 60 fps = 1.017 s; 51 frames x 20 ms = 1.020 s, seamless loop."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 20,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

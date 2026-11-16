@@ -1,0 +1,141 @@
+{
+  "name": "Mega Raichu X (shiny) (back)",
+  "model": "MegaRaichuX/MegaRaichuX_anim.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_raichu_x_front.json) with the camera turned round (azimuth + 180) and looking down from 20 deg",
+  "palette": {
+    "outline": "#120f0d",
+    "parts": {
+      "yellow": [
+        "#ba8324",
+        "#d09a39",
+        "#e4b34b",
+        "#ebc368",
+        "#f0d189"
+      ],
+      "orange": [
+        "#c98e00",
+        "#e3a800",
+        "#f8c409",
+        "#f1d800",
+        "#f2ec37"
+      ],
+      "brown": [
+        "#3d2311",
+        "#51321c",
+        "#664329",
+        "#7c5536",
+        "#8f6746"
+      ],
+      "black": [
+        "#201e1a",
+        "#2e2a27",
+        "#383939",
+        "#433b38",
+        "#534c48"
+      ],
+      "white": [
+        "#a89f98",
+        "#c2b8b1",
+        "#d8cfc8",
+        "#e8ded7",
+        "#f6ece4"
+      ],
+      "cheek": [
+        "#ae9505",
+        "#c0a700",
+        "#d2b800",
+        "#e3c93b",
+        "#f4dc68"
+      ],
+      "iris": [
+        "#7a1a2a",
+        "#962134",
+        "#be2841",
+        "#d0405a",
+        "#e05a70"
+      ],
+      "glint": [
+        "#d2d2d2",
+        "#dfdfdf",
+        "#e6e6e6",
+        "#edeeed",
+        "#f2f2f2"
+      ],
+      "mouth": [
+        "#895848",
+        "#9f6e5c",
+        "#ba797c",
+        "#d8988f",
+        "#eeb6af"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "l_eye": "black|iris|glint",
+      "r_eye": "black|iris|glint",
+      "body_a_00": "yellow|orange|brown|black|white|cheek",
+      "body_b_02": "yellow|orange|brown|black|white|cheek|mouth",
+      "body_a_01": "yellow|orange|black",
+      "body_b_00": "yellow|orange|black",
+      "body_b_01": "yellow|orange|black"
+    },
+    "default_material": "body_c",
+    "albedo": {
+      "yellow": "#e4b34b",
+      "orange": "#f8c40a",
+      "brown": "#674329",
+      "black": "#393939",
+      "white": "#d9cfc8",
+      "cheek": "#d2b801",
+      "iris": "#be2841",
+      "glint": "#fdfdfd",
+      "mouth": "#eeb6af"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.1,
+      0.08
+    ],
+    "distance": 11.23,
+    "ortho_scale": 3.1,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0026_51_00_body_a_alb (Composite).png": "pm0026_51_00_body_a_rare_alb (Composite).png",
+      "pm0026_51_00_body_b_alb (Composite).png": "pm0026_51_00_body_b_rare_alb (Composite).png",
+      "pm0026_51_00_body_c_alb (Composite).png": "pm0026_51_00_body_c_rare_alb (Composite).png",
+      "pm0026_51_00_eye_alb (Composite).png": "pm0026_51_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 245.0,
+    "ELEVATION": 20.0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 50,
+    "clip": "pm0026_51_00_00001_battlewait01_loop",
+    "note": "The game's own grounded battle idle for Mega Raichu X: pm0026_51_00_00001_battlewait01_loop from the user's Legends Z-A pack (Mega Raichu X.fbx, 60 fps, frames 1-61 = 60 frames = 1.000 s), moved onto the textured sprite body without the glow shell (move_clip.py -> MegaRaichuX_anim.blend); it lands bone-for-bone (0.0000 gap, scale 1). It stands in the model's static pose (feet planted wide, arms out, tails up behind) and idles in place: the body bobs, the arms and ears bounce, the tails sway. No pose or extra motion in the config. 50 frames x 20 ms = 1.000 s, exactly the game's speed."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 20,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_raichu_x_front.json"
+}

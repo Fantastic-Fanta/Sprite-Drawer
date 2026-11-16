@@ -1,0 +1,312 @@
+{
+  "name": "Mega Excadrill",
+  "model": "MegaExcadrill/MegaExcadrill.blend",
+  "reference": null,
+  "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
+  "palette": {
+    "outline": "#0f0f0f",
+    "parts": {
+      "body": [
+        "#3a302d",
+        "#4a3f3b",
+        "#584d48",
+        "#675b56",
+        "#766a64"
+      ],
+      "marks": [
+        "#6e3634",
+        "#824341",
+        "#95504e",
+        "#a65d5a",
+        "#b56966"
+      ],
+      "red": [
+        "#c84a33",
+        "#e0553c",
+        "#fc6244",
+        "#fd7a5f",
+        "#fe927a"
+      ],
+      "steel": [
+        "#6e6f70",
+        "#9b9c9d",
+        "#b0b1b3",
+        "#c4c5c7",
+        "#d0d1d4"
+      ],
+      "white": [
+        "#c9c6c4",
+        "#d6d3d1",
+        "#e2e0de",
+        "#f0efee",
+        "#fdfdfd"
+      ],
+      "black": [
+        "#000000",
+        "#0b0b0b",
+        "#1a1a1a",
+        "#2a2a2a",
+        "#3a3a3a"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "r_eye": "black|white",
+      "l_eye": "black|white",
+      "body_a_00": "body|marks|red|steel|white|black",
+      "body_a_01": "body|marks|red|steel|white|black",
+      "body_a_02": "body|marks|red|steel|white|black",
+      "body_a_03": "body|marks|red|steel|white|black"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "body": "#584d48",
+      "marks": "#95504e",
+      "red": "#fc6244",
+      "steel": "#c4c5c7",
+      "white": "#e2e0de",
+      "black": "#0b0b0b"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      0.5
+    ],
+    "distance": 19.78,
+    "ortho_scale": 3.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 62.0,
+    "ELEVATION": 12,
+    "FOV": 30,
+    "BODY": 0,
+    "HEADP": -35.0,
+    "HEADY": -20.0,
+    "DRILL": -100.0,
+    "DRILLS": -20.0,
+    "RUP": 0.0,
+    "RFWD": 65.0,
+    "LUP": 0.0,
+    "LFWD": 105.0,
+    "RELB": 0,
+    "LELB": 0,
+    "LEGIN": 0,
+    "KNEE": 0,
+    "FOOT": 0,
+    "BR": 0.5,
+    "HB": 0.4,
+    "DRB": 0.6,
+    "LAB": 0.6,
+    "LEB": 0.6,
+    "RAB": 0.6,
+    "REB": 0.5,
+    "SH": 3.0,
+    "DIP": 0.008,
+    "SW": 0.006,
+    "LROLL": 180.0,
+    "RROLL": 180.0,
+    "DRY": 0.0,
+    "DRZ": 0.0,
+    "LELBD": 0.0
+  },
+  "pose": [
+    [
+      "spine",
+      "A:1,0,0",
+      "BODY"
+    ],
+    [
+      "feeler",
+      "A:1,0,0",
+      "DRILL"
+    ],
+    [
+      "feeler",
+      "A:0,0,1",
+      "DRILLS"
+    ],
+    [
+      "feeler",
+      "LOCY",
+      "DRY"
+    ],
+    [
+      "feeler",
+      "LOCZ",
+      "DRZ"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "HEADP"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HEADY"
+    ],
+    [
+      "left_arm_01",
+      "A:1,0,0",
+      "LROLL"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "-LUP"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,1",
+      "-LFWD"
+    ],
+    [
+      "right_arm_01",
+      "A:1,0,0",
+      "RROLL"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "RUP"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "RFWD"
+    ],
+    [
+      "left_arm_02_roll",
+      "A:0,0,1",
+      "-LELB"
+    ],
+    [
+      "right_arm_02_roll",
+      "A:0,0,1",
+      "RELB"
+    ],
+    [
+      "left_arm_02_roll",
+      "A:-0.5,0.87,0",
+      "-LELBD"
+    ],
+    [
+      "left_leg_01",
+      "A:0,1,0",
+      "LEGIN"
+    ],
+    [
+      "right_leg_01",
+      "A:0,1,0",
+      "-LEGIN"
+    ],
+    [
+      "left_leg_02",
+      "A:1,0,0",
+      "KNEE"
+    ],
+    [
+      "right_leg_02",
+      "A:1,0,0",
+      "KNEE"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "FOOT"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "FOOT"
+    ],
+    [
+      "spine",
+      "A:1,0,0",
+      "-BR*sin(4*pi*t)"
+    ],
+    [
+      "neck",
+      "A:1,0,0",
+      "-HB*0.5*sin(4*pi*t - 0.5)"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "-HB*sin(4*pi*t - 0.8)"
+    ],
+    [
+      "feeler",
+      "A:1,0,0",
+      "DRB*sin(4*pi*t - 1.0)"
+    ],
+    [
+      "left_arm_01",
+      "A:-1,0,0",
+      "LAB*sin(4*pi*t - 0.8)"
+    ],
+    [
+      "left_arm_02_roll",
+      "A:-1,0,0",
+      "LEB*sin(4*pi*t - 1.2)"
+    ],
+    [
+      "right_arm_01",
+      "A:-1,0,0",
+      "RAB*sin(4*pi*t - 0.9)"
+    ],
+    [
+      "right_arm_02_roll",
+      "A:-1,0,0",
+      "REB*sin(4*pi*t - 1.3)"
+    ],
+    [
+      "left_horn_02",
+      "A:0,1,0",
+      "-SH*sin(4*pi*t - 1.1)"
+    ],
+    [
+      "right_horn_02",
+      "A:0,1,0",
+      "SH*sin(4*pi*t - 1.1)"
+    ],
+    [
+      "origin",
+      "LOCZ",
+      "-DIP*sin(4*pi*t - 0.3)"
+    ],
+    [
+      "origin",
+      "LOCX",
+      "SW*sin(2*pi*t)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "heavy drill-armoured mole braced to charge (HOME / official art stance: body turned to its right, both arm blades held forward together as one drill, the head drill raised forward-up over the face, the big back drill laid back over its shoulders): slow guarded breathing, 2 breaths in 120 frames. The chest lifts (spine BR) and the body dips with each breath (DIP); the head drill nods a beat later, the arm drill rises a little later still with its tip lagging most; the heavy back drill settles last and least. The weight shifts side to side once a loop (SW); the feet stay planted (motion.plant) and the short legs bend under the dip; the shoulder spikes follow.",
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

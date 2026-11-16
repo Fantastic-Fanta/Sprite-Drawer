@@ -1,0 +1,464 @@
+{
+  "name": "Mega Meowstic",
+  "model": "MegaMeowstic/MegaMeowstic.blend",
+  "reference": null,
+  "reference_source": "reference/mega_male.png, mega_female.png (Legends Z-A in-game renders, rotomlabs.net)",
+  "palette": {
+    "outline": "#091019",
+    "parts": {
+      "silver": [
+        "#afafae",
+        "#c5c5c4",
+        "#d0d0d0",
+        "#dbdcdb",
+        "#e7e7e6"
+      ],
+      "blue": [
+        "#2c4b74",
+        "#3f5f89",
+        "#496994",
+        "#52739e",
+        "#5c7ea9"
+      ],
+      "mark": [
+        "#8e9250",
+        "#b1b67d",
+        "#d2d672",
+        "#eff070",
+        "#fcfc6d"
+      ],
+      "eye": [
+        "#4f9fb4",
+        "#62b4c8",
+        "#72c3d7",
+        "#86d0e1",
+        "#9cdcea"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "l_eye_a": "eye",
+      "r_eye_a": "eye",
+      "eye_b": "mark",
+      "body_b": "silver|blue",
+      "body_a": "silver|blue"
+    },
+    "default_material": "body_a",
+    "albedo": {
+      "silver": "#c6c6c6",
+      "blue": "#40608a",
+      "mark": "#d2d672",
+      "eye": "#72c3d7"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      0.38
+    ],
+    "distance": 7.61,
+    "ortho_scale": 2.3,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 70,
+    "ELEVATION": 12,
+    "FOV": 30,
+    "TX": 0.0,
+    "TZ": 0.38,
+    "OS": 2.3,
+    "ARMD": 25.0,
+    "ARMF": 28.0,
+    "ELBF": 15.0,
+    "ELBD": 30.0,
+    "HDT": 4,
+    "HDU": 4,
+    "LEGB": 6,
+    "LEGS": 4,
+    "FOOTP": 25,
+    "TAD": 68.0,
+    "TAC": 15.0,
+    "TAS": -22.0,
+    "TBD": 72.0,
+    "TBC": 38.0,
+    "TBS": 10.0,
+    "EARO": 0,
+    "BOB": 0.015,
+    "SPB": 1.5,
+    "HB": 2.0,
+    "EB": 2.5,
+    "EB2": 3.0,
+    "AB": 1.5,
+    "EBW": 4.0,
+    "LB": 3.0,
+    "LB2": 3.0,
+    "HRB": 3.0,
+    "HRB2": 3.0,
+    "CB": 3.0,
+    "SKB": 3.0,
+    "TS1": 4.0,
+    "TS2": 3.5,
+    "TF": 1.5,
+    "TAM": 0.75,
+    "TBM": 1.3
+  },
+  "pose": [
+    [
+      "head",
+      "A:0,-1,0",
+      "HDT"
+    ],
+    [
+      "head",
+      "A:-1,0,0",
+      "HDU"
+    ],
+    [
+      "left_arm_01",
+      "A:0.03,-1.00,0",
+      "-ARMD"
+    ],
+    [
+      "right_arm_01",
+      "A:-0.03,-1.00,0",
+      "ARMD"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,1",
+      "-ARMF"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,-1",
+      "-ARMF"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-ELBF"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,-1",
+      "-ELBF"
+    ],
+    [
+      "left_arm_02",
+      "A:-0.03,-1.00,0",
+      "-ELBD"
+    ],
+    [
+      "right_arm_02",
+      "A:0.03,-1.00,0",
+      "ELBD"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "LEGB"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "LEGB"
+    ],
+    [
+      "left_leg_01",
+      "A:0,1,0",
+      "-LEGS"
+    ],
+    [
+      "right_leg_01",
+      "A:0,1,0",
+      "LEGS"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "FOOTP"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "FOOTP"
+    ],
+    [
+      "left_ear_01",
+      "A:0,1,0",
+      "EARO"
+    ],
+    [
+      "right_ear_01",
+      "A:0,1,0",
+      "-EARO"
+    ],
+    [
+      "tail_a_01",
+      "A:1,0,0",
+      "-TAD"
+    ],
+    [
+      "tail_a_01",
+      "A:0,1,0",
+      "TAS"
+    ],
+    [
+      "tail_a_03",
+      "A:0,1,0",
+      "TAC*0.2"
+    ],
+    [
+      "tail_a_04",
+      "A:0,1,0",
+      "TAC*0.5"
+    ],
+    [
+      "tail_a_05",
+      "A:0,1,0",
+      "TAC*0.8"
+    ],
+    [
+      "tail_a_06",
+      "A:0,1,0",
+      "TAC*1.0"
+    ],
+    [
+      "tail_a_07",
+      "A:0,1,0",
+      "TAC*1.2"
+    ],
+    [
+      "tail_b_01",
+      "A:1,0,0",
+      "-TBD"
+    ],
+    [
+      "tail_b_01",
+      "A:0,1,0",
+      "TBS"
+    ],
+    [
+      "tail_b_02",
+      "A:0,1,0",
+      "TBC*0.2"
+    ],
+    [
+      "tail_b_03",
+      "A:0,1,0",
+      "TBC*0.6"
+    ],
+    [
+      "tail_b_04",
+      "A:0,1,0",
+      "TBC*1.0"
+    ],
+    [
+      "tail_b_05",
+      "A:0,1,0",
+      "TBC*1.4"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "BOB*sin(2*pi*t)"
+    ],
+    [
+      "spine",
+      "A:-1,0,0",
+      "SPB*sin(2*pi*t - 0.6)"
+    ],
+    [
+      "head",
+      "A:-1,0,0",
+      "-HB*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "left_ear_01",
+      "A:-1,0,0",
+      "EB*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "right_ear_01",
+      "A:-1,0,0",
+      "EB*sin(2*pi*t - 1.6)"
+    ],
+    [
+      "left_ear_02",
+      "A:-1,0,0",
+      "EB2*sin(2*pi*t - 1.9)"
+    ],
+    [
+      "right_ear_02",
+      "A:-1,0,0",
+      "EB2*sin(2*pi*t - 2.1)"
+    ],
+    [
+      "left_arm_01",
+      "A:0.03,-1.00,0",
+      "AB*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "right_arm_01",
+      "A:-0.03,-1.00,0",
+      "-AB*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-EBW*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,-1",
+      "-EBW*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "LB*sin(2*pi*t - 1.2)"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "LB*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "LB2*sin(2*pi*t - 1.8)"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "LB2*sin(2*pi*t - 2.1)"
+    ],
+    [
+      "feeler_i",
+      "A:-1,0,0",
+      "HRB*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "feeler_j_02",
+      "A:-1,0,0",
+      "HRB2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "feeler_k_02",
+      "A:0,1,0",
+      "HRB2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "feeler_l_02",
+      "A:0,0,1",
+      "HRB2*sin(2*pi*t - 2.1)"
+    ],
+    [
+      "feeler_g_02",
+      "A:0,0,1",
+      "HRB2*sin(2*pi*t - 1.9)"
+    ],
+    [
+      "feeler_h_02",
+      "A:0,0,1",
+      "HRB2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "feeler_b_04",
+      "A:0,0,1",
+      "-HRB2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "feeler_c_01",
+      "A:-1,0,0",
+      "CB*sin(2*pi*t - 1.3)"
+    ],
+    [
+      "feeler_d_01",
+      "A:-1,0,0",
+      "CB*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "feeler_e_02",
+      "A:0,1,0",
+      "CB*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "feeler_m",
+      "A:0,1,0",
+      "-SKB*sin(2*pi*t - 1.3)"
+    ],
+    [
+      "feeler_n",
+      "A:0,1,0",
+      "-SKB*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "feeler_o",
+      "A:0,1,0",
+      "SKB*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "tail_a_01",
+      "A:0,1,0",
+      "TAM*TS1*sin(2*pi*t - 1.2)"
+    ],
+    [
+      "tail_a_03",
+      "A:0,1,0",
+      "TAM*TS2*sin(2*pi*t - 1.7)"
+    ],
+    [
+      "tail_a_05",
+      "A:0,1,0",
+      "TAM*TS2*sin(2*pi*t - 2.2)"
+    ],
+    [
+      "tail_a_07",
+      "A:0,1,0",
+      "TAM*TF*sin(2*2*pi*t - 2.6)"
+    ],
+    [
+      "tail_b_01",
+      "A:0,1,0",
+      "TBM*-TS1*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "tail_b_02",
+      "A:1,0,0",
+      "TBM*TS2*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "tail_b_03",
+      "A:0,1,0",
+      "TBM*-TS2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "tail_b_05",
+      "A:0,1,0",
+      "TBM*-TF*sin(2*2*pi*t - 2.5)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Mega Meowstic floats on its psychic power (Z-A render: legs dangling, two long tails hanging and curling below): nothing touches the ground, so nothing is planted. One driver: a slow hover bob, one per 3.6 s loop. The chest and head follow a beat later, then the big ears, arms and dangling legs; the light hair strands, collar and hip flaps lag more, and the two tails sway slowest and most, their tips last with a small flutter."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

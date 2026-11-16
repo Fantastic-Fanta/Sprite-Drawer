@@ -1,0 +1,516 @@
+{
+  "name": "Mega Pyroar (back)",
+  "model": "MegaPyroar/MegaPyroar.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_pyroar_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#120f0e",
+    "parts": {
+      "red": [
+        "#bc1b28",
+        "#d5393d",
+        "#e14647",
+        "#ee5252",
+        "#fb5e5c"
+      ],
+      "brown": [
+        "#4a3d3a",
+        "#5d504c",
+        "#675a56",
+        "#71635f",
+        "#7b6d69"
+      ],
+      "tan": [
+        "#b19161",
+        "#c7a776",
+        "#d3b281",
+        "#debd8b",
+        "#eac896"
+      ],
+      "yellow": [
+        "#d0bb3d",
+        "#e7d257",
+        "#f3de64",
+        "#fee970",
+        "#fff57c"
+      ],
+      "eye": [
+        "#9b6a6b",
+        "#b17f80",
+        "#bc898a",
+        "#ffdfdf",
+        "#ffebeb"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a": "brown|tan|red",
+      "eye": "eye",
+      "body_a_01": "brown",
+      "l_eye": "brown|eye",
+      "body_a_00": "brown|tan",
+      "r_eye": "brown|eye",
+      "body_a_02": "brown|tan"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "red": "#d5393d",
+      "brown": "#5d504c",
+      "tan": "#c7a776",
+      "yellow": "#e7d257",
+      "eye": "#d4a0a0"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.824,
+      1.721
+    ],
+    "distance": 20.7,
+    "ortho_scale": 4.658,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 230.0,
+    "ELEVATION": 12.0,
+    "FOV": 30,
+    "FK": 6,
+    "RK": 6,
+    "FSPL": 4,
+    "RSPL": 3,
+    "BODYZ": -0.01,
+    "NK": -6.0,
+    "HD": 2.0,
+    "HYAW": 14,
+    "HROLL": 0,
+    "JAW": 26.0,
+    "MB": 3.0,
+    "MC": 9,
+    "TL": 22,
+    "TC": 10,
+    "CYC": 2,
+    "PH": 2.77,
+    "DIP": 0.006,
+    "BR": 1.2,
+    "NB": 1.0,
+    "HB": 0.0,
+    "JB": 0.0,
+    "SW": 0.004,
+    "MS": 1.2,
+    "FL": 1.3,
+    "TW": 1.3,
+    "TB": 3.0,
+    "FB": 3.0,
+    "FA": 1.5
+  },
+  "pose": [
+    [
+      "waist",
+      "LOCZ",
+      "BODYZ + DIP*sin((2*pi*CYC*t + PH) - 0.3)"
+    ],
+    [
+      "waist",
+      "LOCX",
+      "SW*sin(2*pi*t)"
+    ],
+    [
+      "left_arm_01",
+      "A:1.00,0.00,0.00",
+      "FK"
+    ],
+    [
+      "left_arm_02",
+      "A:1.00,0.00,0.00",
+      "-2*FK"
+    ],
+    [
+      "left_hand",
+      "A:1.00,0.00,0.00",
+      "FK"
+    ],
+    [
+      "right_arm_01",
+      "A:1.00,0.00,0.00",
+      "FK"
+    ],
+    [
+      "right_arm_02",
+      "A:1.00,0.00,0.00",
+      "-2*FK"
+    ],
+    [
+      "right_hand",
+      "A:1.00,0.00,0.00",
+      "FK"
+    ],
+    [
+      "left_arm_01",
+      "A:0.00,-1.00,0.00",
+      "FSPL"
+    ],
+    [
+      "left_hand",
+      "A:0.00,-1.00,0.00",
+      "-FSPL"
+    ],
+    [
+      "right_arm_01",
+      "A:0.00,-1.00,0.00",
+      "-FSPL"
+    ],
+    [
+      "right_hand",
+      "A:0.00,-1.00,0.00",
+      "FSPL"
+    ],
+    [
+      "left_leg_01",
+      "A:1.00,0.00,0.00",
+      "-RK"
+    ],
+    [
+      "left_leg_02",
+      "A:1.00,0.00,0.00",
+      "2*RK"
+    ],
+    [
+      "left_foot",
+      "A:1.00,0.00,0.00",
+      "-RK"
+    ],
+    [
+      "right_leg_01",
+      "A:1.00,0.00,0.00",
+      "-RK"
+    ],
+    [
+      "right_leg_02",
+      "A:1.00,0.00,0.00",
+      "2*RK"
+    ],
+    [
+      "right_foot",
+      "A:1.00,0.00,0.00",
+      "-RK"
+    ],
+    [
+      "left_leg_01",
+      "A:0.00,-1.00,0.00",
+      "RSPL"
+    ],
+    [
+      "left_toe",
+      "A:0.00,-1.00,0.00",
+      "-RSPL"
+    ],
+    [
+      "right_leg_01",
+      "A:0.00,-1.00,0.00",
+      "-RSPL"
+    ],
+    [
+      "right_toe",
+      "A:0.00,-1.00,0.00",
+      "RSPL"
+    ],
+    [
+      "spine_02",
+      "A:1.00,0.00,0.00",
+      "-BR*sin((2*pi*CYC*t + PH) - 0.4)"
+    ],
+    [
+      "neck_01",
+      "A:1.00,0.00,0.00",
+      "NK"
+    ],
+    [
+      "neck_02",
+      "A:1.00,0.00,0.00",
+      "NB*sin((2*pi*CYC*t + PH) - 0.8)"
+    ],
+    [
+      "head",
+      "A:1.00,0.00,0.00",
+      "HD + HB*sin((2*pi*CYC*t + PH) - 1.2)"
+    ],
+    [
+      "head",
+      "A:0.00,0.00,1.00",
+      "HYAW"
+    ],
+    [
+      "head",
+      "A:0.00,-1.00,0.00",
+      "HROLL"
+    ],
+    [
+      "lower_jaw",
+      "A:1.00,0.00,0.00",
+      "-JAW + JB*sin((2*pi*CYC*t + PH) - 1.571)"
+    ],
+    [
+      "tail_a_01",
+      "A:1.00,0.00,0.00",
+      "TL + TB*0.3*sin((2*pi*CYC*t + PH) - 1.0)"
+    ],
+    [
+      "tail_a_01",
+      "A:0.00,0.00,1.00",
+      "TB*sin(2*pi*t - 0.9)"
+    ],
+    [
+      "tail_a_02",
+      "A:1.00,0.00,0.00",
+      "TC*0.33 + TB*0.20*sin((2*pi*CYC*t + PH) - 1.2)"
+    ],
+    [
+      "tail_a_02",
+      "A:0.00,0.00,1.00",
+      "TB*0.30*sin(2*pi*t - 1.20)"
+    ],
+    [
+      "tail_a_03",
+      "A:1.00,0.00,0.00",
+      "TC*0.67 + TB*0.28*sin((2*pi*CYC*t + PH) - 1.5)"
+    ],
+    [
+      "tail_a_03",
+      "A:0.00,0.00,1.00",
+      "TB*0.40*sin(2*pi*t - 1.50)"
+    ],
+    [
+      "tail_a_04",
+      "A:1.00,0.00,0.00",
+      "TC*1.00 + TB*0.36*sin((2*pi*CYC*t + PH) - 1.7999999999999998)"
+    ],
+    [
+      "tail_a_04",
+      "A:0.00,0.00,1.00",
+      "TB*0.50*sin(2*pi*t - 1.80)"
+    ],
+    [
+      "tail_a_05",
+      "A:1.00,0.00,0.00",
+      "TC*1.33 + TB*0.44*sin((2*pi*CYC*t + PH) - 2.0999999999999996)"
+    ],
+    [
+      "tail_a_05",
+      "A:0.00,0.00,1.00",
+      "TB*0.60*sin(2*pi*t - 2.10)"
+    ],
+    [
+      "tail_a_06",
+      "A:1.00,0.00,0.00",
+      "TC*1.67 + TB*0.52*sin((2*pi*CYC*t + PH) - 2.4)"
+    ],
+    [
+      "tail_a_06",
+      "A:0.00,0.00,1.00",
+      "TB*0.70*sin(2*pi*t - 2.40)"
+    ],
+    [
+      "tail_a_07",
+      "A:1.00,0.00,0.00",
+      "TC*2.00 + TB*0.60*sin((2*pi*CYC*t + PH) - 2.7)"
+    ],
+    [
+      "tail_a_07",
+      "A:0.00,0.00,1.00",
+      "TB*0.80*sin(2*pi*t - 2.70)"
+    ],
+    [
+      "hair_a_01",
+      "A:-1.00,0.00,0.00",
+      "MB + MS*0.40*sin((2*pi*CYC*t + PH) - 1.5) + FL*0.00*(sin(6*pi*t - 0.5) + 0.4*sin(12*pi*t - 0.85))"
+    ],
+    [
+      "hair_a_01",
+      "A:0.00,-1.00,0.00",
+      "TW*0.10*(sin(4*pi*t - 1.1) + 0.4*sin(8*pi*t - 1.87))"
+    ],
+    [
+      "hair_a_02",
+      "A:-1.00,0.00,0.00",
+      "MC*0.40 + MS*0.55*sin((2*pi*CYC*t + PH) - 1.8) + FL*0.15*(sin(6*pi*t - 1.1) + 0.4*sin(12*pi*t - 1.87))"
+    ],
+    [
+      "hair_a_02",
+      "A:0.00,-1.00,0.00",
+      "TW*0.20*(sin(4*pi*t - 1.6) + 0.4*sin(8*pi*t - 2.72))"
+    ],
+    [
+      "hair_a_03",
+      "A:-1.00,0.00,0.00",
+      "MC*0.80 + MS*0.70*sin((2*pi*CYC*t + PH) - 2.1) + FL*0.30*(sin(6*pi*t - 1.7) + 0.4*sin(12*pi*t - 2.89))"
+    ],
+    [
+      "hair_a_03",
+      "A:0.00,-1.00,0.00",
+      "TW*0.30*(sin(4*pi*t - 2.1) + 0.4*sin(8*pi*t - 3.57))"
+    ],
+    [
+      "hair_a_04",
+      "A:-1.00,0.00,0.00",
+      "MC*1.20 + MS*0.85*sin((2*pi*CYC*t + PH) - 2.4) + FL*0.45*(sin(6*pi*t - 2.3) + 0.4*sin(12*pi*t - 3.91))"
+    ],
+    [
+      "hair_a_04",
+      "A:0.00,-1.00,0.00",
+      "TW*0.40*(sin(4*pi*t - 2.6) + 0.4*sin(8*pi*t - 4.42))"
+    ],
+    [
+      "hair_a_05",
+      "A:-1.00,0.00,0.00",
+      "MC*1.60 + MS*1.00*sin((2*pi*CYC*t + PH) - 2.7) + FL*0.60*(sin(6*pi*t - 2.9) + 0.4*sin(12*pi*t - 4.93))"
+    ],
+    [
+      "hair_a_05",
+      "A:0.00,-1.00,0.00",
+      "TW*0.50*(sin(4*pi*t - 3.1) + 0.4*sin(8*pi*t - 5.27))"
+    ],
+    [
+      "hair_a_06",
+      "A:-1.00,0.00,0.00",
+      "MC*2.00 + MS*1.15*sin((2*pi*CYC*t + PH) - 3.0) + FL*0.75*(sin(6*pi*t - 3.5) + 0.4*sin(12*pi*t - 5.95))"
+    ],
+    [
+      "hair_a_06",
+      "A:0.00,-1.00,0.00",
+      "TW*0.60*(sin(4*pi*t - 3.6) + 0.4*sin(8*pi*t - 6.12))"
+    ],
+    [
+      "left_hair_a_01",
+      "A:0.00,-1.00,0.00",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 0.0) + 0.4*sin(12*pi*t - 0.00))"
+    ],
+    [
+      "left_hair_a_02",
+      "A:0.00,-1.00,0.00",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 0.6) + 0.4*sin(12*pi*t - 1.02))"
+    ],
+    [
+      "right_hair_a_01",
+      "A:0.00,-1.00,0.00",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 1.3) + 0.4*sin(12*pi*t - 2.21))"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0.00,-1.00,0.00",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 1.9) + 0.4*sin(12*pi*t - 3.23))"
+    ],
+    [
+      "left_hair_b_01",
+      "A:0.09,-1.00,-0.01",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 2.1) + 0.4*sin(12*pi*t - 3.57))"
+    ],
+    [
+      "left_hair_b_02",
+      "A:0.09,-1.00,-0.01",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 2.7) + 0.4*sin(12*pi*t - 4.59))"
+    ],
+    [
+      "right_hair_b_01",
+      "A:-0.09,-1.00,-0.01",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 3.4) + 0.4*sin(12*pi*t - 5.78))"
+    ],
+    [
+      "right_hair_b_02",
+      "A:-0.09,-1.00,-0.01",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 4.0) + 0.4*sin(12*pi*t - 6.80))"
+    ],
+    [
+      "left_hair_c_01",
+      "A:0.22,-0.97,-0.02",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 4.2) + 0.4*sin(12*pi*t - 7.14))"
+    ],
+    [
+      "left_hair_c_02",
+      "A:0.22,-0.97,-0.02",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 4.8) + 0.4*sin(12*pi*t - 8.16))"
+    ],
+    [
+      "right_hair_c_01",
+      "A:-0.22,-0.97,-0.02",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 5.0) + 0.4*sin(12*pi*t - 8.50))"
+    ],
+    [
+      "right_hair_c_02",
+      "A:-0.22,-0.97,-0.02",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 5.6) + 0.4*sin(12*pi*t - 9.52))"
+    ],
+    [
+      "left_hair_d_01",
+      "A:-0.01,-0.99,0.10",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 0.7) + 0.4*sin(12*pi*t - 1.19))"
+    ],
+    [
+      "left_hair_d_02",
+      "A:-0.01,-0.99,0.10",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 1.2999999999999998) + 0.4*sin(12*pi*t - 2.21))"
+    ],
+    [
+      "right_hair_d_01",
+      "A:0.01,-0.99,0.10",
+      "MS*0.5*sin((2*pi*CYC*t + PH) - 1.6) + FL*0.6*(sin(6*pi*t - 2.6) + 0.4*sin(12*pi*t - 4.42))"
+    ],
+    [
+      "right_hair_d_02",
+      "A:0.01,-0.99,0.10",
+      "MS*0.8*sin((2*pi*CYC*t + PH) - 1.9) + FL*(sin(6*pi*t - 3.2) + 0.4*sin(12*pi*t - 5.44))"
+    ],
+    [
+      "left_feeler_a",
+      "A:0.00,-1.00,0.00",
+      "FA*sin((2*pi*CYC*t + PH) - 1.6)"
+    ],
+    [
+      "right_feeler_a",
+      "A:0.00,-1.00,0.00",
+      "-FA*sin((2*pi*CYC*t + PH) - 1.7)"
+    ],
+    [
+      "left_feeler_b",
+      "A:0.00,-1.00,0.00",
+      "FB*sin((2*pi*CYC*t + PH) - 1.4)"
+    ],
+    [
+      "right_feeler_b",
+      "A:0.00,-1.00,0.00",
+      "-FB*sin((2*pi*CYC*t + PH) - 1.5)"
+    ],
+    [
+      "feeler",
+      "A:1.00,0.00,0.00",
+      "FB*sin((2*pi*CYC*t + PH) - 1.3)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "proud fire lion standing square on four planted paws, head up and mouth open as in the official art: slow deep breathing (2 breaths a loop) drives everything; the body dips a little and shifts its weight side to side once a loop, the legs bend under it; neck, head and jaw follow the chest a beat later; the tall flame-mane spire sways after the head, root to tip, and every mane flame adds a light fast flicker of its own; the curled tail sways a beat after the hips; fur tufts trail last",
+    "plant": [
+      "left_hand",
+      "right_hand",
+      "left_toe",
+      "right_toe"
+    ]
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

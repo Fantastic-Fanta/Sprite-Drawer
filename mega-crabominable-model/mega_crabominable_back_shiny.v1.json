@@ -1,0 +1,788 @@
+{
+  "name": "Mega Crabominable (shiny) (back)",
+  "model": "MegaCrabominable/MegaCrabominable.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_crabominable_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#0f0e17",
+    "parts": {
+      "fur": [
+        "#b6b7b6",
+        "#cccdcd",
+        "#d9d8d8",
+        "#e4e4e3",
+        "#efefef"
+      ],
+      "dark_fur": [
+        "#504b75",
+        "#635e8b",
+        "#6d6895",
+        "#7772a0",
+        "#817cab"
+      ],
+      "ice": [
+        "#38afd0",
+        "#53c5e7",
+        "#60d0f3",
+        "#6cdcfe",
+        "#77e8ff"
+      ],
+      "crystal": [
+        "#93675d",
+        "#ac7e74",
+        "#b98a7f",
+        "#c6948a",
+        "#d19e9b"
+      ],
+      "yellow": [
+        "#bd9263",
+        "#d5ab7a",
+        "#e1b687",
+        "#ecc292",
+        "#f7ce9d"
+      ],
+      "mouth": [
+        "#a06165",
+        "#b77679",
+        "#c28083",
+        "#ce8b8e",
+        "#d99699"
+      ],
+      "eye": [
+        "#b8b8b8",
+        "#cecfce",
+        "#dbdbdb",
+        "#e5e5e5",
+        "#f2f2f2"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "r_eye": "eye",
+      "l_eye": "eye",
+      "body_a_01": "ice",
+      "body_b_01": "ice",
+      "body_a_alb": "fur|yellow|crystal",
+      "body_b_alb": "fur|dark_fur|crystal|mouth"
+    },
+    "default_material": "body_b_00",
+    "albedo": {
+      "fur": "#d0cfcf",
+      "dark_fur": "#645f8c",
+      "ice": "#52c5e7",
+      "crystal": "#ad7d72",
+      "yellow": "#d8ae7e",
+      "mouth": "#b77679",
+      "eye": "#eeeeee"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      0.2,
+      2.05
+    ],
+    "distance": 34.7,
+    "ortho_scale": 5.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95
+    },
+    "texture_swap": {
+      "pm0860_51_00_body_a_01_alb (Composite).png": "pm0860_51_00_body_a_01_rare_alb (Composite).png",
+      "pm0860_51_00_body_a_alb (Composite).png": "pm0860_51_00_body_a_rare_alb (Composite).png",
+      "pm0860_51_00_body_b_01_alb (Composite).png": "pm0860_51_00_body_b_01_rare_alb (Composite).png",
+      "pm0860_51_00_body_b_alb (Composite).png": "pm0860_51_00_body_b_rare_alb (Composite).png",
+      "pm0860_51_00_eye_alb (Composite).png": "pm0860_51_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 250.0,
+    "ELEVATION": 12.0,
+    "FOV": 30,
+    "LEAN": 0,
+    "TURN": 0,
+    "NOD": 0,
+    "SH_UP": 6.0,
+    "SH_FWD": 20.0,
+    "ELB": 72.0,
+    "ELB_FWD": 0,
+    "WR": -8.0,
+    "WR_TWIST": 0,
+    "DIP": 0.04,
+    "BR": 1.5,
+    "HD": 2.0,
+    "ARM": 1.5,
+    "CLAW": 1.5,
+    "FUR": 2.0,
+    "TUFT": 3.0,
+    "FEEL": 4.0,
+    "LEGA": 3.0,
+    "JAW": 1.5,
+    "ANT": 3.0,
+    "KNEE": -15.0,
+    "KD": 7.0
+  },
+  "pose": [
+    [
+      "left_skirt_a",
+      "A:0.25,0.6,0.76",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_b",
+      "A:0.24,0.93,0.28",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_c",
+      "A:0.27,0.89,-0.37",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_d",
+      "A:0.21,0.47,-0.86",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_e",
+      "A:0.2,-0.03,-0.98",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_f",
+      "A:0.2,-0.56,-0.8",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_g",
+      "A:0.22,-0.97,-0.07",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_h",
+      "A:0.17,-0.78,0.6",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_skirt_i",
+      "A:0.2,-0.17,0.96",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_a",
+      "A:-0.25,0.6,0.76",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_b",
+      "A:-0.24,0.93,0.28",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_c",
+      "A:-0.28,0.89,-0.37",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_d",
+      "A:-0.21,0.47,-0.86",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_e",
+      "A:-0.2,-0.03,-0.98",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_f",
+      "A:-0.19,-0.56,-0.8",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_g",
+      "A:-0.22,-0.97,-0.07",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_h",
+      "A:-0.17,-0.78,0.6",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "right_skirt_i",
+      "A:-0.2,-0.17,0.96",
+      "TUFT*B(t-0.36)"
+    ],
+    [
+      "left_index",
+      "A:0,-1,0",
+      "CLAW*B(t-0.28)"
+    ],
+    [
+      "left_index",
+      "A:1,0,0",
+      "WR_TWIST"
+    ],
+    [
+      "right_index",
+      "A:0,1,0",
+      "CLAW*B(t-0.28)"
+    ],
+    [
+      "right_index",
+      "A:-1,0,0",
+      "WR_TWIST"
+    ],
+    [
+      "cloth_04",
+      "A:-0,-0.93,-0.36",
+      "1.5*FUR*B(t-0.38)"
+    ],
+    [
+      "horn_e_02",
+      "A:0.07,-0.72,-0.69",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "left_cloth_a_03",
+      "A:-0.47,-0.48,-0.74",
+      "1.25*FUR*B(t-0.33)"
+    ],
+    [
+      "right_cloth_a_03",
+      "A:0.47,-0.48,-0.74",
+      "1.25*FUR*B(t-0.33)"
+    ],
+    [
+      "left_cloth_b_03",
+      "A:-0.43,-0.76,-0.49",
+      "1.25*FUR*B(t-0.33)"
+    ],
+    [
+      "horn_f_02",
+      "A:-0.26,-0.69,-0.68",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "right_cloth_b_03",
+      "A:0.43,-0.76,-0.49",
+      "1.25*FUR*B(t-0.33)"
+    ],
+    [
+      "horn_d_02",
+      "A:0.4,-0.51,-0.76",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "left_hand",
+      "A:0,-1,0",
+      "WR"
+    ],
+    [
+      "right_hand",
+      "A:0,1,0",
+      "WR"
+    ],
+    [
+      "cloth_03",
+      "A:-0,-0.93,-0.38",
+      "1.25*FUR*B(t-0.33)"
+    ],
+    [
+      "horn_e_01",
+      "A:0.07,-0.72,-0.69",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "left_cloth_a_02",
+      "A:-0.47,-0.48,-0.74",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "right_cloth_a_02",
+      "A:0.47,-0.48,-0.74",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "left_cloth_b_02",
+      "A:-0.36,-0.73,-0.58",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "horn_f_01",
+      "A:-0.26,-0.69,-0.68",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "right_cloth_b_02",
+      "A:0.36,-0.73,-0.58",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "horn_d_01",
+      "A:0.4,-0.51,-0.76",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "horn_a_02",
+      "A:-0.43,-0.31,-0.84",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "horn_b_02",
+      "A:-0.11,-0.4,-0.91",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "horn_c_02",
+      "A:0.4,-0.24,-0.88",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "left_hair_03",
+      "A:0,1,0",
+      "1.2*ANT*B(t-0.32) + 0.25*ANT*sin(4*pi*(t-0.2))"
+    ],
+    [
+      "right_hair_03",
+      "A:0,1,0",
+      "1.2*ANT*B(t-0.32) + 0.25*ANT*sin(4*pi*(t-0.2))"
+    ],
+    [
+      "left_arm_02",
+      "A:0,-1,0",
+      "ELB - 0.6*ARM*B(t-0.2)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,-1",
+      "ELB_FWD"
+    ],
+    [
+      "right_arm_02",
+      "A:0,1,0",
+      "ELB - 0.6*ARM*B(t-0.2)"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,1",
+      "ELB_FWD"
+    ],
+    [
+      "cloth_02",
+      "A:-0,-0.66,-0.75",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "left_cloth_a_01",
+      "A:-0.53,-0.5,-0.69",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "right_cloth_a_01",
+      "A:0.53,-0.5,-0.69",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "left_cloth_b_01",
+      "A:-0.29,-0.68,-0.67",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "right_cloth_b_01",
+      "A:0.29,-0.68,-0.67",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "horn_a_01",
+      "A:-0.43,-0.31,-0.84",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "horn_b_01",
+      "A:-0.11,-0.4,-0.91",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "horn_c_01",
+      "A:0.4,-0.24,-0.88",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_a_02",
+      "A:-0.03,0.43,-0.9",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_b_02",
+      "A:-0.28,0.34,-0.9",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_c_02",
+      "A:-0.41,0.17,-0.89",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_d_02",
+      "A:-0.39,-0.04,-0.92",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_e_02",
+      "A:-0.28,-0.17,-0.94",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_f_02",
+      "A:-0.13,-0.4,-0.91",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_g_02",
+      "A:0.15,-0.36,-0.92",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_h_02",
+      "A:0.21,-0.23,-0.95",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_i_02",
+      "A:0.41,-0.07,-0.91",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_j_02",
+      "A:0.36,0.11,-0.92",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "hair_k_02",
+      "A:0.2,0.36,-0.91",
+      "1*FUR*B(t-0.28)"
+    ],
+    [
+      "left_hair_02",
+      "A:0,1,0",
+      "0.9*ANT*B(t-0.26) + 0.25*ANT*sin(4*pi*(t-0.1))"
+    ],
+    [
+      "right_hair_02",
+      "A:0,1,0",
+      "0.9*ANT*B(t-0.26) + 0.25*ANT*sin(4*pi*(t-0.1))"
+    ],
+    [
+      "jaw",
+      "A:-1,0,0",
+      "JAW*(0.5+0.5*B(t-0.16))"
+    ],
+    [
+      "left_arm_01",
+      "A:0,-1,0",
+      "SH_UP + ARM*B(t-0.12)"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,-1",
+      "SH_FWD"
+    ],
+    [
+      "left_feeler_a",
+      "A:0.97,0,-0.23",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_b",
+      "A:0.97,-0.24,-0.04",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_c",
+      "A:0.9,-0.39,0.18",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_d",
+      "A:0.89,-0.22,0.41",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_e",
+      "A:0.84,0,0.54",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_f",
+      "A:0.88,0.23,0.41",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_g",
+      "A:0.91,0.37,0.19",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_feeler_h",
+      "A:0.97,0.23,-0.03",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "left_leg_b_02",
+      "A:-0.45,0.89,0.07",
+      "-2*KNEE + 2*KD*(0.5+0.5*B(t))"
+    ],
+    [
+      "left_leg_a_02",
+      "A:-0.68,0.54,-0.5",
+      "0.6*LEGA*B(t-0.2)"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "SH_UP + ARM*B(t-0.12)"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "SH_FWD"
+    ],
+    [
+      "right_feeler_a",
+      "A:-0.97,0,-0.23",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_b",
+      "A:-0.97,-0.24,-0.04",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_c",
+      "A:-0.9,-0.39,0.18",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_d",
+      "A:-0.89,-0.22,0.41",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_e",
+      "A:-0.84,0,0.54",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_f",
+      "A:-0.88,0.23,0.41",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_g",
+      "A:-0.91,0.37,0.19",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_feeler_h",
+      "A:-0.97,0.23,-0.03",
+      "FEEL*B(t-0.22)"
+    ],
+    [
+      "right_leg_b_02",
+      "A:0.45,0.89,0.07",
+      "-2*KNEE + 2*KD*(0.5+0.5*B(t))"
+    ],
+    [
+      "right_leg_a_02",
+      "A:0.68,0.54,-0.5",
+      "0.6*LEGA*B(t-0.2)"
+    ],
+    [
+      "feeler_a_02",
+      "A:-0,-1,0.02",
+      "0.6*FEEL*B(t-0.26)"
+    ],
+    [
+      "cloth_01",
+      "A:-0,-0.73,-0.69",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_a_01",
+      "A:-0.03,0.45,-0.89",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_b_01",
+      "A:-0.29,0.36,-0.89",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_c_01",
+      "A:-0.38,0.16,-0.91",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_d_01",
+      "A:-0.39,-0.04,-0.92",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_e_01",
+      "A:-0.28,-0.17,-0.94",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_f_01",
+      "A:-0.11,-0.36,-0.93",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_g_01",
+      "A:0.12,-0.37,-0.92",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_h_01",
+      "A:0.21,-0.23,-0.95",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_i_01",
+      "A:0.41,-0.07,-0.91",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_j_01",
+      "A:0.36,0.11,-0.92",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "hair_k_01",
+      "A:0.2,0.36,-0.91",
+      "0.75*FUR*B(t-0.23)"
+    ],
+    [
+      "left_hair_01",
+      "A:0,1,0",
+      "0.6*ANT*B(t-0.2) + 0.25*ANT*sin(4*pi*(t-0))"
+    ],
+    [
+      "right_hair_01",
+      "A:0,1,0",
+      "0.6*ANT*B(t-0.2) + 0.25*ANT*sin(4*pi*(t-0))"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "NOD - HD*B(t-0.12)"
+    ],
+    [
+      "left_shoulder",
+      "A:0,-1,0",
+      "0.6*ARM*B(t-0.08)"
+    ],
+    [
+      "left_feeler_i",
+      "A:0.84,0.14,0.52",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "left_feeler_j",
+      "A:0.81,0.11,0.58",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "left_leg_b_01",
+      "A:-0.31,0.92,-0.24",
+      "KNEE - KD*(0.5+0.5*B(t))"
+    ],
+    [
+      "left_leg_a_01",
+      "A:-0.25,0.2,-0.94",
+      "LEGA*B(t-0.16)"
+    ],
+    [
+      "right_shoulder",
+      "A:0,1,0",
+      "0.6*ARM*B(t-0.08)"
+    ],
+    [
+      "right_feeler_i",
+      "A:-0.84,0.14,0.52",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "right_feeler_j",
+      "A:-0.81,0.11,0.58",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "right_leg_b_01",
+      "A:0.31,0.92,-0.24",
+      "KNEE - KD*(0.5+0.5*B(t))"
+    ],
+    [
+      "right_leg_a_01",
+      "A:0.25,0.2,-0.94",
+      "LEGA*B(t-0.16)"
+    ],
+    [
+      "feeler_a_01",
+      "A:-0,-0.99,0.12",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "feeler_b",
+      "A:0.13,-0.98,0.12",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "feeler_c",
+      "A:-0.34,-0.93,0.1",
+      "FEEL*B(t-0.2)"
+    ],
+    [
+      "waist",
+      "A:1,0,0",
+      "LEAN + BR*B(t-0.04)"
+    ],
+    [
+      "waist",
+      "A:0,0,1",
+      "TURN"
+    ],
+    [
+      "origin",
+      "LOCZ",
+      "-DIP*(0.5+0.5*B(t))"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Heavy furry crab boxer holding its huge ice pincers high in a guard (HOME stance): one slow breath per loop drives everything. The round body dips ~1-2 px on its two planted ice legs (the legs bend under it) and the chest rocks; the head and jaw follow a beat later; the heavy pincers sink and rise a little after the shoulders, the claw lagging the forearm; the dark fur fringe on the pincers, the shaggy back mane, the small chest feelers and the front leg spikes trail last; the light yellow antenna lags most with a small faster flutter.",
+    "functions": {
+      "B": "sin(2*pi*t)"
+    },
+    "plant": [
+      "left_foot_b",
+      "right_foot_b"
+    ]
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_crabominable_front.json"
+}

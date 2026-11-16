@@ -1,0 +1,120 @@
+{
+  "name": "Mega Feraligatr (shiny) (back)",
+  "model": "MegaFeraligatr/MegaFeraligatr_idle.blend",
+  "reference": null,
+  "reference_source": "Game idle from the user's Legends Z-A pack (pack/source/18916_autosave.glb); HOME render + official art (serebii, pokemondb) in reference/ for stance and camera",
+  "palette": {
+    "outline": "#1f0609",
+    "parts": {
+      "body": [
+        "#319484",
+        "#4bac9b",
+        "#82e3cd",
+        "#8deed8",
+        "#97fae3"
+      ],
+      "crest": [
+        "#546bba",
+        "#6c81d2",
+        "#788cdd",
+        "#8496e9",
+        "#8ea2f6"
+      ],
+      "scales": [
+        "#1a4959",
+        "#2f5b6d",
+        "#5f8da0",
+        "#6998a9",
+        "#73a2b4"
+      ],
+      "belly": [
+        "#cdb98a",
+        "#e3cfa0",
+        "#efdbab",
+        "#fbe6b6",
+        "#fff4c4"
+      ],
+      "mouth": [
+        "#73393f",
+        "#8a4c52",
+        "#b8767b",
+        "#ebb4b0",
+        "#fed2ce"
+      ],
+      "white": [
+        "#989898",
+        "#aeafae",
+        "#dcdddc",
+        "#eff0ef",
+        "#f2f2f2"
+      ],
+      "eye": [
+        "#250200",
+        "#b9671b",
+        "#ed9748",
+        "#f2aa58",
+        "#f4b661"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "_eye": "eye|white",
+      "body_a": "body|belly|mouth|white|scales",
+      "body_b": "crest|scales"
+    },
+    "default_material": "default",
+    "albedo": {
+      "body": "#7be2cc",
+      "crest": "#6b83d6",
+      "scales": "#588698",
+      "belly": "#ead39f",
+      "mouth": "#ecb4b0",
+      "white": "#e3e3e3",
+      "eye": "#ed9748"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      -0.3,
+      1.55
+    ],
+    "distance": 21.14,
+    "ortho_scale": 5.8,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1600,
+    "height": 1600,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0160_51_00_body_a_alb (Composite).png": "pm0160_51_00_body_a_rare_alb (Composite).png",
+      "pm0160_51_00_body_b_alb (Composite).png": "pm0160_51_00_body_b_rare_alb (Composite).png",
+      "pm0160_51_00_eye_alb (Composite).png": "pm0160_51_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 235.0,
+    "ELEVATION": 12.0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 54,
+    "clip": "pm0160_51_00_00001_battlewait01_loop",
+    "note": "Heavy crouched crocodile with a huge crest: the game's own battle idle (pm0160_51_00_00001_battlewait01_loop from the user's Legends Z-A pack, 18916_autosave.glb, 24 fps, frames 0.4-52.4 = 52 steps = 2.167 s, last frame a copy of the first), chosen over _10001_ because its pose matches the Mega HOME render / official art (crest fanned upright, arms bent with claws down, wide crouch); _10001_ holds the arms straight out and lets the crest hang back. Moved onto a copy of the textured model (MegaFeraligatr_idle.blend, move_clip.py; rest matrices identical, no scale keys, no object keys). No pose or motion in the config. 54 frames x 40 ms = 2.160 s, game speed within 0.3% (a 10 ms GIF delay step cannot hit 41.7 ms)."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 40,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_feraligatr_front.json"
+}

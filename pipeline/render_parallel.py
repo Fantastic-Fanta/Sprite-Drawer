@@ -7,13 +7,20 @@ In a script, RenderPool keeps the Blender processes up between sprites (build_al
 Blender starts and compiles its shaders once per process rather than once per sprite.
 Renders are cached (SPRITE_RENDER_CACHE: a folder, default .render_cache/ in the repo; 0 = off):
 a render whose inputs are unchanged - the config's render / camera / pose / motion / parts
-materials / fast_frames, the .blend and textures next to the model, the render scripts, Blender, the output
-format, the frames - is hard-linked from the cache instead of rendered again.
+materials, style.height
+and fast_frames (the hull's thickness and the motion timing), the .blend and textures next to the
+model, the render scripts, Blender, the output format, the frames - is hard-linked from the cache
+instead of rendered again.
 SPRITE_RENDER_CACHE_GB caps its size (default 20; oldest renders go first).
+A worker that prints nothing for SPRITE_RENDER_HANG_S seconds (default 180) is hung: it is killed,
+replaced, and its frames rendered again (up to RETRIES times).
+Each worker holds one of the machine's Blender slots (blender_slot.py) until the pool closes: with
+other renders already running, the pool waits for free slots rather than overloading the machine.
 """
 import hashlib
 import json
 import os
+import queue
 import shutil
 import subprocess
 import sys
@@ -22,10 +29,14 @@ import time
 from collections import deque
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import blender_slot  # noqa: E402
+
 BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
 HERE = Path(__file__).resolve().parent
-RENDER_SOURCES = ("render_sprite.py", "render_many.py", "linetrace.py", "motion.py")
-PASS_NAMES = {"color", "id", "data", "rest", "lines", "shadow", "seams", "islands"}
+RENDER_SOURCES = ("render_sprite.py", "render_many.py", "motion.py")
+PASS_NAMES = {"color", "id", "data", "hull"}
+RETRIES = 2          # restarts of a hung render worker (SPRITE_RENDER_HANG_S) before the render fails
 # files next to the model that a render can load: the .blend and image textures (configs, GIFs
 # and the like often share the folder and must not count)
 MODEL_FILES = {".blend", ".png", ".tga", ".jpg", ".jpeg", ".exr", ".tif", ".tiff", ".bmp", ".webp", ".hdr"}
@@ -39,9 +50,9 @@ def cache_dir():
 def render_key(cfg_path, cfg, frames):
     """hash of everything a render depends on (see the module docstring)"""
     h = hashlib.sha256()
-    parts = cfg.get("parts", {})
     used = {k: cfg.get(k) for k in ("render", "camera", "pose", "pose_params", "motion")}
-    used.update(materials=parts.get("materials"), default_material=parts.get("default_material"),
+    used.update(materials=cfg.get("parts", {}).get("materials"), default_material=cfg.get("parts", {}).get("default_material"),
+                height=cfg.get("style", {}).get("height"),
                 fast_frames=cfg.get("style", {}).get("fast_frames"), frames=frames,
                 format=os.environ.get("SPRITE_RENDER_FORMAT", "TGA").upper())
     h.update(json.dumps(used, sort_keys=True).encode())
@@ -98,6 +109,7 @@ class RenderPool:
         # processes already fill the cores (Blender's default, a thread per core each, costs ~12% more CPU)
         threads = threads or os.environ.get("SPRITE_RENDER_THREADS", "1")
         self.jobs, self.threads, self.procs = jobs, threads, None     # started on the first real render
+        self.slots = []
         self.next_id = 0
 
     def render(self, cfg_path, out, frames=None, cache=True):
@@ -130,34 +142,65 @@ class RenderPool:
             trim_cache(root)
         return n
 
+    def _spawn(self):
+        """one worker: the Blender process and a queue of its output lines (None when it exits),
+        read by a thread so a silent worker can be timed out"""
+        proc = subprocess.Popen([BLENDER, "-t", str(self.threads), "-b", "--python", str(HERE / "render_many.py"), "--", "--serve"],
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                text=True, bufsize=1)
+        lines = queue.Queue()
+
+        def pump():
+            for line in proc.stdout:
+                lines.put(line)
+            lines.put(None)
+        threading.Thread(target=pump, daemon=True).start()
+        return proc, lines
+
     def _render(self, cfg_path, cfg, out, frames):
         if self.procs is None:
-            jobs, threads = self.jobs, self.threads
-            self.procs = [subprocess.Popen([BLENDER, "-t", str(threads), "-b", "--python", str(HERE / "render_many.py"), "--", "--serve"],
-                                           stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                           text=True, bufsize=1) for _ in range(jobs)]
+            # a few frames need no more workers than frames (a 2-frame look shouldn't take the machine)
+            self.slots = blender_slot.acquire(min(self.jobs, len(frames)), f"render pool: {cfg_path.name}")
+            self.procs = [self._spawn() for _ in self.slots]
         out.mkdir(parents=True, exist_ok=True)
         n = len(self.procs)
         chunks = [frames[k::n] for k in range(n)]                          # interleaved: even load
         errors = []
+        # a worker silent this long is hung (seen: macOS's Metal shader cache deadlocking a worker at
+        # 0% CPU forever); it is killed, replaced, and its frames rendered again (at most RETRIES times)
+        hang = float(os.environ.get("SPRITE_RENDER_HANG_S", 180))
 
-        def one(proc, chunk, jid):
+        def one(k, chunk, jid):
             if not chunk:
                 return
-            proc.stdin.write(json.dumps({"id": jid, "model": str(cfg_path.parent / cfg["model"]), "config": str(cfg_path),
-                                         "out": str(out), "frames": ",".join(map(str, chunk))}) + "\n")
-            proc.stdin.flush()
-            log = deque(maxlen=40)
-            for line in proc.stdout:
-                if line.startswith(f"@@DONE {jid}"):
-                    return
-                if line.startswith(f"@@FAIL {jid}"):
-                    errors.append(line.split(" ", 2)[2].replace(" | ", "\n")); return
-                log.append(line)
-            errors.append("Blender exited:\n" + "".join(log))
+            for attempt in range(RETRIES + 1):
+                proc, lines = self.procs[k]
+                rid = f"{jid}.{attempt}"
+                proc.stdin.write(json.dumps({"id": rid, "model": str(cfg_path.parent / cfg["model"]), "config": str(cfg_path),
+                                             "out": str(out), "frames": ",".join(map(str, chunk))}) + "\n")
+                proc.stdin.flush()
+                log = deque(maxlen=40)
+                while True:
+                    try:
+                        line = lines.get(timeout=hang)
+                    except queue.Empty:
+                        break                                              # hung: retry below
+                    if line is None:
+                        errors.append("Blender exited:\n" + "".join(log)); return
+                    if line.startswith(f"@@DONE {rid}"):
+                        return
+                    if line.startswith(f"@@FAIL {rid}"):
+                        errors.append(line.split(" ", 2)[2].replace(" | ", "\n")); return
+                    log.append(line)
+                print(f"render worker {k} silent for {hang:.0f}s: restarting it ({attempt + 1}/{RETRIES})",
+                      file=sys.stderr, flush=True)
+                proc.kill()
+                proc.wait()
+                self.procs[k] = self._spawn()
+            errors.append(f"render worker {k} hung {RETRIES + 1} times (frames {chunk[:5]}...)")
 
         self.next_id += 1
-        ts = [threading.Thread(target=one, args=(p, c, f"{self.next_id}.{k}")) for k, (p, c) in enumerate(zip(self.procs, chunks))]
+        ts = [threading.Thread(target=one, args=(k, c, f"{self.next_id}.{k}")) for k, c in enumerate(chunks)]
         for t in ts:
             t.start()
         for t in ts:
@@ -167,10 +210,12 @@ class RenderPool:
         return len(frames)
 
     def close(self):
-        for p in self.procs or []:
+        for p, _ in self.procs or []:
             p.stdin.close()
-        for p in self.procs or []:
+        for p, _ in self.procs or []:
             p.wait()
+        blender_slot.release(self.slots)
+        self.slots = []
 
     def __enter__(self):
         return self

@@ -1,0 +1,105 @@
+{
+  "name": "Mega Garchomp Z (shiny) (back)",
+  "model": "MegaGarchompZ/MegaGarchompZ_idle.blend",
+  "reference": "reference/official_artwork.png",
+  "reference_source": "package.py: the front config (mega_garchomp_z_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
+  "palette": {
+    "outline": "#0f0f14",
+    "parts": {
+      "brown": [
+        "#3c3b43",
+        "#4f4e57",
+        "#585861",
+        "#62626b",
+        "#6c6b75"
+      ],
+      "red": [
+        "#c21c42",
+        "#d43955",
+        "#e04560",
+        "#ea526a",
+        "#f65d75"
+      ],
+      "silver": [
+        "#bab9b8",
+        "#d0d0ce",
+        "#dcdbdb",
+        "#e7e6e6",
+        "#f3f2f2"
+      ],
+      "gold": [
+        "#b8902a",
+        "#cfa644",
+        "#dab150",
+        "#e5bc5c",
+        "#f1c768"
+      ],
+      "mouth": [
+        "#a6686a",
+        "#be7c7f",
+        "#c8878a",
+        "#d49294",
+        "#e09d9e"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_01": "brown",
+      "l_eye": "brown|gold|mouth",
+      "r_eye": "brown|gold|mouth",
+      "body_a_00": "brown|red|gold|mouth"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "brown": "#515059",
+      "red": "#d63a57",
+      "silver": "#e6e4e4",
+      "gold": "#d5ab4a",
+      "mouth": "#bc7b7e"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.1,
+      0.45,
+      1.33
+    ],
+    "distance": 15.87,
+    "ortho_scale": 4.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0445_52_00_body_a_alb (Composite).png": "pm0445_52_00_body_a_rare_alb (Composite).png",
+      "pm0445_52_00_body_b_alb (Composite).png": "pm0445_52_00_body_b_rare_alb (Composite).png",
+      "pm0445_52_00_eye_alb (Composite).png": "pm0445_52_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 242.0,
+    "ELEVATION": 10.0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 139,
+    "clip": "pm0445_52_00.001|pm0445_52_00|pm0445_52_00_20001_battlewait01_loop",
+    "note": "the game's own idle (battlewait01_loop, 251 frames at 60 fps = 250 steps = 4.17 s) from the user's pack, moved onto the textured model: a levitating land shark holding itself up in the air, arm-blades spread and making small balancing strokes, tail swaying behind. 139 frames x 30 ms = 4.17 s, game speed (1.8 game frames per sprite frame, sub-frame sampled); no config pose on top"
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_garchomp_z_front.json"
+}

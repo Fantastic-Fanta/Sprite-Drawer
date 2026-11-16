@@ -1,0 +1,571 @@
+{
+  "name": "Mega Lucario Z",
+  "model": "MegaLucarioZ/MegaLucarioZ.blend",
+  "reference": null,
+  "reference_source": "pose by eye from reference/home_sprite.png and reference/official_art.png (Pok\u00e9pedia): HOME's raised-knee action pose turned into a planted guard stance (both feet down, fists up, paddles hanging behind, waist fur to its right side, tail fin down behind)",
+  "palette": {
+    "outline": "#0f0f11",
+    "parts": {
+      "teal": [
+        "#238390",
+        "#3e98a6",
+        "#4aa3b1",
+        "#55aebc",
+        "#61b9c7"
+      ],
+      "gray": [
+        "#45474c",
+        "#585a5f",
+        "#626369",
+        "#6c6d73",
+        "#76787e"
+      ],
+      "silver": [
+        "#939ea3",
+        "#a9b4b9",
+        "#b4bfc4",
+        "#c9d4d9",
+        "#dce8ed"
+      ],
+      "yellow": [
+        "#afb65e",
+        "#c5cc74",
+        "#d0d87f",
+        "#dbe38a",
+        "#e7ef96"
+      ],
+      "iris": [
+        "#1f4c6e",
+        "#2a648e",
+        "#2f80c0",
+        "#3099e4",
+        "#5cb4ee"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_02": "silver",
+      "body_a_03": "silver",
+      "r_eye": "iris|silver|gray",
+      "body_a_01": "teal|silver|gray",
+      "l_eye": "iris|silver|gray",
+      "body_a_00": "silver|gray"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "teal": "#409aa8",
+      "gray": "#595b61",
+      "silver": "#b1bcc1",
+      "yellow": "#cdd57c",
+      "iris": "#3099e4"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.2,
+      0.62
+    ],
+    "distance": 7.99,
+    "ortho_scale": 1.5,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 70,
+    "ELEVATION": 12,
+    "FOV": 30,
+    "LEAN": 6,
+    "NOD": 0.0,
+    "HDTURN": -4.0,
+    "UA_DOWN_L": 50.0,
+    "UA_FWD_L": 8.0,
+    "ELB_L": 90.0,
+    "UA_DOWN_R": 62,
+    "UA_FWD_R": 5.0,
+    "ELB_R": 95,
+    "FA_DROOP": 35.0,
+    "FA_CURL": 7,
+    "FA_SPLAY": 28.0,
+    "FB_DROOP": 30.0,
+    "FB_CURL": 9,
+    "TAIL_DROOP": 30,
+    "TAIL_SIDE": -35.0,
+    "HAIR_DROOP": 25.0,
+    "HAIR_BACK": -50.0,
+    "DIP": 0.01,
+    "BR": 1.6,
+    "ARM": 2.5,
+    "EAR": 2.0,
+    "FA": 1.4,
+    "FAF": 1.2,
+    "FB": 1.9,
+    "FBF": 2.0,
+    "TAILA": 1.8,
+    "HAIRA": 3.0,
+    "CLOTH": 3.0
+  },
+  "pose": [
+    [
+      "left_feeler_b_10",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 1.4*FB*B(t-0.52) + FBF*0.48*sin(4*pi*(t-0.56))"
+    ],
+    [
+      "right_feeler_b_10",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 1.4*FB*B(t-0.52) + FBF*0.48*sin(4*pi*(t-0.56))"
+    ],
+    [
+      "left_feeler_b_09",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 1.3*FB*B(t-0.49) + FBF*0.36*sin(4*pi*(t-0.53))"
+    ],
+    [
+      "right_feeler_b_09",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 1.3*FB*B(t-0.49) + FBF*0.36*sin(4*pi*(t-0.53))"
+    ],
+    [
+      "left_feeler_a_08",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 1.36*FA*B(t-0.48) + FAF*0.45*sin(4*pi*(t-0.53))"
+    ],
+    [
+      "left_feeler_b_08",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 1.2*FB*B(t-0.46) + FBF*0.24*sin(4*pi*(t-0.5))"
+    ],
+    [
+      "right_feeler_a_08",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 1.36*FA*B(t-0.48) + FAF*0.45*sin(4*pi*(t-0.53))"
+    ],
+    [
+      "right_feeler_b_08",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 1.2*FB*B(t-0.46) + FBF*0.24*sin(4*pi*(t-0.5))"
+    ],
+    [
+      "left_feeler_a_07",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 1.24*FA*B(t-0.445) + FAF*0.3*sin(4*pi*(t-0.495))"
+    ],
+    [
+      "left_feeler_b_07",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 1.1*FB*B(t-0.43) + FBF*0.12*sin(4*pi*(t-0.47))"
+    ],
+    [
+      "right_feeler_a_07",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 1.24*FA*B(t-0.445) + FAF*0.3*sin(4*pi*(t-0.495))"
+    ],
+    [
+      "right_feeler_b_07",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 1.1*FB*B(t-0.43) + FBF*0.12*sin(4*pi*(t-0.47))"
+    ],
+    [
+      "left_feeler_a_06",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 1.12*FA*B(t-0.41) + FAF*0.15*sin(4*pi*(t-0.46))"
+    ],
+    [
+      "left_feeler_b_06",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 1*FB*B(t-0.4)"
+    ],
+    [
+      "right_feeler_a_06",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 1.12*FA*B(t-0.41) + FAF*0.15*sin(4*pi*(t-0.46))"
+    ],
+    [
+      "right_feeler_b_06",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 1*FB*B(t-0.4)"
+    ],
+    [
+      "left_feeler_a_05",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 1*FA*B(t-0.375)"
+    ],
+    [
+      "left_feeler_b_05",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 0.9*FB*B(t-0.37)"
+    ],
+    [
+      "right_feeler_a_05",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 1*FA*B(t-0.375)"
+    ],
+    [
+      "right_feeler_b_05",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 0.9*FB*B(t-0.37)"
+    ],
+    [
+      "left_feeler_a_04",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 0.88*FA*B(t-0.34)"
+    ],
+    [
+      "left_feeler_b_04",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 0.8*FB*B(t-0.34)"
+    ],
+    [
+      "right_feeler_a_04",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 0.88*FA*B(t-0.34)"
+    ],
+    [
+      "right_feeler_b_04",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 0.8*FB*B(t-0.34)"
+    ],
+    [
+      "left_feeler_a_03",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 0.76*FA*B(t-0.305)"
+    ],
+    [
+      "left_feeler_b_03",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 0.7*FB*B(t-0.31)"
+    ],
+    [
+      "right_feeler_a_03",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 0.76*FA*B(t-0.305)"
+    ],
+    [
+      "right_feeler_b_03",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 0.7*FB*B(t-0.31)"
+    ],
+    [
+      "left_ear_02",
+      "A:1,0,0",
+      "EAR*B(t-0.24)"
+    ],
+    [
+      "right_ear_02",
+      "A:1,0,0",
+      "EAR*B(t-0.24)"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:-0.94,0.34,0",
+      "FA_CURL + 0.64*FA*B(t-0.27)"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:-0.98,0.17,0",
+      "FB_CURL + 0.6*FB*B(t-0.28)"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:-0.94,-0.34,0",
+      "FA_CURL + 0.64*FA*B(t-0.27)"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:-0.98,-0.17,0",
+      "FB_CURL + 0.6*FB*B(t-0.28)"
+    ],
+    [
+      "left_ear_01",
+      "A:1,0,0",
+      "EAR*B(t-0.18)"
+    ],
+    [
+      "right_ear_01",
+      "A:1,0,0",
+      "EAR*B(t-0.18)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,-1",
+      "ELB_L + ARM*B(t-0.16)"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,1",
+      "ELB_R + ARM*B(t-0.16)"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:-0.94,0.34,0",
+      "FA_DROOP + FA*B(t-0.2)"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:0,0,1",
+      "1*(-FA_SPLAY) + 1*0.5*FA*B(t-0.22)"
+    ],
+    [
+      "left_feeler_b_01",
+      "A:-0.98,0.17,0",
+      "FB_DROOP + FB*B(t-0.22)"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:-0.94,-0.34,0",
+      "FA_DROOP + FA*B(t-0.2)"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:0,0,1",
+      "-1*(-FA_SPLAY) + -1*0.5*FA*B(t-0.22)"
+    ],
+    [
+      "right_feeler_b_01",
+      "A:-0.98,-0.17,0",
+      "FB_DROOP + FB*B(t-0.22)"
+    ],
+    [
+      "tail_04",
+      "A:0,0,1",
+      "1.6*TAILA*B(t-0.36)"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "0.5*NOD - 0.4*BR*B(t-0.14)"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HDTURN"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "UA_DOWN_L - 0.6*ARM*B(t-0.12)"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,-1",
+      "UA_FWD_L + 0.5*ARM*B(t-0.12)"
+    ],
+    [
+      "right_arm_01",
+      "A:0,-1,0",
+      "UA_DOWN_R - 0.6*ARM*B(t-0.12)"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "UA_FWD_R + 0.5*ARM*B(t-0.12)"
+    ],
+    [
+      "center_cloth",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "left_cloth_b",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "right_cloth_b",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "left_cloth_c",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "right_cloth_c",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "left_cloth_d",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "right_cloth_d",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "left_cloth_e",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "right_cloth_e",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "tail_03",
+      "A:0,0,1",
+      "1.2*TAILA*B(t-0.31)"
+    ],
+    [
+      "hair_03",
+      "A:0,1,0",
+      "1.5*HAIRA*B(t-0.32)"
+    ],
+    [
+      "neck",
+      "A:1,0,0",
+      "0.5*NOD + 0.6*BR*B(t-0.1)"
+    ],
+    [
+      "left_shoulder",
+      "A:0,1,0",
+      "-0.5*ARM*B(t-0.08)"
+    ],
+    [
+      "right_shoulder",
+      "A:0,-1,0",
+      "-0.5*ARM*B(t-0.08)"
+    ],
+    [
+      "center_root_cloth",
+      "A:1,0,0",
+      "CLOTH*B(t-0.12)"
+    ],
+    [
+      "left_root_cloth",
+      "A:1,0,0",
+      "CLOTH*B(t-0.12)"
+    ],
+    [
+      "right_root_cloth",
+      "A:1,0,0",
+      "CLOTH*B(t-0.12)"
+    ],
+    [
+      "left_cloth_a",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "right_cloth_a",
+      "A:1,0,0",
+      "1.3*CLOTH*B(t-0.18)"
+    ],
+    [
+      "tail_02",
+      "A:0,0,1",
+      "TAILA*B(t-0.26)"
+    ],
+    [
+      "hair_02",
+      "A:0,1,0",
+      "1.2*HAIRA*B(t-0.27)"
+    ],
+    [
+      "spine_02",
+      "A:1,0,0",
+      "BR*B(t-0.04)"
+    ],
+    [
+      "tail_01",
+      "A:-1,0,0",
+      "TAIL_DROOP + 0.5*TAILA*B(t-0.22)"
+    ],
+    [
+      "tail_01",
+      "A:0,0,1",
+      "-TAIL_SIDE + TAILA*B(t-0.22)"
+    ],
+    [
+      "hair_01",
+      "A:0,-1,0",
+      "HAIR_DROOP + 0.7*HAIRA*B(t-0.22)"
+    ],
+    [
+      "hair_01",
+      "A:0,0,1",
+      "HAIR_BACK"
+    ],
+    [
+      "front_skirt",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "back_skirt",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "left_skirt_a",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "right_skirt_a",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "left_skirt_b",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "right_skirt_b",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "left_skirt_c",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "right_skirt_c",
+      "A:1,0,0",
+      "0.8*CLOTH*B(t-0.2)"
+    ],
+    [
+      "spine_01",
+      "A:1,0,0",
+      "LEAN + 0.4*BR*B(t-0)"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "0.5*DIP*B(t-0.02)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Disciplined aura fighter holding a guard: one slow breath per loop drives everything. Chest rises and the body dips ~1 px on planted ankles (legs bend under it); head and ears nod a beat later; fists rise and fall with the breath; the heavy black tail fin and the yellow waist fur sway after the hips; the long aura paddles and thin cords swing last and most, with a small faster flutter on their zigzag tips.",
+    "functions": {
+      "B": "sin(2*pi*t)"
+    },
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

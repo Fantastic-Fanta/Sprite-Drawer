@@ -1,0 +1,430 @@
+{
+  "name": "Mega Delphox",
+  "model": "MegaDelphox/MegaDelphox.blend",
+  "reference": null,
+  "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
+  "palette": {
+    "outline": "#120e12",
+    "parts": {
+      "fur": [
+        "#403240",
+        "#534453",
+        "#5c4e5d",
+        "#695a6a",
+        "#7b6b7b"
+      ],
+      "darkred": [
+        "#72150e",
+        "#892c22",
+        "#96392e",
+        "#a7483c",
+        "#bb5a4d"
+      ],
+      "red": [
+        "#bd3415",
+        "#d54c2f",
+        "#e2583a",
+        "#f4684a",
+        "#ff7c5d"
+      ],
+      "pink": [
+        "#d80041",
+        "#f22155",
+        "#ff345f",
+        "#ff436a",
+        "#ff5174"
+      ],
+      "gold": [
+        "#c8a644",
+        "#debd5b",
+        "#eac867",
+        "#f6d473",
+        "#ffdf7e"
+      ],
+      "white": [
+        "#b4b4b4",
+        "#cacaca",
+        "#d6d5d5",
+        "#e1e1e1",
+        "#edecec"
+      ],
+      "flame": [
+        "#dfcd31",
+        "#f6e450",
+        "#fff05e",
+        "#fffc6b",
+        "#ffff6f"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_03": "red",
+      "body_a_00": "gold|white",
+      "body_a_01": "fur|darkred",
+      "fire": "flame|red|pink",
+      "body_a_02": "red|darkred",
+      "l_eye": "pink|white",
+      "r_eye": "pink|white"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "fur": "#564756",
+      "darkred": "#983b2f",
+      "red": "#db5134",
+      "pink": "#f62858",
+      "gold": "#e1bf5e",
+      "white": "#cbcaca",
+      "flame": "#fdec59"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.45,
+      0.4
+    ],
+    "distance": 18.94,
+    "ortho_scale": 3.4,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 70,
+    "ELEVATION": 12,
+    "FOV": 30,
+    "ARMD": 35,
+    "ARMF": 25.0,
+    "ELBF": 30,
+    "ELBD": 15,
+    "SLV": 60.0,
+    "SLV2": 20,
+    "HAIRD": 25,
+    "HAIRB": 15,
+    "HDT": 0,
+    "HDU": 5.0,
+    "SBX": 1.0,
+    "SBY": -0.1,
+    "SBZ": 2.15,
+    "SBTX": -90,
+    "SBTY": 45,
+    "BIGT": 0,
+    "BDF": 6,
+    "BOB": 0.02,
+    "SPB": 1.5,
+    "HB": 1.5,
+    "AB": 3.0,
+    "EB": 3.0,
+    "SB": 5.0,
+    "SB2": 4.0,
+    "HRB": 2.5,
+    "HRB2": 2.0,
+    "TB": 3.0,
+    "TB2": 3.0,
+    "FB": 1.5,
+    "WBOB": 0.04,
+    "WROT": 4.0,
+    "FLK": 4.0,
+    "FLKS": 0.04
+  },
+  "pose": [
+    [
+      "head",
+      "A:0,-1,0",
+      "HDT"
+    ],
+    [
+      "head",
+      "A:-1,0,0",
+      "HDU"
+    ],
+    [
+      "left_arm_01",
+      "A:0.03,-1.00,0",
+      "-ARMD"
+    ],
+    [
+      "right_arm_01",
+      "A:-0.03,-1.00,0",
+      "ARMD"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,1",
+      "-ARMF"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,-1",
+      "-ARMF"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-ELBF"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,-1",
+      "-ELBF"
+    ],
+    [
+      "left_arm_02",
+      "A:-0.03,-1.00,0",
+      "-ELBD"
+    ],
+    [
+      "right_arm_02",
+      "A:0.03,-1.00,0",
+      "ELBD"
+    ],
+    [
+      "left_feeler_c_01",
+      "A:1,0,0",
+      "-SLV"
+    ],
+    [
+      "right_feeler_c_01",
+      "A:1,0,0",
+      "-SLV"
+    ],
+    [
+      "left_feeler_c_02",
+      "A:1,0,0",
+      "-SLV2"
+    ],
+    [
+      "right_feeler_c_02",
+      "A:1,0,0",
+      "-SLV2"
+    ],
+    [
+      "left_hair_e_01",
+      "A:0.26,-0.97,0",
+      "-HAIRD"
+    ],
+    [
+      "right_hair_e_01",
+      "A:-0.26,-0.97,0",
+      "HAIRD"
+    ],
+    [
+      "left_hair_e_01",
+      "A:0,0,1",
+      "HAIRB"
+    ],
+    [
+      "right_hair_e_01",
+      "A:0,0,-1",
+      "HAIRB"
+    ],
+    [
+      "feeler_a",
+      "A:0,0,1",
+      "BIGT"
+    ],
+    [
+      "feeler_d_01",
+      "A:-1,0,0",
+      "BDF"
+    ],
+    [
+      "feeler_b",
+      "X",
+      "SBTX"
+    ],
+    [
+      "feeler_b",
+      "Y",
+      "SBTY"
+    ],
+    [
+      "feeler_c",
+      "X",
+      "SBTX"
+    ],
+    [
+      "feeler_c",
+      "Y",
+      "-SBTY"
+    ],
+    [
+      "feeler_b",
+      "LOCX",
+      "SBX"
+    ],
+    [
+      "feeler_b",
+      "LOCY",
+      "SBY"
+    ],
+    [
+      "feeler_b",
+      "LOCZ",
+      "SBZ"
+    ],
+    [
+      "feeler_c",
+      "LOCX",
+      "-SBX"
+    ],
+    [
+      "feeler_c",
+      "LOCY",
+      "SBY"
+    ],
+    [
+      "feeler_c",
+      "LOCZ",
+      "SBZ+0.4"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "BOB*sin(2*pi*t)"
+    ],
+    [
+      "spine_02",
+      "A:-1,0,0",
+      "SPB*sin(2*pi*t - 0.6)"
+    ],
+    [
+      "head",
+      "A:-1,0,0",
+      "-HB*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "left_arm_01",
+      "A:0.03,-1.00,0",
+      "AB*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "right_arm_01",
+      "A:-0.03,-1.00,0",
+      "-AB*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "left_arm_02",
+      "A:-0.03,-1.00,0",
+      "EB*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "right_arm_02",
+      "A:0.03,-1.00,0",
+      "-EB*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "left_feeler_c_01",
+      "A:1,0,0",
+      "SB*sin(2*pi*t - 1.6)"
+    ],
+    [
+      "right_feeler_c_01",
+      "A:1,0,0",
+      "SB*sin(2*pi*t - 1.6)"
+    ],
+    [
+      "left_feeler_c_02",
+      "A:1,0,0",
+      "SB2*sin(2*pi*t - 2.1)"
+    ],
+    [
+      "right_feeler_c_02",
+      "A:1,0,0",
+      "SB2*sin(2*pi*t - 2.1)"
+    ],
+    [
+      "left_hair_e_01",
+      "A:0.26,-0.97,0",
+      "HRB*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "right_hair_e_01",
+      "A:-0.26,-0.97,0",
+      "-HRB*sin(2*pi*t - 1.5)"
+    ],
+    [
+      "left_hair_e_03",
+      "A:0.26,-0.97,0",
+      "HRB2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "right_hair_e_03",
+      "A:-0.26,-0.97,0",
+      "-HRB2*sin(2*pi*t - 2.0)"
+    ],
+    [
+      "tail_01",
+      "A:1,0,0",
+      "TB*sin(2*pi*t - 1.2)"
+    ],
+    [
+      "tail_02",
+      "A:1,0,0",
+      "TB2*sin(2*pi*t - 1.7)"
+    ],
+    [
+      "feeler_d_01",
+      "A:-1,0,0",
+      "FB*sin(2*pi*t - 1.2)"
+    ],
+    [
+      "feeler_b",
+      "LOCZ",
+      "WBOB*sin(2*pi*t - 1.8)"
+    ],
+    [
+      "feeler_c",
+      "LOCZ",
+      "WBOB*sin(2*pi*t - 0.6)"
+    ],
+    [
+      "feeler_b",
+      "Y",
+      "WROT*sin(2*pi*t - 2.2)"
+    ],
+    [
+      "feeler_c",
+      "Y",
+      "-WROT*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "horn_a_01",
+      "A:0,0,1",
+      "FLK*sin(3*2*pi*t)"
+    ],
+    [
+      "horn_a_02",
+      "A:1,0,0",
+      "FLK*sin(3*2*pi*t - 1.0)"
+    ],
+    [
+      "horn_d_01",
+      "A:0,0,1",
+      "FLK*sin(3*2*pi*t - 2.0)"
+    ],
+    [
+      "horn_e_01",
+      "A:0,0,1",
+      "FLK*sin(3*2*pi*t - 0.5)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Floating witch on a flaming broom-branch (Z-A render): no feet touch anything, so nothing is planted. One driver: a slow hover bob of the body and its branch, one per 3.6 s loop. The chest, head, then arms follow a beat later; the wizard sleeves, ear fur strands and robe tail lag most and move most. The two small wands drift on their own, offset, and the three flame tips flicker lightly at 3x the bob."
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

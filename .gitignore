@@ -33,8 +33,19 @@ __pycache__/
 # regression data (renders of the models above)
 .regress/
 
-# Rust build output
-pipeline/rust/target/
-
 # render cache (render_parallel.py)
 .render_cache/
+
+# every model folder's subfolders (the ripped model, textures, references); configs sit at the top
+*-model/*/
+# machine-wide Blender slot locks (pipeline/blender_slot.py)
+.blender_slots/
+# build output (review GIFs, overnight runs); finished sprites go to final_sprites/
+out/
+
+# ripped textures dropped next to non "-model" configs
+mega-zygarde-za/textures/
+# scratch configs and debug renders
+mega-zygarde-za/_*.json
+*_check.png
+model-links.md

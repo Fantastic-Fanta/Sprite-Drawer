@@ -1,0 +1,508 @@
+{
+  "name": "Mega Falinks (shiny) (back)",
+  "model": "MegaFalinks/MegaFalinks.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_falinks_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
+  "palette": {
+    "outline": "#100f0e",
+    "parts": {
+      "yellow": [
+        "#764d39",
+        "#8f6752",
+        "#9b735d",
+        "#a17c64",
+        "#a7856b"
+      ],
+      "red": [
+        "#beb737",
+        "#e2d153",
+        "#f3e064",
+        "#ffee74",
+        "#ffff87"
+      ],
+      "silver": [
+        "#b7babb",
+        "#ced1d1",
+        "#d8dcdd",
+        "#e4e8e8",
+        "#f0f3f4"
+      ],
+      "dark": [
+        "#443f3c",
+        "#56524f",
+        "#605c58",
+        "#6a6662",
+        "#74706c"
+      ],
+      "eyedark": [
+        "#3d3a36",
+        "#4f4b47",
+        "#595551",
+        "#65605b",
+        "#6f6b66"
+      ],
+      "eye": [
+        "#0065b4",
+        "#2a9fd3",
+        "#95c5df",
+        "#d3dfe3",
+        "#f1f2f3"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "eye_c": "eyedark|eye",
+      "r_eye_a": "eyedark|eye",
+      "l_eye_a": "eyedark|eye",
+      "eye_d": "eyedark|eye",
+      "eye_e": "eyedark|eye",
+      "eye_b": "eyedark|eye",
+      "body_a": "red|yellow|dark|silver",
+      "body_b": "red|yellow|dark|silver"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "yellow": "#946b56",
+      "red": "#fbe96a",
+      "silver": "#d3d6d7",
+      "dark": "#57524f",
+      "eyedark": "#56514d",
+      "eye": "#3bbbee"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.15,
+      0,
+      1.15
+    ],
+    "distance": 42.36,
+    "ortho_scale": 4.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95
+    },
+    "texture_swap": {
+      "pm0923_51_00_eye_b_alb (Composite).png": "pm0923_51_00_eye_b_rare_alb (Composite).png",
+      "pm0923_51_body_a_alb (Composite).png": "pm0923_51_body_a_rare_alb (Composite).png",
+      "pm0923_51_body_b_alb (Composite).png": "pm0923_51_body_b_rare_alb (Composite).png",
+      "pm0923_51_eye_alb (Composite).png": "pm0923_51_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 258.0,
+    "ELEVATION": 10.0,
+    "FOV": 30,
+    "AX": -14,
+    "AZ": 0.78,
+    "BX": 0.8,
+    "BZ": 0.9,
+    "BP": 10,
+    "BYAW": 90,
+    "CX": -0.84,
+    "CZ": 0.9,
+    "CP": -38.0,
+    "CYAW": -90,
+    "CH": -28.0,
+    "BH": 80.0,
+    "SHY": 75,
+    "SHZ": -50.0,
+    "SHX": 1.25,
+    "SHYY": -0.15,
+    "SHZZ": 1.32,
+    "DY": 0.12,
+    "DZ": 0.36,
+    "EX": -0.33,
+    "EY": -0.12,
+    "EYAW": -15,
+    "FX": 0.33,
+    "FY": -0.12,
+    "FYAW": 15,
+    "DARM": 25,
+    "LAG": 0.045,
+    "AB": 0.014,
+    "SB": 0.016,
+    "DB": 0.011,
+    "FB": 0.016,
+    "SW": 1.0,
+    "HB": 3.0,
+    "SPB": 2.5,
+    "SHB": 2.5,
+    "SHB2": 2.0,
+    "ARB": 4.0,
+    "LGB": 4.0,
+    "HRB": 3.0,
+    "SHG": 0.32,
+    "KN": 25.0,
+    "LGA": 1.5,
+    "LGC": 4.0,
+    "LGD": 3.0
+  },
+  "pose": [
+    [
+      "waist_a",
+      "X",
+      "AX"
+    ],
+    [
+      "waist_a",
+      "LOCZ",
+      "AZ"
+    ],
+    [
+      "waist_b",
+      "Z",
+      "BYAW"
+    ],
+    [
+      "waist_b",
+      "Y",
+      "BP"
+    ],
+    [
+      "waist_b",
+      "LOCX",
+      "BX"
+    ],
+    [
+      "waist_b",
+      "LOCY",
+      "-1.5"
+    ],
+    [
+      "waist_b",
+      "LOCZ",
+      "BZ"
+    ],
+    [
+      "waist_c",
+      "Z",
+      "CYAW"
+    ],
+    [
+      "waist_c",
+      "Y",
+      "CP"
+    ],
+    [
+      "waist_c",
+      "LOCX",
+      "CX"
+    ],
+    [
+      "waist_c",
+      "LOCY",
+      "-3.0"
+    ],
+    [
+      "waist_c",
+      "LOCZ",
+      "CZ"
+    ],
+    [
+      "horn_c_01",
+      "Y",
+      "CH + SPB*BC(t-0.06)"
+    ],
+    [
+      "horn_a_01",
+      "Z",
+      "BH"
+    ],
+    [
+      "feeler_a_01",
+      "Y",
+      "SHY"
+    ],
+    [
+      "feeler_a_01",
+      "Z",
+      "SHZ + SHB*BB(t-0.06)"
+    ],
+    [
+      "feeler_a_01",
+      "LOCX",
+      "SHX - BX"
+    ],
+    [
+      "feeler_a_01",
+      "LOCY",
+      "SHYY"
+    ],
+    [
+      "feeler_a_01",
+      "LOCZ",
+      "SHZZ - 1.78 - BZ"
+    ],
+    [
+      "feeler_a_02",
+      "LOCX",
+      "-SHG*0.79"
+    ],
+    [
+      "feeler_a_02",
+      "LOCY",
+      "SHG*0.55"
+    ],
+    [
+      "feeler_a_02",
+      "LOCZ",
+      "-SHG*0.26"
+    ],
+    [
+      "feeler_a_02",
+      "Z",
+      "SHB2*BB(t-0.12)"
+    ],
+    [
+      "waist_d",
+      "LOCY",
+      "DY - 4.0"
+    ],
+    [
+      "waist_d",
+      "LOCZ",
+      "DZ"
+    ],
+    [
+      "left_shoulder_b",
+      "Y",
+      "DARM + ARB*BD(t-0.06)"
+    ],
+    [
+      "right_shoulder_b",
+      "Y",
+      "-DARM - ARB*BD(t-0.06)"
+    ],
+    [
+      "left_crotch_e",
+      "X",
+      "KN"
+    ],
+    [
+      "left_leg_e",
+      "X",
+      "-2*KN"
+    ],
+    [
+      "right_crotch_e",
+      "X",
+      "KN"
+    ],
+    [
+      "right_leg_e",
+      "X",
+      "-2*KN"
+    ],
+    [
+      "left_crotch_f",
+      "X",
+      "KN"
+    ],
+    [
+      "left_leg_f",
+      "X",
+      "-2*KN"
+    ],
+    [
+      "right_crotch_f",
+      "X",
+      "KN"
+    ],
+    [
+      "right_leg_f",
+      "X",
+      "-2*KN"
+    ],
+    [
+      "waist_e",
+      "Z",
+      "EYAW"
+    ],
+    [
+      "waist_e",
+      "LOCX",
+      "EX"
+    ],
+    [
+      "waist_e",
+      "LOCY",
+      "EY - 5.0"
+    ],
+    [
+      "waist_f",
+      "Z",
+      "FYAW"
+    ],
+    [
+      "waist_f",
+      "LOCX",
+      "FX"
+    ],
+    [
+      "waist_f",
+      "LOCY",
+      "FY - 6.0"
+    ],
+    [
+      "waist_a",
+      "LOCZ",
+      "AB*BA(t)"
+    ],
+    [
+      "waist_a",
+      "Y",
+      "SW*SWA(t)"
+    ],
+    [
+      "waist_b",
+      "LOCZ",
+      "SB*BB(t)"
+    ],
+    [
+      "waist_b",
+      "X",
+      "SW*SWB(t)"
+    ],
+    [
+      "waist_c",
+      "LOCZ",
+      "SB*BC(t)"
+    ],
+    [
+      "waist_c",
+      "X",
+      "-SW*SWC(t)"
+    ],
+    [
+      "waist_d",
+      "LOCZ",
+      "DB*BD(t)"
+    ],
+    [
+      "waist_d",
+      "Y",
+      "SW*SWD(t)"
+    ],
+    [
+      "waist_e",
+      "LOCZ",
+      "FB*(BE(t)-1)"
+    ],
+    [
+      "waist_e",
+      "Y",
+      "0.7*SW*SWE(t)"
+    ],
+    [
+      "waist_f",
+      "LOCZ",
+      "FB*(BF(t)-1)"
+    ],
+    [
+      "waist_f",
+      "Y",
+      "0.7*SW*SWF(t)"
+    ],
+    [
+      "left_hand_a",
+      "Y",
+      "-HB*BA(t-0.05)"
+    ],
+    [
+      "right_hand_a",
+      "Y",
+      "HB*BA(t-0.05)"
+    ],
+    [
+      "left_leg_a",
+      "X",
+      "LGA*BA(t-0.07)"
+    ],
+    [
+      "right_leg_a",
+      "X",
+      "-LGA*BA(t-0.09)"
+    ],
+    [
+      "left_leg_b",
+      "X",
+      "LGB*BB(t-0.07)"
+    ],
+    [
+      "right_leg_b",
+      "X",
+      "-LGB*BB(t-0.09)"
+    ],
+    [
+      "left_leg_c",
+      "X",
+      "LGC*BC(t-0.07)"
+    ],
+    [
+      "right_leg_c",
+      "X",
+      "-LGC*BC(t-0.09)"
+    ],
+    [
+      "left_leg_d",
+      "X",
+      "LGD*BD(t-0.07)"
+    ],
+    [
+      "right_leg_d",
+      "X",
+      "-LGD*BD(t-0.09)"
+    ],
+    [
+      "horn_e",
+      "Y",
+      "HRB*BD(t-0.08)"
+    ],
+    [
+      "horn_f_01",
+      "Y",
+      "-HRB*BD(t-0.1)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Formation of six troopers assembled into one giant (official art): the brass leader a is the head/torso on the waist trooper d, troopers b (shield) and c (spear) are the arms, e and f are the feet. Idle: one shared marching breath that ripples from the leader down the line a->f with a small phase lag per trooper, plus a slow roll sway; the shield, spear, hands, dangling legs and small horns follow a beat later; the feet troopers e/f dip on planted feet.",
+    "functions": {
+      "BR": "wave(2*t, 0.12)",
+      "SWY": "sin(2*pi*t)",
+      "BA": "BR(t - 0*LAG)",
+      "SWA": "SWY(t - 0*LAG)",
+      "BB": "BR(t - 1*LAG)",
+      "SWB": "SWY(t - 1*LAG)",
+      "BC": "BR(t - 2*LAG)",
+      "SWC": "SWY(t - 2*LAG)",
+      "BD": "BR(t - 3*LAG)",
+      "SWD": "SWY(t - 3*LAG)",
+      "BE": "BR(t - 4*LAG)",
+      "SWE": "SWY(t - 4*LAG)",
+      "BF": "BR(t - 5*LAG)",
+      "SWF": "SWY(t - 5*LAG)"
+    },
+    "plant": [
+      "left_foot_e",
+      "right_foot_e",
+      "left_foot_f",
+      "right_foot_f"
+    ]
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_falinks_front.json"
+}

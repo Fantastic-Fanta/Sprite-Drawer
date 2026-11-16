@@ -1,0 +1,509 @@
+{
+  "name": "Mega Golurk (shiny) (back)",
+  "model": "MegaGolurk/MegaGolurk_sprite.blend",
+  "reference": "reference/home_render.png",
+  "reference_source": "package.py: the front config (mega_golurk_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#160a19",
+    "parts": {
+      "teal": [
+        "#507072",
+        "#648487",
+        "#81a2a4",
+        "#8badaf",
+        "#97b8bb"
+      ],
+      "purple": [
+        "#8f3a5c",
+        "#a44d70",
+        "#b0577a",
+        "#bb6285",
+        "#c76c8e"
+      ],
+      "gold": [
+        "#69be3d",
+        "#80d355",
+        "#8dde60",
+        "#96eb6d",
+        "#9af57f"
+      ],
+      "glow": [
+        "#6ebd46",
+        "#83d25e",
+        "#8ede6a",
+        "#98ea77",
+        "#9af48b"
+      ],
+      "bronze": [
+        "#765942",
+        "#8c6e57",
+        "#9a7b64",
+        "#a5866e",
+        "#b09078"
+      ],
+      "mark": [
+        "#212429",
+        "#2f3338",
+        "#3e4249"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_00": "teal|mark",
+      "body_b_00": "teal|mark",
+      "body_a_01": "gold|bronze",
+      "body_b_02": "gold",
+      "body_a_02": "bronze|mark",
+      "body_b_01": "bronze",
+      "body_c": "purple|glow",
+      "eye": "mark"
+    },
+    "default_material": "body_c",
+    "albedo": {
+      "teal": "#7c9d9f",
+      "purple": "#a54d70",
+      "gold": "#81d456",
+      "glow": "#82ce51",
+      "bronze": "#93755d",
+      "mark": "#323335"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      2.05
+    ],
+    "distance": 38.87,
+    "ortho_scale": 8.745,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95
+    },
+    "texture_swap": {
+      "pm0623_51_00_body_a_alb (Composite).png": "pm0623_51_00_body_a_rare_alb (Composite).png",
+      "pm0623_51_00_body_b_alb (Composite).png": "pm0623_51_00_body_b_rare_alb (Composite).png",
+      "pm0623_51_00_body_c_alb (Composite).png": "pm0623_51_00_body_c_rare_alb (Composite).png",
+      "pm0623_51_00_eye_alb (Composite).png": "pm0623_51_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 255.0,
+    "ELEVATION": 12.0,
+    "FOV": 30,
+    "RSF": 25.0,
+    "RSO": 20.0,
+    "REB": 115.0,
+    "RHT": 0,
+    "LSO": 16.0,
+    "LSF": 8,
+    "LEB": 15,
+    "LEGO": 5,
+    "TRN": 0,
+    "LEAN": 4,
+    "BR": 0.8,
+    "DIP": 0.012,
+    "HB": 1.5,
+    "AB": 1.5,
+    "EB": 1.5,
+    "FL": 3.0,
+    "FL2": 2.0,
+    "HN": 1.5,
+    "RTW": -40.0,
+    "RFC": 75,
+    "LFC": 35,
+    "KNE": 15.0
+  },
+  "pose": [
+    [
+      "waist",
+      "Z",
+      "TRN"
+    ],
+    [
+      "waist_sub",
+      "A:1,0,0",
+      "LEAN"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "RTW"
+    ],
+    [
+      "right_arm_01",
+      "A:1,0,0",
+      "-RSF"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "RSO"
+    ],
+    [
+      "right_arm_02",
+      "A:1,0,0",
+      "-REB"
+    ],
+    [
+      "right_hand",
+      "A:0,0,1",
+      "RHT"
+    ],
+    [
+      "right_index_01",
+      "A:0,1,0",
+      "-RFC*0.9"
+    ],
+    [
+      "right_index_02",
+      "A:0,1,0",
+      "-RFC*1.0"
+    ],
+    [
+      "right_middle_01",
+      "A:0,1,0",
+      "-RFC*0.9"
+    ],
+    [
+      "right_middle_02",
+      "A:0,1,0",
+      "-RFC*1.0"
+    ],
+    [
+      "right_ring_01",
+      "A:0,1,0",
+      "-RFC*0.9"
+    ],
+    [
+      "right_ring_02",
+      "A:0,1,0",
+      "-RFC*1.0"
+    ],
+    [
+      "right_pinky_01",
+      "A:0,1,0",
+      "-RFC*0.9"
+    ],
+    [
+      "right_pinky_02",
+      "A:0,1,0",
+      "-RFC*1.0"
+    ],
+    [
+      "left_index_01",
+      "A:0,1,0",
+      "LFC*0.9"
+    ],
+    [
+      "left_index_02",
+      "A:0,1,0",
+      "LFC*1.0"
+    ],
+    [
+      "left_middle_01",
+      "A:0,1,0",
+      "LFC*0.9"
+    ],
+    [
+      "left_middle_02",
+      "A:0,1,0",
+      "LFC*1.0"
+    ],
+    [
+      "left_ring_01",
+      "A:0,1,0",
+      "LFC*0.9"
+    ],
+    [
+      "left_ring_02",
+      "A:0,1,0",
+      "LFC*1.0"
+    ],
+    [
+      "left_pinky_01",
+      "A:0,1,0",
+      "LFC*0.9"
+    ],
+    [
+      "left_pinky_02",
+      "A:0,1,0",
+      "LFC*1.0"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "-LSO"
+    ],
+    [
+      "left_arm_01",
+      "A:1,0,0",
+      "-LSF"
+    ],
+    [
+      "left_arm_02",
+      "A:1,0,0",
+      "-LEB"
+    ],
+    [
+      "left_leg_01",
+      "A:0,1,0",
+      "-LEGO"
+    ],
+    [
+      "right_leg_01",
+      "A:0,1,0",
+      "LEGO"
+    ],
+    [
+      "left_foot",
+      "A:0,1,0",
+      "LEGO"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "-KNE"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "-KNE"
+    ],
+    [
+      "left_leg_02",
+      "A:1,0,0",
+      "2*KNE"
+    ],
+    [
+      "right_leg_02",
+      "A:1,0,0",
+      "2*KNE"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "-KNE"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "-KNE"
+    ],
+    [
+      "right_foot",
+      "A:0,1,0",
+      "-LEGO"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "DIP*sin(4*pi*t - 0.0 - pi/2)"
+    ],
+    [
+      "waist_sub",
+      "A:1,0,0",
+      "-BR*sin(4*pi*t - 0.3 - pi/2)"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "HB*sin(4*pi*t - 0.8 - pi/2)"
+    ],
+    [
+      "right_arm_01",
+      "A:1,0,0",
+      "AB*sin(4*pi*t - 0.7 - pi/2)"
+    ],
+    [
+      "right_arm_02",
+      "A:1,0,0",
+      "-EB*sin(4*pi*t - 1.1 - pi/2)"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "AB*sin(4*pi*t - 0.7 - pi/2)"
+    ],
+    [
+      "left_arm_02",
+      "A:1,0,0",
+      "-EB*sin(4*pi*t - 1.1 - pi/2)"
+    ],
+    [
+      "left_horn_a",
+      "A:0,1,0",
+      "-HN*sin(4*pi*t - 1.0 - pi/2)"
+    ],
+    [
+      "right_horn_a",
+      "A:0,1,0",
+      "HN*sin(4*pi*t - 1.0 - pi/2)"
+    ],
+    [
+      "left_horn_b",
+      "A:0,1,0",
+      "-HN*sin(4*pi*t - 1.4 - pi/2)"
+    ],
+    [
+      "right_horn_b",
+      "A:0,1,0",
+      "HN*sin(4*pi*t - 1.4 - pi/2)"
+    ],
+    [
+      "left_hair_a_04",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 1.2 - pi/2) + FL2*sin(8*pi*t - 1.92))*0.60"
+    ],
+    [
+      "left_hair_a_05",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 1.5499999999999998 - pi/2) + FL2*sin(8*pi*t - 2.48))*0.68"
+    ],
+    [
+      "left_hair_a_06",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 1.9 - pi/2) + FL2*sin(8*pi*t - 3.04))*0.76"
+    ],
+    [
+      "left_hair_a_07",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 2.25 - pi/2) + FL2*sin(8*pi*t - 3.60))*0.84"
+    ],
+    [
+      "left_hair_a_08",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 2.5999999999999996 - pi/2) + FL2*sin(8*pi*t - 4.16))*0.92"
+    ],
+    [
+      "left_hair_a_09",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 2.95 - pi/2) + FL2*sin(8*pi*t - 4.72))*1.00"
+    ],
+    [
+      "left_hair_a_10",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 3.3 - pi/2) + FL2*sin(8*pi*t - 5.28))*1.08"
+    ],
+    [
+      "left_hair_a_11",
+      "A:0.12,-0.99,-0.07",
+      "(FL*sin(4*pi*t - 3.6499999999999995 - pi/2) + FL2*sin(8*pi*t - 5.84))*1.16"
+    ],
+    [
+      "left_hair_c",
+      "A:0.66,-0.02,-0.75",
+      "FL*sin(4*pi*t - 1.6 - pi/2)"
+    ],
+    [
+      "left_hair_c_01",
+      "A:-1.00,-0.05,-0.03",
+      "(FL*0.6*sin(4*pi*t - 1.0 - pi/2) + FL2*0.6*sin(8*pi*t - 2.0))"
+    ],
+    [
+      "left_hair_c_02",
+      "A:-1.00,-0.05,-0.03",
+      "(FL*0.6*sin(4*pi*t - 1.4 - pi/2) + FL2*0.6*sin(8*pi*t - 3.0))"
+    ],
+    [
+      "left_hair_c_03",
+      "A:-1.00,-0.05,-0.03",
+      "(FL*0.6*sin(4*pi*t - 1.8 - pi/2) + FL2*0.6*sin(8*pi*t - 4.0))"
+    ],
+    [
+      "left_hair_d",
+      "A:-1.00,-0.09,-0.02",
+      "FL*0.5*sin(4*pi*t - 1.3 - pi/2)"
+    ],
+    [
+      "right_hair_a_04",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 1.2 - pi/2) + FL2*sin(8*pi*t - 1.92))*0.60"
+    ],
+    [
+      "right_hair_a_05",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 1.5499999999999998 - pi/2) + FL2*sin(8*pi*t - 2.48))*0.68"
+    ],
+    [
+      "right_hair_a_06",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 1.9 - pi/2) + FL2*sin(8*pi*t - 3.04))*0.76"
+    ],
+    [
+      "right_hair_a_07",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 2.25 - pi/2) + FL2*sin(8*pi*t - 3.60))*0.84"
+    ],
+    [
+      "right_hair_a_08",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 2.5999999999999996 - pi/2) + FL2*sin(8*pi*t - 4.16))*0.92"
+    ],
+    [
+      "right_hair_a_09",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 2.95 - pi/2) + FL2*sin(8*pi*t - 4.72))*1.00"
+    ],
+    [
+      "right_hair_a_10",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 3.3 - pi/2) + FL2*sin(8*pi*t - 5.28))*1.08"
+    ],
+    [
+      "right_hair_a_11",
+      "A:-0.12,-0.99,-0.07",
+      "-(FL*sin(4*pi*t - 3.6499999999999995 - pi/2) + FL2*sin(8*pi*t - 5.84))*1.16"
+    ],
+    [
+      "right_hair_c",
+      "A:-0.66,-0.02,-0.75",
+      "FL*sin(4*pi*t - 1.6 - pi/2)"
+    ],
+    [
+      "right_hair_c_01",
+      "A:1.00,-0.05,-0.03",
+      "-(FL*0.6*sin(4*pi*t - 1.0 - pi/2) + FL2*0.6*sin(8*pi*t - 2.0))"
+    ],
+    [
+      "right_hair_c_02",
+      "A:1.00,-0.05,-0.03",
+      "-(FL*0.6*sin(4*pi*t - 1.4 - pi/2) + FL2*0.6*sin(8*pi*t - 3.0))"
+    ],
+    [
+      "right_hair_c_03",
+      "A:1.00,-0.05,-0.03",
+      "-(FL*0.6*sin(4*pi*t - 1.8 - pi/2) + FL2*0.6*sin(8*pi*t - 4.0))"
+    ],
+    [
+      "right_hair_d",
+      "A:1.00,-0.09,-0.02",
+      "FL*0.5*sin(4*pi*t - 1.3 - pi/2)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Mega Golurk, a giant ghost golem: a slow, heavy, guarded idle. Rest pose = HOME render (right fist raised in front of the chest, left arm hanging, wide stance, flame wings spread). One driver: a slow breath, 2 per loop (120 f = 3.6 s): the body sinks and lifts ~1 px on bending legs (feet planted), the torso pitches, the head and both arms follow a beat later. The light ghost flames (wing chains, head flames) sway with a growing lag up the chain and flicker faster on top; the gold glow orbs bob after the body.",
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2,
+    "flat_parts": [
+      "mark"
+    ]
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_golurk_front.json"
+}
