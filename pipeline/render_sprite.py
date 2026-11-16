@@ -1,18 +1,17 @@
-"""Render a posed model as frame sequences for the Showdown-style sprite pipeline.
+"""Render a posed model as frame sequences for the sprite pipeline.
 
 Run:
   Blender -b MODEL.blend --python render_sprite.py -- CONFIG.json OUT_DIR [--test 0,0.5] [--frames 0:60 | 0,5,9]
 (render_parallel.py runs several of these at once, one slice of the loop each)
-Writes three images per frame (see SPRITE_PIPELINE.md):
-  color_NNNN.png  flat texture colours (Workbench), transparent background
-  id_NNNN.png     which part each pixel is: one solid colour per entry of config "parts.materials"
-  data_NNNN.png   camera-space normal in R/G, depth in B (EEVEE), for shading + inner lines
-  rest_NNNN.png   where on the unposed model each pixel is (EEVEE), for surface-attached lines
-  hull_NNNN.png   with config render.hull: where the inverted hull shows, i.e. the lines (hull_style.py)
-Everything model-specific (bones, camera, materials) comes from CONFIG.json.
+Writes these images per frame (see SPRITE_PIPELINE.md), read by sprite_style.py:
+  color_NNNN  flat texture colours (Workbench), transparent background
+  id_NNNN     which material group each pixel shows (only with parts.materials)
+  data_NNNN   camera-space normal in R/G (EEVEE), for the shade bands
+  hull_NNNN   where the inverted hull shows, i.e. the lines
+Everything model-specific (bones, camera, material groups) comes from CONFIG.json.
 Other scripts (fit_pose.py) exec this file with --setup-only to reuse the scene setup.
 """
-import bpy, sys, math, json, os, shutil
+import bpy, sys, math, json, os
 from pathlib import Path
 from mathutils import Matrix, Vector
 
@@ -21,7 +20,6 @@ from mathutils import Matrix, Vector
 sys.path.insert(0, str(Path(globals()["__file__"]).parent if "__file__" in globals()
                        else Path(sys.argv[sys.argv.index("--python") + 1]).resolve().parent))
 import motion
-import linetrace
 
 args = sys.argv[sys.argv.index("--") + 1:]
 cfg = json.loads(Path(args[0]).read_text())
@@ -32,8 +30,6 @@ setup_only = "--setup-only" in args
 P = dict(cfg["pose_params"])          # fit_pose.py updates this dict in place
 FRAMES = cfg["motion"]["frames"]
 CAM = cfg["camera"]
-DEPTH_RANGE = cfg["render"].get("depth_range", 250)   # +- model units around the target stored in the data pass
-                                     # (about the model's size: Lapras ~200 units, a Switch rip ~3)
 
 
 def num(v):
@@ -56,47 +52,6 @@ for img in bpy.data.images:
             img.reload()
             break
 
-# --- Texture-space passes (per Pokemon): maps painted in the model's texture layout, rendered as
-# the colour pass with those textures swapped in, so whatever they mark sits on the surface and
-# moves with it exactly. render.texture_passes {"name": {"maps": {"texture name fragment": "file"},
-# "nearest": bool}} -> NAME_####.png. Made by make_seams.py:
-#   seams    plate edges / grooves (white) -> style.seam_lines
-#   islands  one colour per UV island = which plate a pixel shows (nearest: ids must not blend)
-#            -> style.plate_shading
-# render.seams {...} is short for texture_passes {"seams": {"maps": {...}}}. Pokemon without any
-# (Lapras: Showdown draws few inner lines) render no extra pass.
-TEX_PASSES = dict(cfg["render"].get("texture_passes", {}))
-if cfg["render"].get("seams"):
-    TEX_PASSES.setdefault("seams", {"maps": cfg["render"]["seams"]})
-TEX_SWAPS = {}
-for pname, spec in TEX_PASSES.items():
-    TEX_SWAPS[pname] = []
-    for img in bpy.data.images:
-        for frag, f in spec["maps"].items():
-            if frag in img.filepath or frag in img.name:
-                TEX_SWAPS[pname].append((img, img.filepath, "//" + f))
-                break
-
-
-def swap_texture_pass(pname, on):
-    nearest = TEX_PASSES[pname].get("nearest", False)
-    imgs = {img for img, _, _ in TEX_SWAPS[pname]}
-    for img, orig, new in TEX_SWAPS[pname]:
-        img.filepath = new if on else orig
-        img.reload()
-    if nearest:
-        if hasattr(bpy.context.preferences.system, "use_mipmaps"):    # gone in newer Blender
-            bpy.context.preferences.system.use_mipmaps = not on
-        for mat in bpy.data.materials:
-            for nd in (mat.node_tree.nodes if mat.node_tree else []):
-                if nd.type == "TEX_IMAGE" and nd.image in imgs:
-                    if on:
-                        nd["_interp"] = nd.interpolation
-                        nd.interpolation = "Closest"
-                    else:
-                        nd.interpolation = nd.get("_interp", "Linear")
-
-
 # --- Shared render settings ---------------------------------------------------
 scene.render.film_transparent = True
 scene.render.resolution_x = cfg["render"]["width"]
@@ -116,19 +71,25 @@ shading.light = "FLAT"
 shading.show_object_outline = False
 shading.show_specular_highlight = False
 
-# --- ID pass colours: one primary-ish colour per part name ---------------------
-ID_ORDER = [cfg["parts"]["default_material"]] + sorted(set(cfg["parts"]["materials"].values()))
-ID_RGB = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1)]
+# --- ID pass: which material group each pixel shows (parts.materials {"texture or material name
+# fragment": "part" or "part|part"}), one flat colour per group, for sprite_style.py to keep each
+# group to its parts (a shell that has no texture colour of its own, a wing side the game colours
+# in its shader). Only rendered when the config maps any material.
+ID_ORDER = [cfg["parts"]["default_material"]] + sorted(set(cfg["parts"].get("materials", {}).values()))
+ID_RGB = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 1, 1),
+          (0.5, 0, 0), (0, 0.5, 0), (0, 0, 0.5), (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5)]
+assert len(ID_ORDER) <= len(ID_RGB), f"{len(ID_ORDER)} material groups: at most {len(ID_RGB)}"
+USE_ID = len(ID_ORDER) > 1
 for mat in bpy.data.materials:
     images = [n.image.name for n in (mat.node_tree.nodes if mat.node_tree else [])
               if n.type == "TEX_IMAGE" and n.image]
-    part = cfg["parts"]["default_material"]
-    for key, name in cfg["parts"]["materials"].items():
+    group = cfg["parts"]["default_material"]
+    for key, name in cfg["parts"].get("materials", {}).items():
         if any(key in i for i in images) or key in mat.name:
-            part = name
-    mat.diffuse_color = (*ID_RGB[ID_ORDER.index(part)], 1)
+            group = name
+    mat.diffuse_color = (*ID_RGB[ID_ORDER.index(group)], 1)
 
-# --- Data pass: EEVEE with one emission material on everything -----------------
+# --- Data pass: EEVEE with one emission material on everything: the camera-space normal ------
 data_mat = bpy.data.materials.new("SpriteData")
 data_mat.use_nodes = True
 nt = data_mat.node_tree
@@ -138,167 +99,70 @@ geo, vt = N("ShaderNodeNewGeometry"), N("ShaderNodeVectorTransform")
 vt.vector_type, vt.convert_from, vt.convert_to = "NORMAL", "WORLD", "CAMERA"
 half = N("ShaderNodeVectorMath"); half.operation = "MULTIPLY_ADD"
 half.inputs[1].default_value = (0.5, 0.5, 0.5); half.inputs[2].default_value = (0.5, 0.5, 0.5)
-sep, cam_node, depth = N("ShaderNodeSeparateXYZ"), N("ShaderNodeCameraData"), N("ShaderNodeMapRange")
-depth.inputs["To Min"].default_value, depth.inputs["To Max"].default_value = 1.0, 0.0   # brighter = nearer
+sep = N("ShaderNodeSeparateXYZ")
 comb, emit, out = N("ShaderNodeCombineColor"), N("ShaderNodeEmission"), N("ShaderNodeOutputMaterial")
 L = nt.links.new
 L(geo.outputs["Normal"], vt.inputs["Vector"]); L(vt.outputs["Vector"], half.inputs[0])
 L(half.outputs["Vector"], sep.inputs["Vector"])
-L(cam_node.outputs["View Z Depth"], depth.inputs["Value"])
-L(sep.outputs["X"], comb.inputs[0]); L(sep.outputs["Y"], comb.inputs[1]); L(depth.outputs["Result"], comb.inputs[2])
+L(sep.outputs["X"], comb.inputs[0]); L(sep.outputs["Y"], comb.inputs[1])
 L(comb.outputs["Color"], emit.inputs["Color"]); L(emit.outputs["Emission"], out.inputs["Surface"])
 
-
-# --- Rest pass: each pixel's position on the *unposed* model, so lines can be attached to the
-# surface (sprite_style.anchor_lines) instead of re-detected every frame. Stored as a colour
-# attribute (vertex rest position, normalised to the model's bounding box), drawn by emission.
 meshes = [o for o in scene.objects if o.type == "MESH" and not o.hide_render]
-lo = Vector((min(v.co[i] for o in meshes for v in o.data.vertices) for i in range(3)))
-hi = Vector((max(v.co[i] for o in meshes for v in o.data.vertices) for i in range(3)))
+
+
+# --- Hull pass: an inverted hull - a copy of every mesh pushed out along its normals, normals
+# flipped, back faces culled - in white, with the body as a holdout. What shows is the line:
+# around the silhouette, and inside wherever a nearer part sits more than the hull's thickness in
+# front of what's behind it. The modifiers stay off except during this pass.
+# render.hull (optional): {"thickness_px": 1.15, "thickness": world units, "even": true, "weld": false,
+#   "spike": 2.0}
+#   thickness_px  line width in sprite px; turned into world units from frame 0's size on screen
+#                 and style.height (set_hull_thickness), so every model gets the same line width
+#   thickness     world units instead (overrides thickness_px)
+#   even          solidify's even thickness (keeps the shell the same width round sharp corners)
+#   spike         largest offset of a hull vertex, in thicknesses: even offset at a needle tip is
+#                 capped to it (cap_spikes)
+#   cap_each_frame  cap spikes for every frame's pose, not only frame 0's (cap_spikes_now)
+#   weld          join split (hard-edge) vertices first: closes cracks at hard edges, but smooths
+#                 the shell's normals across them, which draws extra lines along creases
+HULL = cfg["render"].get("hull", {})
+HULL_MODS, HULL_MATS = [], {}
+
+
+def _flat_mat(name, node):
+    m = bpy.data.materials.new(name)
+    m.use_nodes = True
+    t = m.node_tree
+    t.nodes.clear()
+    n = t.nodes.new(node)
+    if node == "ShaderNodeEmission":
+        n.inputs["Color"].default_value = (1, 1, 1, 1)
+    t.links.new(n.outputs[0], t.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
+    return m
+
+
+hull_mat, hull_hold = _flat_mat("SpriteHull", "ShaderNodeEmission"), _flat_mat("SpriteHullHold", "ShaderNodeHoldout")
+hull_mat.use_backface_culling = True
 for o in meshes:
     me = o.data
-    attr = me.color_attributes.get("RestPos") or me.color_attributes.new("RestPos", "FLOAT_COLOR", "POINT")
-    for v, c in zip(me.vertices, attr.data):
-        c.color = (*((v.co[i] - lo[i]) / max(1e-6, hi[i] - lo[i]) for i in range(3)), 1.0)
-rest_mat = bpy.data.materials.new("SpriteRest")
-rest_mat.use_nodes = True
-rt = rest_mat.node_tree
-rt.nodes.clear()
-ra, re_, ro = rt.nodes.new("ShaderNodeAttribute"), rt.nodes.new("ShaderNodeEmission"), rt.nodes.new("ShaderNodeOutputMaterial")
-ra.attribute_type, ra.attribute_name = "GEOMETRY", "RestPos"
-rt.links.new(ra.outputs["Color"], re_.inputs["Color"]); rt.links.new(re_.outputs["Emission"], ro.inputs["Surface"])
-
-# The full loop gets the rest pass from the data pass's render: the data material also writes the
-# rest position to an AOV, which the compositor saves next to it (pixel-identical to a separate
-# rest render, one EEVEE render fewer per frame). The compositor is attached for that render only.
-da = nt.nodes.new("ShaderNodeAttribute"); da.attribute_type, da.attribute_name = "GEOMETRY", "RestPos"
-dv = nt.nodes.new("ShaderNodeOutputAOV"); dv.aov_name = "rest"
-nt.links.new(da.outputs["Color"], dv.inputs["Color"])
-if "rest" not in bpy.context.view_layer.aovs:
-    _aov = bpy.context.view_layer.aovs.add(); _aov.name, _aov.type = "rest", "COLOR"
-REST_TMP = os.path.join(os.path.abspath(out_dir), f".rest_{os.getpid()}")    # one per process: fixed file name
-REST_COMP = bpy.data.node_groups.new("SpriteRestOut", "CompositorNodeTree")
-_rl = REST_COMP.nodes.new("CompositorNodeRLayers")
-_sa = REST_COMP.nodes.new("CompositorNodeSetAlpha")
-_fo = REST_COMP.nodes.new("CompositorNodeOutputFile")
-_fo.directory, _fo.file_name = REST_TMP + "/", "rest"
-_fo.format.media_type = "IMAGE"; _fo.format.file_format = "TARGA_RAW" if RAW else "PNG"
-_fo.format.color_mode = "RGBA"
-if not RAW:
-    _fo.format.color_depth = "8"
-_fo.save_as_render = True
-if not len(_fo.file_output_items):
-    _fo.file_output_items.new("RGBA", "img")
-REST_COMP.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
-_go = REST_COMP.nodes.new("NodeGroupOutput")
-REST_COMP.links.new(_rl.outputs["rest"], _sa.inputs["Image"])
-REST_COMP.links.new(_rl.outputs["Alpha"], _sa.inputs["Alpha"])
-REST_COMP.links.new(_sa.outputs[0], _fo.inputs[0])
-REST_COMP.links.new(_rl.outputs["Image"], _go.inputs[0])
-
-# The id pass comes out of the data render as well: each face carries its part's id colour (a face
-# attribute), written to an AOV. Only Blender's 8-bit dither (+-1) differs from the Workbench id
-# render, and parts are read as the nearest id colour, so the sprites are the same.
-for o in meshes:
-    _ids = o.data.color_attributes.get("SpriteID") or o.data.color_attributes.new("SpriteID", "FLOAT_COLOR", "FACE")
-    for _poly, _c in zip(o.data.polygons, _ids.data):
-        _slot = o.material_slots[_poly.material_index] if _poly.material_index < len(o.material_slots) else None
-        _col = _slot.material.diffuse_color if _slot and _slot.material else (*ID_RGB[0], 1)
-        _c.color = (_col[0], _col[1], _col[2], 1.0)
-_ia = nt.nodes.new("ShaderNodeAttribute"); _ia.attribute_type, _ia.attribute_name = "GEOMETRY", "SpriteID"
-_iv = nt.nodes.new("ShaderNodeOutputAOV"); _iv.aov_name = "id"
-nt.links.new(_ia.outputs["Color"], _iv.inputs["Color"])
-if "id" not in bpy.context.view_layer.aovs:
-    _aov = bpy.context.view_layer.aovs.add(); _aov.name, _aov.type = "id", "COLOR"
-_isa = REST_COMP.nodes.new("CompositorNodeSetAlpha")
-_ifo = REST_COMP.nodes.new("CompositorNodeOutputFile")
-_ifo.directory, _ifo.file_name = REST_TMP + "/", "id"
-_ifo.format.media_type = "IMAGE"; _ifo.format.file_format = "TARGA_RAW" if RAW else "PNG"
-_ifo.format.color_mode = "RGBA"
-if not RAW:
-    _ifo.format.color_depth = "8"
-_ifo.save_as_render = True
-_ifo.file_output_items.new("RGBA", "img")
-REST_COMP.links.new(_rl.outputs["id"], _isa.inputs["Image"])
-REST_COMP.links.new(_rl.outputs["Alpha"], _isa.inputs["Alpha"])
-REST_COMP.links.new(_isa.outputs[0], _ifo.inputs[0])
-
-
-# --- Lines pass (Freestyle): creases, inner contours and borders traced from the mesh itself,
-# so inner lines move with the model instead of being re-detected from pixels every frame.
-# The body renders transparent (holdout); only the strokes are drawn, in white.
-FS = cfg["render"].get("freestyle", {})
-# lines engine: "trace" (default: linetrace.py, the mesh's own edges, ~20x faster than Freestyle)
-# or "freestyle" (the Freestyle render set up below). Edge types the tracer doesn't draw (e.g.
-# material_boundary, ridge_valley) need Freestyle, so such a config uses it either way.
-LINES_KINDS = linetrace.kinds_of(FS.get("edges", ["silhouette", "crease", "border"])) if FS else None
-LINES_TRACE = bool(FS) and LINES_KINDS is not None and FS.get("engine", "trace") == "trace"
-hold_mat = bpy.data.materials.new("SpriteHoldout")
-hold_mat.use_nodes = True
-hn = hold_mat.node_tree
-hn.nodes.clear()
-hn.links.new(hn.nodes.new("ShaderNodeHoldout").outputs[0], hn.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
-fs = bpy.context.view_layer.freestyle_settings
-fs.crease_angle = math.radians(FS.get("crease_angle", 140))
-fs.use_culling = True           # skip edges outside the view: the model is always fully in view (same lines, faster)
-lset = fs.linesets[0] if len(fs.linesets) else fs.linesets.new("SpriteLines")
-lset.select_by_visibility, lset.visibility = True, "VISIBLE"
-lset.select_by_edge_types = True
-for k in ("silhouette", "crease", "border", "contour", "external_contour", "material_boundary", "ridge_valley",
-          "suggestive_contour", "edge_mark"):
-    setattr(lset, "select_" + k, k in FS.get("edges", ["silhouette", "crease", "border"]))
-if lset.linestyle is None:
-    lset.linestyle = bpy.data.linestyles.new("SpriteLineStyle")
-lset.linestyle.color = (1, 1, 1)
-lset.linestyle.thickness = FS.get("thickness", 3.0)
-lset.linestyle.alpha = 1.0
-scene.render.line_thickness_mode = "ABSOLUTE"
-scene.render.line_thickness = 1.0
-
-
-# --- Hull pass (optional, config render.hull {thickness, even, weld}): an inverted hull - a copy of
-# every mesh pushed out by `thickness` world units with its normals flipped, back faces culled -
-# in white, with the body as a holdout. What shows is the line: around the silhouette, and inside
-# wherever a nearer part sits more than `thickness` in front of what's behind it. Used by
-# hull_style.py (style.hull). The modifiers stay off except during this pass.
-HULL = cfg["render"].get("hull")
-HULL_MODS, HULL_MATS = [], {}
-if HULL:
-    def _flat_mat(name, node):
-        m = bpy.data.materials.new(name)
-        m.use_nodes = True
-        t = m.node_tree
-        t.nodes.clear()
-        n = t.nodes.new(node)
-        if node == "ShaderNodeEmission":
-            n.inputs["Color"].default_value = (1, 1, 1, 1)
-        t.links.new(n.outputs[0], t.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
-        return m
-    hull_mat, hull_hold = _flat_mat("SpriteHull", "ShaderNodeEmission"), _flat_mat("SpriteHullHold", "ShaderNodeHoldout")
-    hull_mat.use_backface_culling = True
-    for o in meshes:
-        me = o.data
-        if len(me.materials) == 0:
-            me.materials.append(None)
-        HULL_MATS[me.name] = list(me.materials)
-        n_slots = len(me.materials)
-        me.materials.append(hull_mat)             # extra slot: only the hull's faces use it
-        scale = max(o.matrix_world.to_scale())
-        if HULL.get("weld"):
-            # join split (hard-edge) vertices so the shell has no cracks there; smooths its normals
-            # across hard edges, which draws extra lines along creases
-            wd = o.modifiers.new("SpriteHullWeld", "WELD")
-            wd.merge_threshold = 1e-4 / scale
-            HULL_MODS.append(wd)
-        s = o.modifiers.new("SpriteHull", "SOLIDIFY")
-        s.use_flip_normals, s.use_rim, s.offset = True, False, 1.0
-        s.use_even_offset = HULL.get("even", True)
-        s.use_quality_normals = True
-        s.material_offset = n_slots
-        s.thickness = HULL.get("thickness", 0.03) / scale
-        HULL_MODS.append(s)
-    for m in HULL_MODS:
-        m.show_render = m.show_viewport = False
+    if len(me.materials) == 0:
+        me.materials.append(None)
+    HULL_MATS[me.name] = list(me.materials)
+    n_slots = len(me.materials)
+    me.materials.append(hull_mat)             # extra slot: only the hull's faces use it
+    if HULL.get("weld"):
+        wd = o.modifiers.new("SpriteHullWeld", "WELD")
+        wd.merge_threshold = 1e-4 / max(o.matrix_world.to_scale())
+        HULL_MODS.append(wd)
+    s = o.modifiers.new("SpriteHull", "SOLIDIFY")
+    s.use_flip_normals, s.use_rim, s.offset = True, False, 1.0
+    s.use_even_offset = HULL.get("even", True)
+    s.use_quality_normals = True
+    s.material_offset = n_slots
+    HULL_MODS.append(s)
+for m in HULL_MODS:
+    m.show_render = m.show_viewport = False
+HULL_T = None                                 # world units, set before the first frame
 
 
 def hull_on(on):
@@ -311,95 +175,138 @@ def hull_on(on):
     bpy.context.view_layer.update()
 
 
-# --- Shadow pass (optional, config render.shadow): white diffuse lit by one hard sun, no ambient.
-# Compared with the sun's N.L (from the data pass) it tells which pixels are in a *cast* shadow:
-# facing the light but blocked by another part (petals under the crown, a chin over a neck).
-# Normal-based shading (matcap) can't produce those, and they're what makes the game's shadows
-# read as big dark masses. render.shadow.light_cam = direction toward the light in camera space
-# (x right, y up, z toward the viewer).
-SH = cfg["render"].get("shadow")
-shadow_mat = bpy.data.materials.new("SpriteShadow")
-shadow_mat.use_nodes = True
-sn = shadow_mat.node_tree
-sn.nodes.clear()
-sdif = sn.nodes.new("ShaderNodeBsdfDiffuse"); sdif.inputs["Color"].default_value = (1, 1, 1, 1)
-sn.links.new(sdif.outputs[0], sn.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
-sun_data = bpy.data.lights.new("SpriteSun", "SUN")
-sun_data.energy = 0.0
-sun_data.angle = 0.0                      # hard shadow edge, like the game's
-sun_data.use_shadow = True
-sun = bpy.data.objects.new("SpriteSun", sun_data)
-scene.collection.objects.link(sun)
-if scene.world is None:
-    scene.world = bpy.data.worlds.new("SpriteWorld")
-scene.world.use_nodes = True
-bg = next((n for n in scene.world.node_tree.nodes if n.type == "BACKGROUND"), None)
-if bg is not None:
-    bg.inputs["Strength"].default_value = 0.0         # no ambient light: only sun + shadow
+def set_hull_thickness():
+    """render.hull.thickness, or thickness_px sprite px in world units: frame 0's height on screen
+    (its posed vertices projected) is style.height sprite px, and the camera gives the world size
+    of a render px at the target. Same in every render process, so the slices of a loop match."""
+    global HULL_T
+    if "thickness" in HULL:
+        HULL_T = HULL["thickness"]
+    else:
+        import numpy as np
+        pose_at(0.0)
+        dg = bpy.context.evaluated_depsgraph_get()
+        W, H = scene.render.resolution_x, scene.render.resolution_y
+        Pm = np.array(cam.calc_matrix_camera(dg, x=W, y=H)) @ np.array(cam.matrix_world.inverted())
+        ys = []
+        for o in meshes:
+            me = o.evaluated_get(dg).to_mesh()
+            co = np.empty(len(me.vertices) * 3)
+            me.vertices.foreach_get("co", co)
+            o.evaluated_get(dg).to_mesh_clear()
+            v = np.c_[co.reshape(-1, 3), np.ones(len(co) // 3)] @ (Pm @ np.array(o.matrix_world)).T
+            ys.append(v[:, 1] / v[:, 3])
+        ys = np.concatenate(ys)
+        height_px = (ys.max() - ys.min()) / 2 * H              # NDC -1..1 -> render px
+        if cam_data.type == "ORTHO":
+            world_px = cam_data.ortho_scale / max(W, H)
+        else:
+            world_px = 2 * (cam.location - Vector(CAM["target"])).length * math.tan(cam_data.angle / 2) / max(W, H)
+        HULL_T = HULL.get("thickness_px", 1.15) * height_px / cfg["style"]["height"] * world_px
+    for o in meshes:
+        for m in o.modifiers:
+            if m.name == "SpriteHull":
+                m.thickness = HULL_T / max(o.matrix_world.to_scale())
+    print(f"hull thickness {HULL_T:.5g} world units")
+    cap_spikes()
 
 
-# With a cast shadow, the shadow pass comes out of the data render too: a second view layer with
-# the shadow material, saved by the compositor (pixel-identical to its own render, one fewer).
-# The layer is switched on for that render only (Workbench passes would render it as well).
-SHADOW_VL = None
-if SH:
-    SHADOW_VL = scene.view_layers.new("SpriteShadowLayer")
-    SHADOW_VL.material_override = shadow_mat
-    SHADOW_VL.use = False
-    _rls = REST_COMP.nodes.new("CompositorNodeRLayers"); _rls.layer = SHADOW_VL.name
-    _fs = REST_COMP.nodes.new("CompositorNodeOutputFile")
-    _fs.directory, _fs.file_name = REST_TMP + "/", "shadow"
-    _fs.format.media_type = "IMAGE"; _fs.format.file_format = "TARGA_RAW" if RAW else "PNG"
-    _fs.format.color_mode = "RGBA"
-    if not RAW:
-        _fs.format.color_depth = "8"
-    _fs.save_as_render = True
-    _fs.file_output_items.new("RGBA", "img")
-    REST_COMP.links.new(_rls.outputs["Image"], _fs.inputs[0])
+def cap_spikes():
+    """Even offset pushes a vertex out by thickness / cos(its corner angle): at a needle-sharp tip
+    (Golisopod's claws) that is a spike many times the line width, drawn as a long strand. Measure
+    each vertex's offset at frame 0 and scale any beyond render.hull.spike x the thickness back to
+    it (a solidify vertex-group weight); every other vertex keeps its even offset."""
+    import numpy as np
+    limit = HULL.get("spike", 2.0)
+    pose_at(0.0)
+    hull_on(True)
+    dg = bpy.context.evaluated_depsgraph_get()
+    capped = 0
+    for o in meshes:
+        s = o.modifiers.get("SpriteHull")
+        n = len(o.data.vertices)
+        if s is None or n == 0:
+            continue
+        me = o.evaluated_get(dg).to_mesh()
+        co = np.empty(len(me.vertices) * 3)
+        me.vertices.foreach_get("co", co)
+        o.evaluated_get(dg).to_mesh_clear()
+        if len(co) != 6 * n:                          # a weld changed the vertex count
+            continue
+        co = co.reshape(2, n, 3)
+        w = np.clip(limit * s.thickness / np.maximum(np.linalg.norm(co[1] - co[0], axis=1), 1e-12), 0, 1)
+        far = np.nonzero(w < 1)[0]
+        if not len(far):
+            continue
+        vg = o.vertex_groups.new(name="SpriteHullCap")
+        vg.add(np.nonzero(w >= 1)[0].tolist(), 1.0, "REPLACE")
+        for i in far:
+            vg.add([int(i)], float(w[i]), "REPLACE")
+        s.vertex_group, s.thickness_vertex_group = vg.name, 0.0
+        capped += len(far)
+    hull_on(False)
+    print(f"hull spikes capped at {capped} vertices")
 
 
-def aim_sun(light_cam):
-    """point the sun so light comes from light_cam (camera space)"""
-    v = cam.matrix_world.to_3x3() @ Vector(light_cam)
-    v.normalize()
-    sun.rotation_euler = (-v).to_track_quat("-Z", "Y").to_euler()
+def cap_spikes_now():
+    """render.hull.cap_each_frame: cap_spikes for the current pose (call with the hull on). A
+    corner that only turns needle-sharp later in the loop (a deep bend, a squashed joint) would
+    otherwise draw a long black strand in those frames. Offsets are measured with the cap off, so
+    each frame's weights depend on its pose alone, whichever process renders it."""
+    import numpy as np
+    limit = HULL.get("spike", 2.0)
+    mods = [(o, o.modifiers.get("SpriteHull")) for o in meshes if len(o.data.vertices)]
+    mods = [(o, s) for o, s in mods if s is not None]
+    for o, s in mods:
+        s.vertex_group = ""
+    bpy.context.view_layer.update()
+    dg = bpy.context.evaluated_depsgraph_get()
+    for o, s in mods:
+        n = len(o.data.vertices)
+        me = o.evaluated_get(dg).to_mesh()
+        co = np.empty(len(me.vertices) * 3)
+        me.vertices.foreach_get("co", co)
+        o.evaluated_get(dg).to_mesh_clear()
+        if len(co) != 6 * n:                          # a weld changed the vertex count
+            continue
+        co = co.reshape(2, n, 3)
+        w = np.clip(limit * s.thickness / np.maximum(np.linalg.norm(co[1] - co[0], axis=1), 1e-12), 0, 1)
+        if (w >= 1).all():
+            continue
+        vg = o.vertex_groups.get("SpriteHullCap") or o.vertex_groups.new(name="SpriteHullCap")
+        vg.add(np.nonzero(w >= 1)[0].tolist(), 1.0, "REPLACE")
+        for i in np.nonzero(w < 1)[0]:
+            vg.add([int(i)], float(w[i]), "REPLACE")
+        s.vertex_group, s.thickness_vertex_group = vg.name, 0.0
     bpy.context.view_layer.update()
 
 
-# EEVEE settings that only matter for lit passes: only the shadow pass is lit; data / rest are
-# emission and the lines pass a holdout + unlit strokes, so they skip them (same pixels, faster)
-EEVEE_LIT = {a: getattr(scene.eevee, a) for a in ("use_shadows", "use_raytracing", "use_volumetric_shadows", "use_gtao")
-             if hasattr(scene.eevee, a)}
-
-
 def use_pass(kind):
+    """color: flat texture colours (Workbench); id: material group colours (Workbench, exact);
+    data: normals (unlit EEVEE, no anti-aliasing); hull: the inverted hull (unlit EEVEE, no
+    anti-aliasing)"""
     view_layer = bpy.context.view_layer
-    for a, v in EEVEE_LIT.items():
-        setattr(scene.eevee, a, v if kind == "shadow" else False)
-    if kind in ("color", "id") or kind in TEX_PASSES:
+    scene.render.use_freestyle = False
+    if kind in ("color", "id"):
         scene.render.engine = "BLENDER_WORKBENCH"
         view_layer.material_override = None
         scene.view_settings.view_transform = "Standard"
-        exact = kind == "id" or TEX_PASSES.get(kind, {}).get("nearest", False)
-        scene.render.filter_size = 0.01 if exact else 1.5
-        shading.color_type = "MATERIAL" if kind == "id" else "TEXTURE"
-        scene.display.render_aa = "OFF" if exact else "8"
-    scene.render.use_freestyle = kind == "lines"
-    if kind == "lines":
-        scene.render.engine = "BLENDER_EEVEE"
-        scene.eevee.taa_render_samples = 8
-        scene.render.filter_size = 1.5
-        view_layer.material_override = hold_mat
+        scene.render.filter_size = 1.5 if kind == "color" else 0.01
+        shading.color_type = "TEXTURE" if kind == "color" else "MATERIAL"
+        scene.display.render_aa = "8" if kind == "color" else "OFF"
+        return
+    scene.render.engine = "BLENDER_EEVEE"
+    for a in ("use_shadows", "use_raytracing", "use_volumetric_shadows", "use_gtao"):
+        if hasattr(scene.eevee, a):
+            setattr(scene.eevee, a, False)
+    scene.eevee.taa_render_samples = 1          # no anti-aliasing: don't blend normals
+    scene.render.filter_size = 0.01
+    if kind == "hull":
+        view_layer.material_override = None
         scene.view_settings.view_transform = "Standard"
-    elif kind in ("color", "id") or kind in TEX_PASSES:
-        pass
     else:
-        scene.render.engine = "BLENDER_EEVEE"
-        scene.eevee.taa_render_samples = 1          # no anti-aliasing: don't blend normals
-        scene.render.filter_size = 0.01
-        view_layer.material_override = {"rest": rest_mat, "shadow": shadow_mat}.get(kind, data_mat)
+        view_layer.material_override = data_mat
         scene.view_settings.view_transform = "Raw"   # store values as-is, no sRGB curve
-    sun_data.energy = math.pi if kind == "shadow" else 0.0   # pi: a lit white surface facing the sun = 1.0
 
 
 # --- Camera -------------------------------------------------------------------
@@ -426,8 +333,6 @@ def place_camera():
     cam.location = target + direction * dist
     # "-Z" looks along the view; "Y" is this camera's up axis, kept toward world Z
     cam.rotation_euler = (-direction).to_track_quat("-Z", CAM.get("up", "Y")).to_euler()
-    depth.inputs["From Min"].default_value = dist - DEPTH_RANGE
-    depth.inputs["From Max"].default_value = dist + DEPTH_RANGE
 
 
 place_camera()
@@ -450,7 +355,7 @@ def rotate_world(name, axis, degrees):
 
 def slow_t(f, n, fast):
     """frame f of n -> 0..1 position in the loop with the fast frame ranges removed (held still
-    during them). Same function in sprite_style.py / check_loop.py."""
+    during them)."""
     total = sum(b - a for a, b in fast)
     lost = 0
     for a, b in sorted(fast):
@@ -552,62 +457,82 @@ def pose_at(t):
             bpy.context.view_layer.update()
         else:
             rotate_world(bone, axis, value)
+    if PLANT:
+        hold_planted()
+
+
+PLANT = {}          # motion.plant: bone -> armature-space point its head is held at (plant())
+
+
+def plant():
+    """motion.plant: bones (each ankle, say) that stay put while the body above them moves: a body
+    dip or sway bends the two bones above each one (thigh and shin) instead of sliding or lifting
+    the foot. Each is held at its head's mean position over the loop. Run again whenever pose /
+    pose_params change (live_preview does)."""
+    PLANT.clear()
+    bones = cfg.get("motion", {}).get("plant", [])
+    if not bones:
+        return
+    n, acc = 8, {b: Vector() for b in bones}
+    for i in range(n):
+        pose_at(i / n)
+        for b in bones:
+            acc[b] += arm.pose.bones[b].head
+    PLANT.update({b: v / n for b, v in acc.items()})
+
+
+def hold_planted():
+    """bring each planted bone's head back to its PLANT point: cyclic coordinate descent on its
+    parent and grandparent, each turned about its own head in armature space (the rig's bones are
+    disconnected and point every which way, which Blender's IK solver can't take). The planted bone
+    keeps its orientation, so a foot stays flat. 3 scene updates a frame, whatever the leg count."""
+    legs = []
+    for name, target in PLANT.items():
+        foot = arm.pose.bones[name]
+        chain = [foot.parent.parent, foot.parent]
+        pts = [chain[0].head.copy(), chain[1].head.copy(), foot.head.copy()]
+        D = [Matrix.Identity(4), Matrix.Identity(4)]
+        for _ in range(12):
+            if (pts[2] - target).length < 1e-6:
+                break
+            for j in (1, 0):
+                q = (pts[2] - pts[j]).rotation_difference(target - pts[j])
+                M = Matrix.Translation(pts[j]) @ q.to_matrix().to_4x4() @ Matrix.Translation(-pts[j])
+                for k in range(j + 1, 3):
+                    pts[k] = M @ pts[k]
+                for k in range(j, 2):
+                    D[k] = M @ D[k]
+        legs.append((chain, D, foot, foot.matrix.copy(), pts[2] - foot.head, [b.matrix.copy() for b in chain]))
+    for level in (0, 1):
+        for chain, D, _, _, _, M0 in legs:
+            chain[level].matrix = D[level] @ M0[level]
+        bpy.context.view_layer.update()
+    for _, _, foot, Mf, shift, _ in legs:
+        foot.matrix = Matrix.Translation(shift) @ Mf
+    bpy.context.view_layer.update()
+
+
+plant()
 
 
 def render_frame(t, name):
+    if HULL_T is None:
+        set_hull_thickness()
     pose_at(t)
-    if SH:
-        aim_sun(SH["light_cam"])
-    for kind in ("color", "data") + (("lines",) if FS else ()) + (("shadow",) if SH else ()) + (("hull",) if HULL else ()) + tuple(TEX_PASSES):   # id: from data
-        if kind == "lines" and LINES_TRACE:
-            alpha = linetrace.trace(scene, meshes, FS.get("crease_angle", 140), FS.get("thickness", 3.0), LINES_KINDS)
-            (linetrace.write_tga if RAW else linetrace.write_png)(f"{out_dir}/lines_{name}{EXT}", alpha)
-            continue
-        if kind == "shadow" and SHADOW_VL is not None:
-            continue                          # came out of the data render
+    for kind in ("color",) + (("id",) if USE_ID else ()) + ("data", "hull"):
+        use_pass(kind)
         if kind == "hull":
-            use_pass("data")                  # unlit EEVEE, no anti-aliasing
-            bpy.context.view_layer.material_override = None
-            scene.view_settings.view_transform = "Standard"
             hull_on(True)
-            scene.render.filepath = f"{out_dir}/hull_{name}{EXT}"
-            bpy.ops.render.render(write_still=True)
-            hull_on(False)
-            continue
-        if kind == "data" and SHADOW_VL is not None:
-            use_pass("shadow")                # lit: sun and shadows on (data is emission: unaffected)
-            bpy.context.view_layer.material_override = data_mat
-            SHADOW_VL.use = True
-        else:
-            use_pass(kind)
-        if kind in TEX_PASSES:
-            swap_texture_pass(kind, True)
+            if HULL.get("cap_each_frame"):
+                cap_spikes_now()
         scene.render.filepath = f"{out_dir}/{kind}_{name}{EXT}"
-        scene.compositing_node_group = REST_COMP if kind == "data" else None
         bpy.ops.render.render(write_still=True)
-        if kind == "data":                    # its rest AOV (and the shadow layer), saved by the compositor
-            if SHADOW_VL is not None:
-                SHADOW_VL.use = False
-            for pname in ("rest", "id") + (("shadow",) if SHADOW_VL is not None else ()):
-                made = [f for f in os.listdir(REST_TMP) if f.startswith(pname) and f.endswith(EXT)]
-                assert len(made) == 1, made
-                os.replace(os.path.join(REST_TMP, made[0]), f"{out_dir}/{pname}_{name}{EXT}")
-        if kind in TEX_PASSES:
-            swap_texture_pass(kind, False)
-    scene.compositing_node_group = None
+        if kind == "hull":
+            hull_on(False)
 
 
 if setup_only:
     pass
-elif "--shadow-dirs" in args:
-    # fitting the sun: frame 0's shadow pass for each candidate direction ("x,y,z;x,y,z;...")
-    pose_at(0.0)
-    scene.render.image_settings.file_format = "PNG"        # fit_shadow.py reads these as PNG
-    for k, d in enumerate(args[args.index("--shadow-dirs") + 1].split(";")):
-        aim_sun([float(v) for v in d.split(",")])
-        use_pass("shadow")
-        scene.render.filepath = f"{out_dir}/shadowdir{k:03d}.png"
-        bpy.ops.render.render(write_still=True)
 elif test_ts is not None:
     for i, t in enumerate(test_ts):
         render_frame(t, f"{i + 1:04d}")
@@ -621,4 +546,3 @@ elif "--frames" in args:
 else:
     for f in range(FRAMES):
         render_frame(f / FRAMES, f"{f + 1:04d}")
-shutil.rmtree(REST_TMP, ignore_errors=True)

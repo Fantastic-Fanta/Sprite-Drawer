@@ -1,0 +1,276 @@
+{
+  "name": "Mega Greninja",
+  "model": "MegaGreninja/MegaGreninja.blend",
+  "reference": null,
+  "reference_source": "reference/official.png (official art), reference/zaicon.png (Legends Z-A icon): hangs upside down under its spinning water shuriken",
+  "palette": {
+    "outline": "#110f10",
+    "parts": {
+      "water": [
+        "#3f799c",
+        "#548eb2",
+        "#5f99bd",
+        "#69a4c8",
+        "#74afd4"
+      ],
+      "black": [
+        "#1a1419",
+        "#2c242a",
+        "#352d33",
+        "#3e353c",
+        "#473e45"
+      ],
+      "pink": [
+        "#a95361",
+        "#c16875",
+        "#cc737f",
+        "#d87d8a",
+        "#e48894"
+      ],
+      "navy": [
+        "#141c64",
+        "#233079",
+        "#2b3a84",
+        "#34448f",
+        "#3c4e9a"
+      ],
+      "cream": [
+        "#c3bf81",
+        "#d9d697",
+        "#e5e1a2",
+        "#f0edad",
+        "#fcf9b9"
+      ],
+      "silver": [
+        "#a6bbc8",
+        "#bcd1df",
+        "#c7ddea",
+        "#d2e8f6",
+        "#def4ff"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_c_00": "water",
+      "r_eye": "pink|silver",
+      "l_eye": "pink|black|silver",
+      "body_b": "pink",
+      "body_a": "black|navy|silver|cream"
+    },
+    "default_material": "body_c_01",
+    "albedo": {
+      "water": "#548eb2",
+      "black": "#2c242a",
+      "pink": "#c16976",
+      "navy": "#233079",
+      "cream": "#d9d697",
+      "silver": "#bed3e0"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "distance": 23.23,
+    "ortho_scale": 4.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 800,
+    "hull": {
+      "thickness_px": 0.95,
+      "even": false
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 70,
+    "ELEVATION": 10,
+    "FOV": 30
+  },
+  "pose": [
+    [
+      "left_arm_01",
+      "A:-0.49,-0.87,0",
+      "8"
+    ],
+    [
+      "right_arm_01",
+      "A:0.49,-0.87,0",
+      "-8"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-55"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,-1",
+      "-55"
+    ],
+    [
+      "feeler_b_02",
+      "A:-0.71,-0.71,0",
+      "-60"
+    ],
+    [
+      "feeler_b_04",
+      "A:-0.71,-0.71,0",
+      "-15"
+    ],
+    [
+      "feeler_b_06",
+      "A:-0.71,-0.71,0",
+      "-10"
+    ],
+    [
+      "waist_a",
+      "Y",
+      "1.0*SX(t)"
+    ],
+    [
+      "waist_a",
+      "X",
+      "0.7*SY(t)"
+    ],
+    [
+      "waist_a",
+      "LOCX",
+      "0.85*sin(1.0*SX(t)*pi/180)"
+    ],
+    [
+      "waist_a",
+      "LOCY",
+      "-0.85*sin(0.7*SY(t)*pi/180)"
+    ],
+    [
+      "head",
+      "Y",
+      "1.0*SX(t-0.1)"
+    ],
+    [
+      "head",
+      "X",
+      "0.7*SY(t-0.1)"
+    ],
+    [
+      "left_arm_01",
+      "Y",
+      "1.5*SX(t-0.15)"
+    ],
+    [
+      "right_arm_01",
+      "Y",
+      "1.5*SX(t-0.15)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "2*SY(t-0.2)"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,-1",
+      "2*SY(t-0.2)"
+    ],
+    [
+      "root_feeler",
+      "Y",
+      "1.0*SX(t-0.1)"
+    ],
+    [
+      "root_feeler",
+      "X",
+      "0.7*SY(t-0.1)"
+    ],
+    [
+      "feeler_b_02",
+      "Y",
+      "2.5*SX(t-0.15)"
+    ],
+    [
+      "feeler_b_02",
+      "X",
+      "2*SY(t-0.15)"
+    ],
+    [
+      "feeler_b_04",
+      "Y",
+      "2*SX(t-0.22)"
+    ],
+    [
+      "feeler_b_04",
+      "X",
+      "1.5*SY(t-0.22)"
+    ],
+    [
+      "feeler_b_06",
+      "Y",
+      "2*SX(t-0.3)"
+    ],
+    [
+      "feeler_b_06",
+      "X",
+      "1.5*SY(t-0.3)"
+    ],
+    [
+      "feeler_b_08",
+      "Y",
+      "2*SX(t-0.38) + 1.0*sin(2*pi*(3*t-0.4))"
+    ],
+    [
+      "left_feeler_c_01",
+      "Y",
+      "2*SX(t-0.2)"
+    ],
+    [
+      "right_feeler_c_01",
+      "Y",
+      "2*SX(t-0.2)"
+    ],
+    [
+      "left_feeler_a",
+      "Y",
+      "2*SX(t-0.25)"
+    ],
+    [
+      "right_feeler_a",
+      "Y",
+      "2*SX(t-0.25)"
+    ],
+    [
+      "feeler_a_01",
+      "Z",
+      "60*t"
+    ],
+    [
+      "origin",
+      "Y",
+      "180"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Hangs upside down from its spinning water shuriken (official art, Z-A icon): the shuriken turns steadily (60 deg a loop, 6-fold seamless); the light frog body swings like a slow pendulum from its planted feet, slightly elliptical; head, arms, scarf and the long hanging tongue trail a beat later, the tongue most, its tip with a small flutter.",
+    "functions": {
+      "SX": "sin(2*pi*t)",
+      "SY": "sin(2*pi*t - 1.3)"
+    },
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

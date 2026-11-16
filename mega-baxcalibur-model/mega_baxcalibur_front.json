@@ -1,0 +1,594 @@
+{
+  "name": "Mega Baxcalibur",
+  "model": "MegaBaxcalibur/MegaBaxcalibur.blend",
+  "reference": "reference/home_render.png",
+  "reference_source": "Pokemon HOME render (serebii.net/pokemonhome/pokemon/998-m.png) + official art (serebii.net/pokemon/art/998-m.png)",
+  "palette": {
+    "outline": "#100f0f",
+    "parts": {
+      "body": [
+        "#274a61",
+        "#3a5e75",
+        "#44687f",
+        "#4d728a",
+        "#577c94"
+      ],
+      "ice": [
+        "#658a8a",
+        "#799f9f",
+        "#84aaaa",
+        "#8fb5b5",
+        "#99c0c0"
+      ],
+      "dark": [
+        "#2e2b2c",
+        "#403d3d",
+        "#4a4647",
+        "#534f50",
+        "#5d595a"
+      ],
+      "pale": [
+        "#9ab1ae",
+        "#b0c8c4",
+        "#bbd3cf",
+        "#c6deda",
+        "#d1eae6"
+      ],
+      "claws": [
+        "#a13c3f",
+        "#b95152",
+        "#c55c5c",
+        "#d16666",
+        "#dd7170"
+      ],
+      "eye": [
+        "#806020",
+        "#a08030",
+        "#c09838",
+        "#e0b040",
+        "#f0cc60"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_02": "claws",
+      "body_b_02": "pale",
+      "l_eye": "eye|dark|pale",
+      "body_b_00": "ice",
+      "body_a_01": "pale",
+      "body_b_01": "ice",
+      "r_eye": "eye|dark|pale"
+    },
+    "default_material": "body_a_00",
+    "albedo": {
+      "body": "#3c6077",
+      "ice": "#7aa0a0",
+      "dark": "#433f40",
+      "pale": "#b1c9c5",
+      "claws": "#b95152",
+      "eye": "#e0b040"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.571,
+      0.816
+    ],
+    "distance": 18.17,
+    "ortho_scale": 4.088,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1680,
+    "height": 1680,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 64.0,
+    "ELEVATION": 8.0,
+    "FOV": 30,
+    "BODY": 38.0,
+    "NECK": 24.0,
+    "HEADP": -52.0,
+    "HEADY": -30.0,
+    "ARMD": 30.0,
+    "ARMF": 50.0,
+    "ELB": 40.0,
+    "LEGIN": 15.0,
+    "TAIL1": 30.0,
+    "TAIL2": 0,
+    "TAIL3": 8.0,
+    "TAILS": -40.0,
+    "KNEE": 20.0,
+    "FOOT": 18.0,
+    "BR": 0.8,
+    "JAW": 20.0,
+    "EB": 3.0,
+    "CL": 10.0,
+    "HR": 2.0,
+    "BL": 1.2,
+    "FL": 1.5,
+    "BLADE": 33.0,
+    "NECK2": 0,
+    "WRIST": 15.0,
+    "CLAWR": -5.0,
+    "HIP": 15.0,
+    "RUM": 0.45,
+    "AS": 1.0,
+    "WB": 4.0,
+    "TS": 1.5,
+    "TL": 1.5,
+    "ELBUP": 18.0,
+    "SHRUG": 10.0,
+    "SPREAD": 12.0,
+    "LID": -30,
+    "JAW0": 10.0,
+    "SH": 1.5,
+    "K": 0.5,
+    "RISE": 0.03,
+    "BR2": 0.6,
+    "SHU": 2.5,
+    "NFY": 0.09,
+    "NFZ": 0.012,
+    "HPC": 1.0,
+    "HZ": 0.04
+  },
+  "pose": [
+    [
+      "spine_01",
+      "A:1,0,0",
+      "BODY"
+    ],
+    [
+      "left_leg_01",
+      "A:0,1,0",
+      "LEGIN"
+    ],
+    [
+      "right_leg_01",
+      "A:0,1,0",
+      "-LEGIN"
+    ],
+    [
+      "left_leg_01",
+      "A:0.77,0.59,0.25",
+      "-HIP"
+    ],
+    [
+      "right_leg_01",
+      "A:0.77,-0.59,-0.25",
+      "-HIP"
+    ],
+    [
+      "left_leg_02",
+      "A:0.77,0.59,0.25",
+      "KNEE"
+    ],
+    [
+      "right_leg_02",
+      "A:0.77,-0.59,-0.25",
+      "KNEE"
+    ],
+    [
+      "left_foot",
+      "A:0.77,0.59,0.25",
+      "FOOT"
+    ],
+    [
+      "right_foot",
+      "A:0.77,-0.59,-0.25",
+      "FOOT"
+    ],
+    [
+      "tail_01",
+      "A:1,0,0",
+      "TAIL1"
+    ],
+    [
+      "tail_03",
+      "A:1,0,0",
+      "TAIL2"
+    ],
+    [
+      "tail_05",
+      "A:1,0,0",
+      "TAIL3"
+    ],
+    [
+      "tail_02",
+      "A:0,0,1",
+      "TAILS*0.4"
+    ],
+    [
+      "tail_04",
+      "A:0,0,1",
+      "TAILS*0.6"
+    ],
+    [
+      "feeler_b",
+      "A:1,0,0",
+      "-BLADE"
+    ],
+    [
+      "neck_01",
+      "A:1,0,0",
+      "NECK"
+    ],
+    [
+      "neck_02",
+      "A:1,0,0",
+      "NECK2"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "HEADP"
+    ],
+    [
+      "neck_02",
+      "A:0,0,1",
+      "HEADY*0.4"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HEADY*0.6"
+    ],
+    [
+      "lower_jaw",
+      "A:1,0,0",
+      "JAW0"
+    ],
+    [
+      "left_upper_eyelid_a",
+      "A:1,0,0",
+      "LID*1"
+    ],
+    [
+      "right_upper_eyelid_a",
+      "A:1,0,0",
+      "LID*1"
+    ],
+    [
+      "left_upper_eyelid_b",
+      "A:1,0,0",
+      "LID*1"
+    ],
+    [
+      "right_upper_eyelid_b",
+      "A:1,0,0",
+      "LID*1"
+    ],
+    [
+      "left_upper_eyelid_c",
+      "A:1,0,0",
+      "LID*1"
+    ],
+    [
+      "right_upper_eyelid_c",
+      "A:1,0,0",
+      "LID*1"
+    ],
+    [
+      "left_lower_eyelid",
+      "A:1,0,0",
+      "LID*-1"
+    ],
+    [
+      "right_lower_eyelid",
+      "A:1,0,0",
+      "LID*-1"
+    ],
+    [
+      "left_shoulder",
+      "A:1,0,0",
+      "SHRUG"
+    ],
+    [
+      "right_shoulder",
+      "A:1,0,0",
+      "SHRUG"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "ARMD"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "-ARMD"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,1",
+      "-ARMF"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "ARMF"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-ELB"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,1",
+      "ELB"
+    ],
+    [
+      "left_arm_02",
+      "A:1,0,0",
+      "-ELBUP"
+    ],
+    [
+      "right_arm_02",
+      "A:1,0,0",
+      "-ELBUP"
+    ],
+    [
+      "left_hand_sub",
+      "A:1,0,0",
+      "WRIST"
+    ],
+    [
+      "right_hand_sub",
+      "A:1,0,0",
+      "WRIST"
+    ],
+    [
+      "left_index",
+      "A:0,1,0",
+      "CLAWR"
+    ],
+    [
+      "right_index",
+      "A:0,1,0",
+      "-CLAWR"
+    ],
+    [
+      "left_middle",
+      "A:0,1,0",
+      "CLAWR"
+    ],
+    [
+      "right_middle",
+      "A:0,1,0",
+      "-CLAWR"
+    ],
+    [
+      "left_ring",
+      "A:0,1,0",
+      "CLAWR"
+    ],
+    [
+      "right_ring",
+      "A:0,1,0",
+      "-CLAWR"
+    ],
+    [
+      "left_index",
+      "A:0,0,1",
+      "SPREAD"
+    ],
+    [
+      "left_ring",
+      "A:0,0,1",
+      "-SPREAD"
+    ],
+    [
+      "right_index",
+      "A:0,0,1",
+      "-SPREAD"
+    ],
+    [
+      "right_ring",
+      "A:0,0,1",
+      "SPREAD"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "RISE*((0.5 - 0.5*cos(2*pi*t - K*(1 - cos(2*pi*t)))) - 0.5)"
+    ],
+    [
+      "spine_01",
+      "A:1,0,0",
+      "-BR*(0.5 - 0.5*cos(2*pi*(t - 0.02) - K*(1 - cos(2*pi*(t - 0.02)))))"
+    ],
+    [
+      "spine_02",
+      "A:1,0,0",
+      "-BR2*(0.5 - 0.5*cos(2*pi*(t - 0.04) - K*(1 - cos(2*pi*(t - 0.04)))))"
+    ],
+    [
+      "left_shoulder",
+      "A:0,1,0",
+      "-SHU*(0.5 - 0.5*cos(2*pi*(t - 0.06) - K*(1 - cos(2*pi*(t - 0.06)))))"
+    ],
+    [
+      "right_shoulder",
+      "A:0,1,0",
+      "SHU*(0.5 - 0.5*cos(2*pi*(t - 0.06) - K*(1 - cos(2*pi*(t - 0.06)))))"
+    ],
+    [
+      "left_shoulder",
+      "A:1,0,0",
+      "SH*max(0, -sin(2*pi*(t - 0.02) - K*(1 - cos(2*pi*(t - 0.02)))))**2"
+    ],
+    [
+      "right_shoulder",
+      "A:1,0,0",
+      "SH*max(0, -sin(2*pi*(t - 0.03) - K*(1 - cos(2*pi*(t - 0.03)))))**2"
+    ],
+    [
+      "neck_02",
+      "LOCY",
+      "-NFY*max(0, -sin(2*pi*t - K*(1 - cos(2*pi*t))))**2"
+    ],
+    [
+      "neck_02",
+      "LOCZ",
+      "-NFZ*max(0, -sin(2*pi*t - K*(1 - cos(2*pi*t))))**2 - HZ*((0.5 - 0.5*cos(2*pi*(t - 0.03) - K*(1 - cos(2*pi*(t - 0.03))))) - 0.5)"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "HPC*(0.5 - 0.5*cos(2*pi*(t - 0.05) - K*(1 - cos(2*pi*(t - 0.05))))) + RUM*0.2*max(0, -sin(2*pi*(t - 0.03) - K*(1 - cos(2*pi*(t - 0.03)))))**2*sin(20*pi*t)"
+    ],
+    [
+      "lower_jaw",
+      "A:1,0,0",
+      "JAW*max(0, -sin(2*pi*(t - 0.03) - K*(1 - cos(2*pi*(t - 0.03)))))**2 + RUM*max(0, -sin(2*pi*(t - 0.03) - K*(1 - cos(2*pi*(t - 0.03)))))**2*sin(20*pi*t)"
+    ],
+    [
+      "feeler_b",
+      "A:1,0,0",
+      "-BL*(0.5 - 0.5*cos(2*pi*(t - 0.08) - K*(1 - cos(2*pi*(t - 0.08)))))"
+    ],
+    [
+      "feeler_a",
+      "A:1,0,0",
+      "FL*(0.5 - 0.5*cos(2*pi*(t - 0.06) - K*(1 - cos(2*pi*(t - 0.06)))))"
+    ],
+    [
+      "feeler_c",
+      "A:1,0,0",
+      "-FL*0.3*(0.5 - 0.5*cos(2*pi*(t - 0.09) - K*(1 - cos(2*pi*(t - 0.09)))))"
+    ],
+    [
+      "left_arm_01",
+      "A:1,0,0",
+      "-AS*(0.5 - 0.5*cos(2*pi*(t - 0.08) - K*(1 - cos(2*pi*(t - 0.08)))))"
+    ],
+    [
+      "right_arm_01",
+      "A:1,0,0",
+      "-AS*(0.5 - 0.5*cos(2*pi*(t - 0.1) - K*(1 - cos(2*pi*(t - 0.1)))))"
+    ],
+    [
+      "left_arm_02",
+      "A:1,0,0",
+      "-EB*max(0, -sin(2*pi*(t - 0.06) - K*(1 - cos(2*pi*(t - 0.06)))))**2"
+    ],
+    [
+      "right_arm_02",
+      "A:1,0,0",
+      "-EB*max(0, -sin(2*pi*(t - 0.07) - K*(1 - cos(2*pi*(t - 0.07)))))**2"
+    ],
+    [
+      "left_hand_sub",
+      "A:1,0,0",
+      "-WB*max(0, -sin(2*pi*(t - 0.09) - K*(1 - cos(2*pi*(t - 0.09)))))**2"
+    ],
+    [
+      "right_hand_sub",
+      "A:1,0,0",
+      "-WB*max(0, -sin(2*pi*(t - 0.1) - K*(1 - cos(2*pi*(t - 0.1)))))**2"
+    ],
+    [
+      "left_index",
+      "A:0,0,1",
+      "CL*max(0, -sin(2*pi*(t - 0.11) - K*(1 - cos(2*pi*(t - 0.11)))))**2"
+    ],
+    [
+      "left_ring",
+      "A:0,0,1",
+      "-CL*max(0, -sin(2*pi*(t - 0.11) - K*(1 - cos(2*pi*(t - 0.11)))))**2"
+    ],
+    [
+      "right_index",
+      "A:0,0,1",
+      "-CL*max(0, -sin(2*pi*(t - 0.12) - K*(1 - cos(2*pi*(t - 0.12)))))**2"
+    ],
+    [
+      "right_ring",
+      "A:0,0,1",
+      "CL*max(0, -sin(2*pi*(t - 0.12) - K*(1 - cos(2*pi*(t - 0.12)))))**2"
+    ],
+    [
+      "left_middle",
+      "A:0,1,0",
+      "-CL*0.5*max(0, -sin(2*pi*(t - 0.11) - K*(1 - cos(2*pi*(t - 0.11)))))**2"
+    ],
+    [
+      "right_middle",
+      "A:0,1,0",
+      "CL*0.5*max(0, -sin(2*pi*(t - 0.12) - K*(1 - cos(2*pi*(t - 0.12)))))**2"
+    ],
+    [
+      "left_root_hair",
+      "A:0,1,0",
+      "-HR*max(0, -sin(2*pi*(t - 0.13) - K*(1 - cos(2*pi*(t - 0.13)))))**2"
+    ],
+    [
+      "right_root_hair",
+      "A:0,1,0",
+      "HR*max(0, -sin(2*pi*(t - 0.14) - K*(1 - cos(2*pi*(t - 0.14)))))**2"
+    ],
+    [
+      "tail_01",
+      "A:1,0,0",
+      "TL*max(0, -sin(2*pi*(t - 0.06) - K*(1 - cos(2*pi*(t - 0.06)))))**2"
+    ],
+    [
+      "tail_04",
+      "A:1,0,0",
+      "-TL*0.8*max(0, -sin(2*pi*(t - 0.1) - K*(1 - cos(2*pi*(t - 0.1)))))**2"
+    ],
+    [
+      "tail_03",
+      "A:0,0,1",
+      "TS*1.00*sin(2*pi*t - 1.0)"
+    ],
+    [
+      "tail_04",
+      "A:0,0,1",
+      "TS*1.30*sin(2*pi*t - 1.4)"
+    ],
+    [
+      "tail_05",
+      "A:0,0,1",
+      "TS*1.60*sin(2*pi*t - 1.8)"
+    ],
+    [
+      "tail_06",
+      "A:0,0,1",
+      "TS*1.90*sin(2*pi*t - 2.2)"
+    ],
+    [
+      "tail_07",
+      "A:0,0,1",
+      "TS*2.20*sin(2*pi*t - 2.6)"
+    ],
+    [
+      "tail_08",
+      "A:0,0,1",
+      "TS*2.50*sin(2*pi*t - 3.0)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "growling breath of a heavy predator (HOME stance: low forward-leaning body on bent legs, balanced by the tail; eyes wide open; shoulders hunched, claws spread). Based on the Showdown animated idle of base Baxcalibur (reference/showdown_ani_baxcalibur.gif: one slow breath a loop, the torso heaves up and sinks, the knees take it, the tail sweeps slowly). Driver: one breath per loop, slow inhale (~63%), forceful exhale (~37%) (phase warp K). Inhale: the body rises (RISE), the chest and ribcage heave up and back (BR, BR2), the shoulders rise (SHU), the blade and back plates ride it (BL, FL), the jaw eases mostly shut. Exhale: the neck pushes forward and a little low along its line (NFY, NFZ, a translation, not a pitch), the neck holds the head's height against the heave (HZ) and the head pitch only counters the chest (HPC), so the head travels forward and back, not up and down. The jaw opens into the growl (JAW) with a fast rumble (RUM), the shoulders hunch, the elbows, wrists and claws cock and fan, each a beat later. The tail base lifts against the head push and a slow sideways wave runs to the tip. Feet planted flat; the body only translates vertically, so the knees bend and the feet keep their angle.",
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 240,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

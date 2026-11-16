@@ -1,0 +1,911 @@
+{
+  "name": "Mega Barbaracle (back)",
+  "model": "MegaBarbaracle/MegaBarbaracle_body.blend",
+  "reference": "reference/home.png",
+  "reference_source": "package.py: the front config (mega_barbaracle_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#0e1011",
+    "parts": {
+      "black": [
+        "#161c1f",
+        "#252d30",
+        "#2e3639",
+        "#373f42",
+        "#40484c"
+      ],
+      "orange": [
+        "#cf572e",
+        "#e76d45",
+        "#f37950",
+        "#ff845b",
+        "#ff8f66"
+      ],
+      "rock": [
+        "#a4a8b4",
+        "#b6bac6",
+        "#c9cdd9",
+        "#d8dce8",
+        "#e6e9f4"
+      ],
+      "tips": [
+        "#c2c2c2",
+        "#d4d4d4",
+        "#e3e3e3",
+        "#efefef",
+        "#fbfbfb"
+      ],
+      "eye_white": [
+        "#d8d8d8",
+        "#e6e6e6",
+        "#f0f0f0",
+        "#f8f8f8",
+        "#ffffff"
+      ],
+      "eye_red": [
+        "#a81c22",
+        "#c4242a",
+        "#d72a30",
+        "#e5353b",
+        "#f04a50"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_00": "rock|black|orange|tips",
+      "body_a_01": "rock|black|orange|tips",
+      "body_b": "black|orange|tips",
+      "eye_a": "eye_white|eye_red",
+      "eye_b": "eye_white|eye_red|black|orange",
+      "eye_c": "eye_white"
+    },
+    "default_material": "body_b",
+    "match": "albedo",
+    "albedo": {
+      "black": "#293134",
+      "orange": "#f0754d",
+      "rock": "#cbcfdb",
+      "tips": "#ebebeb",
+      "eye_white": "#efefef",
+      "eye_red": "#e5353b"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      -0.017,
+      -0.648,
+      1.114
+    ],
+    "distance": 13.37,
+    "ortho_scale": 3.008,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 250.0,
+    "ELEVATION": 12.0,
+    "FOV": 30,
+    "TH_a": 22,
+    "TH_b": 52,
+    "TH_c": 82,
+    "TH_d": 116,
+    "YL_a": 0.22,
+    "YL_b": 0.1,
+    "YL_c": -0.25,
+    "YL_d": -0.25,
+    "INSET": 0.04,
+    "E_a": 0,
+    "E_b": 0,
+    "E_c": 0,
+    "E_d": 0,
+    "H_a": 0,
+    "H_b": 0,
+    "H_c": 0,
+    "H_d": 0,
+    "DIP": 0.022,
+    "SWAY": 0.6,
+    "AS": 2.0,
+    "AE": 4.5,
+    "AH": 6.0,
+    "AF": 4.0,
+    "RIP": 0.25,
+    "KNEE": -24.0,
+    "S0": 6,
+    "S1": 10,
+    "S2": -12,
+    "S3": -10,
+    "A1": 3.0,
+    "WPH": 0.8,
+    "ARMPH": 1.1,
+    "SIDEPH": 2.4,
+    "CROSS_L": 14.0,
+    "CROSS_R": 2.0,
+    "FWD_L": 9.0,
+    "FWD_R": 7.0
+  },
+  "pose": [
+    [
+      "left_shoulder_a",
+      "A:-0.5064,0.8623,0.0000",
+      "25.105"
+    ],
+    [
+      "left_shoulder_a",
+      "LOCX",
+      "-0.1828"
+    ],
+    [
+      "left_shoulder_a",
+      "LOCY",
+      "0.5634"
+    ],
+    [
+      "left_shoulder_a",
+      "LOCZ",
+      "1.6827"
+    ],
+    [
+      "left_shoulder_a",
+      "A:-0.5064,0.8623,0.0000",
+      "1*S0"
+    ],
+    [
+      "left_arm_a_01",
+      "A:-0.5064,0.8623,0.0000",
+      "1*S1"
+    ],
+    [
+      "left_arm_a_02",
+      "A:-0.5064,0.8623,0.0000",
+      "1*S2"
+    ],
+    [
+      "left_hand_a",
+      "A:-0.5064,0.8623,0.0000",
+      "1*S3"
+    ],
+    [
+      "left_arm_a_02",
+      "A:-0.5064,0.8623,0.0000",
+      "E_a"
+    ],
+    [
+      "left_hand_a",
+      "A:-0.5064,0.8623,0.0000",
+      "H_a"
+    ],
+    [
+      "left_shoulder_b",
+      "A:-0.1259,0.9920,0.0000",
+      "52.222"
+    ],
+    [
+      "left_shoulder_b",
+      "LOCX",
+      "-0.1382"
+    ],
+    [
+      "left_shoulder_b",
+      "LOCY",
+      "0.6561"
+    ],
+    [
+      "left_shoulder_b",
+      "LOCZ",
+      "1.6980"
+    ],
+    [
+      "left_shoulder_b",
+      "A:-0.1259,0.9920,0.0000",
+      "-1*S0"
+    ],
+    [
+      "left_arm_b_01",
+      "A:-0.1259,0.9920,0.0000",
+      "-1*S1"
+    ],
+    [
+      "left_arm_b_02",
+      "A:-0.1259,0.9920,0.0000",
+      "-1*S2"
+    ],
+    [
+      "left_hand_b",
+      "A:-0.1259,0.9920,0.0000",
+      "-1*S3"
+    ],
+    [
+      "left_arm_b_02",
+      "A:-0.1259,0.9920,0.0000",
+      "E_b"
+    ],
+    [
+      "left_hand_b",
+      "A:-0.1259,0.9920,0.0000",
+      "H_b"
+    ],
+    [
+      "left_shoulder_c",
+      "A:0.2448,0.9696,-0.0000",
+      "82.240"
+    ],
+    [
+      "left_shoulder_c",
+      "LOCX",
+      "-0.0906"
+    ],
+    [
+      "left_shoulder_c",
+      "LOCY",
+      "0.6532"
+    ],
+    [
+      "left_shoulder_c",
+      "LOCZ",
+      "1.5576"
+    ],
+    [
+      "left_shoulder_c",
+      "A:0.2448,0.9696,-0.0000",
+      "1*S0"
+    ],
+    [
+      "left_arm_c_01",
+      "A:0.2448,0.9696,-0.0000",
+      "1*S1"
+    ],
+    [
+      "left_arm_c_02",
+      "A:0.2448,0.9696,-0.0000",
+      "1*S2"
+    ],
+    [
+      "left_hand_c",
+      "A:0.2448,0.9696,-0.0000",
+      "1*S3"
+    ],
+    [
+      "left_arm_c_02",
+      "A:0.2448,0.9696,-0.0000",
+      "E_c"
+    ],
+    [
+      "left_hand_c",
+      "A:0.2448,0.9696,-0.0000",
+      "H_c"
+    ],
+    [
+      "left_shoulder_d",
+      "A:0.2680,0.9634,-0.0000",
+      "115.169"
+    ],
+    [
+      "left_shoulder_d",
+      "LOCX",
+      "-0.2293"
+    ],
+    [
+      "left_shoulder_d",
+      "LOCY",
+      "0.8282"
+    ],
+    [
+      "left_shoulder_d",
+      "LOCZ",
+      "1.5621"
+    ],
+    [
+      "left_shoulder_d",
+      "A:0.2680,0.9634,-0.0000",
+      "-1*S0"
+    ],
+    [
+      "left_arm_d_01",
+      "A:0.2680,0.9634,-0.0000",
+      "-1*S1"
+    ],
+    [
+      "left_arm_d_02",
+      "A:0.2680,0.9634,-0.0000",
+      "-1*S2"
+    ],
+    [
+      "left_hand_d",
+      "A:0.2680,0.9634,-0.0000",
+      "-1*S3"
+    ],
+    [
+      "left_arm_d_02",
+      "A:0.2680,0.9634,-0.0000",
+      "E_d"
+    ],
+    [
+      "left_hand_d",
+      "A:0.2680,0.9634,-0.0000",
+      "H_d"
+    ],
+    [
+      "right_shoulder_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "25.105"
+    ],
+    [
+      "right_shoulder_a",
+      "LOCX",
+      "0.1828"
+    ],
+    [
+      "right_shoulder_a",
+      "LOCY",
+      "0.5634"
+    ],
+    [
+      "right_shoulder_a",
+      "LOCZ",
+      "1.6827"
+    ],
+    [
+      "right_shoulder_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "1*S0"
+    ],
+    [
+      "right_arm_a_01",
+      "A:-0.5064,-0.8623,0.0000",
+      "1*S1"
+    ],
+    [
+      "right_arm_a_02",
+      "A:-0.5064,-0.8623,0.0000",
+      "1*S2"
+    ],
+    [
+      "right_hand_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "1*S3"
+    ],
+    [
+      "right_arm_a_02",
+      "A:-0.5064,-0.8623,0.0000",
+      "E_a"
+    ],
+    [
+      "right_hand_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "H_a"
+    ],
+    [
+      "right_shoulder_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "52.222"
+    ],
+    [
+      "right_shoulder_b",
+      "LOCX",
+      "0.1382"
+    ],
+    [
+      "right_shoulder_b",
+      "LOCY",
+      "0.6561"
+    ],
+    [
+      "right_shoulder_b",
+      "LOCZ",
+      "1.6980"
+    ],
+    [
+      "right_shoulder_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "-1*S0"
+    ],
+    [
+      "right_arm_b_01",
+      "A:-0.1259,-0.9920,0.0000",
+      "-1*S1"
+    ],
+    [
+      "right_arm_b_02",
+      "A:-0.1259,-0.9920,0.0000",
+      "-1*S2"
+    ],
+    [
+      "right_hand_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "-1*S3"
+    ],
+    [
+      "right_arm_b_02",
+      "A:-0.1259,-0.9920,0.0000",
+      "E_b"
+    ],
+    [
+      "right_hand_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "H_b"
+    ],
+    [
+      "right_shoulder_c",
+      "A:0.2448,-0.9696,0.0000",
+      "82.240"
+    ],
+    [
+      "right_shoulder_c",
+      "LOCX",
+      "0.0906"
+    ],
+    [
+      "right_shoulder_c",
+      "LOCY",
+      "0.6532"
+    ],
+    [
+      "right_shoulder_c",
+      "LOCZ",
+      "1.5576"
+    ],
+    [
+      "right_shoulder_c",
+      "A:0.2448,-0.9696,0.0000",
+      "1*S0"
+    ],
+    [
+      "right_arm_c_01",
+      "A:0.2448,-0.9696,0.0000",
+      "1*S1"
+    ],
+    [
+      "right_arm_c_02",
+      "A:0.2448,-0.9696,0.0000",
+      "1*S2"
+    ],
+    [
+      "right_hand_c",
+      "A:0.2448,-0.9696,0.0000",
+      "1*S3"
+    ],
+    [
+      "right_arm_c_02",
+      "A:0.2448,-0.9696,0.0000",
+      "E_c"
+    ],
+    [
+      "right_hand_c",
+      "A:0.2448,-0.9696,0.0000",
+      "H_c"
+    ],
+    [
+      "right_shoulder_d",
+      "A:0.2680,-0.9634,0.0000",
+      "115.169"
+    ],
+    [
+      "right_shoulder_d",
+      "LOCX",
+      "0.2293"
+    ],
+    [
+      "right_shoulder_d",
+      "LOCY",
+      "0.8282"
+    ],
+    [
+      "right_shoulder_d",
+      "LOCZ",
+      "1.5621"
+    ],
+    [
+      "right_shoulder_d",
+      "A:0.2680,-0.9634,0.0000",
+      "-1*S0"
+    ],
+    [
+      "right_arm_d_01",
+      "A:0.2680,-0.9634,0.0000",
+      "-1*S1"
+    ],
+    [
+      "right_arm_d_02",
+      "A:0.2680,-0.9634,0.0000",
+      "-1*S2"
+    ],
+    [
+      "right_hand_d",
+      "A:0.2680,-0.9634,0.0000",
+      "-1*S3"
+    ],
+    [
+      "right_arm_d_02",
+      "A:0.2680,-0.9634,0.0000",
+      "E_d"
+    ],
+    [
+      "right_hand_d",
+      "A:0.2680,-0.9634,0.0000",
+      "H_d"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "-KNEE"
+    ],
+    [
+      "left_leg_02",
+      "A:1,0,0",
+      "2*KNEE"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "-KNEE"
+    ],
+    [
+      "left_leg_01",
+      "A:0,1,0",
+      "1*CROSS_L"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "-1*FWD_L"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "1*FWD_L"
+    ],
+    [
+      "left_foot",
+      "A:0,1,0",
+      "-1*CROSS_L"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "-KNEE"
+    ],
+    [
+      "right_leg_02",
+      "A:1,0,0",
+      "2*KNEE"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "-KNEE"
+    ],
+    [
+      "right_leg_01",
+      "A:0,1,0",
+      "-1*CROSS_R"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "1*FWD_R"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "-1*FWD_R"
+    ],
+    [
+      "right_foot",
+      "A:0,1,0",
+      "1*CROSS_R"
+    ],
+    [
+      "left_shoulder_a",
+      "A:-0.5064,0.8623,0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_a_01",
+      "A:-0.5064,0.8623,0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_a_02",
+      "A:-0.5064,0.8623,0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_hand_a",
+      "A:-0.5064,0.8623,0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_thumb_a",
+      "A:-0.0241,0.9859,-0.1658",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_middle_a",
+      "A:-0.0241,0.9859,-0.1658",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_index_a",
+      "A:-0.5064,0.8623,0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*0 + 0*SIDEPH))"
+    ],
+    [
+      "left_shoulder_b",
+      "A:-0.1259,0.9920,0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_b_01",
+      "A:-0.1259,0.9920,0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_b_02",
+      "A:-0.1259,0.9920,0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_hand_b",
+      "A:-0.1259,0.9920,0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_thumb_b",
+      "A:-0.0591,0.9925,-0.1070",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_middle_b",
+      "A:-0.0591,0.9925,-0.1070",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_index_b",
+      "A:-0.1259,0.9920,0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*1 + 0*SIDEPH))"
+    ],
+    [
+      "left_shoulder_c",
+      "A:0.2448,0.9696,-0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_c_01",
+      "A:0.2448,0.9696,-0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_c_02",
+      "A:0.2448,0.9696,-0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_hand_c",
+      "A:0.2448,0.9696,-0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_thumb_c",
+      "A:0.1809,0.9543,0.2378",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_middle_c",
+      "A:0.1809,0.9543,0.2378",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_index_c",
+      "A:0.2448,0.9696,-0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*2 + 0*SIDEPH))"
+    ],
+    [
+      "left_shoulder_d",
+      "A:0.2680,0.9634,-0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_d_01",
+      "A:0.2680,0.9634,-0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "left_arm_d_02",
+      "A:0.2680,0.9634,-0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "left_hand_d",
+      "A:0.2680,0.9634,-0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "left_thumb_d",
+      "A:0.3918,0.8910,0.2293",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "left_middle_d",
+      "A:0.3918,0.8910,0.2293",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "left_index_d",
+      "A:0.2680,0.9634,-0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*3 + 0*SIDEPH))"
+    ],
+    [
+      "right_shoulder_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_a_01",
+      "A:-0.5064,-0.8623,0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_a_02",
+      "A:-0.5064,-0.8623,0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_hand_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_thumb_a",
+      "A:0.0241,0.9859,-0.1658",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_middle_a",
+      "A:0.0241,0.9859,-0.1658",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_index_a",
+      "A:-0.5064,-0.8623,0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*0 + 1*SIDEPH))"
+    ],
+    [
+      "right_shoulder_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_b_01",
+      "A:-0.1259,-0.9920,0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_b_02",
+      "A:-0.1259,-0.9920,0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_hand_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_thumb_b",
+      "A:0.0591,0.9925,-0.1070",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_middle_b",
+      "A:0.0591,0.9925,-0.1070",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_index_b",
+      "A:-0.1259,-0.9920,0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*1 + 1*SIDEPH))"
+    ],
+    [
+      "right_shoulder_c",
+      "A:0.2448,-0.9696,0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_c_01",
+      "A:0.2448,-0.9696,0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_c_02",
+      "A:0.2448,-0.9696,0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_hand_c",
+      "A:0.2448,-0.9696,0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_thumb_c",
+      "A:-0.1809,0.9543,0.2378",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_middle_c",
+      "A:-0.1809,0.9543,0.2378",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_index_c",
+      "A:0.2448,-0.9696,0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*2 + 1*SIDEPH))"
+    ],
+    [
+      "right_shoulder_d",
+      "A:0.2680,-0.9634,0.0000",
+      "-AS*cos(4*pi*t - 0.5 - WPH*0 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_d_01",
+      "A:0.2680,-0.9634,0.0000",
+      "-A1*cos(4*pi*t - 0.5 - WPH*1 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "right_arm_d_02",
+      "A:0.2680,-0.9634,0.0000",
+      "-AE*cos(4*pi*t - 0.5 - WPH*2 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "right_hand_d",
+      "A:0.2680,-0.9634,0.0000",
+      "-AH*cos(4*pi*t - 0.5 - WPH*3 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "right_thumb_d",
+      "A:-0.3918,0.8910,0.2293",
+      "-1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "right_middle_d",
+      "A:-0.3918,0.8910,0.2293",
+      "1*AF*sin(4*pi*t - 0.5 - WPH*4 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "right_index_d",
+      "A:0.2680,-0.9634,0.0000",
+      "-0.6*AF*cos(4*pi*t - 0.5 - WPH*4 - (ARMPH*3 + 1*SIDEPH))"
+    ],
+    [
+      "origin",
+      "LOCZ",
+      "-DIP*(1 - cos(4*pi*t))/2"
+    ],
+    [
+      "origin",
+      "A:0,1,0",
+      "SWAY*sin(2*pi*t)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "heavy rock wrestler on two planted, semi-crossed legs (HOME stance), eight tentacle arms spread like the art: two slow breaths a loop dip the whole body (legs bend under it) with one slow weight shift side to side; each arm holds an S-curve and a wave travels along it root to tip (shoulder, upper arm, forearm, hand, then the claws flex), growing toward the tip, each arm out of phase: the ripple runs top to bottom and the right side is offset from the left",
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

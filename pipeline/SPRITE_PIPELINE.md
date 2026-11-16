@@ -1,36 +1,39 @@
 # Sprite pipeline
 
-Renders a 3D Pokémon model in Blender and turns it into an animated pixel sprite in the
-Pokémon Showdown Gen 6 style: hard shade bands, a fixed palette, 1-px lines and a loop with no
-flicker. Each sprite is described by one config JSON; the scripts are shared by every Pokémon.
+Renders a 3D Pokémon model in Blender and turns it into an animated pixel sprite: flat palette
+colours, three cel bands and lines from an inverted hull. Each sprite is described by one config
+JSON; the scripts are shared by every Pokémon.
+
+The lines come from the model itself. Every mesh gets a copy pushed out a little along its normals,
+with its normals flipped and back faces culled (an inverted hull). The hull shows around the
+silhouette, and inside wherever a nearer part sits in front of something further back. Where the
+lines go is never traced, painted or tuned per Pokémon.
 
 ## Setup
 
 - Blender at `/Applications/Blender.app`
 - Python 3 with `numpy` and `Pillow`
-- Rust, optional. It gives the fast core; without it the same rules run in Python:
-
-```bash
-cargo build --release --manifest-path pipeline/rust/Cargo.toml
-```
 
 Each Pokémon has its own folder: `golisopod-model/` holds the model (`MegaGolisopod/*.blend` plus
-textures), `reference/` (Showdown frames), and one config per view: `golisopod_front.json`,
-`golisopod_back.json`, `golisopod_front_shiny.json`, `golisopod_back_shiny.json`.
+textures) and one config per view: `golisopod_front.json`, `golisopod_back.json`, and a
+`_shiny.json` next to each.
 
 Commands below run from the repo root, with `B=/Applications/Blender.app/Contents/MacOS/Blender`.
 
 ## Build existing sprites
 
 ```bash
-python3 pipeline/build_all.py out/ golisopod-model/golisopod_front.json glimmora-model/glimmora_front.json --scale 4
+python3 pipeline/build_all.py out/ golisopod-model/golisopod_front.json mega-zygarde-za/zygarde_front.json --scale 4
 ```
 
-For each config this renders the frames, builds the GIF, runs the quality gate, and makes the
-shiny when a `NAME_shiny.json` sits next to the config. Output: `out/NAME.gif`, `out/NAME_4x.gif`,
-`out/NAME.qa.json`. A FAIL from the gate is printed and the build exits 1.
+For each config this renders the frames, builds the GIF, and makes the shiny when a
+`NAME_shiny.json` sits next to the config. Output: `out/NAME.gif` and `out/NAME_4x.gif`.
 
 ## Make a new sprite
+
+Fast path: `prep_model.py MODEL.zip` writes steps 1–3's draft. Pose and animate it with `preview.py`
+and `check_motion.py`, then `package.py` does the back, the shinies and the build. The steps below
+are what those scripts do, for doing one by hand.
 
 ### 1. Import the model
 
@@ -40,94 +43,78 @@ shiny when a `NAME_shiny.json` sits next to the config. Output: `out/NAME.gif`, 
 - Make texture paths relative.
 - Check the bind pose. Game rips are usually T-posed, so set a rest pose in `pose` before you
   add motion.
+- A surface the game colours in its shader rather than in the albedo texture (e.g. Mega
+  Dragalge's wings) can get its own material with `layer_mat.py` / `kelp_mat.py`.
 
-### 2. Get the reference
+### 2. Write the config
 
-Save frame 0 of the Showdown GIF as `reference/showdown_frame0.png`, exact pixels with no scaling.
-First check that it's a real sprite (many frames, about 15–30 colours). Mega placeholders are
-often one anti-aliased still. Use those for the camera and silhouette only.
-If Showdown has no sprite at all, use the base form's sprite for the camera and for `qa.tone_ref`.
-
-### 3. Write the config
-
-Start by copying an existing config. The main sections are:
+Start by copying an existing config (`mega-zygarde-za/zygarde_front.json` is the smallest).
 
 | Section | What goes in it |
 |---|---|
 | `model` | path to the `.blend` |
 | `palette` | `outline` colour plus `parts.<part>` shades, darkest → lightest |
-| `parts` | `materials` (texture-name fragment → part), `albedo` (texture colour per part) |
-| `landmarks` | e.g. `eye.ref_xy`, so the fit can't turn the face away |
-| `pose` / `pose_params` | `[bone, axis, expression]` rotations; each param has a `fit` range |
-| `camera`, `render` | camera angles, render size, `depth_range`, extra passes |
-| `style` | sprite height, matcap, shade thresholds, line rules, `fast_frames`, `pixel_bob` |
-| `qa` | limits for the quality gate (see Tests) |
+| `parts` | `materials` (texture- or material-name fragment → the parts it may become, `"purple\|red"`), `default_material`, `albedo` (texture colour per part, for `make_shiny.py`) |
+| `camera`, `render` | camera angles, render size; `render.hull` optional (see below) |
+| `pose` / `pose_params` | `[bone, axis, expression]` rotations; each param can have a `fit` range |
+| `motion` | `frames`, `functions`, or `clip` (one of the model's own actions) |
+| `style` | `height` (frame 0's height in sprite px), `frame_ms`; the rest is optional (see below) |
+
+The palette decides the colours: every pixel of the texture goes to the part of its nearest
+palette shade, and then to that part's shade nearest its colour. So each part needs shades spread
+across the texture colours it covers, darkest to lightest. A material listed in `parts.materials`
+only goes to the parts named there: use it where a texture's colours would snap to the wrong part
+(Lapras's shell, Mega Dragalge's crimson wings). Where two parts' ramps overlap (a gunmetal armour nearer a
+slate claw shade than its own), set `parts.match` to `"albedo"`: parts are then told apart by
+their one `parts.albedo` texture colour instead of their shades.
 
 Pose axes are `X/Y/Z` (world rotation), `A:x,y,z` (any axis), `SCALE`, `SCALEW` (widen a bone
 chain), `LOCX/LOCY/LOCZ`, `LOCCAM`/`LOCCAMX` (camera up/right) and `ROLLCAM`. Expressions can use
 `t`, `s`, `c`, `sin`, `cos`, `smooth`, `smoother`, `bump`, `damp`, `jitter`, `wave` and
 `motion.functions` (see `motion.py`).
 
-### 4. Fit the pose and camera
+### 3. Set the camera
+
+With a Showdown sprite of the Pokémon (`reference`: frame 0 as `reference/showdown_frame0.png`,
+exact pixels), fit the pose and camera to it:
 
 ```bash
 $B -b MODEL.blend --python pipeline/fit_pose.py -- CONFIG.json out/fit --restarts 20
 ```
 
-Updates `pose_params` in place. Use `--local K` to start the restarts near the current pose, and
-`--only` to fit a subset of params.
+This updates `pose_params` in place. Use `--local K` to start the restarts near the current pose,
+and `--only` to fit a subset of params. Without a reference (most Megas), set `AZIMUTH`,
+`ELEVATION` and `FOV` by eye.
 
-### 5. Render frame 0 and fit the look
-
-```bash
-$B -b MODEL.blend --python pipeline/render_sprite.py -- CONFIG.json out/f0 --test 0
-python3 pipeline/learn_matcap.py CONFIG.json out/f0           # lighting -> style.matcap
-python3 pipeline/tune_style.py CONFIG.json out/f0             # shade thresholds, lines, grain -> style
-```
-
-With no Showdown reference, set shade shares instead of tuning:
-`match_shares.py CONFIG.json out/f0` (front) or `match_tones.py CONFIG.json out/f0` (back, matched to `qa.tone_ref`).
-
-Optional extras:
-
-| Need | Script |
-|---|---|
-| a crisp eye taken from the reference | `make_eye_stamp.py CONFIG.json X0 Y0 X1 Y1` |
-| cast shadows (`style.cast_shadow`) | `fit_shadow.py CONFIG.json out/f0 out/tmp` |
-| inner lines along armour plates (`style.seam_lines`) | `make_seams.py MODEL_DIR TEXTURE --islands K`, then list the maps under `render.texture_passes` |
-| a separate material for some faces | `kelp_mat.py` / `layer_mat.py` |
-
-Check frame 0 against the reference. Always look at the image as well as the score:
+### 4. Check frame 0
 
 ```bash
+python3 pipeline/render_parallel.py CONFIG.json out/f0 --frames 0
 python3 pipeline/make_gif.py CONFIG.json out/f0 x --first-only out/f0.png
-python3 pipeline/compare.py CONFIG.json out/f0.png --out out/compare.png
 ```
 
-Repeat steps 4–5 while the score improves.
+If a frame touches the render edge, widen `render.width`/`height`, `camera.ortho_scale` and the
+FOV together (`make_gif` fails on a cut-off frame).
 
-### 6. Preview the motion
+### 5. Animate
+
+Watch the motion live while you edit it:
 
 ```bash
-python3 pipeline/render_parallel.py CONFIG.json out/prev --frames 0,20,40,60,80
-python3 pipeline/preview_check.py CONFIG.json out/prev PART_A PART_B --png out/prev.png
+$B MODEL.blend --python pipeline/live_preview.py -- CONFIG.json
 ```
 
-This checks the per-frame rules and the smallest gap between two parts in seconds. A 1-px gap that
-opens and closes is the most common cause of pops. If a frame touches the render edge, widen
-`render.width`/`height`, `camera.ortho_scale` and the FOV together.
+Blender opens on the sprite camera and plays the loop; save the config and it reloads in a
+fraction of a second. It shows the model, not the sprite look. Keep feet on the ground: list the
+ankles in `motion.plant` and a body dip or sway bends the legs instead of sliding the feet.
 
-### 7. Build the full loop
+### 6. Build the loop
 
 ```bash
-python3 pipeline/render_parallel.py CONFIG.json out/frames
-python3 pipeline/make_gif.py CONFIG.json out/frames out/NAME.gif --scale 4 --auto
+python3 pipeline/build_all.py out/ CONFIG.json --scale 4
 ```
 
-`make_gif` runs the quality gate and writes `out/NAME.qa.json`. On a FAIL, `--auto` tries the
-remedies in `qa.remedies` and refits failing parts' shade thresholds, then keeps the best build.
-
-### 8. Make the shiny
+### 7. Make the shiny
 
 ```bash
 python3 -I pipeline/make_shiny.py CONFIG.json CONFIG_shiny.json --keep-steps
@@ -135,98 +122,60 @@ python3 pipeline/palette_swap.py CONFIG.json CONFIG_shiny.json out/NAME.gif out/
 ```
 
 The shiny is the finished normal sprite with its colours swapped, like Showdown's. Two parts must
-not share a colour if only one of them changes in the shiny.
+not share a colour if only one of them changes in the shiny. `build_all` does the swap by itself
+once `CONFIG_shiny.json` exists.
 
-### Hull style (optional)
+### 8. Back view
 
-An alternative look with flat palette colours, three cel bands, and lines from an inverted hull,
-so the 3D model decides where interior lines go. It replaces the line and shading rules, so
-there's no tracing and no paint script. Example: `mega-zygarde-za/zygarde_hull_front.json`.
+Copy the front config to `_back.json` and change only the camera: azimuth + 180, and a positive
+elevation (about the front's own) so the camera looks down on the back, never up from below.
+Pose, motion, palette and style stay the same. Build it the same way.
 
-```json
-"render": {"hull": {"thickness": 0.03, "even": true, "weld": false}},
-"style":  {"hull": {"cover": 0.35, "weak_cover": 0.12, "bands": [0.454, 0.748], "ring": true}}
-```
+## The look (`sprite_style.py`)
 
-- `render.hull` adds a `hull_NNNN` pass: every mesh pushed out by `thickness` world units with
-  flipped normals and back faces culled. About 1 sprite px of world units gives 1 px lines.
-  Keep `weld` off: it closes cracks at hard edges but adds lines along creases.
-- `style.hull` turns the hull pass into lines. A pixel is line where the hull covers `cover` of it;
-  1–2 px gaps are filled where the hull still covers `weak_cover`. `ring` closes the silhouette.
-  `bands` are the N.L limits for one shade darker / lighter; leave them out to take frame 0's
-  25th / 70th percentile. Parts whose `style.thresholds` are all 9 stay flat (or set `flat_parts`).
-- Lines are never thinned or moved. Each pixel takes the colour of the part most of its samples
-  show, leaving out samples under the hull. Bits of a part up to 3 px touching a line take the
-  colour around them.
+For every sprite pixel, from the full-size render passes:
 
-### 9. Back view
+- **Part and colour.** The part is the palette part most of its render samples snap to, leaving
+  out samples under the hull (they belong to the line). A sample of a material in
+  `parts.materials` (the ID pass) only snaps to that material's parts. Its colour is the mean of those samples,
+  snapped to that part's shades. A pixel on a border takes one side's colour, never a blend.
+- **Shade bands.** The shade moves one step darker or lighter by the light on the pixel's mean
+  normal (N.L): below the 25th percentile of frame 0 one darker, above the 70th one lighter.
+  The limits are fixed for the whole loop, so the bands don't jump.
+- **Lines.** A pixel is outline colour where the hull covers 35% of it. A 1–2 px gap in a line is
+  filled where the hull still covers 12%, with line on both sides, so no line gets wider. Lines
+  are never thinned or moved. Where the hull has a crack at a hard edge, the pixel right outside
+  the body closes the silhouette.
+- **Slivers.** A texture colour reaching a pixel or two past the edge a line follows leaves bits
+  of a part (up to 3 px) touching the line; they take the colour around them.
 
-The back camera is the front camera turned 180°: azimuth + 180, elevation negated, with the same
-body turn. Write it as a separate `_back.json` and build it the same way.
+All of it is automatic. Optional settings:
+
+| Setting | Default | Effect |
+|---|---|---|
+| `render.hull.thickness_px` | 1.15 | line width in sprite px, turned into world units from frame 0's size on screen and `style.height` |
+| `render.hull.thickness` | — | the hull's thickness in world units instead |
+| `render.hull.even` | `true` | keeps the hull the same width round sharp corners |
+| `render.hull.spike` | 2.0 | even offset at a needle-sharp tip is capped to this many thicknesses (else it draws long strands) |
+| `render.hull.weld` | `false` | closes cracks at hard edges, but draws extra lines along creases |
+| `parts.match` | `"palette"` | `"albedo"`: tell parts apart by `parts.albedo`, not by palette shades |
+| `style.light` | `[-0.15, 0.45, 0.88]` | light direction in camera space (x right, y up, z to the viewer) |
+| `style.bands` | frame 0's 25th / 70th percentile | N.L limits for one shade darker / lighter |
+| `style.flat_parts` | none | parts that keep their texture shade (marks, gems) |
+| `style.cover`, `style.weak_cover` | 0.35, 0.12 | hull coverage for a line pixel / a filled gap |
+| `style.ring` | `true` | close the silhouette where the hull cracks |
+| `style.despeckle` | 0 | specks of up to this many px inside one part, ringed by one other colour of it, take that colour (lines untouched) |
+| `style.fast_frames` | none | frame ranges of a fast event (a spin): slow motions pause during them |
+| `style.frame_anchor` | — | `"first"`: frame 0's pixel grid, grown to fit the loop |
+| `style.pixel_bob` | none | whole-pixel shift of each finished sprite (`motion.py`) |
+| `motion.plant` | none | bones (ankles) held at their mean spot over the loop: a body dip or sway bends the two bones above each instead of moving the foot |
 
 ## Tests
 
-### Quality gate (`qa.py`)
-
-Runs automatically after every `make_gif` / `palette_swap` build; run it by hand with
-`python3 pipeline/qa.py CONFIG.json SPRITE.gif`. Each check is compared with a limit in the
-config's `qa` section. Checks without a limit set are skipped, and so are the ones that need a
-reference when the config has none.
-
-**Per-frame rules** (must be 0 unless noted)
-
-| Check | Fails when |
-|---|---|
-| `thick_lines` | a 2×2 block of line colour appears (a line wider than 1 px) |
-| `diag_2px` | a staircase corner or a line hugging the outline reads as a 2-px line |
-| `open_outline` | the body touches the outside, or an outlined part touches another part with no line between |
-| `silhouette_teeth` | too many 1-px spurs or dents in the silhouette, per frame (limit about 1.25 × Showdown's) |
-| `render_clipped` | any frame touches the render edge (checked in `make_gif`) |
-
-**Over the loop** (stability)
-
-| Check | Fails when |
-|---|---|
-| `dark_flicker` / `dark_flicker_rate` | dark pixels switch on or off for 1–2 frames |
-| `any_blinks` / `blink_rate` | any colour lasts only 1–2 frames at a pixel |
-| `pop_max` / `pop_max_norm` | the biggest visible change in one frame step that motion doesn't explain is too large |
-| `big_pops` / `big_pops_share` | too many frame steps have a pop ≥ 2 |
-
-The `_rate`, `_norm` and `_share` versions are normalised by sprite size and loop length, so their
-limits can come from a Showdown sprite with the same kind of motion (`calibration/*.json`:
-floating Carbink, idle Golisopod, sway Dragalge). Frames listed in `style.fast_frames`, such as a
-spin, are left out of these checks; the per-frame rules still apply to them.
-
-**Against the Showdown reference** (frame 0)
-
-| Check | Measures |
-|---|---|
-| `style_score` | overall match, 0–100: silhouette, parts, shading, palette mix, lines, size |
-| `extra_line_px` / `missing_line_px` | our inner lines with no Showdown line within 2 px, and the reverse |
-| `<part>_mix_l1` | colour mix inside one part vs Showdown's |
-| `shadow_f1`, `dark_rim_excess`, `blob_shade_err` | where the darkest shades sit, whether they hug the outline, and how dark each piece is |
-| `<part>_edge_ratio`, `<part>_shape_f1`, `<part>_tones` | edge share, footprint and number of shades in use for a part |
-
-**Cleanliness** (mainly for sprites with no reference)
-
-| Check | Measures |
-|---|---|
-| `tone_mix_l1` | brightness mix vs `qa.tone_ref` (Showdown's sprite of the same or base form) |
-| `shade_slivers` | fill pixels broken into 1-px streaks by render detail |
-| `blotch_share` | small enclosed islands of another colour |
-
-### Finding where a check failed
-
-```bash
-python3 pipeline/flicker_map.py out/NAME.gif --heatmap out/pop.png          # where pops happen
-python3 pipeline/check_loop.py CONFIG.json out/NAME.gif --heatmap out/loop.png   # blinks, thick lines, diagonals
-python3 pipeline/compare.py CONFIG.json out/NAME.gif --out out/compare.png  # reference | ours | diff | extra/missing lines
-```
-
 ### Regression (`regress.py`)
 
-Rebuilds the regression sprites (Lapras, Glimmora, Golisopod and Dragalge front, plus Dragalge back
-and its shiny) and compares every frame, eye position and QA value with the saved goldens in `.regress/`.
+Rebuilds the regression sprites (Lapras, Glimmora, Golisopod and Dragalge front, Dragalge back and
+its shiny, Zygarde front and back) and compares every frame with the saved goldens in `.regress/`.
 
 ```bash
 python3 pipeline/regress.py check               # build again, compare frame by frame
@@ -236,15 +185,6 @@ python3 pipeline/regress.py golden NAME [--rev GIT_REV]   # save a new golden
 
 Goldens use the config snapshot taken when they were saved, so editing a config doesn't move the
 target. Any speed change must leave both checks IDENTICAL.
-
-### Rust kernels (`rust/check_kernels.py`)
-
-```bash
-python3 pipeline/rust/check_kernels.py CONFIG.json FRAMES_DIR [KERNEL ...]
-```
-
-Runs a real build with each Rust rule checked against its Python original on every call. Exit 1
-on any mismatch; the failing inputs are saved to `.regress/kernel_fail_<name>.npz`.
 
 ## Settings
 
@@ -256,38 +196,30 @@ on any mismatch; the failing inputs are saved to `.regress/kernel_fail_<name>.np
 | `SPRITE_RENDER_CACHE` | `.render_cache/` | render cache folder; `0` = off |
 | `SPRITE_RENDER_CACHE_GB` | 20 | cache size cap, oldest first |
 | `SPRITE_JOBS` | all cores | build processes; 1 = single process |
-| `SPRITE_RUST` | on | `0` = Python only |
 
 A render is reused from the cache when nothing it reads has changed: the config's render, camera,
-pose and motion, the model files, the render scripts and Blender itself. A style or QA change
-therefore skips Blender entirely. Lines come from `linetrace.py` by default;
-`render.freestyle.engine: "freestyle"` switches back to Freestyle.
+pose and motion, `parts.materials`, `style.height` and `fast_frames`, the model files, the render scripts and Blender
+itself. Any other style change skips Blender entirely.
 
 ## Scripts
 
 | Script | Purpose |
 |---|---|
-| `build_all.py` | batch: render + build + QA + shiny for many configs |
-| `render_sprite.py` | Blender: pose the model, render colour / id / data / rest / line passes |
+| `build_all.py` | batch: render + build + shiny for many configs |
+| `render_sprite.py` | Blender: pose the model, render the colour / ID / data / hull passes |
 | `render_parallel.py` | render over several Blender processes, with the cache |
 | `render_many.py` | Blender worker kept up between sprites (used by `build_all`) |
-| `make_gif.py` | frames → sprite GIF, then QA |
-| `sprite_style.py` | the look: shading, palette bands, lines, cleanup, stabilisation over time |
-| `hull_style.py` | the hull style: flat colours, cel bands, inverted-hull lines (`style.hull`) |
-| `linetrace.py` | mesh edges as lines (replaces Freestyle) |
-| `motion.py` | motion helpers shared by render, style and checks |
+| `make_gif.py` | frames → sprite GIF |
+| `sprite_style.py` | the look: part colours, shade bands, hull lines |
+| `motion.py` | motion helpers shared by render and style |
 | `fit_pose.py` | Blender: fit pose + camera to the reference |
-| `learn_matcap.py` | learn the lighting from the reference |
-| `tune_style.py` | search style numbers against `compare.py`'s score |
-| `match_shares.py`, `match_tones.py` | shade thresholds for sprites with no reference |
-| `fit_shadow.py` | fit the cast-shadow sun |
-| `make_eye_stamp.py` | cut the eye from the reference into the config |
-| `make_seams.py` | seam / island maps for armour lines |
 | `make_shiny.py`, `palette_swap.py` | shiny config and shiny recolour |
-| `qa.py`, `check_loop.py`, `flicker_map.py`, `compare.py` | quality gate and its checks |
-| `preview_check.py` | quick per-frame check on a few frames |
-| `regress.py`, `rust/check_kernels.py` | regression tests |
-| `res_study.py` | render resolution vs quality |
+| `regress.py` | regression tests |
 | `ref_decode.py` | rebuild a Showdown frame from browser-exported text |
 | `import_fbx.py`, `kelp_mat.py`, `layer_mat.py` | Blender model prep |
-| `rustcore.py`, `rust/` | Rust versions of the per-pixel rules (same pixels as Python) |
+| `prep_model.py` (+ `prep_scene.py`) | model zip → model folder, `.blend`, draft config (palette from the textures, camera, size), `RIG.md` |
+| `preview.py` | Workbench sheet of a few loop frames from several views, in seconds: judge pose and motion without a build |
+| `check_motion.py` | the idle rules in sprite px: frozen / big / jitter / loop seam / feet / visible clipping |
+| `package.py` | front config → back + shiny configs, build, contact sheet, check, report skeleton |
+| `blender_slot.py` | machine-wide cap on Blender processes, timeouts, stray-Blender reaper |
+| `live_preview.py` | the loop playing live in Blender's window, reloaded on every config save |

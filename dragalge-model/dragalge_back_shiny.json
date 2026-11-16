@@ -2,9 +2,9 @@
   "name": "Mega Dragalge (shiny)",
   "model": "MegaDragalge/MegaDragalge_parts.blend",
   "reference": null,
-  "fit_reference": "reference/mega_still_sil.png",
-  "fit_silhouette_only": true,
-  "reference_source": "Showdown has only a placeholder for Mega Dragalge (sprites/ani/dragalge-mega.gif: a still, downscaled 3D render, ~200 colours): camera fitted to its silhouette, part hues taken from it (incl. the olive horns the composite textures miss), ramps brightened to Showdown's level; motion modelled on Showdown's normal Dragalge",
+  "reference_source": "pose and camera fitted to the game's own render of the Mega (Pokemon HOME sprite, mirrored to face left like Showdown's front sprites, part-coded: reference/home_front_parts.png); fit scored with the ID pass (wing_red -> red), head / feelers held near rest so the fit can't twist them",
+  "fit_reference": "reference/home_front_parts.png",
+  "fit_silhouette_only": false,
   "palette": {
     "outline": "#2a1a1f",
     "parts": {
@@ -44,8 +44,7 @@
         "#ce4a60",
         "#ec7886"
       ]
-    },
-    "note": "hues from Showdown's Mega Dragalge placeholder and the model's texture layers; 4 shades per part like the normal form's sprite; iris a hair off red so a shiny recolour can tell the eyes (stay red) from the chest"
+    }
   },
   "parts": {
     "materials": {
@@ -63,8 +62,7 @@
       "purple": "#8a9db1",
       "red": "#68a053",
       "iris": "#c14d60"
-    },
-    "note": "kelp = the hair-mesh faces skinned to the horn bones (own material in MegaDragalge_parts.blend, made by kelp_mat.py); fin and iris kept apart from purple/red because their shiny colours stay put"
+    }
   },
   "camera": {
     "azimuth": "AZIMUTH",
@@ -77,20 +75,13 @@
     "distance": 20,
     "ortho_scale": 7.652,
     "perspective_fov": "FOV",
-    "note": "render widened 460 -> 800 px for margin (the flaring wings left the frame): FOV and ortho_scale scaled together so the fitted view (FOV 23 at 460 px) is unchanged"
+    "note": "back = the front config turned round: AZIMUTH + 180, ELEVATION 15 (looking down on the back, as Golisopod's back); render 1600 px for style.height 150 (~4 render px per sprite px) and margin round the swaying wings; FOV and ortho_scale go together"
   },
   "render": {
-    "width": 800,
-    "height": 800,
-    "depth_range": 3,
-    "freestyle": {},
-    "shadow": {
-      "light_cam": [
-        0.0,
-        0.985,
-        -0.174
-      ],
-      "note": "sun direction (camera space) for cast shadows; fitted by fit_shadow.py + full-loop QA"
+    "width": 1600,
+    "height": 1600,
+    "hull": {
+      "thickness_px": 0.95
     },
     "texture_swap": {
       "pm0710_51_00_body_a_alb (Composite).png": "pm0710_51_00_body_a_rare_alb (Composite).png",
@@ -100,153 +91,501 @@
     }
   },
   "pose_params": {
-    "AZIMUTH": 248.0,
-    "ELEVATION": 18.0,
-    "FOV": 38.97,
-    "SWAY": 3.0,
-    "HEAD": 1.8,
-    "FIN": 1.2,
-    "DANGLE": 1.5,
-    "TAIL": 4.0,
-    "SIG_T0": 0.6,
-    "LIFT": 22.0,
-    "BEAT": 12.0,
-    "REAR": 8.0,
+    "AZIMUTH": 207.5,
+    "ELEVATION": 15,
+    "FOV": 36.23,
     "REST": 8.0,
-    "FEELER_W": 2.5,
-    "SPLAY": 5.0,
-    "HORN": 0.7
+    "FEELER_W": 1.8,
+    "SPLAY": 27.25,
+    "LX": 51.03,
+    "LY": 57.39,
+    "LZ": 9.73,
+    "RX": -13.29,
+    "RY": -13.95,
+    "RZ": 35.34,
+    "LD": 25.45,
+    "RD": -9.49,
+    "SPX": 24.63,
+    "NKX": -7.3,
+    "HDZ": 5.03,
+    "TLX": 0.55,
+    "FBX": 9.75,
+    "HBX": 14.35,
+    "ARMX": 47.5,
+    "ARMY": 32.0,
+    "CYC": 2,
+    "LAG": 0.035,
+    "FLOAT": 2.85,
+    "PX_U": 0.03207,
+    "GROW": 0.08,
+    "ZR": 0.6,
+    "BODY": 3.0,
+    "FCURL": 10.25,
+    "TCURL": 6,
+    "WCURL": 0,
+    "ACURL": 5,
+    "LEAF": 8.0,
+    "DRIFT": 2.28,
+    "RAMP": 2.4,
+    "WLAG": 0.075,
+    "RIP": 0.25,
+    "ARMYL": -9.0,
+    "FANCL": -18.21,
+    "FANBL": -17.91,
+    "FANCR": 1.09,
+    "FANBR": -29.5,
+    "COMP": 0.95,
+    "ARAMP": 0.8,
+    "HEAD": 1.5,
+    "DORS": 7.0,
+    "HORN": 8.0,
+    "FIN": 9.0,
+    "DANGLE": 8.0,
+    "TAIL": 7.0,
+    "ARM": 9.5,
+    "CYCC": 3,
+    "CYCB": 4,
+    "SIZEC": 0.8,
+    "SIZEB": 0.65,
+    "PHC": 0.0,
+    "PHB": 0.33,
+    "PIVA": 0.0,
+    "PIVC": 0.0,
+    "PIVB": 0.0,
+    "HDA": 0,
+    "HDC": 25,
+    "HDB": -30,
+    "RAMPC": 1.6,
+    "RAMPB": 1.2,
+    "TRAMP": 0.6,
+    "ARMHD": 35,
+    "COMPR": 0.85,
+    "ZRW": 0.25,
+    "SHARE": 0.6,
+    "DORSA": 3.5,
+    "FINB": 5.0,
+    "FINC": 5.5
   },
   "pose": [
     [
-      "spine_01",
+      "left_hair_c_01",
+      "A:0.14,0.6,0.79",
+      "FANCL"
+    ],
+    [
+      "left_hair_b_01",
+      "A:0.14,0.6,0.79",
+      "FANBL"
+    ],
+    [
+      "right_hair_c_01",
+      "A:-0.14,0.6,0.79",
+      "-FANCR"
+    ],
+    [
+      "right_hair_b_01",
+      "A:-0.14,0.6,0.79",
+      "-FANBR"
+    ],
+    [
+      "left_hair_a_02",
+      "A:1,0,0",
+      "LX"
+    ],
+    [
+      "left_hair_a_02",
       "A:0,1,0",
-      "SWAY*sin(4*pi*t)"
+      "LY"
+    ],
+    [
+      "left_hair_a_02",
+      "A:0,0,1",
+      "LZ"
+    ],
+    [
+      "right_hair_a_02",
+      "A:1,0,0",
+      "RX"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0,1,0",
+      "RY"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0,0,1",
+      "RZ"
+    ],
+    [
+      "spine_01",
+      "A:1,0,0",
+      "SPX"
     ],
     [
       "neck_01",
-      "A:0,1,0",
-      "-HEAD*sin(4*pi*t - 0.8)"
-    ],
-    [
-      "neck_02",
       "A:1,0,0",
-      "-REAR*bump((t - SIG_T0)/0.3)"
+      "NKX"
     ],
     [
-      "left_hair_a_03",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 0.5) - LIFT*bump((t - SIG_T0 - 0.00)/0.2) + BEAT*bump((t - SIG_T0 - 0.140)/0.16) - REST"
+      "head",
+      "A:0,0,1",
+      "HDZ"
     ],
     [
-      "left_hair_a_05",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 1.0) - 0.5*LIFT*bump((t - SIG_T0 - 0.02)/0.2) + 0.6*BEAT*bump((t - SIG_T0 - 0.165)/0.16)"
+      "tail_01",
+      "A:1,0,0",
+      "TLX"
     ],
     [
-      "left_hair_a_07",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 1.5) - 0.5*LIFT*bump((t - SIG_T0 - 0.04)/0.2) + 0.6*BEAT*bump((t - SIG_T0 - 0.180)/0.16)"
+      "left_feeler_b_02",
+      "A:1,0,0",
+      "FBX"
     ],
     [
-      "left_hair_b_02",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 0.5) - LIFT*bump((t - SIG_T0 - 0.00)/0.2) + BEAT*bump((t - SIG_T0 - 0.140)/0.16)"
+      "right_feeler_b_02",
+      "A:1,0,0",
+      "FBX"
     ],
     [
-      "left_hair_b_04",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 1.0) - 0.5*LIFT*bump((t - SIG_T0 - 0.02)/0.2) + 0.6*BEAT*bump((t - SIG_T0 - 0.165)/0.16)"
-    ],
-    [
-      "left_hair_c_02",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 0.5) - LIFT*bump((t - SIG_T0 - 0.00)/0.2) + BEAT*bump((t - SIG_T0 - 0.140)/0.16)"
-    ],
-    [
-      "left_hair_c_04",
-      "A:0,1,0",
-      "-FIN*sin(4*pi*t - 1.0) - 0.5*LIFT*bump((t - SIG_T0 - 0.02)/0.2) + 0.6*BEAT*bump((t - SIG_T0 - 0.165)/0.16)"
+      "hair_b_01",
+      "A:1,0,0",
+      "HBX"
     ],
     [
       "left_feeler_b_03",
       "A:1,0,0",
-      "DANGLE*sin(4*pi*t - 1.2)"
+      "0.6*FCURL"
+    ],
+    [
+      "left_feeler_b_04",
+      "A:1,0,0",
+      "0.8*FCURL"
     ],
     [
       "left_feeler_b_05",
       "A:1,0,0",
-      "DANGLE*sin(4*pi*t - 1.8)"
+      "1.0*FCURL"
     ],
     [
-      "left_horn_a_01",
-      "A:0,1,0",
-      "-HORN*sin(4*pi*t - 1.0) - 6*bump((t - SIG_T0 - 0.03)/0.25)"
-    ],
-    [
-      "right_hair_a_03",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 0.5) + LIFT*bump((t - SIG_T0 - 0.00)/0.2) - BEAT*bump((t - SIG_T0 - 0.140)/0.16) + REST"
-    ],
-    [
-      "right_hair_a_05",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 1.0) + 0.5*LIFT*bump((t - SIG_T0 - 0.02)/0.2) - 0.6*BEAT*bump((t - SIG_T0 - 0.165)/0.16)"
-    ],
-    [
-      "right_hair_a_07",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 1.5) + 0.5*LIFT*bump((t - SIG_T0 - 0.04)/0.2) - 0.6*BEAT*bump((t - SIG_T0 - 0.180)/0.16)"
-    ],
-    [
-      "right_hair_b_02",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 0.5) + LIFT*bump((t - SIG_T0 - 0.00)/0.2) - BEAT*bump((t - SIG_T0 - 0.140)/0.16)"
-    ],
-    [
-      "right_hair_b_04",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 1.0) + 0.5*LIFT*bump((t - SIG_T0 - 0.02)/0.2) - 0.6*BEAT*bump((t - SIG_T0 - 0.165)/0.16)"
-    ],
-    [
-      "right_hair_c_02",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 0.5) + LIFT*bump((t - SIG_T0 - 0.00)/0.2) - BEAT*bump((t - SIG_T0 - 0.140)/0.16)"
-    ],
-    [
-      "right_hair_c_04",
-      "A:0,1,0",
-      "+FIN*sin(4*pi*t - 1.0) + 0.5*LIFT*bump((t - SIG_T0 - 0.02)/0.2) - 0.6*BEAT*bump((t - SIG_T0 - 0.165)/0.16)"
+      "left_feeler_b_06",
+      "A:1,0,0",
+      "1.2*FCURL"
     ],
     [
       "right_feeler_b_03",
       "A:1,0,0",
-      "DANGLE*sin(4*pi*t - 1.2)"
+      "0.6*FCURL"
+    ],
+    [
+      "right_feeler_b_04",
+      "A:1,0,0",
+      "0.8*FCURL"
     ],
     [
       "right_feeler_b_05",
       "A:1,0,0",
-      "DANGLE*sin(4*pi*t - 1.8)"
+      "1.0*FCURL"
     ],
     [
-      "right_horn_a_01",
-      "A:0,1,0",
-      "+HORN*sin(4*pi*t - 1.0) + 6*bump((t - SIG_T0 - 0.03)/0.25)"
+      "right_feeler_b_06",
+      "A:1,0,0",
+      "1.2*FCURL"
+    ],
+    [
+      "left_hair_a_05",
+      "A:1,0,0",
+      "-LD"
+    ],
+    [
+      "left_hair_a_07",
+      "A:1,0,0",
+      "-0.7*LD"
+    ],
+    [
+      "left_hair_c_03",
+      "A:1,0,0",
+      "-LD"
+    ],
+    [
+      "left_hair_c_05",
+      "A:1,0,0",
+      "-0.7*LD"
+    ],
+    [
+      "left_hair_b_03",
+      "A:1,0,0",
+      "-LD"
+    ],
+    [
+      "right_hair_a_05",
+      "A:1,0,0",
+      "-RD"
+    ],
+    [
+      "right_hair_a_07",
+      "A:1,0,0",
+      "-0.7*RD"
+    ],
+    [
+      "right_hair_c_03",
+      "A:1,0,0",
+      "-RD"
+    ],
+    [
+      "right_hair_c_05",
+      "A:1,0,0",
+      "-0.7*RD"
+    ],
+    [
+      "right_hair_b_03",
+      "A:1,0,0",
+      "-RD"
+    ],
+    [
+      "tail_02",
+      "A:1,0,0",
+      "-TCURL"
+    ],
+    [
+      "tail_03",
+      "A:1,0,0",
+      "-TCURL"
     ],
     [
       "tail_04",
+      "A:1,0,0",
+      "-TCURL"
+    ],
+    [
+      "tail_05",
+      "A:1,0,0",
+      "-TCURL"
+    ],
+    [
+      "tail_06",
+      "A:1,0,0",
+      "-TCURL"
+    ],
+    [
+      "left_hair_a_06",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_a_07",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_a_08",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_a_09",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_b_02",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_b_03",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_b_04",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_b_05",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_c_02",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_c_03",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_c_04",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_c_05",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_hair_c_06",
+      "A:1,0,0",
+      "-WCURL"
+    ],
+    [
+      "left_arm_02",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "left_arm_03",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "left_arm_04",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "left_hand",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "left_index_01",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "left_index_02",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "right_hair_a_06",
       "A:0,0,1",
-      "TAIL*sin(4*pi*t - 1.0)"
+      "-WCURL"
+    ],
+    [
+      "right_hair_a_07",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_a_08",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_a_09",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_b_02",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_b_03",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_b_04",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_b_05",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_c_02",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_c_03",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_c_04",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_c_05",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_hair_c_06",
+      "A:0,0,1",
+      "-WCURL"
+    ],
+    [
+      "right_arm_02",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "right_arm_03",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "right_arm_04",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "right_hand",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "right_index_01",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "right_index_02",
+      "A:1,0,0",
+      "ACURL"
+    ],
+    [
+      "left_hair_a_03",
+      "A:0,1,0",
+      "-REST"
+    ],
+    [
+      "right_hair_a_03",
+      "A:0,1,0",
+      "REST"
+    ],
+    [
+      "left_arm_01",
+      "A:1,0,0",
+      "ARMX"
+    ],
+    [
+      "right_arm_01",
+      "A:1,0,0",
+      "ARMX"
     ],
     [
       "left_arm_01",
       "A:0,1,0",
-      "-SWAY*sin(4*pi*t)"
+      "-ARMYL"
     ],
     [
       "right_arm_01",
       "A:0,1,0",
-      "-SWAY*sin(4*pi*t)"
+      "ARMY"
     ],
     [
       "left_feeler_b_02",
@@ -261,318 +600,1840 @@
     [
       "left_feeler_b_02",
       "A:0,1,0",
-      "-SWAY*sin(4*pi*t) + HEAD*sin(4*pi*t - 0.8) - SPLAY"
+      "-SPLAY"
     ],
     [
       "right_feeler_b_02",
       "A:0,1,0",
-      "-SWAY*sin(4*pi*t) + HEAD*sin(4*pi*t - 0.8) + SPLAY"
+      "SPLAY"
+    ],
+    [
+      "spine_01",
+      "A:1,0,0",
+      "BODY*(1 + GROW*0)*sw(t - 0*LAG)"
+    ],
+    [
+      "spine_01",
+      "A:0,0,1",
+      "BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC)"
+    ],
+    [
+      "spine_02",
+      "A:1,0,0",
+      "BODY*(1 + GROW*1)*sw(t - 1*LAG)"
+    ],
+    [
+      "spine_02",
+      "A:0,0,1",
+      "BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC)"
+    ],
+    [
+      "spine_03",
+      "A:1,0,0",
+      "BODY*(1 + GROW*2)*sw(t - 2*LAG)"
+    ],
+    [
+      "spine_03",
+      "A:0,0,1",
+      "BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC)"
+    ],
+    [
+      "hips",
+      "A:1,0,0",
+      "BODY*(1 + GROW*1)*sw(t - 1*LAG)"
+    ],
+    [
+      "hips",
+      "A:0,0,1",
+      "BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC)"
+    ],
+    [
+      "neck_01",
+      "A:1,0,0",
+      "HEAD*(1 + GROW*3)*sw(t - 3*LAG)"
+    ],
+    [
+      "neck_01",
+      "A:0,0,1",
+      "HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC)"
+    ],
+    [
+      "neck_02",
+      "A:1,0,0",
+      "HEAD*(1 + GROW*4)*sw(t - 4*LAG)"
+    ],
+    [
+      "neck_02",
+      "A:0,0,1",
+      "HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC)"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "HEAD*(1 + GROW*5)*sw(t - 5*LAG)"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC)"
+    ],
+    [
+      "hair_b_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "hair_b_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "hair_b_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "hair_b_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "hair_b_01",
+      "A:0.996,0.071,0.044",
+      "DORS*(max(0.0, (1/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_01",
+      "A:-0.000,0.522,-0.853",
+      "DORS*(max(0.0, (1/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_02",
+      "A:0.996,0.072,0.043",
+      "DORS*(max(0.0, (2/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_02",
+      "A:0.000,0.509,-0.861",
+      "DORS*(max(0.0, (2/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_03",
+      "A:0.996,0.072,0.043",
+      "DORS*(max(0.0, (3/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_03",
+      "A:0.000,0.509,-0.861",
+      "DORS*(max(0.0, (3/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_04",
+      "A:0.996,0.072,0.043",
+      "DORS*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_b_04",
+      "A:0.000,0.509,-0.861",
+      "DORS*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_a_01",
+      "A:1,0,0",
+      "-COMP*0.4*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "hair_a_01",
+      "A:0,0,1",
+      "-COMP*0.4*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "hair_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - 0.4)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "hair_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - 0.4)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "hair_a_01",
+      "A:0.996,0.085,0.015",
+      "DORSA*(max(0.0, (1/2 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_a_01",
+      "A:0.000,-0.178,0.984",
+      "DORSA*(max(0.0, (1/2 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_a_02",
+      "A:0.996,0.085,0.015",
+      "DORSA*(max(0.0, (2/2 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "hair_a_02",
+      "A:0.000,-0.178,0.984",
+      "DORSA*(max(0.0, (2/2 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*1)*sw(t - 1*LAG))"
+    ],
+    [
+      "tail_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC))"
+    ],
+    [
+      "tail_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*1)*sw(t - 1*LAG))"
+    ],
+    [
+      "tail_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC))"
+    ],
+    [
+      "feeler_b",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*1)*sw(t - 1*LAG))"
+    ],
+    [
+      "feeler_b",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC))"
+    ],
+    [
+      "feeler_c",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*1)*sw(t - 1*LAG))"
+    ],
+    [
+      "feeler_c",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC))"
+    ],
+    [
+      "tail_01",
+      "A:1.000,0.000,0.000",
+      "TAIL*(max(0.0, (1/6 - 0)/(1 - 0))**TRAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_01",
+      "A:0.000,-0.725,-0.689",
+      "TAIL*(max(0.0, (1/6 - 0)/(1 - 0))**TRAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_02",
+      "A:1.000,0.000,-0.000",
+      "TAIL*(max(0.0, (2/6 - 0)/(1 - 0))**TRAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_02",
+      "A:0.000,-0.938,-0.345",
+      "TAIL*(max(0.0, (2/6 - 0)/(1 - 0))**TRAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_03",
+      "A:1.000,-0.000,-0.000",
+      "TAIL*(max(0.0, (3/6 - 0)/(1 - 0))**TRAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_03",
+      "A:0.000,0.137,-0.991",
+      "TAIL*(max(0.0, (3/6 - 0)/(1 - 0))**TRAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_04",
+      "A:1.000,0.000,-0.000",
+      "TAIL*(max(0.0, (4/6 - 0)/(1 - 0))**TRAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_04",
+      "A:0.000,-0.315,-0.949",
+      "TAIL*(max(0.0, (4/6 - 0)/(1 - 0))**TRAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_05",
+      "A:1.000,0.000,-0.000",
+      "TAIL*(max(0.0, (5/6 - 0)/(1 - 0))**TRAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_05",
+      "A:0.000,-0.768,-0.641",
+      "TAIL*(max(0.0, (5/6 - 0)/(1 - 0))**TRAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_06",
+      "A:0.742,-0.407,0.533",
+      "TAIL*(max(0.0, (6/6 - 0)/(1 - 0))**TRAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "tail_06",
+      "A:-0.000,-0.794,-0.607",
+      "TAIL*(max(0.0, (6/6 - 0)/(1 - 0))**TRAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "feeler_a",
+      "A:1,0,0",
+      "-COMP*(BODY*(1 + GROW*1)*sw(t - 1*LAG))"
+    ],
+    [
+      "feeler_a",
+      "A:0,0,1",
+      "-COMP*(BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC))"
+    ],
+    [
+      "feeler_a",
+      "A:1.000,-0.000,0.000",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "feeler_a",
+      "A:-0.000,-0.035,-0.999",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "feeler_b",
+      "A:1.000,0.000,0.000",
+      "LEAF*1.5*(max(0.0, (2/2 - 0)/(1 - 0))**RAMP)*(cos((40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "feeler_b",
+      "A:0.000,-0.725,-0.689",
+      "LEAF*1.5*(max(0.0, (2/2 - 0)/(1 - 0))**RAMP)*(sin((40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "feeler_c",
+      "A:1.000,0.000,0.000",
+      "LEAF*1.5*(max(0.0, (2/2 - 0)/(1 - 0))**RAMP)*(cos((-40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((-40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "feeler_c",
+      "A:0.000,-0.725,-0.689",
+      "LEAF*1.5*(max(0.0, (2/2 - 0)/(1 - 0))**RAMP)*(sin((-40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((-40)*pi/180)*(sin(2*pi*(CYC*t - CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(-0.15 + (2*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_hair_a_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_hair_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_hair_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_hair_a_01",
+      "A:-0.007,1.000,0.022",
+      "FIN*(max(0.0, (1/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_01",
+      "A:0.312,0.023,-0.950",
+      "FIN*(max(0.0, (1/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_02",
+      "A:0.015,0.999,-0.032",
+      "FIN*(max(0.0, (2/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_02",
+      "A:-0.673,-0.014,-0.740",
+      "FIN*(max(0.0, (2/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_03",
+      "A:-0.129,0.939,0.320",
+      "FIN*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_03",
+      "A:-0.854,0.059,-0.517",
+      "FIN*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_04",
+      "A:-0.375,0.111,0.920",
+      "FIN*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_04",
+      "A:-0.923,0.050,-0.382",
+      "FIN*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_05",
+      "A:-0.322,0.518,0.792",
+      "FIN*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_05",
+      "A:-0.935,-0.044,-0.351",
+      "FIN*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_06",
+      "A:-0.322,0.518,0.792",
+      "FIN*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_06",
+      "A:-0.935,-0.044,-0.351",
+      "FIN*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_07",
+      "A:-0.248,0.751,0.611",
+      "FIN*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_07",
+      "A:-0.952,-0.072,-0.298",
+      "FIN*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_08",
+      "A:-0.248,0.751,0.611",
+      "FIN*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_08",
+      "A:-0.952,-0.072,-0.298",
+      "FIN*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_09",
+      "A:-0.248,0.751,0.611",
+      "FIN*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_a_09",
+      "A:-0.952,-0.072,-0.298",
+      "FIN*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_01",
+      "A:-0.371,0.173,0.912",
+      "FIN*SIZEC*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_01",
+      "A:-0.917,0.087,-0.390",
+      "FIN*SIZEC*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_02",
+      "A:-0.371,0.173,0.912",
+      "FIN*SIZEC*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_02",
+      "A:-0.917,0.087,-0.390",
+      "FIN*SIZEC*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_03",
+      "A:-0.310,0.567,0.763",
+      "FIN*SIZEC*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_03",
+      "A:-0.929,-0.009,-0.371",
+      "FIN*SIZEC*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_04",
+      "A:-0.310,0.567,0.763",
+      "FIN*SIZEC*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_04",
+      "A:-0.929,-0.009,-0.371",
+      "FIN*SIZEC*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_05",
+      "A:-0.231,0.787,0.571",
+      "FIN*SIZEC*SHARE*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_05",
+      "A:-0.944,-0.040,-0.327",
+      "FIN*SIZEC*SHARE*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_06",
+      "A:-0.231,0.787,0.571",
+      "FIN*SIZEC*SHARE*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_06",
+      "A:-0.944,-0.040,-0.327",
+      "FIN*SIZEC*SHARE*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_01",
+      "A:-0.377,0.006,0.926",
+      "FIN*SIZEB*SHARE*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_01",
+      "A:-0.924,0.061,-0.377",
+      "FIN*SIZEB*SHARE*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_02",
+      "A:-0.377,0.006,0.926",
+      "FIN*SIZEB*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_02",
+      "A:-0.924,0.061,-0.377",
+      "FIN*SIZEB*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_03",
+      "A:-0.344,0.407,0.846",
+      "FIN*SIZEB*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_03",
+      "A:-0.937,-0.093,-0.336",
+      "FIN*SIZEB*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_04",
+      "A:-0.344,0.407,0.846",
+      "FIN*SIZEB*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_04",
+      "A:-0.937,-0.093,-0.336",
+      "FIN*SIZEB*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_05",
+      "A:-0.344,0.407,0.846",
+      "FIN*SIZEB*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_05",
+      "A:-0.937,-0.093,-0.336",
+      "FIN*SIZEB*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_01",
+      "A:-0.371,0.173,0.912",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (1/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_01",
+      "A:-0.917,0.087,-0.390",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (1/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_02",
+      "A:-0.371,0.173,0.912",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (2/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_02",
+      "A:-0.917,0.087,-0.390",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (2/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_03",
+      "A:-0.310,0.567,0.763",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (3/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_03",
+      "A:-0.929,-0.009,-0.371",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (3/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_04",
+      "A:-0.310,0.567,0.763",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (4/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_04",
+      "A:-0.929,-0.009,-0.371",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (4/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_05",
+      "A:-0.231,0.787,0.571",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (5/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_05",
+      "A:-0.944,-0.040,-0.327",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (5/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_06",
+      "A:-0.231,0.787,0.571",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (6/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_c_06",
+      "A:-0.944,-0.040,-0.327",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (6/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "left_hair_b_01",
+      "A:-0.377,0.006,0.926",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (1/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_01",
+      "A:-0.924,0.061,-0.377",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (1/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_02",
+      "A:-0.377,0.006,0.926",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (2/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_02",
+      "A:-0.924,0.061,-0.377",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (2/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_03",
+      "A:-0.344,0.407,0.846",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (3/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_03",
+      "A:-0.937,-0.093,-0.336",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (3/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_04",
+      "A:-0.344,0.407,0.846",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (4/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_04",
+      "A:-0.937,-0.093,-0.336",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (4/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_05",
+      "A:-0.344,0.407,0.846",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (5/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_hair_b_05",
+      "A:-0.937,-0.093,-0.336",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (5/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "left_horn_a_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_horn_a_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_horn_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_horn_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_horn_a_01",
+      "A:0.176,-0.942,0.285",
+      "HORN*(max(0.0, (1/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_a_01",
+      "A:-0.850,0.000,0.526",
+      "HORN*(max(0.0, (1/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_a_02",
+      "A:0.002,-1.000,0.018",
+      "HORN*(max(0.0, (2/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_a_02",
+      "A:-0.995,-0.000,0.097",
+      "HORN*(max(0.0, (2/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_a_03",
+      "A:0.002,-1.000,0.018",
+      "HORN*(max(0.0, (3/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_a_03",
+      "A:-0.995,-0.000,0.097",
+      "HORN*(max(0.0, (3/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_b",
+      "A:0.002,-1.000,0.018",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_b",
+      "A:-0.995,-0.000,0.097",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_c",
+      "A:0.002,-1.000,0.018",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_horn_c",
+      "A:-0.995,-0.000,0.097",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:0.021,0.078,-0.997",
+      "DANGLE*(max(0.0, (1/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:0.966,-0.258,0.000",
+      "DANGLE*(max(0.0, (1/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:0.021,0.078,-0.997",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:0.966,-0.258,0.000",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:0.923,-0.228,0.311",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:-0.000,0.807,0.591",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_03",
+      "A:0.934,-0.231,0.274",
+      "DANGLE*(max(0.0, (3/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_03",
+      "A:-0.000,0.765,0.644",
+      "DANGLE*(max(0.0, (3/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_04",
+      "A:0.952,-0.246,0.184",
+      "DANGLE*(max(0.0, (4/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_04",
+      "A:-0.000,0.598,0.801",
+      "DANGLE*(max(0.0, (4/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_05",
+      "A:0.971,-0.215,0.109",
+      "DANGLE*(max(0.0, (5/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_05",
+      "A:0.000,0.453,0.892",
+      "DANGLE*(max(0.0, (5/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_06",
+      "A:0.971,-0.215,0.109",
+      "DANGLE*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_b_06",
+      "A:0.000,0.453,0.892",
+      "DANGLE*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_c",
+      "A:1,0,0",
+      "-COMP*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG))"
+    ],
+    [
+      "left_feeler_c",
+      "A:0,0,1",
+      "-COMP*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_feeler_c",
+      "A:1.000,0.000,0.000",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_c",
+      "A:0.000,-0.936,-0.352",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_d",
+      "A:1,0,0",
+      "-COMP*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG))"
+    ],
+    [
+      "left_feeler_d",
+      "A:0,0,1",
+      "-COMP*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_feeler_d",
+      "A:1.000,0.000,0.000",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_d",
+      "A:0.000,-0.936,-0.352",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG))"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_arm_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG))"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC))"
+    ],
+    [
+      "left_arm_01",
+      "A:-0.342,-0.153,-0.927",
+      "ARM*(max(0.0, (1/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_01",
+      "A:0.409,-0.913,-0.000",
+      "ARM*(max(0.0, (1/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_02",
+      "A:-0.309,-0.145,-0.940",
+      "ARM*(max(0.0, (2/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_02",
+      "A:0.424,-0.906,0.000",
+      "ARM*(max(0.0, (2/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_03",
+      "A:-0.269,-0.131,-0.954",
+      "ARM*(max(0.0, (3/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_03",
+      "A:0.438,-0.899,-0.000",
+      "ARM*(max(0.0, (3/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_04",
+      "A:-0.235,-0.117,-0.965",
+      "ARM*(max(0.0, (4/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_arm_04",
+      "A:0.446,-0.895,-0.000",
+      "ARM*(max(0.0, (4/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hand",
+      "A:-0.207,-0.104,-0.973",
+      "ARM*(max(0.0, (5/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_hand",
+      "A:0.450,-0.893,-0.000",
+      "ARM*(max(0.0, (5/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_index_01",
+      "A:-0.150,-0.077,-0.986",
+      "ARM*(max(0.0, (6/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_index_01",
+      "A:0.456,-0.890,-0.000",
+      "ARM*(max(0.0, (6/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_index_02",
+      "A:-0.150,-0.077,-0.986",
+      "ARM*(max(0.0, (7/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_index_02",
+      "A:0.456,-0.890,-0.000",
+      "ARM*(max(0.0, (7/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_e",
+      "A:-0.269,-0.131,-0.954",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_e",
+      "A:0.438,-0.899,-0.000",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_f",
+      "A:-0.235,-0.117,-0.965",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_feeler_f",
+      "A:0.446,-0.895,-0.000",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_tail_a",
+      "A:0.338,-0.893,-0.297",
+      "TAIL*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_tail_a",
+      "A:0.660,-0.000,0.751",
+      "TAIL*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_tail_b_01",
+      "A:0.983,-0.112,0.144",
+      "TAIL*(max(0.0, (6/7 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_tail_b_01",
+      "A:-0.000,0.791,0.612",
+      "TAIL*(max(0.0, (6/7 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_tail_b_02",
+      "A:0.983,-0.112,0.144",
+      "TAIL*(max(0.0, (7/7 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "left_tail_b_02",
+      "A:-0.000,0.791,0.612",
+      "TAIL*(max(0.0, (7/7 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_hair_a_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_hair_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_hair_a_01",
+      "A:0.299,-0.843,0.447",
+      "FIN*(max(0.0, (1/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_01",
+      "A:0.189,0.512,0.838",
+      "FIN*(max(0.0, (1/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_02",
+      "A:0.567,-0.589,0.576",
+      "FIN*(max(0.0, (2/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_02",
+      "A:-0.328,0.480,0.814",
+      "FIN*(max(0.0, (2/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_03",
+      "A:0.408,-0.760,0.506",
+      "FIN*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_03",
+      "A:-0.583,0.209,0.785",
+      "FIN*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_04",
+      "A:-0.447,-0.890,-0.088",
+      "FIN*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_04",
+      "A:-0.640,0.250,0.726",
+      "FIN*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_05",
+      "A:-0.523,-0.837,-0.158",
+      "FIN*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_05",
+      "A:-0.590,0.222,0.776",
+      "FIN*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_06",
+      "A:-0.523,-0.837,-0.158",
+      "FIN*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_06",
+      "A:-0.590,0.222,0.776",
+      "FIN*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_07",
+      "A:-0.571,-0.795,-0.204",
+      "FIN*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_07",
+      "A:-0.554,0.189,0.811",
+      "FIN*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_08",
+      "A:-0.571,-0.795,-0.204",
+      "FIN*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_08",
+      "A:-0.554,0.189,0.811",
+      "FIN*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_09",
+      "A:-0.571,-0.795,-0.204",
+      "FIN*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_a_09",
+      "A:-0.554,0.189,0.811",
+      "FIN*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_01",
+      "A:-0.613,-0.750,-0.247",
+      "FIN*SIZEC*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_01",
+      "A:-0.608,0.249,0.754",
+      "FIN*SIZEC*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_02",
+      "A:-0.613,-0.750,-0.247",
+      "FIN*SIZEC*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_02",
+      "A:-0.608,0.249,0.754",
+      "FIN*SIZEC*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_03",
+      "A:-0.670,-0.674,-0.310",
+      "FIN*SIZEC*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_03",
+      "A:-0.559,0.184,0.809",
+      "FIN*SIZEC*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_04",
+      "A:-0.670,-0.674,-0.310",
+      "FIN*SIZEC*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_04",
+      "A:-0.559,0.184,0.809",
+      "FIN*SIZEC*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_05",
+      "A:-0.704,-0.619,-0.349",
+      "FIN*SIZEC*SHARE*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_05",
+      "A:-0.527,0.125,0.840",
+      "FIN*SIZEC*SHARE*(max(0.0, (8/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 7*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_06",
+      "A:-0.704,-0.619,-0.349",
+      "FIN*SIZEC*SHARE*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_06",
+      "A:-0.527,0.125,0.840",
+      "FIN*SIZEC*SHARE*(max(0.0, (9/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 8*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_01",
+      "A:-0.409,-0.911,-0.054",
+      "FIN*SIZEB*SHARE*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_01",
+      "A:-0.707,0.279,0.650",
+      "FIN*SIZEB*SHARE*(max(0.0, (3/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_02",
+      "A:-0.409,-0.911,-0.054",
+      "FIN*SIZEB*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_02",
+      "A:-0.707,0.279,0.650",
+      "FIN*SIZEB*SHARE*(max(0.0, (4/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_03",
+      "A:-0.487,-0.864,-0.124",
+      "FIN*SIZEB*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_03",
+      "A:-0.656,0.269,0.705",
+      "FIN*SIZEB*SHARE*(max(0.0, (5/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_04",
+      "A:-0.487,-0.864,-0.124",
+      "FIN*SIZEB*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_04",
+      "A:-0.656,0.269,0.705",
+      "FIN*SIZEB*SHARE*(max(0.0, (6/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_05",
+      "A:-0.487,-0.864,-0.124",
+      "FIN*SIZEB*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) - ZRW*sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_05",
+      "A:-0.656,0.269,0.705",
+      "FIN*SIZEB*SHARE*(max(0.0, (7/9 - PIVA)/(1 - PIVA))**RAMP)*(sin((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC)))) + ZRW*cos((HDA)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_01",
+      "A:-0.613,-0.750,-0.247",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (1/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_01",
+      "A:-0.608,0.249,0.754",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (1/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 0*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_02",
+      "A:-0.613,-0.750,-0.247",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (2/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_02",
+      "A:-0.608,0.249,0.754",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (2/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 1*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_03",
+      "A:-0.670,-0.674,-0.310",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (3/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_03",
+      "A:-0.559,0.184,0.809",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (3/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 2*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_04",
+      "A:-0.670,-0.674,-0.310",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (4/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_04",
+      "A:-0.559,0.184,0.809",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (4/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 3*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_05",
+      "A:-0.704,-0.619,-0.349",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (5/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_05",
+      "A:-0.527,0.125,0.840",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (5/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 4*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_06",
+      "A:-0.704,-0.619,-0.349",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (6/6 - PIVC)/(1 - PIVC))**RAMPC)*(cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC)))) - ZRW*sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_c_06",
+      "A:-0.527,0.125,0.840",
+      "FIN*SIZEC*(1 - SHARE)*(max(0.0, (6/6 - PIVC)/(1 - PIVC))**RAMPC)*(sin((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC))) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC)))) + ZRW*cos((HDC)*pi/180)*(sin(2*pi*(CYCC*t - CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.25)) + RIP*sin(2*pi*(2*CYCC*t - 2.6*CYCC*(PHC + (6*LAG + 5*WLAG)*CYC/CYCC) - 0.2))))"
+    ],
+    [
+      "right_hair_b_01",
+      "A:-0.409,-0.911,-0.054",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (1/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_01",
+      "A:-0.707,0.279,0.650",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (1/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 0*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_02",
+      "A:-0.409,-0.911,-0.054",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (2/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_02",
+      "A:-0.707,0.279,0.650",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (2/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 1*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_03",
+      "A:-0.487,-0.864,-0.124",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (3/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_03",
+      "A:-0.656,0.269,0.705",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (3/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 2*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_04",
+      "A:-0.487,-0.864,-0.124",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (4/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_04",
+      "A:-0.656,0.269,0.705",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (4/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 3*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_05",
+      "A:-0.487,-0.864,-0.124",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (5/5 - PIVB)/(1 - PIVB))**RAMPB)*(cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB)))) - ZRW*sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_hair_b_05",
+      "A:-0.656,0.269,0.705",
+      "FIN*SIZEB*(1 - SHARE)*(max(0.0, (5/5 - PIVB)/(1 - PIVB))**RAMPB)*(sin((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB))) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB)))) + ZRW*cos((HDB)*pi/180)*(sin(2*pi*(CYCB*t - CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.25)) + RIP*sin(2*pi*(2*CYCB*t - 2.6*CYCB*(PHB + (6*LAG + 4*WLAG)*CYC/CYCB) - 0.2))))"
+    ],
+    [
+      "right_horn_a_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_horn_a_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_horn_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_horn_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_horn_a_01",
+      "A:0.137,0.970,-0.201",
+      "HORN*(max(0.0, (1/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_a_01",
+      "A:-0.826,0.000,-0.564",
+      "HORN*(max(0.0, (1/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_a_02",
+      "A:0.000,1.000,-0.001",
+      "HORN*(max(0.0, (2/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_a_02",
+      "A:-0.995,0.000,-0.098",
+      "HORN*(max(0.0, (2/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_a_03",
+      "A:0.000,1.000,-0.001",
+      "HORN*(max(0.0, (3/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_a_03",
+      "A:-0.995,0.000,-0.098",
+      "HORN*(max(0.0, (3/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_b",
+      "A:0.000,1.000,-0.001",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_b",
+      "A:-0.995,0.000,-0.098",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_c",
+      "A:0.000,1.000,-0.001",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_horn_c",
+      "A:-0.995,0.000,-0.098",
+      "HORN*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG) + HEAD*(1 + GROW*4)*sw(t - 4*LAG) + HEAD*(1 + GROW*5)*sw(t - 5*LAG))"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*4)*sw(t - 4*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*5)*sw(t - 5*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:0.034,-0.073,0.997",
+      "DANGLE*(max(0.0, (1/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:0.906,0.423,0.000",
+      "DANGLE*(max(0.0, (1/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:0.034,-0.073,0.997",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:0.906,0.423,0.000",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:0.894,0.269,-0.357",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:0.000,-0.798,-0.602",
+      "DANGLE*(max(0.0, (2/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_03",
+      "A:0.910,0.272,-0.313",
+      "DANGLE*(max(0.0, (3/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_03",
+      "A:0.000,-0.755,-0.656",
+      "DANGLE*(max(0.0, (3/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_04",
+      "A:0.927,0.306,-0.218",
+      "DANGLE*(max(0.0, (4/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_04",
+      "A:0.000,-0.581,-0.814",
+      "DANGLE*(max(0.0, (4/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_05",
+      "A:0.951,0.280,-0.133",
+      "DANGLE*(max(0.0, (5/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_05",
+      "A:-0.000,-0.431,-0.902",
+      "DANGLE*(max(0.0, (5/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_06",
+      "A:0.951,0.280,-0.133",
+      "DANGLE*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_b_06",
+      "A:-0.000,-0.431,-0.902",
+      "DANGLE*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (6*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_c",
+      "A:1,0,0",
+      "-COMP*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG))"
+    ],
+    [
+      "right_feeler_c",
+      "A:0,0,1",
+      "-COMP*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_feeler_c",
+      "A:1.000,0.000,0.000",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_c",
+      "A:-0.000,0.936,0.352",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_d",
+      "A:1,0,0",
+      "-COMP*(BODY*(1 + GROW*0)*sw(t - 0*LAG) + BODY*(1 + GROW*1)*sw(t - 1*LAG) + BODY*(1 + GROW*2)*sw(t - 2*LAG) + HEAD*(1 + GROW*3)*sw(t - 3*LAG))"
+    ],
+    [
+      "right_feeler_d",
+      "A:0,0,1",
+      "-COMP*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*1)*sw(t - 1*LAG - 0.25/CYC) + BODY*ZR*(1 + GROW*2)*sw(t - 2*LAG - 0.25/CYC) + HEAD*ZR*(1 + GROW*3)*sw(t - 3*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_feeler_d",
+      "A:1.000,0.000,0.000",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_d",
+      "A:-0.000,0.936,0.352",
+      "LEAF*(max(0.0, (1/1 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (4*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_01",
+      "A:1,0,0",
+      "-COMP*COMPR*(BODY*(1 + GROW*0)*sw(t - 0*LAG))"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "-COMP*COMPR*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_arm_02",
+      "A:1,0,0",
+      "-COMP*(1 - COMPR)*(BODY*(1 + GROW*0)*sw(t - 0*LAG))"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,1",
+      "-COMP*(1 - COMPR)*(BODY*ZR*(1 + GROW*0)*sw(t - 0*LAG - 0.25/CYC))"
+    ],
+    [
+      "right_arm_01",
+      "A:0.250,-0.107,0.962",
+      "ARM*(max(0.0, (1/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_01",
+      "A:0.394,0.919,-0.000",
+      "ARM*(max(0.0, (1/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 0*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_02",
+      "A:0.273,-0.126,0.954",
+      "ARM*(max(0.0, (2/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_02",
+      "A:0.418,0.909,0.000",
+      "ARM*(max(0.0, (2/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 1*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_03",
+      "A:0.302,-0.150,0.942",
+      "ARM*(max(0.0, (3/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_03",
+      "A:0.444,0.896,0.000",
+      "ARM*(max(0.0, (3/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 2*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_04",
+      "A:0.326,-0.171,0.930",
+      "ARM*(max(0.0, (4/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_arm_04",
+      "A:0.463,0.886,0.000",
+      "ARM*(max(0.0, (4/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hand",
+      "A:0.347,-0.188,0.919",
+      "ARM*(max(0.0, (5/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_hand",
+      "A:0.476,0.879,0.000",
+      "ARM*(max(0.0, (5/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 4*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_index_01",
+      "A:0.387,-0.225,0.894",
+      "ARM*(max(0.0, (6/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_index_01",
+      "A:0.503,0.864,0.000",
+      "ARM*(max(0.0, (6/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_index_02",
+      "A:0.387,-0.225,0.894",
+      "ARM*(max(0.0, (7/7 - 0)/(1 - 0))**ARAMP)*(cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC)))) - ZR*sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_index_02",
+      "A:0.503,0.864,0.000",
+      "ARM*(max(0.0, (7/7 - 0)/(1 - 0))**ARAMP)*(sin((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC)))) + ZR*cos((ARMHD)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_e",
+      "A:0.302,-0.150,0.942",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_e",
+      "A:0.444,0.896,0.000",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_f",
+      "A:0.326,-0.171,0.930",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_feeler_f",
+      "A:0.463,0.886,0.000",
+      "LEAF*(max(0.0, (4/4 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (1*LAG + 3*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_tail_a",
+      "A:-0.338,0.893,0.297",
+      "TAIL*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_tail_a",
+      "A:0.660,0.000,0.751",
+      "TAIL*(max(0.0, (6/6 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_tail_b_01",
+      "A:0.983,0.112,-0.144",
+      "TAIL*(max(0.0, (6/7 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_tail_b_01",
+      "A:0.000,-0.791,-0.612",
+      "TAIL*(max(0.0, (6/7 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 5*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_tail_b_02",
+      "A:0.983,0.112,-0.144",
+      "TAIL*(max(0.0, (7/7 - 0)/(1 - 0))**RAMP)*(cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC)))) - ZR*sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
+    ],
+    [
+      "right_tail_b_02",
+      "A:0.000,-0.791,-0.612",
+      "TAIL*(max(0.0, (7/7 - 0)/(1 - 0))**RAMP)*(sin((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC))) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC)))) + ZR*cos((0)*pi/180)*(sin(2*pi*(CYC*t - CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.25)) + RIP*sin(2*pi*(2*CYC*t - 2.6*CYC*(0 + (2*LAG + 6*WLAG)*CYC/CYC) - 0.2))))"
     ]
   ],
   "motion": {
     "frames": 160,
-    "note": "ours, modelled on Showdown's normal Dragalge (an underwater sway, 79-frame cycle): 160 frames = 4.8 s, two 80-frame sways - the body rolls SWAY deg, the head lags against it, the fin-wings ripple from root to tip (FIN deg, a lag per segment), the dangling feelers and tail trail behind. Signature fin flare, frames 96-144: the head rears, the wings sweep up LIFT deg, beat down once (BEAT) and settle; drawn per frame (style.fast_frames)"
+    "functions": {
+      "sw": "sin(2*pi*CYC*t)",
+      "FY": "FLOAT*wave(t, 0.12)",
+      "FX": "DRIFT*sw(t + 0.25/CYC)",
+      "sw2": "sin(4*pi*CYC*t)"
+    },
+    "note": "ours: seaweed in a current. A wave travels from the body out along every chain (spine, neck and head, dorsal strand, tail, kelp horns, every wing strand, feelers, arms): each joint bends about X and, a quarter cycle later, about Z (ZR as much), so the strands ripple and trace small loops; joint k is k*LAG of the loop behind and (1 + GROW*k) times the chain amplitude. Old text: 160 frames x 30 ms = 4.8 s. One sway sw(t), CYC=2 per loop (2.4 s each): the body rocks SWAY deg (and rolls ROLL a quarter cycle later), and every chain trails it - each link LAG of the loop later and a bit bigger than the one before (neck, head, horns; wing roots and strands root to tip; feelers, arms, tail). The whole sprite floats FLOAT px once per loop (broad crest, quick trough: wave). Whole cycles only, so frame 160 = frame 0."
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "pixel_bob": {
+      "y": "FY(t)",
+      "x": "FX(t)"
+    },
+    "despeckle": 2
   },
   "fit": {
     "AZIMUTH": [
-      15,
-      -40,
-      80
+      5,
+      25,
+      55
     ],
     "ELEVATION": [
-      6,
-      -15,
-      35
+      3,
+      -5,
+      25
     ],
     "FOV": [
+      6,
+      15,
+      60
+    ],
+    "LX": [
+      10,
+      -30,
+      90
+    ],
+    "LY": [
       8,
+      0,
+      85
+    ],
+    "LZ": [
+      10,
+      -60,
+      60
+    ],
+    "RX": [
+      8,
+      -50,
+      30
+    ],
+    "RY": [
+      10,
+      -60,
+      60
+    ],
+    "RZ": [
+      10,
+      -40,
+      100
+    ],
+    "LD": [
       5,
+      0,
       40
+    ],
+    "RD": [
+      6,
+      -40,
+      20
+    ],
+    "SPX": [
+      6,
+      -20,
+      35
+    ],
+    "NKX": [
+      6,
+      -30,
+      20
+    ],
+    "HDZ": [
+      4,
+      -12,
+      12
+    ],
+    "TLX": [
+      8,
+      -40,
+      25
+    ],
+    "FBX": [
+      4,
+      -10,
+      10
+    ],
+    "HBX": [
+      8,
+      -40,
+      60
+    ],
+    "ARMX": [
+      6,
+      0,
+      45
+    ],
+    "ARMY": [
+      4,
+      -10,
+      30
+    ],
+    "FANCL": [
+      4,
+      -35,
+      25
+    ],
+    "FANBL": [
+      4,
+      -35,
+      25
+    ],
+    "FANCR": [
+      4,
+      -35,
+      25
+    ],
+    "FANBR": [
+      4,
+      -35,
+      25
+    ],
+    "ARMYL": [
+      4,
+      -15,
+      15
+    ],
+    "FCURL": [
+      2,
+      2,
+      12
+    ],
+    "WCURL": [
+      2,
+      0,
+      12
     ]
   },
-  "style": {
-    "light": [
-      -0.3546,
-      -0.2689,
-      0.8955
-    ],
-    "thresholds": {
-      "skin": [
-        -0.6386,
-        -0.2766,
-        -0.1456
-      ],
-      "kelp": [
-        -0.5121,
-        -0.446,
-        -0.4085
-      ],
-      "fin": [
-        -0.4227,
-        0.0246,
-        0.3448
-      ],
-      "purple": [
-        -0.8447,
-        -0.5155,
-        -0.0908
-      ],
-      "red": [
-        -0.8641,
-        -0.6203,
-        -0.3658
-      ],
-      "iris": [
-        -0.8,
-        -0.5,
-        -0.25
-      ]
-    },
-    "first_shade": {
-      "skin": 0,
-      "kelp": 0,
-      "fin": 0,
-      "purple": 0,
-      "red": 0,
-      "iris": 0
-    },
-    "rim_light": -9,
-    "rim_shade": {
-      "skin": 0,
-      "kelp": 0,
-      "fin": 0,
-      "purple": 0,
-      "red": 0,
-      "iris": 0
-    },
-    "part_outline": [],
-    "depth_jump": 3,
-    "crease_cos": 0.5,
-    "grain": {
-      "skin": 0,
-      "kelp": 0,
-      "fin": 0,
-      "purple": 0,
-      "red": 0,
-      "iris": 0
-    },
-    "outline_outside": true,
-    "outline_diagonals": false,
-    "height": 79,
-    "frame_ms": 30,
-    "outline_width": 0,
-    "outline_cover": 0.5,
-    "matcap": {
-      "size": 9,
-      "values": [
-        [
-          0.3345,
-          0.4079,
-          0.4158,
-          0.4806,
-          0.4648,
-          0.3849,
-          0.2692,
-          0.3248,
-          0.3633
-        ],
-        [
-          0.39,
-          0.3694,
-          0.5513,
-          0.6486,
-          0.6337,
-          0.6347,
-          0.4209,
-          0.3657,
-          0.3391
-        ],
-        [
-          0.402,
-          0.5434,
-          0.6157,
-          0.669,
-          0.6282,
-          0.4465,
-          0.504,
-          0.3437,
-          0.2879
-        ],
-        [
-          0.5552,
-          0.6274,
-          0.6774,
-          0.7029,
-          0.671,
-          0.4401,
-          0.353,
-          0.2538,
-          0.1762
-        ],
-        [
-          0.4973,
-          0.448,
-          0.5335,
-          0.421,
-          0.5538,
-          0.5192,
-          0.362,
-          0.2102,
-          0.1752
-        ],
-        [
-          0.3349,
-          0.3156,
-          0.3754,
-          0.4435,
-          0.6623,
-          0.7262,
-          0.4121,
-          0.2817,
-          0.3417
-        ],
-        [
-          0.1887,
-          0.2723,
-          0.2499,
-          0.4763,
-          0.5911,
-          0.7968,
-          0.6664,
-          0.4979,
-          0.526
-        ],
-        [
-          0.1521,
-          0.0914,
-          0.2031,
-          0.2872,
-          0.4901,
-          0.6375,
-          0.7338,
-          0.7106,
-          0.6208
-        ],
-        [
-          0.0444,
-          0.1733,
-          0.3445,
-          0.4235,
-          0.4681,
-          0.5425,
-          0.6747,
-          0.7407,
-          0.7322
-        ]
-      ],
-      "learned_from": "https://play.pokemonshowdown.com/sprites/ani/lapras.gif (frame 0)",
-      "samples": 2258
-    },
-    "min_line_px": 4,
-    "grain_max_bands": 1,
-    "min_frames": 3,
-    "depth_jump_part": {},
-    "crease_cos_part": {},
-    "tune_fixed": [
-      "rim_light",
-      "grain_skin",
-      "grain_kelp",
-      "grain_fin",
-      "grain_purple",
-      "grain_red",
-      "grain_iris"
-    ],
-    "cast_shadow": {
-      "mode": "cast",
-      "strength": 0.875,
-      "unlit_strength": 0.5,
-      "cover": 0.5
-    },
-    "frame_anchor": "first",
-    "smooth_silhouette": true,
-    "inner_line": {},
-    "target_shares_default": [
-      0.258,
-      0.426,
-      0.258,
-      0.058
-    ],
-    "fast_frames": [
-      [
-        97,
-        144
-      ]
-    ],
-    "shade_blur": 2,
-    "min_region": 4,
-    "transport_lines": {
-      "key_frame": 0
-    },
-    "transport_shading": {
-      "key_frame": 0,
-      "search": 4,
-      "tol": 3
-    }
-  },
-  "qa": {
-    "thick_lines": 0,
-    "diag_2px": 0,
-    "open_outline": 0,
-    "silhouette_teeth": 58,
-    "blink_rate": 0.10554,
-    "dark_flicker_rate": 0.02269,
-    "pop_max_norm": 3.2,
-    "big_pops_share": 0.975,
-    "motion_calibration": "calibration/sway_dragalge.json (Showdown's normal Dragalge)",
-    "note": "no Mega Dragalge sprite: per-frame rules + motion limits calibrated on the normal form's sway",
-    "note_teeth": "1.25 x Showdown's normal Dragalge back (15 spurs + 32 dents = 47 per frame)",
-    "shade_slivers": 0.15,
-    "blotch_share": 0.011,
-    "note_clean": "cleanliness (user: 'looks kind of dirty'): brightness mix vs the base form's Showdown sprite, render-noise slivers, enclosed blotches (2 x Showdown's median 0.0052)"
-  },
-  "log": [
-    {
-      "step": "fit_pose",
-      "parts_match": 0.528,
-      "restarts": 12
-    },
-    {
-      "step": "camera",
-      "note": "silhouette fit gave AZIMUTH 48.9 (score 0.53, placeholder pose differs from the rest pose); chosen by eye from 10-90 deg previews: 68 deg matches the placeholder's cape-like wing spread"
-    },
-    {
-      "step": "back camera",
-      "note": "Showdown back style: the front's 22 deg turn mirrored behind (AZIMUTH 248 = 270 - 22), looking down 18 deg; chosen from 230/248/265 previews (no Mega back sprite to fit)"
-    },
-    {
-      "step": "clean-up",
-      "note": "shade_blur 2 + min_region 14 (broad shade masses), plate / feather lines (depth_jump 3, crease_cos 0.5), lighter shade shares; islands merged only under 4 px (a merge then can't make a pop >= 2), lines + shading decided on frame 0 and carried with the body"
-    },
-    {
-      "step": "match_tones",
-      "lightness": -0.2,
-      "tone_l1_frame0": 0.29
-    },
-    {
-      "step": "match_tones",
-      "mu": 1.0,
-      "s": 1.0,
-      "tone_l1_frame0": 0.023
-    }
-  ],
-  "pose_params_previous": {
-    "AZIMUTH": 30,
-    "ELEVATION": 5,
-    "FOV": 23.16,
-    "SWAY": 3.0,
-    "HEAD": 1.8,
-    "FIN": 2.5,
-    "DANGLE": 4.0,
-    "TAIL": 4.0,
-    "SIG_T0": 0.6,
-    "LIFT": 22.0,
-    "BEAT": 12.0,
-    "REAR": 8.0
+  "fit_weights": {
+    "fin": 0.25,
+    "red": 0.15,
+    "kelp": 0.3
   },
   "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to dragalge_back.json"
 }

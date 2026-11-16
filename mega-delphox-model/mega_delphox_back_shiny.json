@@ -1,0 +1,125 @@
+{
+  "name": "Mega Delphox (shiny) (back)",
+  "model": "MegaDelphox/MegaDelphox_anim.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_delphox_front.json) with the camera turned round (azimuth + 180) and looking down from 14 deg",
+  "palette": {
+    "outline": "#120e12",
+    "parts": {
+      "fur": [
+        "#7d7184",
+        "#8f8398",
+        "#988da1",
+        "#a59aae",
+        "#b7abbf"
+      ],
+      "darkred": [
+        "#6f1a14",
+        "#863028",
+        "#933d34",
+        "#a44c42",
+        "#b95e53"
+      ],
+      "red": [
+        "#be361f",
+        "#d64f38",
+        "#e25b43",
+        "#f56b53",
+        "#ff8066"
+      ],
+      "pink": [
+        "#d70041",
+        "#f22155",
+        "#ff345f",
+        "#ff426a",
+        "#fe5174"
+      ],
+      "gold": [
+        "#9c948b",
+        "#b2aba1",
+        "#beb6ad",
+        "#cac2b8",
+        "#d4ccc3"
+      ],
+      "white": [
+        "#b4b4b4",
+        "#c9caca",
+        "#d6d5d5",
+        "#e0e1e1",
+        "#edecec"
+      ],
+      "flame": [
+        "#dfcd31",
+        "#f5e450",
+        "#fff05e",
+        "#fffc6b",
+        "#feff6f"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_03": "red",
+      "body_a_00": "gold|white",
+      "body_a_01": "fur|darkred",
+      "fire": "flame|red|pink",
+      "body_a_02": "red|darkred",
+      "l_eye": "pink|white",
+      "r_eye": "pink|white"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "fur": "#92869a",
+      "darkred": "#963f35",
+      "red": "#dc543d",
+      "pink": "#f62858",
+      "gold": "#b5ada4",
+      "white": "#cbcaca",
+      "flame": "#fdec59"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.2,
+      1.05
+    ],
+    "distance": 18.94,
+    "ortho_scale": 4.2,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0719_51_00_body_a_alb (Composite).png": "pm0719_51_00_body_a_rare_alb (Composite).png",
+      "pm0719_51_00_body_b_alb (Composite).png": "pm0719_51_00_body_b_rare_alb (Composite).png",
+      "pm0719_51_00_eye_alb (Composite).png": "pm0719_51_00_eye_rare_alb (Composite).png",
+      "pm0719_51_00_fire_alb (Composite).png": "pm0719_51_00_fire_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 220.0,
+    "ELEVATION": 14.0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 89,
+    "clip": "pm0719_51_00_20001_battlewait01_loop",
+    "note": "The game's own idle (pm0719_51_00_20001_battlewait01_loop from the Z-A animation pack, 64 frames at 24 fps = 2.67 s), played as is with nothing on top. In it Mega Delphox already surfs: it stands sideways across the main broom (the broom runs fore-aft under its feet, its chest to the side), head turned toward travel, arms out for balance, and the two small brooms sail alongside at head height on the same heading, drifting and bobbing; the flames lick. 89 frames x 30 ms = 2.67 s matches the game speed."
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_delphox_front.json"
+}

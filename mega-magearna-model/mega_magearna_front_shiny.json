@@ -1,0 +1,426 @@
+{
+  "name": "Mega Magearna (shiny)",
+  "model": "MegaMagearna/MegaMagearna.blend",
+  "reference": "reference/801-m.png",
+  "reference_source": "Official Sugimori art (serebii 801-m.png; pokemondb magearna-mega_art.jpg)",
+  "palette": {
+    "outline": "#0f0f0f",
+    "parts": {
+      "red": [
+        "#828c89",
+        "#9aa4a0",
+        "#a7b2ae",
+        "#b3beba",
+        "#bfcac5"
+      ],
+      "gold": [
+        "#838c87",
+        "#98a29d",
+        "#a4aeaa",
+        "#b0b9b5",
+        "#bcc5c1"
+      ],
+      "black": [
+        "#5a7b79",
+        "#628281",
+        "#688a88",
+        "#719290",
+        "#789a98"
+      ],
+      "silver": [
+        "#a5b2b4",
+        "#bbc9ca",
+        "#c6d4d6",
+        "#dceaec",
+        "#e9f6f8"
+      ],
+      "steel": [
+        "#878f90",
+        "#9aa2a3",
+        "#a4acad",
+        "#adb5b6",
+        "#b7bfc0"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_01": "gold|steel|red",
+      "body_b_02": "steel|red",
+      "body_a_00": "gold|red",
+      "l_eye": "silver",
+      "body_b_00": "gold",
+      "body_b_01": "red",
+      "r_eye": "silver"
+    },
+    "default_material": "body_a_02",
+    "albedo": {
+      "red": "#9da8a4",
+      "gold": "#9fa8a4",
+      "black": "#668785",
+      "silver": "#cddbdd",
+      "steel": "#9ca4a5"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      0.62
+    ],
+    "distance": 8.16,
+    "ortho_scale": 2.3,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0882_51_00_body_a_alb (Composite).png": "pm0882_51_00_body_a_rare_alb (Composite).png",
+      "pm0882_51_00_body_b_alb (Composite).png": "pm0882_51_00_body_b_rare_alb (Composite).png",
+      "pm0882_51_00_eye_alb (Composite).png": "pm0882_51_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 72,
+    "ELEVATION": 10,
+    "FOV": 30,
+    "GTILT": 90,
+    "GYAW": -20,
+    "GX": 0.3,
+    "GZ": 0.45,
+    "GY": 0.08,
+    "LARMD": 62.0,
+    "LARMF": 12,
+    "LELB": 10.0,
+    "LELBD": -35.0,
+    "RARMD": 5,
+    "RARMF": 35.0,
+    "RELB": 10.0,
+    "HANDF": 35.0,
+    "HEADZ": 0,
+    "HEADT": 8,
+    "ROD": 0.02,
+    "GAP": 0.07,
+    "PXU": 0.00818,
+    "LAG": 0.07,
+    "DIP": 0.25,
+    "SWAY": 1.6,
+    "SHIFT": 1.6,
+    "BREATH": 1.2,
+    "HEADB": 2.5,
+    "EAR": 4.0,
+    "ARM": 4.0,
+    "ELB": 6.0,
+    "RARM": 1.5,
+    "STAR": 1.5,
+    "SKIRT": 1.0,
+    "PANEL": 1.2,
+    "GB": 2.0,
+    "GL": 0.15,
+    "GPH": 0.12,
+    "GTIL": 2.0,
+    "KNEE": 16.0
+  },
+  "pose": [
+    [
+      "left_horn_02",
+      "LOCX",
+      "GX"
+    ],
+    [
+      "right_horn_02",
+      "LOCX",
+      "-GX"
+    ],
+    [
+      "left_horn_02",
+      "LOCZ",
+      "GZ"
+    ],
+    [
+      "right_horn_02",
+      "LOCZ",
+      "GZ"
+    ],
+    [
+      "left_horn_02",
+      "LOCY",
+      "GY"
+    ],
+    [
+      "right_horn_02",
+      "LOCY",
+      "GY"
+    ],
+    [
+      "left_horn_02",
+      "A:1,0,0",
+      "GTILT"
+    ],
+    [
+      "right_horn_02",
+      "A:1,0,0",
+      "GTILT"
+    ],
+    [
+      "left_horn_02",
+      "A:0,0,1",
+      "-GYAW"
+    ],
+    [
+      "right_horn_02",
+      "A:0,0,1",
+      "GYAW"
+    ],
+    [
+      "feeler_i",
+      "SCALE",
+      "ROD"
+    ],
+    [
+      "feeler_j",
+      "SCALE",
+      "ROD"
+    ],
+    [
+      "feeler_k",
+      "SCALE",
+      "ROD"
+    ],
+    [
+      "feeler_l",
+      "SCALE",
+      "ROD"
+    ],
+    [
+      "feeler_m",
+      "SCALE",
+      "ROD"
+    ],
+    [
+      "feeler_n",
+      "SCALE",
+      "ROD"
+    ],
+    [
+      "feeler_a",
+      "LOCX",
+      "GAP*sin((RARMF + RELB + HANDF)*pi/180)"
+    ],
+    [
+      "feeler_a",
+      "LOCY",
+      "-GAP*cos((RARMF + RELB + HANDF)*pi/180)"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "LARMD"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,1",
+      "-LARMF"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-LELB"
+    ],
+    [
+      "left_arm_02",
+      "A:0,1,0",
+      "LELBD"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "-RARMD"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "RARMF"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,1",
+      "RELB"
+    ],
+    [
+      "right_hand",
+      "A:0,0,1",
+      "HANDF"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "-KNEE"
+    ],
+    [
+      "left_leg_02",
+      "A:1,0,0",
+      "2*KNEE"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "-KNEE"
+    ],
+    [
+      "right_leg_02",
+      "A:1,0,0",
+      "2*KNEE"
+    ],
+    [
+      "head",
+      "A:0,-1,0",
+      "HEADT"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HEADZ"
+    ],
+    [
+      "waist",
+      "LOCX",
+      "-SHIFT*PXU*w(t)"
+    ],
+    [
+      "waist",
+      "A:0,1,0",
+      "SWAY*w(t)"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "-DIP*PXU*(0.5 + 0.5*cos(4*pi*t))"
+    ],
+    [
+      "spine",
+      "A:1,0,0",
+      "BREATH*sin(4*pi*(t - LAG))"
+    ],
+    [
+      "spine",
+      "A:0,1,0",
+      "-0.7*SWAY*w(t - LAG)"
+    ],
+    [
+      "head",
+      "A:0,-1,0",
+      "HEADB*w(t - 2*LAG)"
+    ],
+    [
+      "left_ear_01",
+      "A:0,-1,0",
+      "EAR*w(t - 3*LAG)"
+    ],
+    [
+      "left_ear_02",
+      "A:0,-1,0",
+      "1.4*EAR*w(t - 4*LAG)"
+    ],
+    [
+      "right_ear_01",
+      "A:0,-1,0",
+      "EAR*w(t - 3*LAG)"
+    ],
+    [
+      "right_ear_02",
+      "A:0,-1,0",
+      "1.4*EAR*w(t - 4*LAG)"
+    ],
+    [
+      "left_arm_01",
+      "A:0,1,0",
+      "ARM*w(t - 2*LAG)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,1",
+      "-ELB*w(t - 3*LAG)"
+    ],
+    [
+      "left_hand",
+      "A:0,0,1",
+      "-1.2*ELB*w(t - 4*LAG)"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "-RARM*w(t - 2*LAG)"
+    ],
+    [
+      "right_arm_02",
+      "A:0,1,0",
+      "-RARM*w(t - 3*LAG)"
+    ],
+    [
+      "right_hand",
+      "A:0,1,0",
+      "-STAR*w(t - 4*LAG)"
+    ],
+    [
+      "skirt",
+      "A:0,1,0",
+      "-SKIRT*w(t - 1.5*LAG)"
+    ],
+    [
+      "left_root_skirt",
+      "A:0,1,0",
+      "-PANEL*w(t - 2.5*LAG)"
+    ],
+    [
+      "right_root_skirt",
+      "A:0,1,0",
+      "-PANEL*w(t - 2.5*LAG)"
+    ],
+    [
+      "left_horn_02",
+      "LOCZ",
+      "GB*PXU*sin(2*pi*(t - GL))"
+    ],
+    [
+      "right_horn_02",
+      "LOCZ",
+      "GB*PXU*sin(2*pi*(t - GL - GPH))"
+    ],
+    [
+      "left_horn_02",
+      "A:0,1,0",
+      "GTIL*sin(2*pi*(t - GL - 0.2))"
+    ],
+    [
+      "right_horn_02",
+      "A:0,1,0",
+      "-GTIL*sin(2*pi*(t - GL - GPH - 0.2))"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ],
+    "functions": {
+      "w": "sin(2*pi*t)"
+    },
+    "note": "Graceful clockwork doll: one slow weight shift from foot to foot drives it (120 x 30 ms = 3.6 s). The hips glide SHIFT px and roll SWAY deg, sinking DIP px each time the weight passes centre (planted feet, knees giving); the chest counter-balances and breathes twice per loop; the head tilts after it, the ribbon-ears trail further and swing most. The free arm floats out and in like a port de bras, elbow and wrist each a beat behind. The gun arm stays steady, aiming, with only a slight float; its flower is rigid. The skirt swings like a bell a beat behind the hips, its side panels a beat later. The gears hover on their own soft bob."
+  },
+  "style": {
+    "height": 165,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_magearna_front.json"
+}

@@ -1,0 +1,110 @@
+{
+  "name": "Mega Excadrill",
+  "model": "MegaExcadrill/MegaExcadrill_idle.blend",
+  "reference": null,
+  "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
+  "palette": {
+    "outline": "#0f0f0f",
+    "parts": {
+      "body": [
+        "#3a302d",
+        "#4a3f3b",
+        "#584d48",
+        "#675b56",
+        "#766a64"
+      ],
+      "marks": [
+        "#6e3634",
+        "#824341",
+        "#95504e",
+        "#a65d5a",
+        "#b56966"
+      ],
+      "red": [
+        "#c84a33",
+        "#e0553c",
+        "#fc6244",
+        "#fd7a5f",
+        "#fe927a"
+      ],
+      "steel": [
+        "#6e6f70",
+        "#9b9c9d",
+        "#b0b1b3",
+        "#c4c5c7",
+        "#d0d1d4"
+      ],
+      "white": [
+        "#c9c6c4",
+        "#d6d3d1",
+        "#e2e0de",
+        "#f0efee",
+        "#fdfdfd"
+      ],
+      "black": [
+        "#000000",
+        "#0b0b0b",
+        "#1a1a1a",
+        "#2a2a2a",
+        "#3a3a3a"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "r_eye": "black|white",
+      "l_eye": "black|white",
+      "body_a_00": "body|marks|red|steel|white|black",
+      "body_a_01": "body|marks|red|steel|white|black",
+      "body_a_02": "body|marks|red|steel|white|black",
+      "body_a_03": "body|marks|red|steel|white|black"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "body": "#584d48",
+      "marks": "#95504e",
+      "red": "#fc6244",
+      "steel": "#c4c5c7",
+      "white": "#e2e0de",
+      "black": "#0b0b0b"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.15,
+      0.0,
+      0.4
+    ],
+    "distance": 19.78,
+    "ortho_scale": 3.0,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1600,
+    "height": 1600,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 70.0,
+    "ELEVATION": 0,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 50,
+    "clip": "pm0530_51_00_00001_battlewait01_loop",
+    "note": "The game's own battle idle (pm0530_51_00_00001_battlewait01_loop from the user's animation pack, 121 frames at 60 fps = 120 steps = 2.000 s, frame 121 a copy of frame 1), moved onto a copy of the textured model (MegaExcadrill_idle.blend, move_clip.py); no pose or motion in the config. 50 frames x 40 ms = 2.000 s, game speed (every 2.4 game frames; 33 ms would be stored as 30 ms in the GIF)."
+  },
+  "style": {
+    "height": 160,
+    "frame_ms": 40,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "model_note": "pm0530_51_00_drill_mesh (the drill-form example) is hidden in MegaExcadrill_idle.blend by hide_drill.py: the sprite is only the Pokemon (user, 2026-11-15)"
+}

@@ -1,0 +1,118 @@
+{
+  "name": "Mega Delphox",
+  "model": "MegaDelphox/MegaDelphox_anim.blend",
+  "reference": null,
+  "reference_source": "prep_model.py draft: set the pose from HOME / official art (reference/)",
+  "palette": {
+    "outline": "#120e12",
+    "parts": {
+      "fur": [
+        "#403240",
+        "#534453",
+        "#5c4e5d",
+        "#695a6a",
+        "#7b6b7b"
+      ],
+      "darkred": [
+        "#72150e",
+        "#892c22",
+        "#96392e",
+        "#a7483c",
+        "#bb5a4d"
+      ],
+      "red": [
+        "#bd3415",
+        "#d54c2f",
+        "#e2583a",
+        "#f4684a",
+        "#ff7c5d"
+      ],
+      "pink": [
+        "#d80041",
+        "#f22155",
+        "#ff345f",
+        "#ff436a",
+        "#ff5174"
+      ],
+      "gold": [
+        "#c8a644",
+        "#debd5b",
+        "#eac867",
+        "#f6d473",
+        "#ffdf7e"
+      ],
+      "white": [
+        "#b4b4b4",
+        "#cacaca",
+        "#d6d5d5",
+        "#e1e1e1",
+        "#edecec"
+      ],
+      "flame": [
+        "#dfcd31",
+        "#f6e450",
+        "#fff05e",
+        "#fffc6b",
+        "#ffff6f"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_03": "red",
+      "body_a_00": "gold|white",
+      "body_a_01": "fur|darkred",
+      "fire": "flame|red|pink",
+      "body_a_02": "red|darkred",
+      "l_eye": "pink|white",
+      "r_eye": "pink|white"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "fur": "#564756",
+      "darkred": "#983b2f",
+      "red": "#db5134",
+      "pink": "#f62858",
+      "gold": "#e1bf5e",
+      "white": "#cbcaca",
+      "flame": "#fdec59"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.2,
+      1.05
+    ],
+    "distance": 18.94,
+    "ortho_scale": 4.2,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 40,
+    "ELEVATION": 14,
+    "FOV": 30
+  },
+  "pose": [],
+  "motion": {
+    "frames": 89,
+    "clip": "pm0719_51_00_20001_battlewait01_loop",
+    "note": "The game's own idle (pm0719_51_00_20001_battlewait01_loop from the Z-A animation pack, 64 frames at 24 fps = 2.67 s), played as is with nothing on top. In it Mega Delphox already surfs: it stands sideways across the main broom (the broom runs fore-aft under its feet, its chest to the side), head turned toward travel, arms out for balance, and the two small brooms sail alongside at head height on the same heading, drifting and bobbing; the flames lick. 89 frames x 30 ms = 2.67 s matches the game speed."
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

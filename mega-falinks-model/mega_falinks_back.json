@@ -1,0 +1,550 @@
+{
+  "name": "Mega Falinks (back)",
+  "model": "MegaFalinks/MegaFalinks.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_falinks_front.json) with the camera turned round (azimuth + 180) and looking down from 10 deg",
+  "palette": {
+    "outline": "#100f0e",
+    "parts": {
+      "yellow": [
+        "#e0b310",
+        "#f7ca3b",
+        "#ffd64a",
+        "#ffe158",
+        "#ffed65"
+      ],
+      "red": [
+        "#c10000",
+        "#db211b",
+        "#e83228",
+        "#f44134",
+        "#ff4e40"
+      ],
+      "silver": [
+        "#bec0c1",
+        "#d4d7d7",
+        "#dfe2e3",
+        "#ebeeee",
+        "#f7f9fa"
+      ],
+      "dark": [
+        "#45403c",
+        "#58534f",
+        "#625d58",
+        "#6c6762",
+        "#76716c"
+      ],
+      "eyedark": [
+        "#3e3a36",
+        "#504b47",
+        "#5a5551",
+        "#65605b",
+        "#706b66"
+      ],
+      "eye": [
+        "#0870c0",
+        "#38a8dc",
+        "#9fd0ea",
+        "#dde9ee",
+        "#fbfdfe"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "eye_c": "eyedark|eye",
+      "r_eye_a": "eyedark|eye",
+      "l_eye_a": "eyedark|eye",
+      "eye_d": "eyedark|eye",
+      "eye_e": "eyedark|eye",
+      "eye_b": "eyedark|eye",
+      "body_a": "red|yellow|dark|silver",
+      "body_b": "red|yellow|dark|silver"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "yellow": "#fbce40",
+      "red": "#dd241d",
+      "silver": "#d4d6d7",
+      "dark": "#58534f",
+      "eyedark": "#56514d",
+      "eye": "#3bbbee"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.1,
+      -0.1,
+      1.0
+    ],
+    "distance": 42.36,
+    "ortho_scale": 4.6,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 245.0,
+    "ELEVATION": 10.0,
+    "FOV": 30,
+    "LX": 0.36,
+    "LYB": 0.2,
+    "LYF": -0.24,
+    "LYAW": 18,
+    "LROLL": 22,
+    "DP": 0.0,
+    "AYAW": 12,
+    "APITCH": 6,
+    "AROLL": 0,
+    "ASINK": 0.1,
+    "BPITCH": 10,
+    "BYAW": -8,
+    "BROLL": 55.0,
+    "KO": 0.05,
+    "OX": -0.45,
+    "OY": -0.9,
+    "OZ": 0.12,
+    "SHF": 0.6,
+    "SHD": -0.25,
+    "SHO": 0.15,
+    "SHSPIN": 0,
+    "SHS": 0.85,
+    "CPITCH": -35,
+    "CYAW": 10,
+    "CROLL": -50.0,
+    "BLS": 1.35,
+    "BLX": -0.2,
+    "BLY": -0.9,
+    "BLZ": 0.55,
+    "BHORN": 65.0,
+    "DARM": 55,
+    "WX": 0.013,
+    "WZ": 0.012,
+    "AL": 0.06,
+    "AR": 1.1,
+    "AYW": 0.8,
+    "ABR": 0.01,
+    "ARML": 0.12,
+    "BSW": 2.5,
+    "CSW": 2.5,
+    "SHL": 0.2,
+    "SHW": 2.5,
+    "BLL": 0.22,
+    "BLW": 2.0,
+    "BLV": 1.2,
+    "LGD": 0.008,
+    "LRK": 2.0,
+    "SMALL": 5.0
+  },
+  "pose": [
+    [
+      "waist_e",
+      "A:-0.1219,-0.7695,-0.6270",
+      "28.3549"
+    ],
+    [
+      "waist_e",
+      "LOCX",
+      "-0.3600"
+    ],
+    [
+      "waist_e",
+      "LOCY",
+      "-4.8000"
+    ],
+    [
+      "waist_e",
+      "LOCZ",
+      "0.0244"
+    ],
+    [
+      "waist_f",
+      "A:-0.1219,0.7695,0.6270",
+      "28.3549"
+    ],
+    [
+      "waist_f",
+      "LOCX",
+      "0.3600"
+    ],
+    [
+      "waist_f",
+      "LOCY",
+      "-6.2400"
+    ],
+    [
+      "waist_f",
+      "LOCZ",
+      "0.0244"
+    ],
+    [
+      "waist_d",
+      "A:0.0000,0.0000,-1.0000",
+      "52.3187"
+    ],
+    [
+      "waist_d",
+      "LOCY",
+      "-4.0818"
+    ],
+    [
+      "waist_d",
+      "LOCZ",
+      "0.1237"
+    ],
+    [
+      "waist_a",
+      "A:0.4457,0.0468,0.8939",
+      "13.4115"
+    ],
+    [
+      "waist_a",
+      "LOCX",
+      "0.0057"
+    ],
+    [
+      "waist_a",
+      "LOCY",
+      "-0.1083"
+    ],
+    [
+      "waist_a",
+      "LOCZ",
+      "0.4823"
+    ],
+    [
+      "waist_b",
+      "A:0.2189,0.9566,0.1922",
+      "58.5414"
+    ],
+    [
+      "waist_b",
+      "LOCX",
+      "0.5601"
+    ],
+    [
+      "waist_b",
+      "LOCY",
+      "-1.4078"
+    ],
+    [
+      "waist_b",
+      "LOCZ",
+      "0.2887"
+    ],
+    [
+      "waist_c",
+      "A:-0.2655,-0.8294,0.4916",
+      "66.1974"
+    ],
+    [
+      "waist_c",
+      "LOCX",
+      "-0.5069"
+    ],
+    [
+      "waist_c",
+      "LOCY",
+      "-3.4358"
+    ],
+    [
+      "waist_c",
+      "LOCZ",
+      "0.3288"
+    ],
+    [
+      "feeler_a_01",
+      "A:0.5704,-0.6771,-0.4650",
+      "109.5196"
+    ],
+    [
+      "feeler_a_01",
+      "LOCX",
+      "-0.9560"
+    ],
+    [
+      "feeler_a_01",
+      "LOCY",
+      "-0.3148"
+    ],
+    [
+      "feeler_a_01",
+      "LOCZ",
+      "-0.7690"
+    ],
+    [
+      "feeler_a_01",
+      "SCALE",
+      "SHS"
+    ],
+    [
+      "feeler_a_02",
+      "LOCX",
+      "0.1208"
+    ],
+    [
+      "feeler_a_02",
+      "LOCY",
+      "0.2416"
+    ],
+    [
+      "feeler_a_02",
+      "LOCZ",
+      "-0.0322"
+    ],
+    [
+      "horn_c_01",
+      "A:0.9132,-0.3402,-0.2246",
+      "12.8071"
+    ],
+    [
+      "horn_c_01",
+      "SCALE",
+      "BLS"
+    ],
+    [
+      "horn_a_01",
+      "X",
+      "-BHORN"
+    ],
+    [
+      "left_shoulder_b",
+      "Y",
+      "DARM"
+    ],
+    [
+      "right_shoulder_b",
+      "Y",
+      "-DARM"
+    ],
+    [
+      "waist_d",
+      "LOCX",
+      "WX*W(t)"
+    ],
+    [
+      "waist_d",
+      "LOCZ",
+      "-WZ*DIP(t)"
+    ],
+    [
+      "waist_d",
+      "Y",
+      "1.5*W(t-0.03)"
+    ],
+    [
+      "waist_e",
+      "X",
+      "(1*LRK*W(t-0.05))"
+    ],
+    [
+      "waist_e",
+      "LOCY",
+      "-(1*LRK*W(t-0.05))*pi/180*0.2044"
+    ],
+    [
+      "waist_f",
+      "X",
+      "(-1*LRK*W(t-0.07))"
+    ],
+    [
+      "waist_f",
+      "LOCY",
+      "-(-1*LRK*W(t-0.07))*pi/180*0.2044"
+    ],
+    [
+      "waist_a",
+      "LOCX",
+      "1.1*WX*W(t-AL)"
+    ],
+    [
+      "waist_a",
+      "LOCZ",
+      "-WZ*DIP(t-AL) + ABR*BRE(t-AL)"
+    ],
+    [
+      "waist_a",
+      "Y",
+      "AR*W(t-AL)"
+    ],
+    [
+      "waist_a",
+      "Z",
+      "AYW*W(t-AL-0.1)"
+    ],
+    [
+      "waist_b",
+      "LOCX",
+      "1.2*WX*W(t-AL-ARML)"
+    ],
+    [
+      "waist_b",
+      "LOCZ",
+      "-WZ*DIP(t-AL-ARML) + 1.3*ABR*BRE(t-AL-ARML)"
+    ],
+    [
+      "waist_b",
+      "Y",
+      "AR*W(t-AL-ARML)"
+    ],
+    [
+      "waist_b",
+      "X",
+      "BSW*W(t-AL-ARML-0.05)"
+    ],
+    [
+      "waist_c",
+      "LOCX",
+      "1.2*WX*W(t-AL-ARML)"
+    ],
+    [
+      "waist_c",
+      "LOCZ",
+      "-WZ*DIP(t-AL-ARML) + 1.3*ABR*BRE(t-AL-ARML)"
+    ],
+    [
+      "waist_c",
+      "Y",
+      "AR*W(t-AL-ARML)"
+    ],
+    [
+      "waist_c",
+      "X",
+      "CSW*W(t-AL-ARML-0.05)"
+    ],
+    [
+      "feeler_a_01",
+      "X",
+      "SHW*W(t-AL-SHL)"
+    ],
+    [
+      "feeler_a_01",
+      "Z",
+      "0.6*SHW*sin(2*pi*(t-AL-SHL-0.15))"
+    ],
+    [
+      "feeler_a_02",
+      "Z",
+      "SMALL*sin(2*pi*(t-AL-SHL-0.1))"
+    ],
+    [
+      "horn_c_01",
+      "X",
+      "BLW*W(t-AL-BLL)"
+    ],
+    [
+      "horn_c_01",
+      "Z",
+      "BLV*cos(2*pi*(t-AL-BLL))"
+    ],
+    [
+      "horn_c_02",
+      "X",
+      "0.5*BLW*W(t-AL-BLL-0.05)"
+    ],
+    [
+      "horn_a_01",
+      "X",
+      "0.35*SMALL*W(t-AL-ARML-0.12)"
+    ],
+    [
+      "horn_e",
+      "Y",
+      "SMALL*W(t-0.15)"
+    ],
+    [
+      "horn_f_01",
+      "Y",
+      "-SMALL*W(t-0.2)"
+    ],
+    [
+      "left_shoulder_b",
+      "Y",
+      "SMALL*W(t-0.1)"
+    ],
+    [
+      "right_shoulder_b",
+      "Y",
+      "SMALL*W(t-0.1)"
+    ],
+    [
+      "left_hand_a",
+      "X",
+      "0.5*SMALL*W(t-AL-0.1)"
+    ],
+    [
+      "right_hand_a",
+      "X",
+      "-0.5*SMALL*W(t-AL-0.1)"
+    ],
+    [
+      "left_leg_a",
+      "X",
+      "SMALL*W(t-0.12)"
+    ],
+    [
+      "right_leg_a",
+      "X",
+      "-SMALL*W(t-0.12-0.03)"
+    ],
+    [
+      "left_leg_b",
+      "X",
+      "SMALL*W(t-0.24)"
+    ],
+    [
+      "right_leg_b",
+      "X",
+      "-SMALL*W(t-0.24-0.03)"
+    ],
+    [
+      "left_leg_c",
+      "X",
+      "SMALL*W(t-0.24)"
+    ],
+    [
+      "right_leg_c",
+      "X",
+      "-SMALL*W(t-0.24-0.03)"
+    ],
+    [
+      "left_leg_d",
+      "X",
+      "SMALL*W(t-0.1)"
+    ],
+    [
+      "right_leg_d",
+      "X",
+      "-SMALL*W(t-0.1-0.03)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "A knight on guard, built from six troopers joined at their hip knobs: leader a is head and torso, b the shield arm, c the machete arm (its horn is the blade), d the pelvis hanging on the leg troopers' inner knobs, e/f the legs (left foot forward). Driver: a slow weight shift from leg to leg, the pelvis sinking into the loaded leg; the torso follows a beat later and leans over it, the arm troopers a beat after that, and the shield and blade last, with their own small ready-motion (blade tip circling, shield tilting). Legs squat a little under the load.",
+    "functions": {
+      "W": "sin(2*pi*t)",
+      "DIP": "0.5 - 0.5*cos(4*pi*t)",
+      "BRE": "wave(t, 0.1)"
+    },
+    "plant": [
+      "left_foot_e",
+      "right_foot_e",
+      "left_foot_f",
+      "right_foot_f"
+    ]
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

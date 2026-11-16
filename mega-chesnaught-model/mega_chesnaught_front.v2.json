@@ -1,0 +1,545 @@
+{
+  "name": "Mega Chesnaught",
+  "model": "MegaChesnaught/MegaChesnaught_body.blend",
+  "reference": null,
+  "reference_source": "Base Chesnaught HOME render + official art (reference/base_*.png, PokeAPI sprites) for the stance; Mega HOME sprite + Legends Z-A art (reference/home_sprite*.png, official_art.png) for armour and colours",
+  "palette": {
+    "outline": "#150e08",
+    "parts": {
+      "shell": [
+        "#b0ab93",
+        "#c6c2a9",
+        "#d1cdb4",
+        "#ded9bf",
+        "#f1edd3"
+      ],
+      "fur": [
+        "#8f8f94",
+        "#b4b4b8",
+        "#cfcfd0",
+        "#e3e3e3",
+        "#f5f5f5"
+      ],
+      "maroon": [
+        "#6b0920",
+        "#822332",
+        "#8d2e3b",
+        "#993944",
+        "#a4434e"
+      ],
+      "green": [
+        "#405e15",
+        "#53722c",
+        "#5d7d36",
+        "#678741",
+        "#71924b"
+      ],
+      "brown": [
+        "#41230b",
+        "#54351e",
+        "#5e3e27",
+        "#694830",
+        "#735239"
+      ],
+      "yellow": [
+        "#7a5a10",
+        "#a08020",
+        "#c4a43c",
+        "#d8bc50",
+        "#ecd26c"
+      ],
+      "eye": [
+        "#1c1414",
+        "#f2f2f2"
+      ]
+    },
+    "note": "shell = cream armour/shields (shiny green), fur = white face/chest fur (shiny tan), maroon = fur cape and shell rims (shiny orange), green = gauntlets/chest plate/spots (shiny dark red-brown), brown = dark chest/inner (kept), yellow = mask and claws (kept), eye = sclera/pupil (flat)"
+  },
+  "parts": {
+    "materials": {
+      "r_eye": "eye",
+      "l_eye": "eye"
+    },
+    "default_material": "body_a_00",
+    "albedo": {
+      "shell": "#d0ccaf",
+      "fur": "#d8d8d7",
+      "maroon": "#852836",
+      "green": "#577730",
+      "brown": "#4c3a20",
+      "yellow": "#c4a43c",
+      "eye": "#e8e8e8"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      -0.2,
+      0.1,
+      0.8
+    ],
+    "distance": 20,
+    "ortho_scale": 3.3,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 60,
+    "ELEVATION": 10,
+    "FOV": 30,
+    "CROUCH": 0.14,
+    "LEAN": -5.0,
+    "LEAN_SIDE": 0,
+    "TURN": 0,
+    "NOD": 5.0,
+    "HDTURN": 10.0,
+    "HDTILT": 0,
+    "THIGH_FWD": 20,
+    "THIGH_OUT": 32.0,
+    "SHIN_BACK": 35,
+    "SHIN_IN": 26.0,
+    "FOOT_FLAT": 15,
+    "FOOT_IN": 5,
+    "LA_FWD": 15.0,
+    "LA_UP": 25.0,
+    "LE_FWD": 20.0,
+    "LE_UP": 70.0,
+    "RA_FWD": 15.0,
+    "RA_UP": 25.0,
+    "RE_FWD": 20.0,
+    "RE_UP": 75.0,
+    "WRIST": 0,
+    "SH_FWD": 0,
+    "SH_UP": 10.0,
+    "SH_YAW": 8.0,
+    "TAIL_DROOP": 0,
+    "CAPE_BACK": 25,
+    "CAPE_CURL": 0,
+    "CAPE_OUT": 0,
+    "DIP": 0.014,
+    "BR": 0.45,
+    "SWAY": 0.5,
+    "ARM": 1.0,
+    "SH": 0.4,
+    "CAPE": 1.5,
+    "TAILA": 1.2,
+    "FUR": 2.0,
+    "HD": 0.5
+  },
+  "pose": [
+    [
+      "left_hand_sub",
+      "A:0,-1,0",
+      "WRIST + 0.6*ARM*B(t-0.24)"
+    ],
+    [
+      "right_hand_sub",
+      "A:0,1,0",
+      "WRIST + 0.6*ARM*B(t-0.24)"
+    ],
+    [
+      "left_cloth_05",
+      "A:1,0,0",
+      "CAPE_CURL + 1.75*CAPE*B(t-0.44)"
+    ],
+    [
+      "left_cloth_05",
+      "A:0,0,1",
+      "1.3*CAPE*W(t-0.42)"
+    ],
+    [
+      "right_cloth_05",
+      "A:1,0,0",
+      "CAPE_CURL + 1.75*CAPE*B(t-0.44)"
+    ],
+    [
+      "right_cloth_05",
+      "A:0,0,1",
+      "1.3*CAPE*W(t-0.42)"
+    ],
+    [
+      "left_cloth_04",
+      "A:1,0,0",
+      "CAPE_CURL + 1.5*CAPE*B(t-0.38)"
+    ],
+    [
+      "left_cloth_04",
+      "A:0,0,1",
+      "1.1*CAPE*W(t-0.36)"
+    ],
+    [
+      "right_cloth_04",
+      "A:1,0,0",
+      "CAPE_CURL + 1.5*CAPE*B(t-0.38)"
+    ],
+    [
+      "right_cloth_04",
+      "A:0,0,1",
+      "1.1*CAPE*W(t-0.36)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,-1,0",
+      "LE_UP + ARM*B(t-0.2)"
+    ],
+    [
+      "left_arm_02",
+      "A:0,0,-1",
+      "LE_FWD + 0.6*ARM*B(t-0.2)"
+    ],
+    [
+      "left_feeler_b",
+      "A:0,-1,0",
+      "LA_UP + 0.5*ARM*B(t-0.14)"
+    ],
+    [
+      "left_feeler_b",
+      "A:0,0,-1",
+      "LA_FWD"
+    ],
+    [
+      "right_arm_02",
+      "A:0,1,0",
+      "RE_UP + ARM*B(t-0.2)"
+    ],
+    [
+      "right_arm_02",
+      "A:0,0,1",
+      "RE_FWD + 0.6*ARM*B(t-0.2)"
+    ],
+    [
+      "right_feeler_b",
+      "A:0,1,0",
+      "RA_UP + 0.5*ARM*B(t-0.14)"
+    ],
+    [
+      "right_feeler_b",
+      "A:0,0,1",
+      "RA_FWD"
+    ],
+    [
+      "tail_04",
+      "A:1,0,0",
+      "1.8*TAILA*B(t-0.38)"
+    ],
+    [
+      "tail_04",
+      "A:0,0,1",
+      "1.6*TAILA*W(t-0.36)"
+    ],
+    [
+      "left_cloth_03",
+      "A:1,0,0",
+      "CAPE_CURL + 1.25*CAPE*B(t-0.32)"
+    ],
+    [
+      "left_cloth_03",
+      "A:0,0,1",
+      "0.9*CAPE*W(t-0.3)"
+    ],
+    [
+      "right_cloth_03",
+      "A:1,0,0",
+      "CAPE_CURL + 1.25*CAPE*B(t-0.32)"
+    ],
+    [
+      "right_cloth_03",
+      "A:0,0,1",
+      "0.9*CAPE*W(t-0.3)"
+    ],
+    [
+      "left_foot",
+      "A:1,0,0",
+      "FOOT_FLAT"
+    ],
+    [
+      "left_foot",
+      "A:0,1,0",
+      "FOOT_IN"
+    ],
+    [
+      "right_foot",
+      "A:1,0,0",
+      "FOOT_FLAT"
+    ],
+    [
+      "right_foot",
+      "A:0,-1,0",
+      "FOOT_IN"
+    ],
+    [
+      "left_arm_01",
+      "A:0,-1,0",
+      "LA_UP + 0.5*ARM*B(t-0.14)"
+    ],
+    [
+      "left_arm_01",
+      "A:0,0,-1",
+      "LA_FWD"
+    ],
+    [
+      "right_arm_01",
+      "A:0,1,0",
+      "RA_UP + 0.5*ARM*B(t-0.14)"
+    ],
+    [
+      "right_arm_01",
+      "A:0,0,1",
+      "RA_FWD"
+    ],
+    [
+      "left_feeler_a",
+      "A:0,0,-1",
+      "SH_YAW"
+    ],
+    [
+      "left_feeler_a",
+      "A:0,-1,0",
+      "SH_UP + SH*B(t-0.18)"
+    ],
+    [
+      "left_feeler_a",
+      "A:1,0,0",
+      "-SH_FWD"
+    ],
+    [
+      "right_feeler_a",
+      "A:0,0,1",
+      "SH_YAW"
+    ],
+    [
+      "right_feeler_a",
+      "A:0,1,0",
+      "SH_UP + SH*B(t-0.18)"
+    ],
+    [
+      "right_feeler_a",
+      "A:1,0,0",
+      "-SH_FWD"
+    ],
+    [
+      "tail_03",
+      "A:1,0,0",
+      "1.5*TAILA*B(t-0.33)"
+    ],
+    [
+      "tail_03",
+      "A:0,0,1",
+      "1.3*TAILA*W(t-0.31)"
+    ],
+    [
+      "left_cloth_02",
+      "A:1,0,0",
+      "1*CAPE*B(t-0.26)"
+    ],
+    [
+      "left_cloth_02",
+      "A:0,0,1",
+      "0.7*CAPE*W(t-0.24)"
+    ],
+    [
+      "right_cloth_02",
+      "A:1,0,0",
+      "1*CAPE*B(t-0.26)"
+    ],
+    [
+      "right_cloth_02",
+      "A:0,0,1",
+      "0.7*CAPE*W(t-0.24)"
+    ],
+    [
+      "left_hair_a",
+      "A:1,0,0",
+      "FUR*B(t-0.2)"
+    ],
+    [
+      "left_hair_b",
+      "A:1,0,0",
+      "FUR*B(t-0.22)"
+    ],
+    [
+      "right_hair_a",
+      "A:1,0,0",
+      "FUR*B(t-0.2)"
+    ],
+    [
+      "right_hair_b",
+      "A:1,0,0",
+      "FUR*B(t-0.22)"
+    ],
+    [
+      "left_leg_02",
+      "A:1,0,0",
+      "SHIN_BACK"
+    ],
+    [
+      "left_leg_02",
+      "A:0,1,0",
+      "SHIN_IN"
+    ],
+    [
+      "right_leg_02",
+      "A:1,0,0",
+      "SHIN_BACK"
+    ],
+    [
+      "right_leg_02",
+      "A:0,-1,0",
+      "SHIN_IN"
+    ],
+    [
+      "head",
+      "A:1,0,0",
+      "NOD - 0.5*BR*B(t-0.14) + HD*B(t-0.16)"
+    ],
+    [
+      "head",
+      "A:0,0,1",
+      "HDTURN"
+    ],
+    [
+      "head",
+      "A:0,1,0",
+      "HDTILT - 0.8*SWAY*W(t-0.12)"
+    ],
+    [
+      "tail_02",
+      "A:1,0,0",
+      "1.2*TAILA*B(t-0.28)"
+    ],
+    [
+      "tail_02",
+      "A:0,0,1",
+      "1*TAILA*W(t-0.26)"
+    ],
+    [
+      "left_cloth_01",
+      "A:1,0,0",
+      "CAPE_BACK + 0.75*CAPE*B(t-0.2)"
+    ],
+    [
+      "left_cloth_01",
+      "A:0,0,1",
+      "0.5*CAPE*W(t-0.18)"
+    ],
+    [
+      "left_cloth_01",
+      "A:0,-1,0",
+      "CAPE_OUT"
+    ],
+    [
+      "right_cloth_01",
+      "A:1,0,0",
+      "CAPE_BACK + 0.75*CAPE*B(t-0.2)"
+    ],
+    [
+      "right_cloth_01",
+      "A:0,0,1",
+      "0.5*CAPE*W(t-0.18)"
+    ],
+    [
+      "right_cloth_01",
+      "A:0,1,0",
+      "CAPE_OUT"
+    ],
+    [
+      "left_leg_01",
+      "A:1,0,0",
+      "-THIGH_FWD"
+    ],
+    [
+      "left_leg_01",
+      "A:0,-1,0",
+      "THIGH_OUT"
+    ],
+    [
+      "right_leg_01",
+      "A:1,0,0",
+      "-THIGH_FWD"
+    ],
+    [
+      "right_leg_01",
+      "A:0,1,0",
+      "THIGH_OUT"
+    ],
+    [
+      "spine_02",
+      "A:1,0,0",
+      "BR*B(t-0.06)"
+    ],
+    [
+      "tail_01",
+      "A:1,0,0",
+      "TAIL_DROOP + 0.9*TAILA*B(t-0.23)"
+    ],
+    [
+      "tail_01",
+      "A:0,0,1",
+      "0.7*TAILA*W(t-0.21)"
+    ],
+    [
+      "left_hair_c",
+      "A:1,0,0",
+      "FUR*B(t-0.2)"
+    ],
+    [
+      "right_hair_c",
+      "A:1,0,0",
+      "FUR*B(t-0.2)"
+    ],
+    [
+      "spine_01",
+      "A:1,0,0",
+      "LEAN + 0.4*BR*B(t-0.02)"
+    ],
+    [
+      "spine_01",
+      "A:0,0,1",
+      "TURN + 0.5*SWAY*W(t-0.06)"
+    ],
+    [
+      "spine_01",
+      "A:0,1,0",
+      "LEAN_SIDE + SWAY*W(t-0.04)"
+    ],
+    [
+      "waist",
+      "LOCZ",
+      "-CROUCH - DIP*(0.5+0.5*B(t-0))"
+    ],
+    [
+      "waist",
+      "LOCX",
+      "0.012*SWAY*W(t-0)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Heavy armoured chestnut sumo braced in guard (base Chesnaught's stance: feet wide and planted, knees bent and out, body low, arms spread with fists raised, the Mega shields swung forward beside the head). It holds its ground: one slow breath per loop is the driver; the body sinks ~1 px into the bent legs and the chest lifts, while a slow weight shift (a quarter loop later) leans the trunk a degree side to side over the planted feet. Head, fists, shields follow a beat later; the light fur cape, face fur and tail trail last and move most.",
+    "functions": {
+      "B": "sin(2*pi*t)",
+      "W": "sin(2*pi*t + pi/2)"
+    },
+    "plant": [
+      "left_foot",
+      "right_foot"
+    ]
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2,
+    "flat_parts": [
+      "eye"
+    ]
+  }
+}

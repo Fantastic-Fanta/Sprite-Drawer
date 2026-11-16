@@ -1,0 +1,174 @@
+{
+  "name": "Mega Malamar (shiny) (back)",
+  "model": "MegaMalamar/MegaMalamar_anim.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_malamar_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#0e0f17",
+    "parts": {
+      "body": [
+        "#45493c",
+        "#535948",
+        "#5d6351",
+        "#727865",
+        "#8e9282"
+      ],
+      "pale": [
+        "#88a574",
+        "#9ebb8a",
+        "#a9c694",
+        "#b4d19f",
+        "#c0deab"
+      ],
+      "collar": [
+        "#b42442",
+        "#cb3c51",
+        "#d7465b",
+        "#e85567",
+        "#fd6878"
+      ],
+      "stripe": [
+        "#829d36",
+        "#9dbe3c",
+        "#b0d741",
+        "#bae151",
+        "#c8e963"
+      ],
+      "white": [
+        "#c5c5be",
+        "#cfcec8",
+        "#d6d6cf",
+        "#dadbd4",
+        "#ddded7"
+      ],
+      "eye": [
+        "#ccbd45",
+        "#e3d45e",
+        "#fbed78",
+        "#fef984",
+        "#feff8b"
+      ],
+      "tail_violet": [
+        "#490ad5",
+        "#6524f4",
+        "#824ef6",
+        "#9a70f8",
+        "#b292fa"
+      ],
+      "tail_pink": [
+        "#ca1787",
+        "#e832a4",
+        "#ec59b6",
+        "#f07ac4",
+        "#f49bd2"
+      ],
+      "tail_yellow": [
+        "#dbbe06",
+        "#f9dc22",
+        "#fae24d",
+        "#fbe870",
+        "#fcee93"
+      ],
+      "tail_green": [
+        "#12da2a",
+        "#3bef50",
+        "#65f276",
+        "#88f595",
+        "#abf8b4"
+      ],
+      "tail_aqua": [
+        "#0eceb9",
+        "#26f0d9",
+        "#4df3e0",
+        "#6ef5e6",
+        "#90f7ec"
+      ],
+      "head": [
+        "#87874b",
+        "#9c9c52",
+        "#abab58",
+        "#c2c079",
+        "#dcd7a0"
+      ],
+      "eyering": [
+        "#58585b",
+        "#6e6e73",
+        "#828386",
+        "#949598",
+        "#a6a7a9"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_05": "pale|body|head",
+      "body_04": "pale|white",
+      "l_eye": "eyering|eye",
+      "r_eye": "eyering|eye",
+      "body_a_01": "body|head|pale|collar|stripe|white",
+      "body_a_02": "pale|white|body|head|collar|stripe",
+      "body_02": "tail_violet|tail_pink|tail_yellow|tail_green|tail_aqua",
+      "body_03": "tail_aqua",
+      "eye_alb": "eyering|eye"
+    },
+    "default_material": "body_a_01",
+    "albedo": {
+      "body": "#5d6351",
+      "pale": "#9ebb8a",
+      "collar": "#d04156",
+      "stripe": "#bbe151",
+      "white": "#ddddd6",
+      "eye": "#f8e974",
+      "tail_violet": "#9a70f8",
+      "tail_pink": "#f07ac4",
+      "tail_yellow": "#fbe870",
+      "tail_green": "#88f595",
+      "tail_aqua": "#6ff5e6",
+      "head": "#abab58",
+      "eyering": "#949598"
+    },
+    "match": "albedo"
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.134,
+      1.2
+    ],
+    "distance": 27.84,
+    "ortho_scale": 4.8,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0727_51_00_body_03_alb (Composite).png": "pm0727_51_00_body_03_rare_alb (Composite).png",
+      "pm0727_51_00_body_a_alb (Composite).png": "pm0727_51_00_body_a_rare_alb (Composite).png",
+      "pm0727_51_00_eye_alb (Composite).png": "pm0727_51_00_eye_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 264.0,
+    "ELEVATION": 12.0,
+    "FOV": 30
+  },
+  "motion": {
+    "frames": 72,
+    "clip": "pm0727_51_00_20001_battlewait01_loop",
+    "note": "The game's own battle idle (pm0727_51_00_20001_battlewait01_loop from the user's Legends Z-A animation pack, frames 1-131 at 60 fps; frame 131 repeats frame 1, so one loop is 130 frames = 2.167 s), moved onto the textured no-glow copy (move_clip.py; only the action, none of the pack's shiny textures). Played as is with no pose or motion on top. 72 frames x 30 ms = 2.160 s, the game's speed (0.3% fast)."
+  },
+  "style": {
+    "height": 200,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_malamar_front.json"
+}

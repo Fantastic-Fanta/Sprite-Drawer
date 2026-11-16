@@ -1,0 +1,680 @@
+{
+  "name": "Mega Chandelure (shiny) (back)",
+  "model": "MegaChandelure/MegaChandelure.blend",
+  "reference": null,
+  "reference_source": "package.py: the front config (mega_chandelure_front.json) with the camera turned round (azimuth + 180) and looking down from 12 deg",
+  "palette": {
+    "outline": "#0f0f0f",
+    "parts": {
+      "black": [
+        "#252424",
+        "#363635",
+        "#403f3e",
+        "#494847",
+        "#525251"
+      ],
+      "tan": [
+        "#a4578e",
+        "#b86ca3",
+        "#c676ad",
+        "#d181b8",
+        "#dc8cc4"
+      ],
+      "sky": [
+        "#b9bb97",
+        "#cfd0ac",
+        "#dcdcb8",
+        "#e6e7c2",
+        "#f7f4dc"
+      ],
+      "purple": [
+        "#dab46f",
+        "#f2c985",
+        "#ffd590",
+        "#ffe3a3",
+        "#fff0b6"
+      ],
+      "blue": [
+        "#d97100",
+        "#f38529",
+        "#fe8e39",
+        "#ff9b4f",
+        "#ffad6a"
+      ],
+      "white": [
+        "#cdcecc",
+        "#e4e4e3",
+        "#f1f0ef",
+        "#f2f2ef",
+        "#f2f2ef"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "fire_01": "sky",
+      "l_eye": "tan",
+      "body_a_01": "sky",
+      "fire_00": "blue|purple|white",
+      "fire_02": "white",
+      "r_eye": "tan",
+      "body_a_00": "tan|black"
+    },
+    "default_material": "body_b",
+    "albedo": {
+      "black": "#373635",
+      "tan": "#b96ca3",
+      "sky": "#e8e9c4",
+      "purple": "#fdd38e",
+      "blue": "#f9892f",
+      "white": "#fffffd"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      0.0,
+      2.513
+    ],
+    "distance": 30.02,
+    "ortho_scale": 6.754,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 2000,
+    "height": 2000,
+    "hull": {
+      "thickness_px": 0.95,
+      "cap_each_frame": true
+    },
+    "texture_swap": {
+      "pm0609_51_00_body_a_alb (Composite).png": "pm0609_51_00_body_a_rare_alb (Composite).png",
+      "pm0609_51_00_body_b_alb (Composite).png": "pm0609_51_00_body_b_rare_alb (Composite).png",
+      "pm0609_51_00_eye_alb (Composite).png": "pm0609_51_00_eye_rare_alb (Composite).png",
+      "pm0609_51_00_fire_alb (Composite).png": "pm0609_51_00_fire_rare_alb (Composite).png"
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 250.0,
+    "ELEVATION": 12.0,
+    "FOV": 30,
+    "S_LO": 8.0,
+    "S_HI": -11.0,
+    "S_TIP": 12.0,
+    "S_FB": 0.0,
+    "NF": 120,
+    "PX_U": 0.01571,
+    "HOVER_PX": 1.25,
+    "SKEW": 0.18,
+    "DRIFT_PX": 0.5,
+    "ROCK_DEG": 1.2,
+    "ARM_DEG": 2.5,
+    "ARM_LAG": 0.06,
+    "ARM_RIP": 0.03,
+    "LEG_DEG": 2.0,
+    "LEG_LAG": 0.09,
+    "FLAME_DEG": 0.9,
+    "FLAME_LAG": 0.08,
+    "FLAME_RIP": 0.035,
+    "FLICK_DEG": 1.0,
+    "FLICK_C": 3,
+    "FLICK_RIP": 0.06,
+    "CANDLE_DEG": 2.5,
+    "CANDLE_C": 3,
+    "PEND_DEG": 4.0,
+    "PEND_LAG": 0.12,
+    "FLICK2_DEG": 0.4,
+    "FLICK2_C": 5,
+    "FLICK2_RIP": 0.09
+  },
+  "pose": [
+    [
+      "origin",
+      "LOCCAM",
+      "PX_U*(FY(t) - round(FY(t)))"
+    ],
+    [
+      "origin",
+      "LOCCAMX",
+      "PX_U*(FX(t) - round(FX(t)))"
+    ],
+    [
+      "waist",
+      "ROLLCAM",
+      "-ROCK_DEG*rk(t)"
+    ],
+    [
+      "feeler_a_01",
+      "A:0,-1,0",
+      "0 + FLAME_DEG*0.583*rk(t - (FLAME_LAG + 1*FLAME_RIP)) + FLICK_DEG*0.583*sin(2*pi*(FLICK_C*t - 1*FLICK_RIP)) + FLICK2_DEG*0.583*sin(2*pi*(FLICK2_C*t - 1*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_01",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*0.583*hn(t - (FLAME_LAG + 1*FLAME_RIP)) + 0.7*FLICK_DEG*0.583*cos(2*pi*(FLICK_C*t - 1*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*0.583*cos(2*pi*(FLICK2_C*t - 1*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_02",
+      "A:0,-1,0",
+      "S_LO + FLAME_DEG*0.667*rk(t - (FLAME_LAG + 2*FLAME_RIP)) + FLICK_DEG*0.667*sin(2*pi*(FLICK_C*t - 2*FLICK_RIP)) + FLICK2_DEG*0.667*sin(2*pi*(FLICK2_C*t - 2*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_02",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*0.667*hn(t - (FLAME_LAG + 2*FLAME_RIP)) + 0.7*FLICK_DEG*0.667*cos(2*pi*(FLICK_C*t - 2*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*0.667*cos(2*pi*(FLICK2_C*t - 2*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_03",
+      "A:0,-1,0",
+      "S_LO + FLAME_DEG*0.750*rk(t - (FLAME_LAG + 3*FLAME_RIP)) + FLICK_DEG*0.750*sin(2*pi*(FLICK_C*t - 3*FLICK_RIP)) + FLICK2_DEG*0.750*sin(2*pi*(FLICK2_C*t - 3*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_03",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*0.750*hn(t - (FLAME_LAG + 3*FLAME_RIP)) + 0.7*FLICK_DEG*0.750*cos(2*pi*(FLICK_C*t - 3*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*0.750*cos(2*pi*(FLICK2_C*t - 3*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_04",
+      "A:0,-1,0",
+      "S_LO + FLAME_DEG*0.833*rk(t - (FLAME_LAG + 4*FLAME_RIP)) + FLICK_DEG*0.833*sin(2*pi*(FLICK_C*t - 4*FLICK_RIP)) + FLICK2_DEG*0.833*sin(2*pi*(FLICK2_C*t - 4*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_04",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*0.833*hn(t - (FLAME_LAG + 4*FLAME_RIP)) + 0.7*FLICK_DEG*0.833*cos(2*pi*(FLICK_C*t - 4*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*0.833*cos(2*pi*(FLICK2_C*t - 4*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_05",
+      "A:0,-1,0",
+      "S_LO + FLAME_DEG*0.917*rk(t - (FLAME_LAG + 5*FLAME_RIP)) + FLICK_DEG*0.917*sin(2*pi*(FLICK_C*t - 5*FLICK_RIP)) + FLICK2_DEG*0.917*sin(2*pi*(FLICK2_C*t - 5*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_05",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*0.917*hn(t - (FLAME_LAG + 5*FLAME_RIP)) + 0.7*FLICK_DEG*0.917*cos(2*pi*(FLICK_C*t - 5*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*0.917*cos(2*pi*(FLICK2_C*t - 5*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_06",
+      "A:0,-1,0",
+      "0 + FLAME_DEG*1.000*rk(t - (FLAME_LAG + 6*FLAME_RIP)) + FLICK_DEG*1.000*sin(2*pi*(FLICK_C*t - 6*FLICK_RIP)) + FLICK2_DEG*1.000*sin(2*pi*(FLICK2_C*t - 6*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_06",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.000*hn(t - (FLAME_LAG + 6*FLAME_RIP)) + 0.7*FLICK_DEG*1.000*cos(2*pi*(FLICK_C*t - 6*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.000*cos(2*pi*(FLICK2_C*t - 6*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_07",
+      "A:0,-1,0",
+      "S_HI + FLAME_DEG*1.083*rk(t - (FLAME_LAG + 7*FLAME_RIP)) + FLICK_DEG*1.083*sin(2*pi*(FLICK_C*t - 7*FLICK_RIP)) + FLICK2_DEG*1.083*sin(2*pi*(FLICK2_C*t - 7*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_07",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.083*hn(t - (FLAME_LAG + 7*FLAME_RIP)) + 0.7*FLICK_DEG*1.083*cos(2*pi*(FLICK_C*t - 7*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.083*cos(2*pi*(FLICK2_C*t - 7*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_08",
+      "A:0,-1,0",
+      "S_HI + FLAME_DEG*1.167*rk(t - (FLAME_LAG + 8*FLAME_RIP)) + FLICK_DEG*1.167*sin(2*pi*(FLICK_C*t - 8*FLICK_RIP)) + FLICK2_DEG*1.167*sin(2*pi*(FLICK2_C*t - 8*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_08",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.167*hn(t - (FLAME_LAG + 8*FLAME_RIP)) + 0.7*FLICK_DEG*1.167*cos(2*pi*(FLICK_C*t - 8*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.167*cos(2*pi*(FLICK2_C*t - 8*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_09",
+      "A:0,-1,0",
+      "S_HI + FLAME_DEG*1.250*rk(t - (FLAME_LAG + 9*FLAME_RIP)) + FLICK_DEG*1.250*sin(2*pi*(FLICK_C*t - 9*FLICK_RIP)) + FLICK2_DEG*1.250*sin(2*pi*(FLICK2_C*t - 9*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_09",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.250*hn(t - (FLAME_LAG + 9*FLAME_RIP)) + 0.7*FLICK_DEG*1.250*cos(2*pi*(FLICK_C*t - 9*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.250*cos(2*pi*(FLICK2_C*t - 9*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_10",
+      "A:0,-1,0",
+      "S_HI + FLAME_DEG*1.333*rk(t - (FLAME_LAG + 10*FLAME_RIP)) + FLICK_DEG*1.333*sin(2*pi*(FLICK_C*t - 10*FLICK_RIP)) + FLICK2_DEG*1.333*sin(2*pi*(FLICK2_C*t - 10*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_10",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.333*hn(t - (FLAME_LAG + 10*FLAME_RIP)) + 0.7*FLICK_DEG*1.333*cos(2*pi*(FLICK_C*t - 10*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.333*cos(2*pi*(FLICK2_C*t - 10*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_11",
+      "A:0,-1,0",
+      "S_HI + FLAME_DEG*1.417*rk(t - (FLAME_LAG + 11*FLAME_RIP)) + FLICK_DEG*1.417*sin(2*pi*(FLICK_C*t - 11*FLICK_RIP)) + FLICK2_DEG*1.417*sin(2*pi*(FLICK2_C*t - 11*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_11",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.417*hn(t - (FLAME_LAG + 11*FLAME_RIP)) + 0.7*FLICK_DEG*1.417*cos(2*pi*(FLICK_C*t - 11*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.417*cos(2*pi*(FLICK2_C*t - 11*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_12",
+      "A:0,-1,0",
+      "S_TIP + FLAME_DEG*1.500*rk(t - (FLAME_LAG + 12*FLAME_RIP)) + FLICK_DEG*1.500*sin(2*pi*(FLICK_C*t - 12*FLICK_RIP)) + FLICK2_DEG*1.500*sin(2*pi*(FLICK2_C*t - 12*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "feeler_a_12",
+      "A:-1,0,0",
+      "S_FB + 0.6*FLAME_DEG*1.500*hn(t - (FLAME_LAG + 12*FLAME_RIP)) + 0.7*FLICK_DEG*1.500*cos(2*pi*(FLICK_C*t - 12*FLICK_RIP + 0.13)) + 0.7*FLICK2_DEG*1.500*cos(2*pi*(FLICK2_C*t - 12*FLICK2_RIP + 0.31))"
+    ],
+    [
+      "left_arm_a_01",
+      "A:-0.71,-0.71,0",
+      "ARM_DEG*1.0*hn(t - ARM_LAG - 1*ARM_RIP/4 - 0.00)"
+    ],
+    [
+      "left_arm_a_05",
+      "A:-0.71,-0.71,0",
+      "ARM_DEG*0.6*hn(t - ARM_LAG - 5*ARM_RIP/4 - 0.00)"
+    ],
+    [
+      "left_hand_a_01",
+      "A:-0.71,-0.71,0",
+      "ARM_DEG*0.35*hn(t - ARM_LAG - 3*ARM_RIP - 0.00)"
+    ],
+    [
+      "left_index_a_01",
+      "A:-0.71,-0.71,0",
+      "CANDLE_DEG*0.70*sin(2*pi*(CANDLE_C*t - 0.10))"
+    ],
+    [
+      "left_index_a_01",
+      "A:0.71,-0.71,0",
+      "0.7*CANDLE_DEG*0.70*cos(2*pi*(CANDLE_C*t - 0.20))"
+    ],
+    [
+      "left_index_a_02",
+      "A:-0.71,-0.71,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.20))"
+    ],
+    [
+      "left_index_a_02",
+      "A:0.71,-0.71,0",
+      "0.7*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.30))"
+    ],
+    [
+      "left_index_a_03",
+      "A:-0.71,-0.71,0",
+      "CANDLE_DEG*1.30*sin(2*pi*(CANDLE_C*t - 0.30))"
+    ],
+    [
+      "left_index_a_03",
+      "A:0.71,-0.71,0",
+      "0.7*CANDLE_DEG*1.30*cos(2*pi*(CANDLE_C*t - 0.40))"
+    ],
+    [
+      "right_arm_a_01",
+      "A:-0.71,0.71,0",
+      "ARM_DEG*1.0*hn(t - ARM_LAG - 1*ARM_RIP/4 - 0.04)"
+    ],
+    [
+      "right_arm_a_05",
+      "A:-0.71,0.71,0",
+      "ARM_DEG*0.6*hn(t - ARM_LAG - 5*ARM_RIP/4 - 0.04)"
+    ],
+    [
+      "right_hand_a_01",
+      "A:-0.71,0.71,0",
+      "ARM_DEG*0.35*hn(t - ARM_LAG - 3*ARM_RIP - 0.04)"
+    ],
+    [
+      "right_index_a_01",
+      "A:-0.71,0.71,0",
+      "CANDLE_DEG*0.70*sin(2*pi*(CANDLE_C*t - 0.37))"
+    ],
+    [
+      "right_index_a_01",
+      "A:-0.71,-0.71,0",
+      "0.7*CANDLE_DEG*0.70*cos(2*pi*(CANDLE_C*t - 0.47))"
+    ],
+    [
+      "right_index_a_02",
+      "A:-0.71,0.71,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.47))"
+    ],
+    [
+      "right_index_a_02",
+      "A:-0.71,-0.71,0",
+      "0.7*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.57))"
+    ],
+    [
+      "right_index_a_03",
+      "A:-0.71,0.71,0",
+      "CANDLE_DEG*1.30*sin(2*pi*(CANDLE_C*t - 0.57))"
+    ],
+    [
+      "right_index_a_03",
+      "A:-0.71,-0.71,0",
+      "0.7*CANDLE_DEG*1.30*cos(2*pi*(CANDLE_C*t - 0.67))"
+    ],
+    [
+      "left_arm_b_01",
+      "A:0.71,-0.71,0",
+      "ARM_DEG*1.0*hn(t - ARM_LAG - 1*ARM_RIP/4 - 0.08)"
+    ],
+    [
+      "left_arm_b_05",
+      "A:0.71,-0.71,0",
+      "ARM_DEG*0.6*hn(t - ARM_LAG - 5*ARM_RIP/4 - 0.08)"
+    ],
+    [
+      "left_hand_b_01",
+      "A:0.71,-0.71,0",
+      "ARM_DEG*0.35*hn(t - ARM_LAG - 3*ARM_RIP - 0.08)"
+    ],
+    [
+      "left_index_b_01",
+      "A:0.71,-0.71,0",
+      "CANDLE_DEG*0.70*sin(2*pi*(CANDLE_C*t - 0.64))"
+    ],
+    [
+      "left_index_b_01",
+      "A:0.71,0.71,0",
+      "0.7*CANDLE_DEG*0.70*cos(2*pi*(CANDLE_C*t - 0.74))"
+    ],
+    [
+      "left_index_b_02",
+      "A:0.71,-0.71,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.74))"
+    ],
+    [
+      "left_index_b_02",
+      "A:0.71,0.71,0",
+      "0.7*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.84))"
+    ],
+    [
+      "left_index_b_03",
+      "A:0.71,-0.71,0",
+      "CANDLE_DEG*1.30*sin(2*pi*(CANDLE_C*t - 0.84))"
+    ],
+    [
+      "left_index_b_03",
+      "A:0.71,0.71,0",
+      "0.7*CANDLE_DEG*1.30*cos(2*pi*(CANDLE_C*t - 0.94))"
+    ],
+    [
+      "right_arm_b_01",
+      "A:0.71,0.71,0",
+      "ARM_DEG*1.0*hn(t - ARM_LAG - 1*ARM_RIP/4 - 0.12)"
+    ],
+    [
+      "right_arm_b_05",
+      "A:0.71,0.71,0",
+      "ARM_DEG*0.6*hn(t - ARM_LAG - 5*ARM_RIP/4 - 0.12)"
+    ],
+    [
+      "right_hand_b_01",
+      "A:0.71,0.71,0",
+      "ARM_DEG*0.35*hn(t - ARM_LAG - 3*ARM_RIP - 0.12)"
+    ],
+    [
+      "right_index_b_01",
+      "A:0.71,0.71,0",
+      "CANDLE_DEG*0.70*sin(2*pi*(CANDLE_C*t - 0.91))"
+    ],
+    [
+      "right_index_b_01",
+      "A:-0.71,0.71,0",
+      "0.7*CANDLE_DEG*0.70*cos(2*pi*(CANDLE_C*t - 1.01))"
+    ],
+    [
+      "right_index_b_02",
+      "A:0.71,0.71,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 1.01))"
+    ],
+    [
+      "right_index_b_02",
+      "A:-0.71,0.71,0",
+      "0.7*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 1.11))"
+    ],
+    [
+      "right_index_b_03",
+      "A:0.71,0.71,0",
+      "CANDLE_DEG*1.30*sin(2*pi*(CANDLE_C*t - 1.11))"
+    ],
+    [
+      "right_index_b_03",
+      "A:-0.71,0.71,0",
+      "0.7*CANDLE_DEG*1.30*cos(2*pi*(CANDLE_C*t - 1.21))"
+    ],
+    [
+      "left_leg_a",
+      "A:-0.92,-0.38,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.00)"
+    ],
+    [
+      "left_foot_a_01",
+      "A:-0.92,-0.38,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 0.10))"
+    ],
+    [
+      "left_foot_a_01",
+      "A:0.38,-0.92,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 0.20))"
+    ],
+    [
+      "left_foot_a_02",
+      "A:-0.92,-0.38,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.20))"
+    ],
+    [
+      "left_foot_a_02",
+      "A:0.38,-0.92,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.30))"
+    ],
+    [
+      "right_leg_a",
+      "A:-0.92,0.38,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.03)"
+    ],
+    [
+      "right_foot_a_01",
+      "A:-0.92,0.38,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 0.29))"
+    ],
+    [
+      "right_foot_a_01",
+      "A:-0.38,-0.92,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 0.39))"
+    ],
+    [
+      "right_foot_a_02",
+      "A:-0.92,0.38,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.39))"
+    ],
+    [
+      "right_foot_a_02",
+      "A:-0.38,-0.92,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.49))"
+    ],
+    [
+      "left_leg_b",
+      "A:-0.38,-0.92,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.06)"
+    ],
+    [
+      "left_foot_b_01",
+      "A:-0.38,-0.92,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 0.48))"
+    ],
+    [
+      "left_foot_b_01",
+      "A:0.92,-0.38,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 0.58))"
+    ],
+    [
+      "left_foot_b_02",
+      "A:-0.38,-0.92,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.58))"
+    ],
+    [
+      "left_foot_b_02",
+      "A:0.92,-0.38,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.68))"
+    ],
+    [
+      "right_leg_b",
+      "A:-0.38,0.92,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.09)"
+    ],
+    [
+      "right_foot_b_01",
+      "A:-0.38,0.92,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 0.67))"
+    ],
+    [
+      "right_foot_b_01",
+      "A:-0.92,-0.38,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 0.77))"
+    ],
+    [
+      "right_foot_b_02",
+      "A:-0.38,0.92,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.77))"
+    ],
+    [
+      "right_foot_b_02",
+      "A:-0.92,-0.38,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 0.87))"
+    ],
+    [
+      "left_leg_c",
+      "A:0.38,-0.92,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.12)"
+    ],
+    [
+      "left_foot_c_01",
+      "A:0.38,-0.92,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 0.86))"
+    ],
+    [
+      "left_foot_c_01",
+      "A:0.92,0.38,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 0.96))"
+    ],
+    [
+      "left_foot_c_02",
+      "A:0.38,-0.92,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 0.96))"
+    ],
+    [
+      "left_foot_c_02",
+      "A:0.92,0.38,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 1.06))"
+    ],
+    [
+      "right_leg_c",
+      "A:0.38,0.92,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.15)"
+    ],
+    [
+      "right_foot_c_01",
+      "A:0.38,0.92,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 1.05))"
+    ],
+    [
+      "right_foot_c_01",
+      "A:-0.92,0.38,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 1.15))"
+    ],
+    [
+      "right_foot_c_02",
+      "A:0.38,0.92,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 1.15))"
+    ],
+    [
+      "right_foot_c_02",
+      "A:-0.92,0.38,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 1.25))"
+    ],
+    [
+      "left_leg_d",
+      "A:0.92,-0.38,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.18)"
+    ],
+    [
+      "left_foot_d_01",
+      "A:0.92,-0.38,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 1.24))"
+    ],
+    [
+      "left_foot_d_01",
+      "A:0.38,0.92,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 1.34))"
+    ],
+    [
+      "left_foot_d_02",
+      "A:0.92,-0.38,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 1.34))"
+    ],
+    [
+      "left_foot_d_02",
+      "A:0.38,0.92,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 1.44))"
+    ],
+    [
+      "right_leg_d",
+      "A:0.92,0.38,0",
+      "LEG_DEG*hn(t - LEG_LAG - 0.21)"
+    ],
+    [
+      "right_foot_d_01",
+      "A:0.92,0.38,0",
+      "CANDLE_DEG*0.50*sin(2*pi*(CANDLE_C*t - 1.43))"
+    ],
+    [
+      "right_foot_d_01",
+      "A:-0.38,0.92,0",
+      "0.6*CANDLE_DEG*0.50*cos(2*pi*(CANDLE_C*t - 1.53))"
+    ],
+    [
+      "right_foot_d_02",
+      "A:0.92,0.38,0",
+      "CANDLE_DEG*1.00*sin(2*pi*(CANDLE_C*t - 1.53))"
+    ],
+    [
+      "right_foot_d_02",
+      "A:-0.38,0.92,0",
+      "0.6*CANDLE_DEG*1.00*cos(2*pi*(CANDLE_C*t - 1.63))"
+    ],
+    [
+      "feeler_b",
+      "A:0,-1,0",
+      "PEND_DEG*rk(t - PEND_LAG)"
+    ],
+    [
+      "feeler_b",
+      "A:1,0,0",
+      "0.5*PEND_DEG*hn(t - PEND_LAG)"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "Weighted hover, 120 frames x 30 ms = 3.6 s, one bob per loop. Driver: the body bobs HOVER_PX (broad crest, quick trough: hangs at the top, turns fast at the bottom) with a small sideways drift and a pendulum rock about the waist. Everything else trails: the four upper arms bend after the bob (ARM_LAG, outer joints later), the eight lower arms later still (LEG_LAG), the hanging pendant swings last (PEND_LAG). The tall S-curved top flame trails the rock with a lag growing up the chain, plus its own flame lick: a travelling wave running up the chain (3 per loop) with a faster, smaller second wave on top (5 per loop), growing toward the tip, so the flame licks and flickers rather than swaying. Candle flames flutter fast and light (3 per loop), each out of phase. All periods divide the loop: seamless.",
+    "functions": {
+      "FY": "HOVER_PX*wave(t + 0.25, SKEW)",
+      "FX": "DRIFT_PX*sin(2*pi*t)",
+      "hn": "wave(t + 0.25, SKEW)",
+      "rk": "sin(2*pi*(t - 0.05))"
+    }
+  },
+  "style": {
+    "height": 315,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2,
+    "pixel_bob": {
+      "y": "FY(t)",
+      "x": "FX(t)"
+    }
+  },
+  "shiny_note": "shiny: colours from the model's shiny textures (make_shiny.py: per-part colour change normal -> shiny, applied to every shade); geometry, motion, lighting and shading decisions identical to mega_chandelure_front.json"
+}

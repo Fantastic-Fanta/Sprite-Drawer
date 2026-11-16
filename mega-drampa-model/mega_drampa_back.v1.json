@@ -1,0 +1,621 @@
+{
+  "name": "Mega Drampa (back)",
+  "model": "MegaDrampa/MegaDrampa.blend",
+  "reference": "reference/official_art.png",
+  "reference_source": "package.py: the front config (mega_drampa_front.json) with the camera turned round (azimuth + 180) and looking down from 14 deg",
+  "palette": {
+    "outline": "#0d1013",
+    "parts": {
+      "cloud": [
+        "#28323e",
+        "#3a4450",
+        "#434d5a",
+        "#4c5764",
+        "#56616e"
+      ],
+      "cloud_edge": [
+        "#596881",
+        "#6d7c96",
+        "#7c8ba5",
+        "#8f9fba",
+        "#a1b1cd"
+      ],
+      "green": [
+        "#007853",
+        "#218d67",
+        "#309871",
+        "#3da37b",
+        "#4aae86"
+      ],
+      "cream": [
+        "#7f8784",
+        "#a2aaa3",
+        "#bcc6bb",
+        "#ccd8cc",
+        "#e6eee2"
+      ],
+      "mouth": [
+        "#9c5a5a",
+        "#c07a74",
+        "#de736d",
+        "#e4b4a8",
+        "#f2d0c8"
+      ],
+      "yellow": [
+        "#a08a1c",
+        "#c8ac2a",
+        "#e0c434",
+        "#f0d83c",
+        "#f8ea80"
+      ],
+      "horn": [
+        "#6e7272",
+        "#868a8a",
+        "#9c9c9c",
+        "#b4b8b8",
+        "#cfd2d2"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {
+      "body_a_00": "green|cream|mouth|cloud",
+      "body_a_01": "cloud|cloud_edge",
+      "body_b_00": "cloud|cloud_edge",
+      "body_b_01": "horn|yellow",
+      "l_eye": "mouth",
+      "r_eye": "mouth"
+    },
+    "default_material": "body_b_00",
+    "albedo": {
+      "cloud": "#3a4450",
+      "cloud_edge": "#7884a8",
+      "green": "#13906c",
+      "cream": "#ccd8cc",
+      "mouth": "#e4b4a8",
+      "yellow": "#f0d83c",
+      "horn": "#9c9c9c"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0.0,
+      1.004,
+      1.474
+    ],
+    "distance": 29.52,
+    "ortho_scale": 6.642,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 1200,
+    "height": 1200,
+    "hull": {
+      "thickness_px": 0.95
+    }
+  },
+  "pose_params": {
+    "AZIMUTH": 230.0,
+    "ELEVATION": 14.0,
+    "FOV": 30
+  },
+  "pose": [
+    [
+      "spine_02",
+      "X",
+      "-8"
+    ],
+    [
+      "neck_01",
+      "X",
+      "-10"
+    ],
+    [
+      "neck_02",
+      "X",
+      "-6"
+    ],
+    [
+      "neck_03",
+      "X",
+      "4"
+    ],
+    [
+      "neck_04",
+      "X",
+      "10"
+    ],
+    [
+      "neck_05",
+      "X",
+      "10"
+    ],
+    [
+      "head",
+      "X",
+      "20"
+    ],
+    [
+      "jaw",
+      "A:1,0,0",
+      "18 + 2.0*sin(2*pi*(t-0.150))"
+    ],
+    [
+      "origin",
+      "LOCZ",
+      "0.03*wave(t, 0.15)"
+    ],
+    [
+      "spine_02",
+      "X",
+      "0.25*sin(2*pi*(t-0.060))"
+    ],
+    [
+      "neck_01",
+      "X",
+      "0.33*sin(2*pi*(t-0.110))"
+    ],
+    [
+      "neck_02",
+      "X",
+      "0.40*sin(2*pi*(t-0.160))"
+    ],
+    [
+      "neck_03",
+      "X",
+      "0.47*sin(2*pi*(t-0.210))"
+    ],
+    [
+      "neck_04",
+      "X",
+      "0.55*sin(2*pi*(t-0.260))"
+    ],
+    [
+      "neck_05",
+      "X",
+      "0.62*sin(2*pi*(t-0.310))"
+    ],
+    [
+      "head",
+      "X",
+      "0.70*sin(2*pi*(t-0.360))"
+    ],
+    [
+      "left_feeler_d_02",
+      "A:0.70,-0.71,0.00",
+      "0.56*sin(2*pi*(t-0.170))"
+    ],
+    [
+      "left_feeler_d_03",
+      "A:0.70,-0.71,0.00",
+      "0.70*sin(2*pi*(t-0.220))"
+    ],
+    [
+      "left_feeler_d_04",
+      "A:0.70,-0.71,0.00",
+      "0.84*sin(2*pi*(t-0.270))"
+    ],
+    [
+      "left_feeler_d_05",
+      "A:0.70,-0.71,0.00",
+      "0.98*sin(2*pi*(t-0.320))"
+    ],
+    [
+      "left_feeler_d_06",
+      "A:0.70,-0.71,0.00",
+      "1.12*sin(2*pi*(t-0.370))"
+    ],
+    [
+      "left_feeler_d_07",
+      "A:0.70,-0.71,0.00",
+      "1.26*sin(2*pi*(t-0.420))"
+    ],
+    [
+      "left_feeler_e_01",
+      "A:0.91,-0.42,0.00",
+      "0.48*sin(2*pi*(t-0.160))"
+    ],
+    [
+      "left_feeler_e_02",
+      "A:0.91,-0.42,0.00",
+      "0.60*sin(2*pi*(t-0.210))"
+    ],
+    [
+      "left_feeler_e_03",
+      "A:0.91,-0.42,0.00",
+      "0.72*sin(2*pi*(t-0.260))"
+    ],
+    [
+      "left_feeler_e_04",
+      "A:0.91,-0.42,0.00",
+      "0.84*sin(2*pi*(t-0.310))"
+    ],
+    [
+      "left_feeler_e_05",
+      "A:0.91,-0.42,0.00",
+      "0.96*sin(2*pi*(t-0.360))"
+    ],
+    [
+      "left_feeler_e_06",
+      "A:0.91,-0.42,0.00",
+      "1.08*sin(2*pi*(t-0.410))"
+    ],
+    [
+      "left_feeler_e_07",
+      "A:0.91,-0.42,0.00",
+      "1.20*sin(2*pi*(t-0.460))"
+    ],
+    [
+      "left_feeler_c_01",
+      "A:0.51,-0.86,0.00",
+      "0.40*sin(2*pi*(t-0.100))"
+    ],
+    [
+      "left_feeler_c_02",
+      "A:0.51,-0.86,0.00",
+      "0.50*sin(2*pi*(t-0.150))"
+    ],
+    [
+      "left_feeler_c_03",
+      "A:0.51,-0.86,0.00",
+      "0.60*sin(2*pi*(t-0.200))"
+    ],
+    [
+      "left_feeler_c_04",
+      "A:0.51,-0.86,0.00",
+      "0.70*sin(2*pi*(t-0.250))"
+    ],
+    [
+      "left_feeler_a_01",
+      "A:0.58,-0.81,0.00",
+      "0.80*sin(2*pi*(t-0.200))"
+    ],
+    [
+      "left_feeler_a_02",
+      "A:0.58,-0.81,0.00",
+      "1.00*sin(2*pi*(t-0.250))"
+    ],
+    [
+      "left_feeler_b_01",
+      "A:0.60,-0.80,0.00",
+      "0.80*sin(2*pi*(t-0.200))"
+    ],
+    [
+      "left_feeler_b_02",
+      "A:0.60,-0.80,0.00",
+      "1.00*sin(2*pi*(t-0.250))"
+    ],
+    [
+      "left_arm_01",
+      "A:0.00,-0.50,0.87",
+      "1.20*sin(2*pi*(t-0.100))"
+    ],
+    [
+      "left_wing_a_01",
+      "A:0.86,-0.20,0.46",
+      "0.48*sin(2*pi*(t-0.140))"
+    ],
+    [
+      "left_wing_a_02",
+      "A:0.86,-0.20,0.46",
+      "0.60*sin(2*pi*(t-0.190))"
+    ],
+    [
+      "left_wing_a_03",
+      "A:0.86,-0.20,0.46",
+      "0.72*sin(2*pi*(t-0.240))"
+    ],
+    [
+      "left_wing_a_04",
+      "A:0.86,-0.20,0.46",
+      "0.84*sin(2*pi*(t-0.290))"
+    ],
+    [
+      "left_wing_b_01",
+      "A:0.91,-0.26,0.33",
+      "0.48*sin(2*pi*(t-0.160))"
+    ],
+    [
+      "left_wing_b_02",
+      "A:0.91,-0.26,0.33",
+      "0.60*sin(2*pi*(t-0.210))"
+    ],
+    [
+      "left_wing_b_03",
+      "A:0.91,-0.26,0.33",
+      "0.72*sin(2*pi*(t-0.260))"
+    ],
+    [
+      "left_wing_b_04",
+      "A:0.91,-0.26,0.33",
+      "0.84*sin(2*pi*(t-0.310))"
+    ],
+    [
+      "left_wing_c_01",
+      "A:0.95,-0.09,0.30",
+      "0.48*sin(2*pi*(t-0.120))"
+    ],
+    [
+      "left_wing_c_02",
+      "A:0.95,-0.09,0.30",
+      "0.60*sin(2*pi*(t-0.170))"
+    ],
+    [
+      "left_hair_01",
+      "A:0.30,-0.29,0.91",
+      "3.00*sin(2*pi*(t-0.450)) + 0.90*sin(4*pi*(t-0.2))"
+    ],
+    [
+      "left_hair_02",
+      "A:0.35,-0.44,0.82",
+      "3.00*sin(2*pi*(t-0.450)) + 0.90*sin(4*pi*(t-0.2))"
+    ],
+    [
+      "left_eyebrow_01",
+      "A:0.21,0.21,0.95",
+      "1.20*sin(2*pi*(t-0.450))"
+    ],
+    [
+      "left_eyebrow_02",
+      "A:0.21,0.21,0.95",
+      "1.20*sin(2*pi*(t-0.500))"
+    ],
+    [
+      "left_eyebrow_03",
+      "A:0.21,0.21,0.95",
+      "1.20*sin(2*pi*(t-0.550))"
+    ],
+    [
+      "left_eyebrow_04",
+      "A:0.21,0.21,0.95",
+      "1.20*sin(2*pi*(t-0.600))"
+    ],
+    [
+      "right_feeler_d_02",
+      "A:0.70,0.71,0.00",
+      "0.56*sin(2*pi*(t-0.170))"
+    ],
+    [
+      "right_feeler_d_03",
+      "A:0.70,0.71,0.00",
+      "0.70*sin(2*pi*(t-0.220))"
+    ],
+    [
+      "right_feeler_d_04",
+      "A:0.70,0.71,0.00",
+      "0.84*sin(2*pi*(t-0.270))"
+    ],
+    [
+      "right_feeler_d_05",
+      "A:0.70,0.71,0.00",
+      "0.98*sin(2*pi*(t-0.320))"
+    ],
+    [
+      "right_feeler_d_06",
+      "A:0.70,0.71,0.00",
+      "1.12*sin(2*pi*(t-0.370))"
+    ],
+    [
+      "right_feeler_d_07",
+      "A:0.70,0.71,0.00",
+      "1.26*sin(2*pi*(t-0.420))"
+    ],
+    [
+      "right_feeler_e_01",
+      "A:0.91,0.42,0.00",
+      "0.48*sin(2*pi*(t-0.160))"
+    ],
+    [
+      "right_feeler_e_02",
+      "A:0.91,0.42,0.00",
+      "0.60*sin(2*pi*(t-0.210))"
+    ],
+    [
+      "right_feeler_e_03",
+      "A:0.91,0.42,0.00",
+      "0.72*sin(2*pi*(t-0.260))"
+    ],
+    [
+      "right_feeler_e_04",
+      "A:0.91,0.42,0.00",
+      "0.84*sin(2*pi*(t-0.310))"
+    ],
+    [
+      "right_feeler_e_05",
+      "A:0.91,0.42,0.00",
+      "0.96*sin(2*pi*(t-0.360))"
+    ],
+    [
+      "right_feeler_e_06",
+      "A:0.91,0.42,0.00",
+      "1.08*sin(2*pi*(t-0.410))"
+    ],
+    [
+      "right_feeler_e_07",
+      "A:0.91,0.42,0.00",
+      "1.20*sin(2*pi*(t-0.460))"
+    ],
+    [
+      "right_feeler_c_01",
+      "A:0.51,0.86,0.00",
+      "0.40*sin(2*pi*(t-0.100))"
+    ],
+    [
+      "right_feeler_c_02",
+      "A:0.51,0.86,0.00",
+      "0.50*sin(2*pi*(t-0.150))"
+    ],
+    [
+      "right_feeler_c_03",
+      "A:0.51,0.86,0.00",
+      "0.60*sin(2*pi*(t-0.200))"
+    ],
+    [
+      "right_feeler_c_04",
+      "A:0.51,0.86,0.00",
+      "0.70*sin(2*pi*(t-0.250))"
+    ],
+    [
+      "right_feeler_a_01",
+      "A:0.58,0.81,0.00",
+      "0.80*sin(2*pi*(t-0.200))"
+    ],
+    [
+      "right_feeler_a_02",
+      "A:0.58,0.81,0.00",
+      "1.00*sin(2*pi*(t-0.250))"
+    ],
+    [
+      "right_feeler_b_01",
+      "A:0.60,0.80,0.00",
+      "0.80*sin(2*pi*(t-0.200))"
+    ],
+    [
+      "right_feeler_b_02",
+      "A:0.60,0.80,0.00",
+      "1.00*sin(2*pi*(t-0.250))"
+    ],
+    [
+      "right_arm_01",
+      "A:0.00,0.50,-0.87",
+      "1.20*sin(2*pi*(t-0.100))"
+    ],
+    [
+      "right_wing_a_01",
+      "A:0.86,0.20,-0.46",
+      "0.48*sin(2*pi*(t-0.140))"
+    ],
+    [
+      "right_wing_a_02",
+      "A:0.86,0.20,-0.46",
+      "0.60*sin(2*pi*(t-0.190))"
+    ],
+    [
+      "right_wing_a_03",
+      "A:0.86,0.20,-0.46",
+      "0.72*sin(2*pi*(t-0.240))"
+    ],
+    [
+      "right_wing_a_04",
+      "A:0.86,0.20,-0.46",
+      "0.84*sin(2*pi*(t-0.290))"
+    ],
+    [
+      "right_wing_b_01",
+      "A:0.91,0.26,-0.33",
+      "0.48*sin(2*pi*(t-0.160))"
+    ],
+    [
+      "right_wing_b_02",
+      "A:0.91,0.26,-0.33",
+      "0.60*sin(2*pi*(t-0.210))"
+    ],
+    [
+      "right_wing_b_03",
+      "A:0.91,0.26,-0.33",
+      "0.72*sin(2*pi*(t-0.260))"
+    ],
+    [
+      "right_wing_b_04",
+      "A:0.91,0.26,-0.33",
+      "0.84*sin(2*pi*(t-0.310))"
+    ],
+    [
+      "right_wing_c_01",
+      "A:0.95,0.09,-0.30",
+      "0.48*sin(2*pi*(t-0.120))"
+    ],
+    [
+      "right_wing_c_02",
+      "A:0.95,0.09,-0.30",
+      "0.60*sin(2*pi*(t-0.170))"
+    ],
+    [
+      "right_hair_01",
+      "A:0.30,0.29,-0.91",
+      "3.00*sin(2*pi*(t-0.450)) + 0.90*sin(4*pi*(t-0.2))"
+    ],
+    [
+      "right_hair_02",
+      "A:0.35,0.44,-0.82",
+      "3.00*sin(2*pi*(t-0.450)) + 0.90*sin(4*pi*(t-0.2))"
+    ],
+    [
+      "right_eyebrow_01",
+      "A:0.21,-0.21,-0.95",
+      "1.20*sin(2*pi*(t-0.450))"
+    ],
+    [
+      "right_eyebrow_02",
+      "A:0.21,-0.21,-0.95",
+      "1.20*sin(2*pi*(t-0.500))"
+    ],
+    [
+      "right_eyebrow_03",
+      "A:0.21,-0.21,-0.95",
+      "1.20*sin(2*pi*(t-0.550))"
+    ],
+    [
+      "right_eyebrow_04",
+      "A:0.21,-0.21,-0.95",
+      "1.20*sin(2*pi*(t-0.600))"
+    ],
+    [
+      "feeler_a_01",
+      "A:1,0,0",
+      "0.40*sin(2*pi*(t-0.180))"
+    ],
+    [
+      "feeler_a_02",
+      "A:1,0,0",
+      "0.50*sin(2*pi*(t-0.230))"
+    ],
+    [
+      "feeler_a_03",
+      "A:1,0,0",
+      "0.60*sin(2*pi*(t-0.280))"
+    ],
+    [
+      "feeler_a_04",
+      "A:1,0,0",
+      "0.70*sin(2*pi*(t-0.330))"
+    ],
+    [
+      "feeler_a_05",
+      "A:1,0,0",
+      "0.80*sin(2*pi*(t-0.380))"
+    ],
+    [
+      "feeler_a_06",
+      "A:1,0,0",
+      "0.90*sin(2*pi*(t-0.430))"
+    ],
+    [
+      "feeler_a_07",
+      "A:1,0,0",
+      "1.00*sin(2*pi*(t-0.480))"
+    ],
+    [
+      "hair_a",
+      "A:1,0,0",
+      "1.50*sin(2*pi*(t-0.400))"
+    ],
+    [
+      "hair_b",
+      "A:1,0,0",
+      "1.50*sin(2*pi*(t-0.420))"
+    ]
+  ],
+  "motion": {
+    "frames": 120,
+    "note": "gentle old cloud dragon floating low on its cloud: one slow buoyant hover bob (origin, wave skew 0.15, ~1.4 px) drives it; the S-necked neck settles and the head nods a beat later (lag grows up the chain), the jaw breathes, cloud lobes, wing tufts and tail cloud undulate up/down trailing further the further out they are, whiskers and brows lag most with a small faster flutter; nothing planted (it floats)"
+  },
+  "style": {
+    "height": 150,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "despeckle": 2
+  }
+}

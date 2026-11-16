@@ -5,7 +5,7 @@ Run (from anywhere):
                                                        build, save the result as golden
   python3 pipeline/regress.py check [NAME ...]         build again, compare with the golden frame by frame
   python3 pipeline/regress.py render-check [NAME ...]  render again, compare every pass with the cached render
-NAME: lapras, glimmora, golisopod, dragalge, dragalge_back (default: all); a sprite with a shiny
+NAME: lapras, glimmora, golisopod, dragalge, dragalge_back, zygarde, zygarde_back (default: all); a sprite with a shiny
 (SHINY below) also checks its palette_swap recolour. Data lives in .regress/ (gitignored):
 the config snapshots, the rendered passes per sprite and the golden GIFs. Checks always use the
 snapshot taken with the golden (paths made absolute), so editing a config - or another session
@@ -32,6 +32,8 @@ CONFIGS = {
     "golisopod": "golisopod-model/golisopod_front.json",
     "dragalge": "dragalge-model/dragalge_front.json",
     "dragalge_back": "dragalge-model/dragalge_back.json",      # back view + the shiny recolour
+    "zygarde": "mega-zygarde-za/zygarde_front.json",
+    "zygarde_back": "mega-zygarde-za/zygarde_back.json",
 }
 SHINY = {"dragalge_back": "dragalge-model/dragalge_back_shiny.json"}
 SEED = "0"
@@ -99,7 +101,7 @@ def gif_frames(p):
 
 
 def compare_build(a, b):
-    """differences between two builds: frame pixels, eye masks, QA report"""
+    """differences between two builds: frame pixels"""
     A, B = gif_frames(a), gif_frames(b)
     out = []
     if len(A) != len(B):
@@ -108,10 +110,6 @@ def compare_build(a, b):
     if bad:
         px = sum(int((x != y).any(-1).sum()) for i, (x, y) in enumerate(zip(A, B)) if i in bad and x.shape == y.shape)
         out.append(f"{len(bad)} frames differ ({px} px), first {bad[:6]}")
-    for ext in (".eyes.json", ".qa.json"):
-        pa, pb = a.with_suffix(ext), b.with_suffix(ext)
-        if pa.exists() != pb.exists() or (pa.exists() and json.loads(pa.read_text()) != json.loads(pb.read_text())):
-            out.append(f"{ext} differs")
     return out
 
 

@@ -1,0 +1,120 @@
+{
+  "name": "Mega Zygarde",
+  "model": "MegaZygarde.blend",
+  "reference": null,
+  "reference_source": "no Mega Zygarde sprite: front camera on the model's own battle-wait loop (pm0770_51_00_20001_battlewait01_loop); colours from its flat texture",
+  "palette": {
+    "outline": "#141210",
+    "parts": {
+      "green": [
+        "#2f6210",
+        "#4a8a16",
+        "#68b01e",
+        "#84c838",
+        "#a4e050"
+      ],
+      "black": [
+        "#303030",
+        "#3b3b3b",
+        "#454545",
+        "#505050"
+      ],
+      "gray": [
+        "#3c3632",
+        "#524c46",
+        "#6e6660",
+        "#8a827c",
+        "#a8a09a"
+      ],
+      "white": [
+        "#d8d8d8",
+        "#e5e5e5",
+        "#f2f2f2",
+        "#ffffff"
+      ],
+      "red": [
+        "#8a1c16",
+        "#9f2319",
+        "#b3291d",
+        "#c83020"
+      ],
+      "blue": [
+        "#185080",
+        "#1d659b",
+        "#237bb5",
+        "#2890d0"
+      ],
+      "pink": [
+        "#d8b0ec",
+        "#e2bff2",
+        "#eccdf9",
+        "#f6dcff"
+      ],
+      "yellow": [
+        "#d4b438",
+        "#dfc550",
+        "#ebd768",
+        "#f6e880"
+      ]
+    }
+  },
+  "parts": {
+    "materials": {},
+    "default_material": "body",
+    "albedo": {
+      "green": "#70b820",
+      "black": "#0a0a0a",
+      "gray": "#403838",
+      "white": "#f0f0f0",
+      "red": "#881008",
+      "blue": "#105090",
+      "pink": "#e8b0f8",
+      "yellow": "#e0e080"
+    }
+  },
+  "camera": {
+    "azimuth": "AZIMUTH",
+    "elevation": "ELEVATION",
+    "target": [
+      0,
+      -1.05,
+      3.6
+    ],
+    "distance": 30,
+    "ortho_scale": 18,
+    "perspective_fov": "FOV"
+  },
+  "render": {
+    "width": 2000,
+    "height": 2000
+  },
+  "pose_params": {
+    "AZIMUTH": 230,
+    "ELEVATION": -15,
+    "FOV": 32
+  },
+  "pose": [
+    [
+      "head",
+      "Z",
+      "40"
+    ]
+  ],
+  "motion": {
+    "frames": 64,
+    "clip": "pm0770_51_00_20001_battlewait01_loop",
+    "note": "the GLB's own battle-wait loop, 64 frames; not a pose built in the config; head bone turned 40 deg toward the camera on top of the clip (pose), so the core's face shows both eyes"
+  },
+  "style": {
+    "height": 300,
+    "frame_ms": 30,
+    "frame_anchor": "first",
+    "flat_parts": [
+      "white",
+      "red",
+      "blue",
+      "pink",
+      "yellow"
+    ]
+  }
+}
