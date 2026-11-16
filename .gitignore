@@ -49,3 +49,14 @@ mega-zygarde-za/textures/
 mega-zygarde-za/_*.json
 *_check.png
 model-links.md
+
+# per-model working notes and pose generators: local only
+RIG.md
+REDO.md
+motion.note
+*-model/gen*.py
+*-model/fix_shiny.py
+*.v[0-9]*.json
+*.v[0-9]*.py
+*-model/scratch/
+mega-greninja-za-model/

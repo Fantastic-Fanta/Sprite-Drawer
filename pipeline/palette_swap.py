@@ -12,7 +12,6 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
 
 import sprite_style as ss
 
@@ -36,13 +35,4 @@ for f in ss.gif_frames(src):
     for x, y in cmap.items():
         s[on & np.all(f[..., :3] == x, axis=-1), :3] = y
     sprites.append(s)
-ss.save_gif(shiny_cfg, sprites, out_path)
-print(f"wrote {out_path}: {len(sprites)} frames recoloured")
-
-if "--scale" in args:
-    k = int(args[args.index("--scale") + 1])
-    big = [np.array(Image.fromarray(s).resize((s.shape[1] * k, s.shape[0] * k), Image.Resampling.NEAREST))
-           for s in sprites]
-    big_path = str(Path(out_path).with_name(Path(out_path).stem + f"_{k}x.gif"))
-    ss.save_gif(shiny_cfg, big, big_path)
-    print(f"wrote {big_path}")
+ss.save_gifs(shiny_cfg, sprites, out_path, args[args.index("--scale") + 1] if "--scale" in args else None)

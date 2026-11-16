@@ -32,6 +32,7 @@ Per sprite pixel, from the full-size passes (color_, id_, data_, hull_ next to e
   * lines are the outline colour, never thinned or moved; bits of a part up to SLIVER px along a
     line (texture colour reaching past the edge the line follows) take the colour around them
 """
+import json
 import os
 from pathlib import Path
 
@@ -162,7 +163,19 @@ def framing(height, boxes, anchor=None):
 
 # --- the look ---------------------------------------------------------------------
 
+_SETUP = {}
+
+
 def _setup(cfg):
+    """the config's lookup tables, built once per process (every frame of a loop shares them)"""
+    key = json.dumps(cfg, sort_keys=True)
+    if key not in _SETUP:
+        _SETUP.clear()
+        _SETUP[key] = _build_setup(cfg)
+    return _SETUP[key]
+
+
+def _build_setup(cfg):
     st = cfg["style"]
     parts = list(cfg["palette"]["parts"])
     shades = [np.array([hexrgb(c) for c in cfg["palette"]["parts"][p]], float) for p in parts]
@@ -226,11 +239,12 @@ def measure(cfg, p, box, size, S=None):
     grp = 0
     if len(S["lut"]) > 1:
         ida = _load(p, "id", box)
-        key = ida[..., :3].reshape(-1, 3).astype(np.int32) @ np.array([1 << 16, 1 << 8, 1])
+        on = ida[..., 3].ravel() > 127                    # the background stays group 0
+        key = ida[..., :3].reshape(-1, 3)[on].astype(np.int32) @ np.array([1 << 16, 1 << 8, 1])
         u, inv = np.unique(key, return_inverse=True)
         urgb = np.stack([u >> 16, (u >> 8) & 255, u & 255], -1).astype(float)
-        grp = ((urgb[:, None] - S["id_rgb"][None]) ** 2).sum(-1).argmin(-1)[inv.ravel()]
-        grp = np.where(ida[..., 3].ravel() > 127, grp, 0)
+        grp = np.zeros(len(on), np.intp)
+        grp[on] = ((urgb[:, None] - S["id_rgb"][None]) ** 2).sum(-1).argmin(-1)[inv.ravel()]
     part = S["lut"][grp, (q[:, 0] << 2 * Q) | (q[:, 1] << Q) | q[:, 2]]
     hull_px = hul[..., 3].ravel() > 127
     body_cnt = np.bincount(cell[opaque], minlength=n)
@@ -441,6 +455,18 @@ def save_gif(cfg, sprites, path):
         frames.append(p)
     frames[0].save(path, save_all=True, append_images=frames[1:], duration=cfg["style"]["frame_ms"],
                    loop=0, transparency=T, disposal=2, optimize=False)
+
+
+def save_gifs(cfg, sprites, path, scale=None):
+    """save_gif, plus with scale k a PATH_kx.gif copy enlarged with hard pixel edges"""
+    save_gif(cfg, sprites, path)
+    print(f"wrote {path}: {len(sprites)} frames, {sprites[0].shape[1]}x{sprites[0].shape[0]}")
+    if scale:
+        k = int(scale)
+        big = [s.repeat(k, 0).repeat(k, 1) for s in sprites]
+        big_path = str(Path(path).with_name(Path(path).stem + f"_{k}x.gif"))
+        save_gif(cfg, big, big_path)
+        print(f"wrote {big_path}")
 
 
 def gif_frames(path):

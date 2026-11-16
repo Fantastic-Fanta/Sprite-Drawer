@@ -37,14 +37,13 @@ are what those scripts do, for doing one by hand.
 
 ### 1. Import the model
 
-- `.fbx`: open it in Blender (or `$B -b --python pipeline/import_fbx.py -- MODEL.fbx OUT.blend`)
-  and save a `.blend`.
+- `.fbx`: open it in Blender and save a `.blend` (`prep_model.py` does this for you).
 - `.dae`: Blender 5 can't import it. Convert with `assimp export model.dae model.glb` and import the `.glb`.
 - Make texture paths relative.
 - Check the bind pose. Game rips are usually T-posed, so set a rest pose in `pose` before you
   add motion.
 - A surface the game colours in its shader rather than in the albedo texture (e.g. Mega
-  Dragalge's wings) can get its own material with `layer_mat.py` / `kelp_mat.py`.
+  Dragalge's wings) can get its own material: see `dragalge-model/layer_mat.py` / `kelp_mat.py`.
 
 ### 2. Write the config
 
@@ -157,7 +156,7 @@ All of it is automatic. Optional settings:
 | `render.hull.thickness` | — | the hull's thickness in world units instead |
 | `render.hull.even` | `true` | keeps the hull the same width round sharp corners |
 | `render.hull.spike` | 2.0 | even offset at a needle-sharp tip is capped to this many thicknesses (else it draws long strands) |
-| `render.hull.weld` | `false` | closes cracks at hard edges, but draws extra lines along creases |
+| `render.hull.cap_each_frame` | `false` | cap spikes in every frame's pose, not just frame 0's |
 | `parts.match` | `"palette"` | `"albedo"`: tell parts apart by `parts.albedo`, not by palette shades |
 | `style.light` | `[-0.15, 0.45, 0.88]` | light direction in camera space (x right, y up, z to the viewer) |
 | `style.bands` | frame 0's 25th / 70th percentile | N.L limits for one shade darker / lighter |
@@ -215,8 +214,6 @@ itself. Any other style change skips Blender entirely.
 | `fit_pose.py` | Blender: fit pose + camera to the reference |
 | `make_shiny.py`, `palette_swap.py` | shiny config and shiny recolour |
 | `regress.py` | regression tests |
-| `ref_decode.py` | rebuild a Showdown frame from browser-exported text |
-| `import_fbx.py`, `kelp_mat.py`, `layer_mat.py` | Blender model prep |
 | `prep_model.py` (+ `prep_scene.py`) | model zip → model folder, `.blend`, draft config (palette from the textures, camera, size), `RIG.md` |
 | `preview.py` | Workbench sheet of a few loop frames from several views, in seconds: judge pose and motion without a build |
 | `check_motion.py` | the idle rules in sprite px: frozen / big / jitter / loop seam / feet / visible clipping |
